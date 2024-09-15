@@ -1,0 +1,141 @@
+generator db {
+  provider = "go run github.com/steebchen/prisma-client-go"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model md_close_reason {
+  id         String    @id @db.Uuid
+  type       String    @db.VarChar
+  value      String
+  company_id String?   @db.Uuid
+  is_active  Boolean   @default(false)
+  is_delete  Boolean   @default(false)
+  created_at DateTime  @db.Timestamptz(6)
+  created_by String    @db.Uuid
+  deleted_at DateTime? @db.Timestamptz(6)
+  updated_at DateTime  @db.Timestamptz(6)
+  updated_by String?   @db.Uuid
+  deleted_by String?   @db.Uuid
+}
+
+model sys_action {
+  id          String    @id @db.Uuid
+  name        String    @unique @db.VarChar(128)
+  code        String    @unique @db.VarChar(50)
+  description String?   @db.VarChar(1024)
+  is_active   Boolean   @default(true)
+  is_delete   Boolean   @default(false)
+  created_at  DateTime  @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+  created_by  String    @db.Uuid
+  updated_by  String?   @db.Uuid
+  deleted_by  String?   @db.Uuid
+
+  permissions sys_permission[]
+}
+
+model sys_permission {
+  id          String    @id @db.Uuid
+  name        String    @unique @db.VarChar(128)
+  code        String    @unique @db.VarChar(50)
+  description String?   @db.VarChar(1024)
+  resource_id String?   @db.Uuid
+  action_id   String?   @db.Uuid
+  is_active   Boolean   @default(true)
+  is_delete   Boolean   @default(false)
+  created_at  DateTime  @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+  created_by  String    @db.Uuid
+  updated_by  String?   @db.Uuid
+  deleted_by  String?   @db.Uuid
+
+  resources        sys_resource?         @relation(fields: [resource_id], references: [id], onDelete: Cascade)
+  actions          sys_action?           @relation(fields: [action_id], references: [id], onDelete: Cascade)
+  role_permissions sys_role_permission[]
+}
+
+model sys_resource {
+  id          String    @id @db.Uuid
+  type        String?   @db.VarChar(20)
+  name        String    @unique @db.VarChar(128)
+  icon        String?   @db.VarChar(32)
+  description String?   @db.VarChar(1024)
+  parent_id   String?   @db.Uuid
+  code        String    @db.VarChar(255)
+  is_active   Boolean   @default(true)
+  is_delete   Boolean   @default(false)
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+  created_by  String    @db.Uuid
+  updated_by  String?   @db.Uuid
+  deleted_by  String?   @db.Uuid
+
+  permissions sys_permission[]
+}
+
+model sys_role {
+  id          String    @id @db.Uuid
+  name        String    @unique @db.VarChar(128)
+  description String?   @db.VarChar(1024)
+  role_key    String?   @db.VarChar(255)
+  is_active   Boolean   @default(true)
+  is_delete   Boolean   @default(false)
+  created_at  DateTime  @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  deleted_at  DateTime? @db.Timestamptz(6)
+  created_by  String    @db.Uuid
+  updated_by  String?   @db.Uuid
+  deleted_by  String?   @db.Uuid
+
+  role_permissions sys_role_permission[]
+  user_roles       sys_user_role[]
+}
+
+model sys_role_permission {
+  id            String @id @db.Uuid @default(dbgenerated("gen_random_uuid()"))
+  role_id       String @db.Uuid
+  permission_id String @db.Uuid
+
+  roles       sys_role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  permissions sys_permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+
+  @@unique([role_id, permission_id])
+}
+
+model sys_user {
+  id         String    @id @db.Uuid
+  email      String    @unique @db.VarChar(256)
+  password   String    @db.VarChar(256)
+  first_name String?   @db.VarChar(128)
+  last_name  String?   @db.VarChar(128)
+  avatar     String?   @db.VarChar(256)
+  is_active  Boolean   @default(true)
+  is_delete  Boolean   @default(false)
+  created_at DateTime  @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+  deleted_at DateTime? @db.Timestamptz(6)
+  created_by String    @db.Uuid
+  updated_by String?   @db.Uuid
+  deleted_by String?   @db.Uuid
+
+  user_roles sys_user_role[]
+}
+
+model sys_user_role {
+  id      String @id @db.Uuid @default(uuid())
+  user_id String @db.Uuid
+  role_id String @db.Uuid
+
+  users sys_user @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  roles sys_role @relation(fields: [role_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, role_id])
+}

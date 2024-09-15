@@ -1,0 +1,7 @@
+$numberPadding: 5px;
+
+@mixin flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}

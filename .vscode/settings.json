@@ -1,0 +1,23 @@
+{
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true,
+    "**/node_modules": true
+  },
+  "terminal.integrated.defaultProfile.osx": null,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "explorer.sortOrderLexicographicOptions": "unicode",
+  "editor.inlineSuggest.enabled": true,
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "cSpell.words": ["lucide", "orderedmap"],
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+}

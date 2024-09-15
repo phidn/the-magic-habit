@@ -1,0 +1,29 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "allowJs": false,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "types": ["vite/client", "vitest"],
+    "composite": true,
+    "declaration": true,
+    "paths": {
+      "@mazic-design-system": ["packages/design-system/src/index.ts"],
+      "@mazic-common": ["packages/common/src/index.ts"],
+      "@mazic/*": ["packages/mazic/src/*"]
+    }
+  },
+  "files": [],
+  "include": ["**/*.ts", "**/*.tsx", "**/*.json"],
+  "exclude": ["node_modules"],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}

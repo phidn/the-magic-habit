@@ -1,0 +1,19 @@
+{
+  "autorun": false,
+  "autokill": true,
+  "terminals": [
+    {
+      "name": "web",
+      "icon": "browser",
+      "execute": true,
+      "focus": true,
+      "commands": ["make web"]
+    },
+    {
+      "name": "server",
+      "icon": "server",
+      "execute": true,
+      "commands": ["make server"]
+    }
+  ]
+}
