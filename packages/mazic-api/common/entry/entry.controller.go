@@ -1,6 +1,7 @@
 package entry_common
 
 import (
+	"mazic/mazicapi/cmd/infrastructure"
 	"mazic/mazicapi/pkg/errors"
 	"mazic/mazicapi/util"
 
@@ -8,12 +9,14 @@ import (
 )
 
 type EntryController struct {
-	EntryService *EntryService
+	EntryService  *EntryService
+	PocketbaseApp *infrastructure.PocketbaseApp
 }
 
-func NewEntryController(entryService *EntryService) *EntryController {
+func NewEntryController(entryService *EntryService, pocketbaseApp *infrastructure.PocketbaseApp) *EntryController {
 	return &EntryController{
-		EntryService: entryService,
+		EntryService:  entryService,
+		PocketbaseApp: pocketbaseApp,
 	}
 }
 
@@ -55,4 +58,14 @@ func (controller *EntryController) Upload(c echo.Context) error {
 	}
 
 	return util.ResSuccess(c, link)
+}
+
+func (controller *EntryController) GetTags(c echo.Context) error {
+	dao := controller.PocketbaseApp.Dao()
+	records, err := dao.FindRecordsByExpr("tags")
+	if err != nil {
+		return util.ResError(c, err)
+	}
+
+	return util.ResSuccess(c, records)
 }

@@ -24,8 +24,21 @@ switch-node-version:
 kill-port:
 	yarn kill-port 4200
 	yarn kill-port 5005
+	yarn kill-port 8090
+
+cd-pb:
+	cd packages/mazic-pocketbase && bash -c "exec bash"
+cd-server:
+	cd packages/mazic-api && bash -c "exec bash"
+cd-prisma:
+	cd packages/mazic-api && bash -c "exec bash"
 
 # ===== NX ======== #
+
+graph:
+	@echo "Generating graph..."
+	yarn nx graph
+	@echo "Graph generated."
 
 clear:
 	rm -rf .nx && \
@@ -35,6 +48,11 @@ clear:
 gen-package-js:
 	@echo "Generating package..."
 	yarn nx generate @nx/js:library --name=common --directory=packages/common --importPath=@mazic-common --projectNameAndRootFormat=as-provided --no-interactive
+	@echo "Package generated."
+
+gen-package-go:
+	@echo "Generating package..."
+	nx g @nx-go/nx-go:application ui
 	@echo "Package generated."
 
 
@@ -69,21 +87,12 @@ server:
 	cd packages/mazic-api && \
 	wgo run --verbose main.go
 	@echo "Successfully started server..."
-
-swagger:
-	@echo "Starting generate api docs..."
+server-pb:
+	@echo "Starting server..."
+	export GO_ENV=development && \
 	cd packages/mazic-api && \
-	swag init -g main.go
-	@echo "Done generate api docs..."
-
-docker-down:
-	docker compose -f /dev/config/docker/postgres-compose.yml down
-	docker compose -f /dev/config/docker/redis-compose.yml down
-
-docker-up:
-	docker compose -f /dev/config/docker/postgres-compose.yml up -d
-	docker compose -f /dev/config/docker/redis-compose.yml up -d
-
+	go run -tags pq main.go
+	@echo "Successfully started server..."
 
 server-test:
 	@echo "Starting server test..."
@@ -91,3 +100,16 @@ server-test:
 	cd packages/mazic-api && \
 	go test ./pkg/storages/supabase_storage/test
 	@echo "Successfully started server test..."
+
+pocketbase:
+	@echo "Starting pocketbase server..."
+	cd packages/mazic-pocketbase && \
+	go run -tags pq ./examples/base serve
+	@echo "Successfully started pocketbase server..."
+
+swagger:
+	@echo "Starting generate api docs..."
+	cd packages/mazic-api && \
+	swag init -g main.go
+	@echo "Done generate api docs..."
+

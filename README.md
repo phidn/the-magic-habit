@@ -23,3 +23,4 @@ This project demonstrates a CRM system built using Vertical Slice Architecture. 
 
 ## Inspire & References
 - Icons: https://icon-sets.iconify.design/lucide/
+- Pocketbase: https://github.com/abdokhaire/postgresbase
