@@ -104,7 +104,7 @@ server-test:
 pocketbase:
 	@echo "Starting pocketbase server..."
 	cd packages/mazic-pocketbase && \
-	go run -tags pq ./examples/base serve
+	wgo run -tags pq ./examples/base serve
 	@echo "Successfully started pocketbase server..."
 
 swagger:

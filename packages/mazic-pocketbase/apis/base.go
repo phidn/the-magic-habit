@@ -181,6 +181,7 @@ func bindStaticAdminUI(app core.App, e *echo.Echo) error {
 
 	// serves static files from the /ui/dist directory
 	// (similar to echo.StaticFS but with gzip middleware enabled)
+
 	e.GET(
 		trailedAdminPath+"*",
 		echo.StaticDirectoryHandler(ui.DistDirFS, false),

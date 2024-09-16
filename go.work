@@ -4,4 +4,5 @@ use (
 	./packages/mazic-api
 	./packages/mazic-pocketbase
 	./packages/mazic-prisma
+	./packages/mazic-pocketbase-ui
 )

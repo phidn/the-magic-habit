@@ -1,9 +1,7 @@
 package security
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -48,8 +46,6 @@ func ParseUnverifiedJWT(token string) (jwt.MapClaims, error) {
 // ParseJWT verifies and parses JWT and returns its claims.
 func ParseJWT(token string, oldVerificationKey string) (jwt.MapClaims, error) {
 	parser := jwt.NewParser(jwt.WithValidMethods([]string{"RS256"}))
-
-	fmt.Println("printData data", string(func() []byte { b, _ := json.MarshalIndent(os.Getenv("JWT_PUBLIC_KEY"), "", "  "); return b }()))
 
 	publicKey, err := jwt.ParseRSAPublicKeyFromPEM([]byte(os.Getenv("JWT_PUBLIC_KEY")))
 	if err != nil {
@@ -96,8 +92,6 @@ func NewJWT(payload jwt.MapClaims, oldSigninKey string, secondsDuration int64) (
 	for k, v := range payload {
 		claims[k] = v
 	}
-
-	fmt.Println("printData data", string(func() []byte { b, _ := json.MarshalIndent(os.Getenv("JWT_PRIVATE_KEY"), "", "  "); return b }()))
 
 	privateKey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(os.Getenv("JWT_PRIVATE_KEY")))
 	if err != nil {
