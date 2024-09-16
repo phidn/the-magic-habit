@@ -8,21 +8,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model md_close_reason {
-  id         String    @id @db.Uuid
-  type       String    @db.VarChar
-  value      String
-  company_id String?   @db.Uuid
-  is_active  Boolean   @default(false)
-  is_delete  Boolean   @default(false)
-  created_at DateTime  @db.Timestamptz(6)
-  created_by String    @db.Uuid
-  deleted_at DateTime? @db.Timestamptz(6)
-  updated_at DateTime  @db.Timestamptz(6)
-  updated_by String?   @db.Uuid
-  deleted_by String?   @db.Uuid
-}
-
+// #region: rbac
 model sys_action {
   id          String    @id @db.Uuid
   name        String    @unique @db.VarChar(128)
@@ -138,4 +124,21 @@ model sys_user_role {
   roles sys_role @relation(fields: [role_id], references: [id], onDelete: Cascade)
 
   @@unique([user_id, role_id])
+}
+
+// #endregion: rbac
+
+model md_close_reason {
+  id         String    @id @db.Uuid
+  type       String    @db.VarChar
+  value      String
+  company_id String?   @db.Uuid
+  is_active  Boolean   @default(false)
+  is_delete  Boolean   @default(false)
+  created_at DateTime  @db.Timestamptz(6)
+  created_by String    @db.Uuid
+  deleted_at DateTime? @db.Timestamptz(6)
+  updated_at DateTime  @db.Timestamptz(6)
+  updated_by String?   @db.Uuid
+  deleted_by String?   @db.Uuid
 }
