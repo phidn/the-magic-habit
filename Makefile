@@ -75,6 +75,12 @@ gen-index:
 
 # ===== SERVER ======== #
 
+swagger:
+	@echo "Starting generate api docs..."
+	cd packages/mazic-api && \
+	swag init -g main.go
+	@echo "Done generate api docs..."
+
 api:
 	@echo "Starting server..."
 	export GO_ENV=development && \
@@ -85,31 +91,12 @@ server:
 	@echo "Starting server..."
 	export GO_ENV=development && \
 	cd packages/mazic-api && \
-	wgo run --verbose main.go
+	wgo run -tags pq --verbose main.go
 	@echo "Successfully started server..."
-server-pb:
-	@echo "Starting server..."
-	export GO_ENV=development && \
-	cd packages/mazic-api && \
-	go run -tags pq main.go
-	@echo "Successfully started server..."
-
-server-test:
-	@echo "Starting server test..."
-	export GO_ENV=test && \
-	cd packages/mazic-api && \
-	go test ./pkg/storages/supabase_storage/test
-	@echo "Successfully started server test..."
 
 pocketbase:
 	@echo "Starting pocketbase server..."
 	cd packages/mazic-pocketbase && \
 	wgo run -tags pq ./examples/base serve
 	@echo "Successfully started pocketbase server..."
-
-swagger:
-	@echo "Starting generate api docs..."
-	cd packages/mazic-api && \
-	swag init -g main.go
-	@echo "Done generate api docs..."
 

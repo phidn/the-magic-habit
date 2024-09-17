@@ -24,7 +24,7 @@ func (service *CloseReasonService) GetList(ctx context.Context, params CloseReas
 		},
 		Filters: map[string]interface{}{
 			"is_active": params.IsActive,
-			"type":      params.Type,
+			"name":      params.Name,
 		},
 		Sort: params.Sort,
 	}
