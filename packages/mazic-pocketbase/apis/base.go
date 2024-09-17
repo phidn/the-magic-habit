@@ -9,6 +9,7 @@ import (
 	"log/slog"
 	"net/http"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -119,16 +120,19 @@ func InitApi(app core.App) (*echo.Echo, error) {
 
 	// default routes
 	api := e.Group("/api", eagerRequestInfoCache(app))
-	bindSettingsApi(app, api)
-	bindAdminApi(app, api)
-	bindCollectionApi(app, api)
-	bindRecordCrudApi(app, api)
-	bindRecordAuthApi(app, api)
-	bindFileApi(app, api)
-	bindRealtimeApi(app, api)
-	bindLogsApi(app, api)
-	bindHealthApi(app, api)
-	bindBackupApi(app, api)
+
+	if os.Getenv("ADMIN_API_DISABLED") != "true" {
+		bindSettingsApi(app, api)
+		bindAdminApi(app, api)
+		bindCollectionApi(app, api)
+		bindRecordCrudApi(app, api)
+		bindRecordAuthApi(app, api)
+		bindFileApi(app, api)
+		bindRealtimeApi(app, api)
+		bindLogsApi(app, api)
+		bindHealthApi(app, api)
+		bindBackupApi(app, api)
+	}
 
 	// catch all any route
 	api.Any("/*", func(c echo.Context) error {

@@ -7,9 +7,9 @@
       "mode": "debug",
       "program": "${workspaceFolder}/packages/mazic-api/main.go",
       "buildFlags": "-tags=pq",
-      "env": {
-        "GO_ENV": "development"
-      }
+      "args": ["serve", "--dev"],
+      "envFile": "${workspaceFolder}/packages/mazic-api/.env.development",
+      "debugAdapter": "dlv-dap"
     },
     {
       "name": "MAZIC-PRISMA",

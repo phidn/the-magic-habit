@@ -81,17 +81,11 @@ swagger:
 	swag init -g main.go
 	@echo "Done generate api docs..."
 
-api:
-	@echo "Starting server..."
-	export GO_ENV=development && \
-	cd packages/mazic-api && \
-	wgo run --verbose main.go
-	@echo "Successfully started server..."
 server:
 	@echo "Starting server..."
 	export GO_ENV=development && \
-	cd packages/mazic-api && \
-	wgo run -tags pq --verbose main.go
+	cd packages/mazic-server && \
+	wgo run -tags pq --verbose main.go serve
 	@echo "Successfully started server..."
 
 pocketbase:

@@ -1,8 +1,8 @@
 {
-  "name": "mazic-api",
+  "name": "mazic-server",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "packages/mazic-api",
+  "sourceRoot": "packages/mazic-server",
   "tags": [],
   "targets": {
     "build": {
@@ -14,9 +14,7 @@
     "serve": {
       "executor": "@nx-go/nx-go:serve",
       "options": {
-        "main": "{projectRoot}/main.go",
-        "cmd": "wgo",
-        "args": ["--verbose"]
+        "main": "{projectRoot}/main.go"
       }
     },
     "test": {
