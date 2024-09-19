@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"sync"
@@ -65,8 +66,10 @@ func Serve(app core.App, config ServeConfig) (*http.Server, error) {
 	}
 
 	// ensure that the latest migrations are applied before starting the server
-	if err := runMigrations(app); err != nil {
-		return nil, err
+	if os.Getenv("MIGRATE_DISABLED") != "true" {
+		if err := runMigrations(app); err != nil {
+			return nil, err
+		}
 	}
 
 	// reload app settings in case a new default value was set with a migration

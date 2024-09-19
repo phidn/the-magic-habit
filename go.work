@@ -1,8 +1,8 @@
-go 1.22
+go 1.22.5
 
 use (
-	./packages/mazic-api
 	./packages/mazic-pocketbase
-	./packages/mazic-prisma
 	./packages/mazic-pocketbase-ui
+	./packages/mazic-prisma
+	./packages/mazic-server
 )

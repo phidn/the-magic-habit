@@ -29,9 +29,9 @@ kill-port:
 cd-pb:
 	cd packages/mazic-pocketbase && bash -c "exec bash"
 cd-server:
-	cd packages/mazic-api && bash -c "exec bash"
+	cd packages/mazic-server && bash -c "exec bash"
 cd-prisma:
-	cd packages/mazic-api && bash -c "exec bash"
+	cd packages/mazic-prisma && bash -c "exec bash"
 
 # ===== NX ======== #
 
@@ -81,17 +81,11 @@ swagger:
 	swag init -g main.go
 	@echo "Done generate api docs..."
 
-api:
-	@echo "Starting server..."
-	export GO_ENV=development && \
-	cd packages/mazic-api && \
-	wgo run --verbose main.go
-	@echo "Successfully started server..."
 server:
 	@echo "Starting server..."
-	export GO_ENV=development && \
-	cd packages/mazic-api && \
-	wgo run -tags pq --verbose main.go
+	export APP_ENV=development && \
+	cd packages/mazic-server && \
+	wgo run -tags pq --verbose main.go serve
 	@echo "Successfully started server..."
 
 pocketbase:

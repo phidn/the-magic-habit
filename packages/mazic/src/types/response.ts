@@ -15,9 +15,11 @@ export interface ErrorResponse {
   }
 }
 
-export type AuthResponse = SuccessResponse<{
-  access_token: string
-  refresh_token: string
+export type AuthResponse = {
+  tokens: {
+    access_token: string
+    refresh_token: string
+  }
   expires: string
   user: IUser
-}>
+}
