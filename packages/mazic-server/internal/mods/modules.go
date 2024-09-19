@@ -6,10 +6,19 @@ import (
 	"go.uber.org/fx"
 )
 
+var authModule = fx.Module("auth",
+	fx.Options(
+		fx.Provide(
+			auth.NewAuthService,
+			auth.NewAuthController,
+			auth.NewAuthRoute,
+		),
+		fx.Invoke(func(auth *auth.AuthRoute) error {
+			auth.SetupRoutes()
+			return nil
+		}),
+	))
+
 var Modules = fx.Options(
-	fx.Provide(auth.NewAuth),
-	fx.Invoke(func(auth *auth.Auth) error {
-		auth.SetupRoutes()
-		return nil
-	}),
+	authModule,
 )

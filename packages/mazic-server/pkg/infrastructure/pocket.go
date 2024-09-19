@@ -1,7 +1,6 @@
 package infrastructure
 
 import (
-	"fmt"
 	"mazic/pocketbase"
 )
 
@@ -15,6 +14,5 @@ func NewPocket() *Pocket {
 }
 
 func (p *Pocket) Start() error {
-	fmt.Println(">>> Starting PocketBase server")
 	return p.PocketBase.Start()
 }

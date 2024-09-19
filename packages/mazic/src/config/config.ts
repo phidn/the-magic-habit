@@ -34,10 +34,10 @@ export const PATH = {
 } as const
 
 export const PATH_API = {
-  logout: '/v1/auth/logout',
-  login: '/v1/auth/login',
-  register: '/v1/auth/register',
-  refreshToken: '/v1/auth/refresh-token',
+  logout: '/auth/logout',
+  login: '/auth/login',
+  register: '/auth/register',
+  refreshToken: '/auth/refresh-token',
 } as const
 
 export enum HTTP_CODE {

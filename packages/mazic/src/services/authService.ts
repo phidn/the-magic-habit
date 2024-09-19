@@ -6,11 +6,11 @@ import http from '@mazic/utils/http'
 import { getAccessTokenFromLS, getRefreshTokenFromLS } from '@mazic/utils/localStorage'
 
 export const authService = {
-  login: <T = any>(body: LoginSchemaType) => http.post<T>('/v1/auth/login', body),
+  login: <T = any>(body: LoginSchemaType) => http.post<T>('/auth/login', body),
   logout: () => {
     const access_token = getAccessTokenFromLS()
     const refresh_token = getRefreshTokenFromLS()
-    return http.post<any>('/v1/auth/logout', { access_token, refresh_token })
+    return http.post<any>('/auth/logout', { access_token, refresh_token })
   },
-  getMe: () => http.get<AxiosResponse<TUser>>('/v1/auth/me'),
+  getMe: () => http.get<AxiosResponse<TUser>>('/auth/me'),
 }

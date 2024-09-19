@@ -8,7 +8,7 @@
     "**/Thumbs.db": true,
     "**/node_modules": true,
     "**/packages/design-system": true,
-    "**/packages/mazic": true,
+    // "**/packages/mazic": true,
     "**/packages/mazic-server/pb_data": true,
     // "**/packages/mazic-server": true,
     // "**/packages/mazic-pocketbase": true,

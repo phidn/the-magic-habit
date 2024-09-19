@@ -81,12 +81,7 @@ export const LoginPage = () => {
             )}
             <LabelInputContainer className="mb-4">
               <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                placeholder="email@mazic.com"
-                type="email"
-                {...register('email')}
-              />
+              <Input id="email" placeholder="email@mazic.com" type="email" {...register('email')} />
               {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
             </LabelInputContainer>
             <LabelInputContainer className="mb-4">

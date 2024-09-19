@@ -18,6 +18,7 @@ const AuthRoute = ({ children }: Props) => {
   const getMeMutation = useMutation({
     mutationFn: () => authService.getMe(),
     onSuccess: ({ data }) => {
+      console.log("~ data:", data)
       setCurrentUser(data.data)
       setIsAuthenticated(true)
     },

@@ -53,9 +53,8 @@ class Http {
   private handleResponse = (response: any) => {
     const { url } = response.config
     if (url.includes(PATH_API.login) || url.includes(PATH_API.register)) {
-      const data = response.data as AuthResponse
-      const { access_token, refresh_token, user } = data.data
-      this.setTokens(access_token, refresh_token)
+      const { tokens, user } = response.data as AuthResponse
+      this.setTokens(tokens.access_token, tokens.refresh_token)
       setProfileToLS(user)
     } else if (url.includes(PATH_API.logout)) {
       this.accessToken = ''
@@ -83,8 +82,8 @@ class Http {
           access_token: this.accessToken,
           refresh_token: this.refreshToken,
         })
-        const { access_token, refresh_token } = response.data.data
-        this.setTokens(access_token, refresh_token)
+        const { tokens } = response.data
+        this.setTokens(tokens.access_token, tokens.refresh_token)
         return this.instance(error.config)
       } catch (error) {
         clearLS()
