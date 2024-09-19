@@ -6,6 +6,7 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
+    "**/.nx": true,
     "**/node_modules": true,
     "**/packages/design-system": true,
     // "**/packages/mazic": true,
