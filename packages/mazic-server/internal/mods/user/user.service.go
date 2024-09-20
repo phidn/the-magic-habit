@@ -2,46 +2,95 @@ package user
 
 import (
 	"mazic/pocketbase/models"
-	"mazic/pocketbase/resolvers"
-	"mazic/pocketbase/tools/search"
-	"mazic/server/pkg/infrastructure"
+	"mazic/server/pkg/entry"
+	"mazic/server/pkg/schema"
 	"net/url"
+
+	"github.com/pocketbase/dbx"
 )
 
 type UserService struct {
-	app *infrastructure.Pocket
+	Entry *entry.Entry
 }
 
-func NewUserService(app *infrastructure.Pocket) *UserService {
-	return &UserService{app: app}
+func NewUserService(entry *entry.Entry) *UserService {
+	return &UserService{
+		Entry: entry,
+	}
 }
 
-func (service *UserService) GetUsers(requestInfo *models.RequestInfo, queryParams url.Values) ([]*models.Record, error) {
-	collection, err := service.app.Dao().FindCollectionByNameOrId("sys_user")
+func (service *UserService) Find(queryParams url.Values) (*schema.Result, error) {
+	query := service.Entry.ModelQuery(&User{})
+
+	email := queryParams.Get("email")
+	if email != "" {
+		query = query.AndWhere(dbx.NewExp("email = {:email}", dbx.Params{"email": email}))
+	}
+
+	users := []*User{}
+	result, err := service.Entry.Find(&users, query, queryParams)
 	if err != nil {
 		return nil, err
 	}
 
-	fieldsResolver := resolvers.NewRecordFieldResolver(
-		service.app.Dao(),
-		collection,
-		requestInfo,
-		// hidden fields are searchable only by admins
-		requestInfo.Admin != nil,
-	)
+	return result, nil
+}
 
-	searchProvider := search.NewProvider(fieldsResolver).
-		Query(service.app.Dao().RecordQuery(collection))
+func (service *UserService) FindOne(id string) (*User, error) {
+	user := &User{}
+	err := service.Entry.ModelQuery(&User{}).
+		AndWhere(dbx.HashExp{"id": id}).
+		Limit(1).
+		One(user)
 
-	if requestInfo.Admin == nil && collection.ListRule != nil {
-		searchProvider.AddFilter(search.FilterData(*collection.ListRule))
-	}
-
-	users := []*models.Record{}
-	_, err = searchProvider.ParseAndExec(queryParams.Encode(), &users)
 	if err != nil {
 		return nil, err
 	}
 
-	return users, nil
+	return user, nil
+}
+
+func (service *UserService) Create(user *User) (*models.Record, error) {
+	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(User).TableName())
+	if err != nil {
+		return nil, err
+	}
+	if err := user.SetPasswordHash(); err != nil {
+		return nil, err
+	}
+
+	record := models.NewRecord(collection)
+	user.ParseRecord(record)
+
+	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+func (service *UserService) Update(id string, user *User) (*models.Record, error) {
+	record, err := service.Entry.Dao().FindRecordById(new(User).TableName(), id)
+	if err != nil {
+		return nil, err
+	}
+
+	user.ParseRecord(record)
+
+	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+func (service *UserService) Delete(id string) (*models.Record, error) {
+	record, err := service.Entry.Dao().FindRecordById(new(User).TableName(), id)
+	if err != nil {
+		return nil, err
+	}
+	// TODO: Serialize record and save it to a log table
+
+	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
+		return nil, err
+	}
+	return record, nil
 }

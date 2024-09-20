@@ -22,7 +22,11 @@ func NewUserRoute(app *infrastructure.Pocket, controller *UserController, authMi
 
 func (route *UserRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/users", route.controller.GetUsers, route.authMiddleware.IsAuthenticated)
+		e.Router.GET("/mz/users", route.controller.Find, route.authMiddleware.IsAuthenticated)
+		e.Router.GET("/mz/users/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
+		e.Router.POST("/mz/users", route.controller.Create, route.authMiddleware.IsAuthenticated)
+		e.Router.PUT("/mz/users/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
+		e.Router.DELETE("/mz/users/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
 		return nil
 	})
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/joho/godotenv"
@@ -24,22 +25,25 @@ type AppConfig struct {
 	RefreshTokenPublicKey  string
 	AccessTokenExpiresIn   time.Duration
 	RefreshTokenExpiresIn  time.Duration
+
+	BcryptCost int
 }
 
 var Config AppConfig
 
 func (config *AppConfig) LoadConfig() error {
-	goEnv := os.Getenv("APP_ENV")
+	appEnv := os.Getenv("APP_ENV")
 	envFile := ".env"
-	if goEnv != "" {
-		envFile = fmt.Sprintf(".env.%s", goEnv)
+	if appEnv != "" {
+		envFile = fmt.Sprintf(".env.%s", appEnv)
 	}
 	if err := godotenv.Load(envFile); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+		log.Fatalf("Error loading %s file: %v", envFile, err)
 	}
 
-	config.Env = goEnv
+	config.Env = appEnv
 
+	config.SupabaseUrl = getEnv("BCRYPT_COST", "")
 	config.SupabaseUrl = getEnv("SUPABASE_URL", "")
 	config.SupabaseBucket = getEnv("SUPABASE_BUCKET", "")
 	config.SupabaseServiceRole = getEnv("SUPABASE_SERVICE_ROLE", "")
@@ -51,6 +55,7 @@ func (config *AppConfig) LoadConfig() error {
 	config.AccessTokenExpiresIn = getEnvAsDuration("ACCESS_TOKEN_EXPIRED_IN", "24h")    // 1 day
 	config.RefreshTokenExpiresIn = getEnvAsDuration("REFRESH_TOKEN_EXPIRED_IN", "168h") // 7 days
 
+	config.BcryptCost = getEnvAsInt("BCRYPT_COST", 10)
 	return nil
 }
 
@@ -68,4 +73,12 @@ func getEnvAsDuration(name string, defaultVal string) time.Duration {
 		return value
 	}
 	return time.Duration(0)
+}
+
+func getEnvAsInt(name string, defaultVal int) int {
+	valueStr := getEnv(name, "")
+	if value, err := strconv.Atoi(valueStr); err == nil {
+		return value
+	}
+	return defaultVal
 }

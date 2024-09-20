@@ -6,3 +6,8 @@ const (
 	CONFIG_REFRESH_TOKEN = "refresh_token"
 	CONFIG_ACCESS_TOKEN  = "access_token"
 )
+
+const (
+	DefaultPageSize = 10
+	MaxPageSize     = 100
+)
