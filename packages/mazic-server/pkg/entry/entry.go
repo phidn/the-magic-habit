@@ -31,8 +31,8 @@ func (entry *Entry) ModelQuery(m models.Model) *dbx.SelectQuery {
 	return entry.App.Dao().ModelQuery(m)
 }
 
-func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, queryParams url.Values) (*schema.Result, error) {
-	result := &schema.Result{}
+func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, queryParams url.Values) (*schema.ResultPagination, error) {
+	result := &schema.ResultPagination{}
 	if err := entry.Parse(queryParams, result); err != nil {
 		return nil, err
 	}
@@ -69,7 +69,7 @@ func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, query
 	return result, nil
 }
 
-func (entry *Entry) Parse(queryParams url.Values, result *schema.Result) error {
+func (entry *Entry) Parse(queryParams url.Values, result *schema.ResultPagination) error {
 	params, err := url.ParseQuery(queryParams.Encode())
 	if err != nil {
 		return err
@@ -88,7 +88,7 @@ func (entry *Entry) Parse(queryParams url.Values, result *schema.Result) error {
 		}
 		result.Page = v
 	}
-	if result.PageSize > config.MaxPageSize {
+	if result.PageSize > config.MaxPageSize || result.PageSize == 0 {
 		result.PageSize = config.DefaultPageSize
 	}
 	if result.Page < 1 {

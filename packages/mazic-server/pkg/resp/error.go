@@ -1,135 +1,68 @@
 package resp
 
 import (
+	"mazic/pocketbase/tools/security"
+	"mazic/server/config"
+	"mazic/server/pkg/utils"
 	"net/http"
 	"strings"
 
-	"mazic/pocketbase/tools/inflector"
-
-	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/labstack/echo/v5"
 )
 
-// ApiError defines the struct for a basic api error response.
-type ApiError struct {
+type Error struct {
 	Code    int    `json:"code,omitempty"`
-	Message string `json:"message,omitempty"`
+	TraceId string `json:"trace_id,omitempty"`
+	Detail  any    `json:"detail,omitempty"`
+}
+
+type ApiError struct {
 	Success bool   `json:"success"`
-	Data    any    `json:"data,omitempty"`
-	TraceId string `json:"traceId,omitempty"`
-	// stores unformatted error data (could be an internal error, text, etc.)
-	rawData any
+	Name    string `json:"name,omitempty"`
+	Message string `json:"message,omitempty"`
+	Error   Error  `json:"error,omitempty"`
 }
 
-// Error makes it compatible with the `error` interface.
-func (e *ApiError) Error() string {
-	return e.Message
+func NewApplicationError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "An application error occurred.s", message)
+	return NewApiError(c, http.StatusInternalServerError, "ApplicationError", message, err)
 }
 
-// RawData returns the unformatted error data (could be an internal error, text, etc.)
-func (e *ApiError) RawData() any {
-	return e.rawData
+func NewNotFoundError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "Resource not found.", message)
+	return NewApiError(c, http.StatusNotFound, "NotFoundError", message, err)
 }
 
-// NewNotFoundError creates and returns 404 `ApiError`.
-func NewNotFoundError(message string, data any) *ApiError {
-	if message == "" {
-		message = "the requested resource wasn't found"
+func NewBadRequestError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "Bad request.", message)
+	return NewApiError(c, http.StatusBadRequest, "", message, err)
+}
+
+func NewForbiddenError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "Forbidden access.", message)
+	return NewApiError(c, http.StatusForbidden, "ForbiddenError", message, err)
+}
+
+func NewUnauthorizedError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "Unauthorized", message)
+	return NewApiError(c, http.StatusUnauthorized, "UnauthorizedError", message, err)
+}
+
+func NewApiError(c echo.Context, code int, name, message string, err any) error {
+	traceId := security.RandomSnowflakeId()
+	if utils.IsError(err) {
+		err = err.(error).Error()
 	}
+	// TODO: Log error
 
-	return NewApiError(http.StatusNotFound, message, data)
-}
-
-// NewBadRequestError creates and returns 400 `ApiError`.
-func NewBadRequestError(message string, data any) *ApiError {
-	if message == "" {
-		message = "something went wrong while processing your request"
-	}
-
-	return NewApiError(http.StatusBadRequest, message, data)
-}
-
-// NewForbiddenError creates and returns 403 `ApiError`.
-func NewForbiddenError(message string, data any) *ApiError {
-	if message == "" {
-		message = "you are not allowed to perform this request"
-	}
-
-	return NewApiError(http.StatusForbidden, message, data)
-}
-
-// NewUnauthorizedError creates and returns 401 `ApiError`.
-func NewUnauthorizedError(message string, data any) *ApiError {
-	if message == "" {
-		message = "missing or invalid authentication token"
-	}
-
-	return NewApiError(http.StatusUnauthorized, message, data)
-}
-
-// NewApiError creates and returns new normalized `ApiError` instance.
-func NewApiError(status int, message string, data any) *ApiError {
-	return &ApiError{
-		rawData: data,
+	return c.JSON(code, ApiError{
 		Success: false,
-		Data:    safeErrorsData(data),
-		Code:    status,
-		Message: strings.TrimSpace(inflector.Sentenize(message)),
-	}
-}
-
-func safeErrorsData(data any) map[string]any {
-	switch v := data.(type) {
-	case validation.Errors:
-		return resolveSafeErrorsData[error](v)
-	case map[string]validation.Error:
-		return resolveSafeErrorsData[validation.Error](v)
-	case map[string]error:
-		return resolveSafeErrorsData[error](v)
-	case map[string]any:
-		return resolveSafeErrorsData[any](v)
-	default:
-		return map[string]any{} // not nil to ensure that is json serialized as object
-	}
-}
-
-func resolveSafeErrorsData[T any](data map[string]T) map[string]any {
-	result := make(map[string]any, len(data))
-
-	for name, err := range data {
-		if isNestedError(err) {
-			result[name] = safeErrorsData(err)
-			continue
-		}
-		result[name] = resolveSafeErrorItem(err)
-	}
-
-	return result
-}
-
-func isNestedError(err any) bool {
-	switch err.(type) {
-	case validation.Errors, map[string]validation.Error, map[string]error, map[string]any:
-		return true
-	}
-
-	return false
-}
-
-// resolveSafeErrorItem extracts from each validation error its
-// public safe error code and message.
-func resolveSafeErrorItem(err any) map[string]string {
-	// default public safe error values
-	code := "validation_invalid_value"
-	msg := "invalid value"
-
-	// only validation errors are public safe
-	if obj, ok := err.(validation.Error); ok {
-		code = obj.Code()
-		msg = inflector.Sentenize(obj.Error())
-	}
-
-	return map[string]string{
-		"code":    code,
-		"message": msg,
-	}
+		Name:    utils.If(name == "", "ApplicationError", name),
+		Message: strings.TrimSpace(message),
+		Error: Error{
+			Code:    code,
+			TraceId: traceId,
+			Detail:  utils.If(config.Config.IsDevelopment, err, nil),
+		},
+	})
 }

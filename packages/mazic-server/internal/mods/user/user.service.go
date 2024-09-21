@@ -19,7 +19,7 @@ func NewUserService(entry *entry.Entry) *UserService {
 	}
 }
 
-func (service *UserService) Find(queryParams url.Values) (*schema.Result, error) {
+func (service *UserService) Find(queryParams url.Values) (*schema.ResultPagination, error) {
 	query := service.Entry.ModelQuery(&User{})
 
 	email := queryParams.Get("email")

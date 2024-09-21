@@ -96,3 +96,12 @@ func IsValidUInt(v any) bool {
 
 	return false
 }
+
+func IsError(v any) bool {
+	switch v.(type) {
+	case error:
+		return true
+	default:
+		return false
+	}
+}

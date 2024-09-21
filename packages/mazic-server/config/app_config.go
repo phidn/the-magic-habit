@@ -11,7 +11,8 @@ import (
 )
 
 type AppConfig struct {
-	Env string
+	Env           string
+	IsDevelopment bool
 
 	SupabaseUrl         string
 	SupabaseBucket      string
@@ -42,6 +43,7 @@ func (config *AppConfig) LoadConfig() error {
 	}
 
 	config.Env = appEnv
+	config.IsDevelopment = appEnv == "development"
 
 	config.SupabaseUrl = getEnv("BCRYPT_COST", "")
 	config.SupabaseUrl = getEnv("SUPABASE_URL", "")
