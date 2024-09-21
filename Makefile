@@ -1,3 +1,5 @@
+# ===== PRE-DEV ======== #
+
 LTS_NODE_VER=20
 NODE_VER=$(shell node -v)
 ifeq ($(patsubst v$(LTS_NODE_VER).%,matched,$(NODE_VER)), matched)
@@ -21,6 +23,8 @@ switch-node-version:
 		echo "Switched to nodejs v$(LTS_NODE_VER)"; \
 	fi
 
+# ===== UTILS ======== #
+
 kill-port:
 	yarn kill-port 4200
 	yarn kill-port 5005
@@ -33,17 +37,27 @@ cd-server:
 cd-prisma:
 	cd packages/mazic-prisma && bash -c "exec bash"
 
+
+clear:
+	make clear-nx && \
+	make clear-debug
+
+clear-nx:
+	rm -rf .nx && \
+	rm -rf node_modules/.vite && \
+	yarn nx reset
+
+clear-debug:
+	@echo "Clearing debug files..."
+	rm -f packages/mazic-server/__debug_bin*.exe
+	@echo "Debug files cleared."
+
 # ===== NX ======== #
 
 graph:
 	@echo "Generating graph..."
 	yarn nx graph
 	@echo "Graph generated."
-
-clear:
-	rm -rf .nx && \
-	rm -rf node_modules/.vite && \
-	yarn nx reset
 
 gen-package-js:
 	@echo "Generating package..."
