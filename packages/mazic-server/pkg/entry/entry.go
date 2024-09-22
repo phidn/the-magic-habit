@@ -28,7 +28,10 @@ func (entry *Entry) Dao() *daos.Dao {
 }
 
 func (entry *Entry) ModelQuery(m models.Model) *dbx.SelectQuery {
-	return entry.App.Dao().ModelQuery(m)
+	tableName := m.TableName()
+	return entry.Dao().DB().
+		Select("{{" + tableName + "}}.*").
+		From(tableName)
 }
 
 func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, queryParams url.Values) (*schema.ResultPagination, error) {

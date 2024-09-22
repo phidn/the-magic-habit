@@ -27,6 +27,22 @@ func (service *UserService) Find(queryParams url.Values) (*schema.ResultPaginati
 		query = query.AndWhere(dbx.NewExp("email = {:email}", dbx.Params{"email": email}))
 	}
 
+	verified := queryParams.Get("verified")
+	if verified != "" {
+		query = query.AndWhere(dbx.NewExp("verified = {:verified}", dbx.Params{"verified": verified}))
+	}
+
+	search := queryParams.Get("search")
+	if search != "" {
+		query = query.AndWhere(
+			dbx.Or(
+				dbx.Like("first_name", search),
+				dbx.Like("last_name", search),
+				dbx.Like("email", search),
+			),
+		)
+	}
+
 	users := []*User{}
 	result, err := service.Entry.Find(&users, query, queryParams)
 	if err != nil {
@@ -37,11 +53,11 @@ func (service *UserService) Find(queryParams url.Values) (*schema.ResultPaginati
 }
 
 func (service *UserService) FindOne(id string) (*User, error) {
-	user := &User{}
+	user := new(User)
 	err := service.Entry.ModelQuery(&User{}).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(user)
+		One(&user)
 
 	if err != nil {
 		return nil, err

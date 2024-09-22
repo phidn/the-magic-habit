@@ -35,9 +35,7 @@ func (controller *UserController) GetById(c echo.Context) error {
 		return resp.NewNotFoundError(c, "", err)
 	}
 
-	return resp.NewApiSuccess(c, map[string]interface{}{
-		"user": user,
-	})
+	return resp.NewApiSuccess(c, user)
 }
 
 func (controller *UserController) Create(c echo.Context) error {
@@ -56,9 +54,7 @@ func (controller *UserController) Create(c echo.Context) error {
 	user.Created = record.Created
 	user.Updated = record.Updated
 
-	return resp.NewApiCreated(c, map[string]interface{}{
-		"user": user,
-	})
+	return resp.NewApiCreated(c, user)
 }
 
 func (controller *UserController) Update(c echo.Context) error {
@@ -72,9 +68,7 @@ func (controller *UserController) Update(c echo.Context) error {
 		return resp.NewApplicationError(c, "Failed to update user.", err)
 	}
 
-	return resp.NewApiSuccess(c, map[string]interface{}{
-		"user": user,
-	})
+	return resp.NewApiSuccess(c, user)
 }
 
 func (controller *UserController) Delete(c echo.Context) error {

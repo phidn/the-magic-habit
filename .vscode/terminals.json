@@ -14,12 +14,6 @@
       "icon": "server",
       "execute": true,
       "commands": ["make server"]
-    },
-    {
-      "name": "pocketbase",
-      "icon": "server",
-      "execute": true,
-      "commands": ["make pocketbase"]
     }
   ]
 }

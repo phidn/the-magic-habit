@@ -4,7 +4,7 @@ import http from '@mazic/utils/http'
 import { TUser, TUserCreate } from '../schemas/userSchema'
 
 export const userService = {
-  query: <T = any>(params: IParams) => http.get<T>('/users', { params }),
+  list: <T = any>(params: IParams) => http.get<T>('/users', { params }),
   get: <T = any>(id: string) => http.get<T>('/users/' + id),
   create: <T = any>(payload: TUserCreate) => http.post<T>('/users', payload),
   update: <T = any>(id: string, payload: TUser) => http.put<T>('/users/' + id, payload),

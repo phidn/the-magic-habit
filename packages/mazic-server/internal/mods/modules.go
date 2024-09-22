@@ -2,10 +2,24 @@ package mods
 
 import (
 	"mazic/server/internal/mods/auth"
+	"mazic/server/internal/mods/global"
 	"mazic/server/internal/mods/user"
 
 	"go.uber.org/fx"
 )
+
+var globalModule = fx.Module("global",
+	fx.Options(
+		fx.Provide(
+			global.NewGlobalService,
+			global.NewGlobalController,
+			global.NewGlobalRoute,
+		),
+		fx.Invoke(func(global *global.GlobalRoute) error {
+			global.SetupRoutes()
+			return nil
+		}),
+	))
 
 var authModule = fx.Module("auth",
 	fx.Options(
@@ -34,5 +48,6 @@ var userModule = fx.Module("user",
 
 var Modules = fx.Options(
 	authModule,
+	globalModule,
 	userModule,
 )

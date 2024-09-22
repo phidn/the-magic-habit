@@ -69,7 +69,7 @@ func (service *AuthService) Login(email, password string) (*Tokens, *user.User, 
 func (service *AuthService) GetMe(userId string) (*user.User, error) {
 	user := new(user.User)
 	err := service.app.Dao().DB().
-		NewQuery(`SELECT id, email, avatar FROM sys_user WHERE id = {:id}`).
+		NewQuery(`SELECT id, first_name, last_name, email, avatar FROM sys_user WHERE id = {:id}`).
 		Bind(dbx.Params{"id": userId}).
 		One(&user)
 	if err != nil {

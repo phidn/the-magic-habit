@@ -13,6 +13,8 @@ var _ models.Model = (*User)(nil)
 type User struct {
 	models.BaseModel
 
+	FirstName    string `db:"first_name" json:"first_name"`
+	LastName     string `db:"last_name" json:"last_name"`
 	Email        string `db:"email" json:"email"`
 	Username     string `db:"username" json:"username"`
 	Password     string `db:"-" json:"password"`
@@ -49,6 +51,8 @@ func (user *User) ParseRecord(record *models.Record) error {
 		}
 	}
 
+	record.Set("first_name", user.FirstName)
+	record.Set("last_name", user.LastName)
 	record.Set("email", user.Email)
 	if user.PasswordHash != "" {
 		record.Set("password_hash", user.PasswordHash)

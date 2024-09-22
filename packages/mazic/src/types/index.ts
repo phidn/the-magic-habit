@@ -40,8 +40,8 @@ export interface IPaginationApi {
 }
 
 export interface IParams {
-  page: number
-  pageSize: number
+  page?: number
+  pageSize?: number
   [key: string]: any
 }
 
@@ -53,8 +53,8 @@ export interface PaginationPage {
 }
 
 export interface ApiResponse<T> {
-  data: T
   success: boolean
+  data: T
   meta: {
     pagination: PaginationPage
   }

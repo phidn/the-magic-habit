@@ -1,16 +1,12 @@
 import { FormMultipleSelect } from '@mazic/components/FormControl'
-import { useGetOptions } from '@mazic/hooks/useGetOptions'
+import { RESOURCES, useGetOptions } from '@mazic/hooks/useGetOptions'
 
 export const RoleForm = () => {
-  const { data: roleOptions = [] } = useGetOptions('ROLE')
+  const { data: roleOptions = [] } = useGetOptions(RESOURCES.ROLE)
 
   return (
     <div className="mazic_row">
-      <FormMultipleSelect
-        field="user_role_ids"
-        options={roleOptions}
-        placeholder="Select user roles"
-      />
+      <FormMultipleSelect field="roles" options={roleOptions} placeholder="Select user roles" />
     </div>
   )
 }

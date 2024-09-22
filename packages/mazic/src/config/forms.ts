@@ -21,3 +21,8 @@ export const activeOptions = [
   { label: i18n.t('form.active'), value: true },
   { label: i18n.t('form.inActive'), value: false },
 ]
+
+export const verifiedOptions = [
+  { label: i18n.t('form.verified'), value: true },
+  { label: i18n.t('form.notVerified'), value: false },
+]

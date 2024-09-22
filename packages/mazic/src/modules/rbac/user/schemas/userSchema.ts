@@ -10,18 +10,11 @@ export const userSchema = z.object({
     .union([z.string(), z.instanceof(File)])
     .optional()
     .nullable(),
-  is_active: z.boolean().default(true),
-  user_role_ids: z.array(z.string()).optional().nullable(),
+  verified: z.boolean().default(true),
+  roles: z.array(z.string()).optional(),
 })
-
-export type TUserRole = {
-  id: string
-  role_id: string
-  user_id: string
-}
 
 export type TUserCreate = z.infer<typeof userSchema>
 export type TUser = TUserCreate & {
   id: string
-  user_roles: TUserRole[]
 }

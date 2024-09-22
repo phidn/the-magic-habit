@@ -56,7 +56,7 @@ export const FormControl: React.FC<FormControlProps> = (props) => {
     values: initialValues,
   })
 
-  // console.log('>> Form values', methods.watch())
+  console.log('>> Form values', methods.watch())
   // console.log('>> Form errors', methods.formState.errors)
 
   const _formSections = formSections.map((section, idx) => {

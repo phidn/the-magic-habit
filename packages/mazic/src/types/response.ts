@@ -1,5 +1,3 @@
-import { IUser } from '@mazic/types'
-
 export interface SuccessResponse<TData> {
   success: boolean
   data: TData
@@ -16,10 +14,6 @@ export interface ErrorResponse {
 }
 
 export type AuthResponse = {
-  tokens: {
-    access_token: string
-    refresh_token: string
-  }
-  expires: string
-  user: IUser
+  access_token: string
+  refresh_token: string
 }

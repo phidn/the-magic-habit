@@ -6,6 +6,11 @@
   "system.actions": "Actions",
   "system.createdAt": "Created at",
   "system.status": "Status",
+  "system.email": "Email",
+  "system.user.firstName": "First name",
+  "system.user.lastName": "Last name",
   "form.active": "Active",
-  "form.inActive": "In-active"
+  "form.inActive": "In-active",
+  "form.verified": "Verified",
+  "form.notVerified": "Not verified"
 }

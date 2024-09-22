@@ -1,15 +1,14 @@
-import { FormsCommon } from '@mazic/components/Commons/FormsCommon'
-import { FormControl } from '@mazic/components/FormControl'
-import { useUploadFile } from '@mazic/hooks/useUploadFile'
+import { useTranslation } from 'react-i18next'
+
+import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 import { extractFields } from '@mazic/utils/form'
-
-import { TUser } from '../../schemas/userSchema'
 
 import { DetailForm } from './DetailForm'
 import { RoleForm } from './RoleForm'
 
 export const UserForm = (props: IFormProps) => {
+  const { t } = useTranslation()
   const formSections = [
     {
       title: 'User Details',
@@ -23,21 +22,9 @@ export const UserForm = (props: IFormProps) => {
     },
     {
       title: 'User Status',
-      elementRender: () => <FormsCommon.CheckboxStatus />,
+      elementRender: () => <FormCheckbox field="verified" title={t('form.verified')} />,
     },
   ]
-
-  const uploadFile = useUploadFile()
-
-  const onSubmitForm = async (values: TUser) => {
-    if (values.avatar instanceof File) {
-      const response = await uploadFile.mutateAsync(values.avatar)
-      if (response.data.data) {
-        values.avatar = response.data.data
-      }
-    }
-    return props.onSubmitForm(values)
-  }
 
   return (
     <FormControl

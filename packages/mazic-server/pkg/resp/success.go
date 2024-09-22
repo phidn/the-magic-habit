@@ -8,14 +8,14 @@ import (
 )
 
 type Meta struct {
-	schema.Pagination
+	schema.Pagination `json:"pagination,omitempty"`
 }
 
 type ApiResponse struct {
 	Success bool   `json:"success,omitempty"`
 	Message string `json:"message,omitempty"`
 	Data    any    `json:"data,omitempty"`
-	Meta    Meta   `json:"meta,omitempty"`
+	Meta    *Meta  `json:"meta,omitempty"`
 }
 
 func NewApiSuccess(c echo.Context, data interface{}) error {
@@ -29,7 +29,7 @@ func NewApiPagination(c echo.Context, result *schema.ResultPagination) error {
 	return c.JSON(http.StatusOK, ApiResponse{
 		Success: true,
 		Data:    result.Items,
-		Meta:    Meta{Pagination: result.Pagination},
+		Meta:    &Meta{Pagination: result.Pagination},
 	})
 }
 

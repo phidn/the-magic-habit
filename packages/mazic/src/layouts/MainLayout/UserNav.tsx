@@ -24,7 +24,7 @@ import { useStore } from '@mazic/store/useStore'
 
 export const UserNav = () => {
   const logout = useLogout()
-  const { currentUser = {} } = useStore()
+  const { currentUser } = useStore()
 
   return (
     <DropdownMenu>

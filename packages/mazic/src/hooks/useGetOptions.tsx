@@ -4,12 +4,24 @@ import { entryService } from '@mazic/services/entryService'
 import { IOption } from '@mazic/types/dataTable'
 import { ApiResponse } from '@mazic/types/index'
 
-const QUERY_KEY = 'options' as const
-
+/**
+ * Get options from the API
+ * @param resource
+ * @returns
+ */
 export const useGetOptions = (resource: string) => {
   const { data, ...rest } = useQuery({
     queryFn: () => entryService.getOptions<ApiResponse<IOption[]>>(resource),
-    queryKey: [QUERY_KEY, 'options', resource],
+    queryKey: ['options', resource],
   })
   return { ...data?.data, ...rest }
 }
+
+/**
+ * Resources
+ * refer to the resources in the API
+ * packages/mazic-server/internal/mods/global/util.go -> resourceMap
+ */
+export const RESOURCES = {
+  ROLE: 'ROLE',
+} as const

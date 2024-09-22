@@ -1,5 +1,7 @@
 package utils
 
+import "strconv"
+
 func Contains[T comparable](slice []T, element T) bool {
 	for _, e := range slice {
 		if e == element {
@@ -37,3 +39,7 @@ func IfFn[T any](condition bool, ifTrue func() T, ifFalse func() T) T {
 	return ifFalse()
 }
 
+func ParseInt64(str string) int64 {
+	i, _ := strconv.ParseInt(str, 10, 64)
+	return i
+}

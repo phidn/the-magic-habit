@@ -1,9 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
 import { CONFIG, HTTP_CODE, PATH_API } from '@mazic/config/config'
 import { AuthResponse } from '@mazic/types/response'
 
-import { clearLS, getTokens, setProfileToLS, setTokensToLS } from './localStorage'
+import { clearLS, getTokens, setTokensToLS } from './localStorage'
 
 const AXIOS_OPTIONS = {
   baseURL: CONFIG.apiURL,
@@ -50,13 +50,12 @@ class Http {
     this.instance.interceptors.response.use(this.handleResponse, this.handleError)
   }
 
-  private handleResponse = (response: any) => {
+  private handleResponse = (response: AxiosResponse) => {
     const { url } = response.config
-    if (url.includes(PATH_API.login) || url.includes(PATH_API.register)) {
-      const { tokens, user } = response.data as AuthResponse
+    if (url?.includes(PATH_API.login) || url?.includes(PATH_API.register)) {
+      const tokens = response?.data.data as AuthResponse
       this.setTokens(tokens.access_token, tokens.refresh_token)
-      setProfileToLS(user)
-    } else if (url.includes(PATH_API.logout)) {
+    } else if (url?.includes(PATH_API.logout)) {
       this.accessToken = ''
       clearLS()
     }
@@ -82,7 +81,7 @@ class Http {
           access_token: this.accessToken,
           refresh_token: this.refreshToken,
         })
-        const { tokens } = response.data
+        const tokens = response?.data.data as AuthResponse
         this.setTokens(tokens.access_token, tokens.refresh_token)
         return this.instance(error.config)
       } catch (error) {
@@ -114,20 +113,6 @@ class Http {
     this.accessToken = access_token
     this.refreshToken = refresh_token
     setTokensToLS(access_token, refresh_token)
-  }
-
-  async get<T = any>(url: string): Promise<T> {
-    const response = await this.instance.get<T>(url)
-    return response.data
-  }
-  async post<T = any>(url: string, data?: any): Promise<T> {
-    return this.instance.post<T>(url, data).then((response) => response.data)
-  }
-  async put<T = any>(url: string, data?: any): Promise<T> {
-    return this.instance.put<T>(url, data).then((response) => response.data)
-  }
-  async delete<T = any>(url: string, data?: any): Promise<T> {
-    return this.instance.delete<T>(url, data).then((response) => response.data)
   }
 
   getInstance(): AxiosInstance {

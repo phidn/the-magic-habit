@@ -1,7 +1,8 @@
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Checkbox } from '@mazic-design-system'
+import { Badge, Checkbox } from '@mazic-design-system'
 
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
@@ -14,9 +15,10 @@ import { TUser } from '../schemas/userSchema'
 import { useUserApis } from './useUserApis'
 
 export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUser>[] => {
+  const { t } = useTranslation()
   const mutationDelete = useUserApis.delete()
   const { showAlertLoading, hideAlert, setAlert } = useStore()
-  const { statusColumn, createdAtColumn } = useColumnCommon()
+  const { createdAtColumn } = useColumnCommon()
 
   return useMemo(
     () => [
@@ -46,26 +48,48 @@ export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUs
       },
       {
         accessorKey: 'first_name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="First name" />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t('system.user.firstName')} />
+        ),
         cell: ({ row }) => row.getValue('first_name'),
         enableSorting: true,
         enableHiding: true,
       },
       {
         accessorKey: 'last_name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t('system.user.lastName')} />
+        ),
         cell: ({ row }) => row.getValue('last_name'),
         enableSorting: true,
         enableHiding: true,
       },
       {
         accessorKey: 'email',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('system.email')} />,
         cell: ({ row }) => row.getValue('email'),
         enableSorting: true,
         enableHiding: true,
       },
-      statusColumn,
+      {
+        accessorKey: 'verified',
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t('form.verified')} />
+        ),
+        cell: ({ row }) => (
+          <div>
+            {!!row.getValue('verified') && (
+              <Badge variant="outline-primary">{t('form.verified')}</Badge>
+            )}
+            {!row.getValue('verified') && (
+              <Badge variant="outline-destructive">{t('form.notVerified')}</Badge>
+            )}
+          </div>
+        ),
+        filterFn: (row, id, value) => value.includes(row.getValue(id)),
+        enableSorting: true,
+        enableHiding: true,
+      },
       createdAtColumn,
       {
         accessorKey: 'actions',
@@ -99,14 +123,6 @@ export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUs
         enableHiding: true,
       },
     ],
-    [
-      createdAtColumn,
-      hideAlert,
-      mutationDelete,
-      refreshTable,
-      setAlert,
-      showAlertLoading,
-      statusColumn,
-    ]
+    [createdAtColumn, hideAlert, mutationDelete, refreshTable, setAlert, showAlertLoading, t]
   )
 }

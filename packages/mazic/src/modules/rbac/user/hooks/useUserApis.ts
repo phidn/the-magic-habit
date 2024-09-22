@@ -10,11 +10,11 @@ import { userService } from '../services/userService'
 const QUERY_KEY = 'users' as const
 
 const useUserList = (params: IParams) => {
-  const { data, ...rest } = useQuery({
-    queryFn: () => userService.query<ApiResponse<TUser[]>>(params),
+  const { data, refetch } = useQuery({
+    queryFn: () => userService.list<ApiResponse<TUser[]>>(params),
     queryKey: [QUERY_KEY, 'users_list', params],
   })
-  return { ...data?.data, ...rest }
+  return { ...data?.data, refetch }
 }
 
 const useUserDetail = (userId: string) => {
@@ -23,11 +23,6 @@ const useUserDetail = (userId: string) => {
     queryKey: [QUERY_KEY, userId, 'users_detail'],
     enabled: !!userId,
   })
-
-  const userRoles = data?.data?.data?.user_roles
-  if (data && userRoles?.length) {
-    data.data.data.user_role_ids = userRoles.map((x) => x.role_id)
-  }
   return { ...data?.data, ...rest }
 }
 
