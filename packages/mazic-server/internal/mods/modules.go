@@ -3,7 +3,7 @@ package mods
 import (
 	"mazic/server/internal/mods/auth"
 	"mazic/server/internal/mods/global"
-	"mazic/server/internal/mods/user"
+	"mazic/server/internal/mods/rbac/user"
 
 	"go.uber.org/fx"
 )

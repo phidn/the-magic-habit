@@ -4,7 +4,7 @@ import (
 	"errors"
 	"mazic/pocketbase/tools/security"
 	"mazic/server/config"
-	"mazic/server/internal/mods/user"
+	"mazic/server/internal/mods/rbac/user"
 	"mazic/server/pkg/infrastructure"
 	"mazic/server/pkg/token"
 	"time"
