@@ -1,6 +1,7 @@
 package entry
 
 import (
+	"context"
 	"math"
 	"mazic/pocketbase/daos"
 	"mazic/pocketbase/models"
@@ -28,19 +29,20 @@ func (entry *Entry) Dao() *daos.Dao {
 	return entry.App.Dao()
 }
 
-func (entry *Entry) ModelQuery(m models.Model) *dbx.SelectQuery {
+func (entry *Entry) ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQuery {
 	tableName := m.TableName()
 	return entry.Dao().DB().
 		Select("{{" + tableName + "}}.*").
+		WithContext(ctx).
 		From(tableName)
 }
 
-func (entry *Entry) Find(slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error) {
+func (entry *Entry) Find(ctx context.Context, slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error) {
 	model, err := entry.getModelFromSlice(slices)
 	if err != nil {
 		return nil, err
 	}
-	modelQuery := entry.ModelQuery(model)
+	modelQuery := entry.ModelQuery(ctx, model)
 	for _, exp := range expressions {
 		modelQuery = modelQuery.AndWhere(exp)
 	}
@@ -85,6 +87,40 @@ func (entry *Entry) Find(slices any, expressions []dbx.Expression, queryParams u
 
 	result.Items = slices
 	return result, nil
+}
+
+func (entry *Entry) FindCollectionByName(ctx context.Context, name string) (*models.Collection, error) {
+	model := &models.Collection{}
+
+	err := entry.ModelQuery(ctx, model).
+		AndWhere(dbx.NewExp("LOWER([[name]])={:name}", dbx.Params{
+			"name": strings.ToLower(name),
+		})).
+		Limit(1).
+		One(model)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return model, nil
+}
+
+func (entry *Entry) FindRecordById(ctx context.Context, name string, id string) (*models.Record, error) {
+	collection, err := entry.FindCollectionByName(ctx, name)
+	if err != nil {
+		return nil, err
+	}
+	query := entry.Dao().RecordQuery(collection).
+		WithContext(ctx).
+		AndWhere(dbx.HashExp{collection.Name + ".id": id})
+
+	record := &models.Record{}
+	if err := query.Limit(1).One(record); err != nil {
+		return nil, err
+	}
+
+	return record, nil
 }
 
 func (entry *Entry) ParsePagination(queryParams url.Values, result *schema.ListItems) error {

@@ -17,7 +17,7 @@ func NewPermissionController(permissionService *PermissionService) *PermissionCo
 }
 
 func (controller *PermissionController) Find(c echo.Context) error {
-	result, err := controller.PermissionService.Find(c.QueryParams())
+	result, err := controller.PermissionService.Find(c.Request().Context(), c.QueryParams())
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to get permissions.", err)
 	}
@@ -35,7 +35,7 @@ func (controller *PermissionController) GetById(c echo.Context) error {
 		return resp.NewNotFoundError(c, "", err)
 	}
 
-	return resp.NewApiSuccess(c, permission)
+	return resp.NewApiSuccess(c, permission, "")
 }
 
 func (controller *PermissionController) Create(c echo.Context) error {
@@ -46,7 +46,7 @@ func (controller *PermissionController) Create(c echo.Context) error {
 	if err := permission.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
-	record, err := controller.PermissionService.Create(permission)
+	record, err := controller.PermissionService.Create(c.Request().Context(), permission)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to create permission.", err)
 	}
@@ -55,7 +55,7 @@ func (controller *PermissionController) Create(c echo.Context) error {
 	permission.Created = record.Created
 	permission.Updated = record.Updated
 
-	return resp.NewApiCreated(c, permission)
+	return resp.NewApiCreated(c, permission, "The permission has been created.")
 }
 
 func (controller *PermissionController) Update(c echo.Context) error {
@@ -66,7 +66,7 @@ func (controller *PermissionController) Update(c echo.Context) error {
 	if err := permission.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
-	record, err := controller.PermissionService.Update(c.PathParam("id"), permission)
+	record, err := controller.PermissionService.Update(c.Request().Context(), c.PathParam("id"), permission)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to update permission.", err)
 	}
@@ -75,7 +75,7 @@ func (controller *PermissionController) Update(c echo.Context) error {
 	permission.Created = record.Created
 	permission.Updated = record.Updated
 
-	return resp.NewApiSuccess(c, permission)
+	return resp.NewApiSuccess(c, permission, "The permission has been updated.")
 }
 
 func (controller *PermissionController) Delete(c echo.Context) error {
@@ -84,10 +84,10 @@ func (controller *PermissionController) Delete(c echo.Context) error {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
 
-	_, err := controller.PermissionService.Delete(c.PathParam("id"))
+	_, err := controller.PermissionService.Delete(c.Request().Context(), c.PathParam("id"))
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to delete permission.", err)
 	}
 
-	return resp.NewApiDeleted(c)
+	return resp.NewApiDeleted(c, "The permission has been deleted.")
 }

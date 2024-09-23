@@ -1,6 +1,7 @@
 package global
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -28,7 +29,7 @@ func NewGlobalService(entry *entry.Entry, storage *infrastructure.SupaStorage) *
 	}
 }
 
-func (service *GlobalService) ListOptions(resource ResourceOption) ([]Option, error) {
+func (service *GlobalService) ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error) {
 	var options []Option
 
 	query := service.Entry.Dao().DB().
@@ -36,6 +37,7 @@ func (service *GlobalService) ListOptions(resource ResourceOption) ([]Option, er
 			fmt.Sprintf(`%s as value`, resource.FieldValue),
 			fmt.Sprintf(`%s as label`, resource.FieldLabel),
 		).
+		WithContext(ctx).
 		From(resource.Table).
 		OrderBy(fmt.Sprintf(`%s ASC`, utils.If(resource.OrderBy == "", resource.FieldLabel, resource.OrderBy)))
 

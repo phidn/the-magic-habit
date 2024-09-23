@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"context"
 	"errors"
 	"mazic/pocketbase/tools/security"
 	"mazic/server/config"
@@ -21,10 +22,11 @@ func NewAuthService(app *infrastructure.Pocket) *AuthService {
 	return &AuthService{app: app}
 }
 
-func (service *AuthService) Login(email, password string) (*Tokens, *user.User, error) {
+func (service *AuthService) Login(ctx context.Context, email, password string) (*Tokens, *user.User, error) {
 	user := new(user.User)
 	err := service.app.Dao().DB().
 		NewQuery(`SELECT id, password_hash, roles FROM sys_user WHERE email = {:email}`).
+		WithContext(ctx).
 		Bind(dbx.Params{"email": email}).
 		One(&user)
 	if err != nil {
@@ -66,10 +68,11 @@ func (service *AuthService) Login(email, password string) (*Tokens, *user.User, 
 	}, user, nil
 }
 
-func (service *AuthService) GetMe(userId string) (*user.User, error) {
+func (service *AuthService) GetMe(ctx context.Context, userId string) (*user.User, error) {
 	user := new(user.User)
 	err := service.app.Dao().DB().
 		NewQuery(`SELECT id, first_name, last_name, email, avatar FROM sys_user WHERE id = {:id}`).
+		WithContext(ctx).
 		Bind(dbx.Params{"id": userId}).
 		One(&user)
 	if err != nil {

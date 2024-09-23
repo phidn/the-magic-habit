@@ -20,7 +20,7 @@ func NewPermissionService(entry *entry.Entry) *PermissionService {
 	}
 }
 
-func (service *PermissionService) Find(queryParams url.Values) (*schema.ListItems, error) {
+func (service *PermissionService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -36,7 +36,7 @@ func (service *PermissionService) Find(queryParams url.Values) (*schema.ListItem
 		))
 	}
 
-	result, err := service.Entry.Find(&[]*Permission{}, listExpression, queryParams)
+	result, err := service.Entry.Find(ctx, &[]*Permission{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -45,22 +45,21 @@ func (service *PermissionService) Find(queryParams url.Values) (*schema.ListItem
 }
 
 func (service *PermissionService) FindOne(ctx context.Context, id string) (*Permission, error) {
-	permission := Permission{}
-	err := service.Entry.ModelQuery(&permission).
-		WithContext(ctx).
-		Where(dbx.HashExp{"id": id}).
+	permission := &Permission{}
+	err := service.Entry.ModelQuery(ctx, permission).
+		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(&permission)
+		One(permission)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &permission, nil
+	return permission, nil
 }
 
-func (service *PermissionService) Create(permission *Permission) (*models.Record, error) {
-	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(Permission).TableName())
+func (service *PermissionService) Create(ctx context.Context, permission *Permission) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(Permission).TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -68,27 +67,27 @@ func (service *PermissionService) Create(permission *Permission) (*models.Record
 	record := models.NewRecord(collection)
 	permission.ParseRecord(record)
 
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *PermissionService) Update(id string, permission *Permission) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Permission).TableName(), id)
+func (service *PermissionService) Update(ctx context.Context, id string, permission *Permission) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(Permission).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
 
 	permission.ParseRecord(record)
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *PermissionService) Delete(id string) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Permission).TableName(), id)
+func (service *PermissionService) Delete(ctx context.Context, id string) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(Permission).TableName(), id)
 	if err != nil {
 		return nil, err
 	}

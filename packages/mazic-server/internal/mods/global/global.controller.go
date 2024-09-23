@@ -11,9 +11,9 @@ type GlobalController struct {
 	GlobalService *GlobalService
 }
 
-func NewGlobalController(userService *GlobalService) *GlobalController {
+func NewGlobalController(globalService *GlobalService) *GlobalController {
 	return &GlobalController{
-		GlobalService: userService,
+		GlobalService: globalService,
 	}
 }
 
@@ -35,12 +35,12 @@ func (controller *GlobalController) ListOptions(c echo.Context) error {
 		resource.Limit = utils.ParseInt64(queryParams.Get("limit"))
 	}
 
-	options, err := controller.GlobalService.ListOptions(resource)
+	options, err := controller.GlobalService.ListOptions(c.Request().Context(), resource)
 	if err != nil {
 		return resp.NewApplicationError(c, "", err)
 	}
 
-	return resp.NewApiSuccess(c, options)
+	return resp.NewApiSuccess(c, options, "")
 }
 
 func (controller *GlobalController) Upload(c echo.Context) error {
@@ -53,5 +53,5 @@ func (controller *GlobalController) Upload(c echo.Context) error {
 		return resp.NewApplicationError(c, "", err)
 	}
 
-	return resp.NewApiSuccess(c, link)
+	return resp.NewApiSuccess(c, link, "")
 }

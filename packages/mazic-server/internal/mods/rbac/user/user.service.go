@@ -1,6 +1,7 @@
 package user
 
 import (
+	"context"
 	"mazic/pocketbase/models"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
@@ -19,7 +20,7 @@ func NewUserService(entry *entry.Entry) *UserService {
 	}
 }
 
-func (service *UserService) Find(queryParams url.Values) (*schema.ListItems, error) {
+func (service *UserService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 	email := queryParams.Get("email")
 	if email != "" {
@@ -40,7 +41,7 @@ func (service *UserService) Find(queryParams url.Values) (*schema.ListItems, err
 		))
 	}
 
-	result, err := service.Entry.Find(&[]*User{}, listExpression, queryParams)
+	result, err := service.Entry.Find(ctx, &[]*User{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -48,12 +49,12 @@ func (service *UserService) Find(queryParams url.Values) (*schema.ListItems, err
 	return result, nil
 }
 
-func (service *UserService) FindOne(id string) (*User, error) {
+func (service *UserService) FindOne(ctx context.Context, id string) (*User, error) {
 	user := &User{}
-	err := service.Entry.ModelQuery(user).
+	err := service.Entry.ModelQuery(ctx, user).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(&user)
+		One(user)
 
 	if err != nil {
 		return nil, err
@@ -62,8 +63,8 @@ func (service *UserService) FindOne(id string) (*User, error) {
 	return user, nil
 }
 
-func (service *UserService) Create(user *User) (*models.Record, error) {
-	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(User).TableName())
+func (service *UserService) Create(ctx context.Context, user *User) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(User).TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -74,28 +75,28 @@ func (service *UserService) Create(user *User) (*models.Record, error) {
 	record := models.NewRecord(collection)
 	user.ParseRecord(record)
 
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *UserService) Update(id string, user *User) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(User).TableName(), id)
+func (service *UserService) Update(ctx context.Context, id string, user *User) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(User).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
 
 	user.ParseRecord(record)
 
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *UserService) Delete(id string) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(User).TableName(), id)
+func (service *UserService) Delete(ctx context.Context, id string) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(User).TableName(), id)
 	if err != nil {
 		return nil, err
 	}

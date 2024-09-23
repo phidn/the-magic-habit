@@ -2,6 +2,7 @@ package resp
 
 import (
 	"mazic/server/pkg/schema"
+	"mazic/server/pkg/utils"
 	"net/http"
 
 	"github.com/labstack/echo/v5"
@@ -18,9 +19,10 @@ type ApiResponse struct {
 	Meta    *Meta  `json:"meta,omitempty"`
 }
 
-func NewApiSuccess(c echo.Context, data interface{}) error {
+func NewApiSuccess(c echo.Context, data interface{}, message string) error {
 	return c.JSON(http.StatusOK, ApiResponse{
 		Success: true,
+		Message: message,
 		Data:    data,
 	})
 }
@@ -33,17 +35,17 @@ func NewApiPagination(c echo.Context, result *schema.ListItems) error {
 	})
 }
 
-func NewApiCreated(c echo.Context, data interface{}) error {
+func NewApiCreated(c echo.Context, data interface{}, message string) error {
 	return c.JSON(http.StatusCreated, ApiResponse{
 		Success: true,
-		Message: "The resource has been created.",
+		Message: utils.If(message != "", message, "The resource has been created."),
 		Data:    data,
 	})
 }
 
-func NewApiDeleted(c echo.Context) error {
+func NewApiDeleted(c echo.Context, message string) error {
 	return c.JSON(http.StatusCreated, ApiResponse{
 		Success: true,
-		Message: "The resource has been deleted.",
+		Message: utils.If(message != "", message, "The resource has been deleted."),
 	})
 }

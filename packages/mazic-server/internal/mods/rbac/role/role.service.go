@@ -1,6 +1,7 @@
 package role
 
 import (
+	"context"
 	"mazic/pocketbase/models"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
@@ -19,7 +20,7 @@ func NewRoleService(entry *entry.Entry) *RoleService {
 	}
 }
 
-func (service *RoleService) Find(queryParams url.Values) (*schema.ListItems, error) {
+func (service *RoleService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -35,7 +36,7 @@ func (service *RoleService) Find(queryParams url.Values) (*schema.ListItems, err
 		))
 	}
 
-	result, err := service.Entry.Find(&[]*Role{}, listExpression, queryParams)
+	result, err := service.Entry.Find(ctx, &[]*Role{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -43,12 +44,12 @@ func (service *RoleService) Find(queryParams url.Values) (*schema.ListItems, err
 	return result, nil
 }
 
-func (service *RoleService) FindOne(id string) (*Role, error) {
+func (service *RoleService) FindOne(ctx context.Context, id string) (*Role, error) {
 	role := &Role{}
-	err := service.Entry.ModelQuery(role).
+	err := service.Entry.ModelQuery(ctx, role).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(&role)
+		One(role)
 
 	if err != nil {
 		return nil, err
@@ -57,8 +58,8 @@ func (service *RoleService) FindOne(id string) (*Role, error) {
 	return role, nil
 }
 
-func (service *RoleService) Create(role *Role) (*models.Record, error) {
-	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(Role).TableName())
+func (service *RoleService) Create(ctx context.Context, role *Role) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(Role).TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -66,27 +67,27 @@ func (service *RoleService) Create(role *Role) (*models.Record, error) {
 	record := models.NewRecord(collection)
 	role.ParseRecord(record)
 
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *RoleService) Update(id string, role *Role) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Role).TableName(), id)
+func (service *RoleService) Update(ctx context.Context, id string, role *Role) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(Role).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
 
 	role.ParseRecord(record)
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *RoleService) Delete(id string) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Role).TableName(), id)
+func (service *RoleService) Delete(ctx context.Context, id string) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(Role).TableName(), id)
 	if err != nil {
 		return nil, err
 	}

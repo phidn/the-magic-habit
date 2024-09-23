@@ -1,6 +1,7 @@
 package resource
 
 import (
+	"context"
 	"mazic/pocketbase/models"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
@@ -19,7 +20,7 @@ func NewResourceService(entry *entry.Entry) *ResourceService {
 	}
 }
 
-func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems, error) {
+func (service *ResourceService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -35,7 +36,7 @@ func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems,
 		))
 	}
 
-	result, err := service.Entry.Find(&[]*Resource{}, listExpression, queryParams)
+	result, err := service.Entry.Find(ctx, &[]*Resource{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -43,12 +44,12 @@ func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems,
 	return result, nil
 }
 
-func (service *ResourceService) FindOne(id string) (*Resource, error) {
+func (service *ResourceService) FindOne(ctx context.Context, id string) (*Resource, error) {
 	resource := &Resource{}
-	err := service.Entry.ModelQuery(resource).
+	err := service.Entry.ModelQuery(ctx, resource).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(&resource)
+		One(resource)
 
 	if err != nil {
 		return nil, err
@@ -57,8 +58,8 @@ func (service *ResourceService) FindOne(id string) (*Resource, error) {
 	return resource, nil
 }
 
-func (service *ResourceService) Create(resource *Resource) (*models.Record, error) {
-	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(Resource).TableName())
+func (service *ResourceService) Create(ctx context.Context, resource *Resource) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(Resource).TableName())
 	if err != nil {
 		return nil, err
 	}
@@ -66,27 +67,27 @@ func (service *ResourceService) Create(resource *Resource) (*models.Record, erro
 	record := models.NewRecord(collection)
 	resource.ParseRecord(record)
 
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *ResourceService) Update(id string, resource *Resource) (*models.Record, error) {
+func (service *ResourceService) Update(ctx context.Context, id string, resource *Resource) (*models.Record, error) {
 	record, err := service.Entry.Dao().FindRecordById(new(Resource).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
 
 	resource.ParseRecord(record)
-	if err := service.Entry.Dao().SaveRecord(record); err != nil {
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *ResourceService) Delete(id string) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Resource).TableName(), id)
+func (service *ResourceService) Delete(ctx context.Context, id string) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(Resource).TableName(), id)
 	if err != nil {
 		return nil, err
 	}

@@ -17,7 +17,7 @@ func NewResourceController(resourceService *ResourceService) *ResourceController
 }
 
 func (controller *ResourceController) Find(c echo.Context) error {
-	result, err := controller.ResourceService.Find(c.QueryParams())
+	result, err := controller.ResourceService.Find(c.Request().Context(), c.QueryParams())
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to get resources.", err)
 	}
@@ -30,12 +30,12 @@ func (controller *ResourceController) GetById(c echo.Context) error {
 	if recordId == "" {
 		return resp.NewNotFoundError(c, "", nil)
 	}
-	resource, err := controller.ResourceService.FindOne(recordId)
+	resource, err := controller.ResourceService.FindOne(c.Request().Context(), recordId)
 	if err != nil || resource == nil {
 		return resp.NewNotFoundError(c, "", err)
 	}
 
-	return resp.NewApiSuccess(c, resource)
+	return resp.NewApiSuccess(c, resource, "")
 }
 
 func (controller *ResourceController) Create(c echo.Context) error {
@@ -46,7 +46,7 @@ func (controller *ResourceController) Create(c echo.Context) error {
 	if err := resource.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
-	record, err := controller.ResourceService.Create(resource)
+	record, err := controller.ResourceService.Create(c.Request().Context(), resource)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to create resource.", err)
 	}
@@ -55,7 +55,7 @@ func (controller *ResourceController) Create(c echo.Context) error {
 	resource.Created = record.Created
 	resource.Updated = record.Updated
 
-	return resp.NewApiCreated(c, resource)
+	return resp.NewApiCreated(c, resource, "The resource has been created.")
 }
 
 func (controller *ResourceController) Update(c echo.Context) error {
@@ -66,7 +66,7 @@ func (controller *ResourceController) Update(c echo.Context) error {
 	if err := resource.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
-	record, err := controller.ResourceService.Update(c.PathParam("id"), resource)
+	record, err := controller.ResourceService.Update(c.Request().Context(), c.PathParam("id"), resource)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to update resource.", err)
 	}
@@ -75,7 +75,7 @@ func (controller *ResourceController) Update(c echo.Context) error {
 	resource.Created = record.Created
 	resource.Updated = record.Updated
 
-	return resp.NewApiSuccess(c, resource)
+	return resp.NewApiSuccess(c, resource, "The resource has been updated.")
 }
 
 func (controller *ResourceController) Delete(c echo.Context) error {
@@ -84,10 +84,10 @@ func (controller *ResourceController) Delete(c echo.Context) error {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
 
-	_, err := controller.ResourceService.Delete(c.PathParam("id"))
+	_, err := controller.ResourceService.Delete(c.Request().Context(), c.PathParam("id"))
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to delete resource.", err)
 	}
 
-	return resp.NewApiDeleted(c)
+	return resp.NewApiDeleted(c, "The resource has been deleted.")
 }
