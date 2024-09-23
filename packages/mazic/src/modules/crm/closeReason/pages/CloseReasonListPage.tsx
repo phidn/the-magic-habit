@@ -20,10 +20,7 @@ const CloseReasonListPage = () => {
     FILTER_COMMON.status,
   ]
 
-  const { filterList, params, search, isFiltered, onReset } = useFilter({
-    filterSchema,
-    filterFields,
-  })
+  const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = useCloseReasonApis.list(params)
   const closeReasonColumns = useCloseReasonColumns({ refreshTable: refetch })

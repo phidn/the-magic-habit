@@ -40,15 +40,18 @@ func (controller *RoleController) GetById(c echo.Context) error {
 
 func (controller *RoleController) Create(c echo.Context) error {
 	role := &Role{}
-	if err := c.Bind(&role); err != nil {
+	if err := c.Bind(role); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
-
+	if err := role.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
 	record, err := controller.RoleService.Create(role)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to create role.", err)
 	}
 
+	role.Id = record.Id
 	role.Created = record.Created
 	role.Updated = record.Updated
 
@@ -57,14 +60,20 @@ func (controller *RoleController) Create(c echo.Context) error {
 
 func (controller *RoleController) Update(c echo.Context) error {
 	role := &Role{}
-	if err := c.Bind(&role); err != nil {
+	if err := c.Bind(role); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
-
-	_, err := controller.RoleService.Update(c.PathParam("id"), role)
+	if err := role.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
+	record, err := controller.RoleService.Update(c.PathParam("id"), role)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to update role.", err)
 	}
+
+	role.Id = record.Id
+	role.Created = record.Created
+	role.Updated = record.Updated
 
 	return resp.NewApiSuccess(c, role)
 }

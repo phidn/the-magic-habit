@@ -5,6 +5,8 @@ import (
 	"mazic/pocketbase/tools/types"
 	"mazic/server/config"
 
+	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -63,4 +65,13 @@ func (user *User) ParseRecord(record *models.Record) error {
 	record.Set("roles", user.Roles)
 
 	return nil
+}
+
+func (user *User) Validate() error {
+	return validation.ValidateStruct(user,
+		validation.Field(&user.FirstName, validation.Required),
+		validation.Field(&user.LastName, validation.Required),
+		validation.Field(&user.Email, validation.Required, is.Email),
+		validation.Field(&user.Verified, validation.Required, validation.In(true, false)),
+	)
 }

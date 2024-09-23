@@ -2,6 +2,8 @@ package role
 
 import (
 	"mazic/pocketbase/models"
+
+	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
 var _ models.Model = (*Role)(nil)
@@ -25,4 +27,11 @@ func (user *Role) ParseRecord(record *models.Record) error {
 	record.Set("is_active", user.IsActive)
 
 	return nil
+}
+
+func (role *Role) Validate() error {
+	return validation.ValidateStruct(role,
+		validation.Field(&role.Name, validation.Required),
+		validation.Field(&role.IsActive, validation.Required, validation.In(true, false)),
+	)
 }

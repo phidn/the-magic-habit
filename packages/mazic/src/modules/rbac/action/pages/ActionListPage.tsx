@@ -9,10 +9,7 @@ import { useActionColumns } from '../hooks/useActionColumns'
 
 const ActionListPage = () => {
   const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
-  const { filterList, params, search, isFiltered, onReset } = useFilter({
-    filterSchema,
-    filterFields,
-  })
+  const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = useActionApis.list(params)
   const columns = useActionColumns({ refreshTable: refetch })

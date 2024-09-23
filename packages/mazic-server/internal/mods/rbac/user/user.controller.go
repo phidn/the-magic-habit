@@ -40,8 +40,11 @@ func (controller *UserController) GetById(c echo.Context) error {
 
 func (controller *UserController) Create(c echo.Context) error {
 	user := &User{}
-	if err := c.Bind(&user); err != nil {
+	if err := c.Bind(user); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if err := user.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
 
 	record, err := controller.UserService.Create(user)
@@ -59,14 +62,21 @@ func (controller *UserController) Create(c echo.Context) error {
 
 func (controller *UserController) Update(c echo.Context) error {
 	user := &User{}
-	if err := c.Bind(&user); err != nil {
+	if err := c.Bind(user); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
+	if err := user.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
 
-	_, err := controller.UserService.Update(c.PathParam("id"), user)
+	record, err := controller.UserService.Update(c.PathParam("id"), user)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to update user.", err)
 	}
+
+	user.Id = record.Id
+	user.Created = record.Created
+	user.Updated = record.Updated
 
 	return resp.NewApiSuccess(c, user)
 }

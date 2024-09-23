@@ -3,6 +3,7 @@ package mods
 import (
 	"mazic/server/internal/mods/auth"
 	"mazic/server/internal/mods/global"
+	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/internal/mods/rbac/role"
 	"mazic/server/internal/mods/rbac/user"
 
@@ -55,6 +56,17 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(role *role.RoleRoute) error {
 			role.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("resource", fx.Options(
+		fx.Provide(
+			resource.NewResourceService,
+			resource.NewResourceController,
+			resource.NewResourceRoute,
+		),
+		fx.Invoke(func(resource *resource.ResourceRoute) error {
+			resource.SetupRoutes()
 			return nil
 		}),
 	)),

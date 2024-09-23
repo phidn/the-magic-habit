@@ -11,10 +11,7 @@ import { usePermissionColumns } from '../hooks/usePermissionColumns'
 
 const PermissionListPage = () => {
   const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
-  const { filterList, params, search, isFiltered, onReset } = useFilter({
-    filterSchema,
-    filterFields,
-  })
+  const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = usePermissionApis.list(params)
   const columns = usePermissionColumns({ refreshTable: refetch })

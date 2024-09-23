@@ -36,7 +36,7 @@ func NewApiPagination(c echo.Context, result *schema.ListItems) error {
 func NewApiCreated(c echo.Context, data interface{}) error {
 	return c.JSON(http.StatusCreated, ApiResponse{
 		Success: true,
-		Message: "the resource has been created",
+		Message: "The resource has been created.",
 		Data:    data,
 	})
 }
@@ -44,6 +44,6 @@ func NewApiCreated(c echo.Context, data interface{}) error {
 func NewApiDeleted(c echo.Context) error {
 	return c.JSON(http.StatusCreated, ApiResponse{
 		Success: true,
-		Message: "the resource has been deleted",
+		Message: "The resource has been deleted.",
 	})
 }

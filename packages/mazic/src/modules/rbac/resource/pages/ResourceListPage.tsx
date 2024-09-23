@@ -9,10 +9,7 @@ import { useResourceColumns } from '../hooks/useResourceColumns'
 
 const ResourceListPage = () => {
   const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
-  const { filterList, params, search, isFiltered, onReset } = useFilter({
-    filterSchema,
-    filterFields,
-  })
+  const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = useResourceApis.list(params)
   const columns = useResourceColumns({ refreshTable: refetch })

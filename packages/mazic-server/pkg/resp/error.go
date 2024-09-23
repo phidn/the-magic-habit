@@ -35,7 +35,7 @@ func NewNotFoundError(c echo.Context, message string, err any) error {
 
 func NewBadRequestError(c echo.Context, message string, err any) error {
 	message = utils.If(message == "", "Bad request.", message)
-	return NewApiError(c, http.StatusBadRequest, "", message, err)
+	return NewApiError(c, http.StatusBadRequest, "BadRequestError", message, err)
 }
 
 func NewForbiddenError(c echo.Context, message string, err any) error {
