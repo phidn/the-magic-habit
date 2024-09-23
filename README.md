@@ -2,8 +2,8 @@
 
 ## Tech stack
 - Nx monorepo
-- React, ShadCN (Tailwind), Zustand, React Query, React Hook Form
-- Golang, Echo, Gorm, Redis, Postgres, Prisma migrations
+- React, shadcn/ui, Zustand, React Query, React Hook Form
+- Golang, Echo V5, ozzo-dbx, ozzo-validation, Postgres, Pocketbase, Prisma migrations
 
 ## Description
 
