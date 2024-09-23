@@ -12,7 +12,7 @@
     // "**/packages/mazic": true,
     "**/packages/mazic-server/pb_data": true,
     // "**/packages/mazic-server": true,
-    "**/packages/mazic-pocketbase": true,
+    // "**/packages/mazic-pocketbase": true,
     "**/packages/mazic-pocketbase-ui": true,
     "**/packages/mazic-prisma": true,
   },

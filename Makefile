@@ -66,7 +66,7 @@ gen-package-js:
 
 gen-package-go:
 	@echo "Generating package..."
-	nx g @nx-go/nx-go:application ui
+	yarn nx g @nx-go/nx-go:application ui
 	@echo "Package generated."
 
 

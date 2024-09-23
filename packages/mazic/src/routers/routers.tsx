@@ -8,7 +8,7 @@ import { permissionRoute } from '@mazic/modules/rbac/permission/permissionRoute'
 import { resourceRoute } from '@mazic/modules/rbac/resource/resourceRoute'
 import { roleRoute } from '@mazic/modules/rbac/role/roleRoute'
 import { rolePermissionRoute } from '@mazic/modules/rbac/role-permission/rolePermissionRoute'
-import { userRoute } from '@mazic/modules/rbac/user'
+import { userRoute } from '@mazic/modules/rbac/user/userRoute'
 import AuthRoute from '@mazic/routers/AuthRoute'
 
 const publicRoutes = [

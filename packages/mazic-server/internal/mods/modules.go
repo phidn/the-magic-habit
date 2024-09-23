@@ -3,26 +3,27 @@ package mods
 import (
 	"mazic/server/internal/mods/auth"
 	"mazic/server/internal/mods/global"
+	"mazic/server/internal/mods/rbac/role"
 	"mazic/server/internal/mods/rbac/user"
 
 	"go.uber.org/fx"
 )
 
-var globalModule = fx.Module("global",
-	fx.Options(
-		fx.Provide(
-			global.NewGlobalService,
-			global.NewGlobalController,
-			global.NewGlobalRoute,
-		),
-		fx.Invoke(func(global *global.GlobalRoute) error {
-			global.SetupRoutes()
-			return nil
-		}),
-	))
+var Modules = fx.Options(
+	fx.Module("global",
+		fx.Options(
+			fx.Provide(
+				global.NewGlobalService,
+				global.NewGlobalController,
+				global.NewGlobalRoute,
+			),
+			fx.Invoke(func(global *global.GlobalRoute) error {
+				global.SetupRoutes()
+				return nil
+			}),
+		)),
 
-var authModule = fx.Module("auth",
-	fx.Options(
+	fx.Module("auth", fx.Options(
 		fx.Provide(
 			auth.NewAuthService,
 			auth.NewAuthController,
@@ -32,9 +33,9 @@ var authModule = fx.Module("auth",
 			auth.SetupRoutes()
 			return nil
 		}),
-	))
-var userModule = fx.Module("user",
-	fx.Options(
+	)),
+
+	fx.Module("user", fx.Options(
 		fx.Provide(
 			user.NewUserService,
 			user.NewUserController,
@@ -44,10 +45,17 @@ var userModule = fx.Module("user",
 			user.SetupRoutes()
 			return nil
 		}),
-	))
+	)),
 
-var Modules = fx.Options(
-	authModule,
-	globalModule,
-	userModule,
+	fx.Module("role", fx.Options(
+		fx.Provide(
+			role.NewRoleService,
+			role.NewRoleController,
+			role.NewRoleRoute,
+		),
+		fx.Invoke(func(role *role.RoleRoute) error {
+			role.SetupRoutes()
+			return nil
+		}),
+	)),
 )

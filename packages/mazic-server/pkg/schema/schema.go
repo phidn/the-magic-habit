@@ -7,7 +7,7 @@ type Pagination struct {
 	Total     int `json:"total"`
 }
 
-type ResultPagination struct {
+type ListItems struct {
 	Pagination
 	Items any `json:"items"`
 }

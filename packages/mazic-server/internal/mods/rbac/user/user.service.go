@@ -19,32 +19,28 @@ func NewUserService(entry *entry.Entry) *UserService {
 	}
 }
 
-func (service *UserService) Find(queryParams url.Values) (*schema.ResultPagination, error) {
-	query := service.Entry.ModelQuery(&User{})
-
+func (service *UserService) Find(queryParams url.Values) (*schema.ListItems, error) {
+	listExpression := []dbx.Expression{}
 	email := queryParams.Get("email")
 	if email != "" {
-		query = query.AndWhere(dbx.NewExp("email = {:email}", dbx.Params{"email": email}))
+		listExpression = append(listExpression, dbx.NewExp("email = {:email}", dbx.Params{"email": email}))
 	}
 
 	verified := queryParams.Get("verified")
 	if verified != "" {
-		query = query.AndWhere(dbx.NewExp("verified = {:verified}", dbx.Params{"verified": verified}))
+		listExpression = append(listExpression, dbx.NewExp("verified = {:verified}", dbx.Params{"verified": verified}))
 	}
 
 	search := queryParams.Get("search")
 	if search != "" {
-		query = query.AndWhere(
-			dbx.Or(
-				dbx.Like("first_name", search),
-				dbx.Like("last_name", search),
-				dbx.Like("email", search),
-			),
-		)
+		listExpression = append(listExpression, dbx.Or(
+			dbx.Like("first_name", search),
+			dbx.Like("last_name", search),
+			dbx.Like("email", search),
+		))
 	}
 
-	users := []*User{}
-	result, err := service.Entry.Find(&users, query, queryParams)
+	result, err := service.Entry.Find(&[]*User{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}

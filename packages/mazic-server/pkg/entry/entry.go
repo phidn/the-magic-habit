@@ -9,6 +9,7 @@ import (
 	"mazic/server/pkg/schema"
 	"net/url"
 	"strconv"
+	"strings"
 
 	"github.com/pocketbase/dbx"
 )
@@ -34,9 +35,18 @@ func (entry *Entry) ModelQuery(m models.Model) *dbx.SelectQuery {
 		From(tableName)
 }
 
-func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, queryParams url.Values) (*schema.ResultPagination, error) {
-	result := &schema.ResultPagination{}
-	if err := entry.Parse(queryParams, result); err != nil {
+func (entry *Entry) Find(slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error) {
+	model, err := entry.getModelFromSlice(slices)
+	if err != nil {
+		return nil, err
+	}
+	modelQuery := entry.ModelQuery(model)
+	for _, exp := range expressions {
+		modelQuery = modelQuery.AndWhere(exp)
+	}
+
+	result := &schema.ListItems{}
+	if err := entry.ParsePagination(queryParams, result); err != nil {
 		return nil, err
 	}
 
@@ -60,19 +70,24 @@ func (entry *Entry) Find(records interface{}, modelQuery *dbx.SelectQuery, query
 		result.PageCount = 1
 	}
 
-	err := modelQuery.
+	isValidSort, column, direction := entry.ValidateSort(model, queryParams)
+	if isValidSort {
+		modelQuery.OrderBy(column + " " + direction)
+	}
+
+	err = modelQuery.
 		Limit(int64(result.PageSize)).
 		Offset(int64((result.Page - 1) * result.PageSize)).
-		All(records)
+		All(slices)
 	if err != nil {
 		return nil, err
 	}
 
-	result.Items = records
+	result.Items = slices
 	return result, nil
 }
 
-func (entry *Entry) Parse(queryParams url.Values, result *schema.ResultPagination) error {
+func (entry *Entry) ParsePagination(queryParams url.Values, result *schema.ListItems) error {
 	params, err := url.ParseQuery(queryParams.Encode())
 	if err != nil {
 		return err
@@ -98,4 +113,35 @@ func (entry *Entry) Parse(queryParams url.Values, result *schema.ResultPaginatio
 		result.Page = 1
 	}
 	return nil
+}
+
+// validates the sort query parameter: sort=name:ASC
+func (entry *Entry) ValidateSort(m models.Model, queryParams url.Values) (bool, string, string) {
+	collection, err := entry.Dao().FindCollectionByNameOrId(m.TableName())
+	if err != nil {
+		return false, "", ""
+	}
+
+	sort := queryParams.Get("sort")
+	if sort == "" {
+		return false, "", ""
+	}
+
+	parts := strings.Split(sort, ":")
+	if len(parts) != 2 {
+		return false, "", ""
+	}
+
+	column := parts[0]
+	field := collection.Schema.GetFieldByName(column)
+	if field == nil {
+		return false, "", ""
+	}
+
+	direction := strings.ToUpper(parts[1])
+	if direction != "ASC" && direction != "DESC" {
+		return false, "", ""
+	}
+
+	return true, column, direction
 }

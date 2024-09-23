@@ -25,7 +25,7 @@ func NewApiSuccess(c echo.Context, data interface{}) error {
 	})
 }
 
-func NewApiPagination(c echo.Context, result *schema.ResultPagination) error {
+func NewApiPagination(c echo.Context, result *schema.ListItems) error {
 	return c.JSON(http.StatusOK, ApiResponse{
 		Success: true,
 		Data:    result.Items,

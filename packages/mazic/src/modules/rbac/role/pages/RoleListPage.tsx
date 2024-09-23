@@ -9,10 +9,7 @@ import { useRoleColumns } from '../hooks/useRoleColumns'
 
 const RoleListPage = () => {
   const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
-  const { filterList, params, search, isFiltered, onReset } = useFilter({
-    filterSchema,
-    filterFields,
-  })
+  const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = useRoleApis.list(params)
   const columns = useRoleColumns({ refreshTable: refetch })
