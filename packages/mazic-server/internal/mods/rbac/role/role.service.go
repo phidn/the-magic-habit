@@ -44,8 +44,8 @@ func (service *RoleService) Find(queryParams url.Values) (*schema.ListItems, err
 }
 
 func (service *RoleService) FindOne(id string) (*Role, error) {
-	role := new(Role)
-	err := service.Entry.ModelQuery(&Role{}).
+	role := &Role{}
+	err := service.Entry.ModelQuery(role).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
 		One(&role)

@@ -3,6 +3,8 @@ package mods
 import (
 	"mazic/server/internal/mods/auth"
 	"mazic/server/internal/mods/global"
+	"mazic/server/internal/mods/rbac/action"
+	"mazic/server/internal/mods/rbac/permission"
 	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/internal/mods/rbac/role"
 	"mazic/server/internal/mods/rbac/user"
@@ -67,6 +69,28 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(resource *resource.ResourceRoute) error {
 			resource.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("permission", fx.Options(
+		fx.Provide(
+			permission.NewPermissionService,
+			permission.NewPermissionController,
+			permission.NewPermissionRoute,
+		),
+		fx.Invoke(func(permission *permission.PermissionRoute) error {
+			permission.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("action", fx.Options(
+		fx.Provide(
+			action.NewActionService,
+			action.NewActionController,
+			action.NewActionRoute,
+		),
+		fx.Invoke(func(action *action.ActionRoute) error {
+			action.SetupRoutes()
 			return nil
 		}),
 	)),

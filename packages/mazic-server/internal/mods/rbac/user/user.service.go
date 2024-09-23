@@ -49,8 +49,8 @@ func (service *UserService) Find(queryParams url.Values) (*schema.ListItems, err
 }
 
 func (service *UserService) FindOne(id string) (*User, error) {
-	user := new(User)
-	err := service.Entry.ModelQuery(&User{}).
+	user := &User{}
+	err := service.Entry.ModelQuery(user).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
 		One(&user)

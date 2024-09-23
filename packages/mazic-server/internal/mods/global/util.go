@@ -9,6 +9,12 @@ var resourceMap = map[string]ResourceOption{
 		FieldValue:   "id",
 		SearchFields: []string{"name"},
 	},
+	"ACTION": {
+		Table:        "sys_action",
+		FieldLabel:   "name",
+		FieldValue:   "id",
+		SearchFields: []string{"name"},
+	},
 }
 
 var (

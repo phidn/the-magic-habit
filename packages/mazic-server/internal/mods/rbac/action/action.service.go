@@ -1,4 +1,4 @@
-package resource
+package action
 
 import (
 	"mazic/pocketbase/models"
@@ -9,17 +9,17 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type ResourceService struct {
+type ActionService struct {
 	Entry *entry.Entry
 }
 
-func NewResourceService(entry *entry.Entry) *ResourceService {
-	return &ResourceService{
+func NewActionService(entry *entry.Entry) *ActionService {
+	return &ActionService{
 		Entry: entry,
 	}
 }
 
-func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems, error) {
+func (service *ActionService) Find(queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -35,7 +35,7 @@ func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems,
 		))
 	}
 
-	result, err := service.Entry.Find(&[]*Resource{}, listExpression, queryParams)
+	result, err := service.Entry.Find(&[]*Action{}, listExpression, queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -43,28 +43,28 @@ func (service *ResourceService) Find(queryParams url.Values) (*schema.ListItems,
 	return result, nil
 }
 
-func (service *ResourceService) FindOne(id string) (*Resource, error) {
-	resource := &Resource{}
-	err := service.Entry.ModelQuery(resource).
+func (service *ActionService) FindOne(id string) (*Action, error) {
+	action := &Action{}
+	err := service.Entry.ModelQuery(action).
 		AndWhere(dbx.HashExp{"id": id}).
 		Limit(1).
-		One(&resource)
+		One(&action)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return resource, nil
+	return action, nil
 }
 
-func (service *ResourceService) Create(resource *Resource) (*models.Record, error) {
-	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(Resource).TableName())
+func (service *ActionService) Create(action *Action) (*models.Record, error) {
+	collection, err := service.Entry.Dao().FindCollectionByNameOrId(new(Action).TableName())
 	if err != nil {
 		return nil, err
 	}
 
 	record := models.NewRecord(collection)
-	resource.ParseRecord(record)
+	action.ParseRecord(record)
 
 	if err := service.Entry.Dao().SaveRecord(record); err != nil {
 		return nil, err
@@ -72,21 +72,21 @@ func (service *ResourceService) Create(resource *Resource) (*models.Record, erro
 	return record, nil
 }
 
-func (service *ResourceService) Update(id string, resource *Resource) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Resource).TableName(), id)
+func (service *ActionService) Update(id string, action *Action) (*models.Record, error) {
+	record, err := service.Entry.Dao().FindRecordById(new(Action).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
 
-	resource.ParseRecord(record)
+	action.ParseRecord(record)
 	if err := service.Entry.Dao().SaveRecord(record); err != nil {
 		return nil, err
 	}
 	return record, nil
 }
 
-func (service *ResourceService) Delete(id string) (*models.Record, error) {
-	record, err := service.Entry.Dao().FindRecordById(new(Resource).TableName(), id)
+func (service *ActionService) Delete(id string) (*models.Record, error) {
+	record, err := service.Entry.Dao().FindRecordById(new(Action).TableName(), id)
 	if err != nil {
 		return nil, err
 	}
