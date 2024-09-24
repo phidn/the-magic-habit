@@ -1,9 +1,9 @@
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
 
-import { TRole } from '@mazic/modules/rbac/role'
+import { TRole } from '@mazic/schemas/roleSchema'
 
-import { TMatrix, TRolePermissionExtended } from '../types/RolePermissionType'
+import { TMatrix, TRolePermissionExtended } from '../types'
 
 export const processRows = (data: TRolePermissionExtended[], roles: TRole[]): TMatrix[] => {
   const resourceRows = groupBy(data, (item) => item.resource_name)

@@ -14,7 +14,7 @@
     // "**/packages/mazic-server": true,
     // "**/packages/mazic-pocketbase": true,
     "**/packages/mazic-pocketbase-ui": true,
-    "**/packages/mazic-prisma": true,
+    // "**/packages/mazic-prisma": true,
   },
   "terminal.integrated.defaultProfile.osx": null,
   "editor.defaultFormatter": "esbenp.prettier-vscode",

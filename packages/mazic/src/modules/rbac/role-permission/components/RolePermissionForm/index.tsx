@@ -7,9 +7,9 @@ import { Button } from '@mazic-design-system'
 import { DataTableClient } from '@mazic/components/DataTable'
 import { TRole } from '@mazic/schemas/roleSchema'
 
-import { useRolesPermissionsColumns } from '../hooks/useRolesPermissionsColumns'
-import { TMatrix, TRolePermissionExtended } from '../types/RolePermissionType'
-import { extractPermissions, processRows } from '../utils/utils'
+import { useRolesPermissionsColumns } from '../../hooks/columns'
+import { TMatrix, TRolePermissionExtended } from '../../types'
+import { extractPermissions, processRows } from '../../utils/utils'
 
 export type FormValues = {
   rolesPermissions: TMatrix[]

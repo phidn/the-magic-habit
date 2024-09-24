@@ -8,40 +8,39 @@ import { roleService } from '@mazic/services/roleService'
 import { ApiResponse } from '@mazic/types/index'
 
 import { rolePermissionService } from '../services/rolePermissionService'
-import {
-  TRolePermission,
-  TRolePermissionExtended,
-  TRolePermissionReq,
-} from '../types/RolePermissionType'
+import { TRolePermission, TRolePermissionExtended, TRolePermissionReq } from '../types'
 
 const QUERY_KEY = 'roles_permissions' as const
 
 export const useRolesPermissionsList = () => {
-  const [result_1, result_2] = useQueries({
+  const [rp, roles] = useQueries({
     queries: [
       {
         queryFn: () => rolePermissionService.query<ApiResponse<TRolePermission[]>>(),
         queryKey: [QUERY_KEY, 'roles_permissions_list'],
       },
       {
-        queryFn: () => roleService.query<ApiResponse<TRole[]>>({ page: 1, pageSize: -1 }),
+        queryFn: () => roleService.query<ApiResponse<TRole[]>>({ pageSize: -1 }),
         queryKey: [QUERY_KEY, 'roles_list'],
       },
     ],
   })
-  const dataList: TRolePermissionExtended[] = map(
-    result_1?.data?.data?.data,
-    (item: TRolePermission) => ({
-      ...item,
-      permission_key: snakeCase(item.permission_name),
-      resource_key: snakeCase(item.resource_name),
-    })
-  )
+  const rpList: TRolePermissionExtended[] = map(rp?.data?.data?.data, (item: TRolePermission) => ({
+    ...item,
+    permission_key: snakeCase(item.permission_name),
+    resource_key: snakeCase(item.resource_name),
+    role_key: snakeCase(item.role_name),
+  }))
+
+  const roleData = map(roles?.data?.data?.data, (item: TRole) => ({
+    ...item,
+    role_key: snakeCase(item.name),
+  }))
 
   return {
-    data: dataList,
-    roleData: result_2.data?.data?.data || [],
-    isLoading: result_1.isLoading || result_2.isLoading,
+    data: rpList,
+    roleData: roleData,
+    isLoading: rp.isLoading || roles.isLoading,
   }
 }
 export const useUpsertRolePermission = () => {

@@ -7,6 +7,7 @@ import (
 	"mazic/server/internal/mods/rbac/permission"
 	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/internal/mods/rbac/role"
+	"mazic/server/internal/mods/rbac/role_permission"
 	"mazic/server/internal/mods/rbac/user"
 
 	"go.uber.org/fx"
@@ -91,6 +92,17 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(action *action.ActionRoute) error {
 			action.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("role_permission", fx.Options(
+		fx.Provide(
+			role_permission.NewRolePermissionService,
+			role_permission.NewRolePermissionController,
+			role_permission.NewRolePermissionRoute,
+		),
+		fx.Invoke(func(role_permission *role_permission.RolePermissionRoute) error {
+			role_permission.SetupRoutes()
 			return nil
 		}),
 	)),

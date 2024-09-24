@@ -1,5 +1,5 @@
 import { RolePermissionForm } from '../components/RolePermissionForm'
-import { useRolesPermissionsList, useUpsertRolePermission } from '../hooks/useRolesPermissionsApis'
+import { useRolesPermissionsList, useUpsertRolePermission } from '../hooks/apis'
 
 const RolesPermissionsPage = () => {
   const { data, roleData, isLoading } = useRolesPermissionsList()

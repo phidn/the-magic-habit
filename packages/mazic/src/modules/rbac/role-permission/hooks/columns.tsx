@@ -3,10 +3,10 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 
 import { ExpandingColumn } from '@mazic/components/Columns/ExpandingColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
-import { TRole } from '@mazic/modules/rbac/role'
+import { TRole } from '@mazic/schemas/roleSchema'
 
-import RolePermissionCheckbox from '../components/RolePermissionCheckbox'
-import { TMatrix } from '../types/RolePermissionType'
+import { FormCheckbox } from '../components/RolePermissionForm/FormCheckbox'
+import { TMatrix } from '../types'
 
 const columnHelper = createColumnHelper<TMatrix>()
 
@@ -25,7 +25,7 @@ export const useRolesPermissionsColumns = (roles: TRole[]): ColumnDef<TMatrix>[]
           header: ({ column }) => (
             <DataTableColumnHeader className="text-center" column={column} title={role.name} />
           ),
-          cell: ({ row }) => <RolePermissionCheckbox row={row} role={role} />,
+          cell: ({ row }) => <FormCheckbox row={row} role={role} />,
           enableSorting: false,
         })
       }),

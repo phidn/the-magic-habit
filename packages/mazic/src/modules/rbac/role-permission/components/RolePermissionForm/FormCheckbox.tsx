@@ -5,14 +5,14 @@ import { cloneDeep, get, set } from 'lodash'
 
 import { Checkbox } from '@mazic-design-system'
 
-interface RolePermissionCheckboxProps<T = any> {
+interface CheckboxProps<T = any> {
   row: Row<T>
   role: {
     role_key: string
   }
 }
 
-const RolePermissionCheckbox: React.FC<RolePermissionCheckboxProps> = ({ row, role }) => {
+export const FormCheckbox: React.FC<CheckboxProps> = ({ row, role }) => {
   const { getValues, setValue } = useFormContext()
   const values = getValues()
   const rowIds = row.id.split('.')
@@ -65,5 +65,3 @@ const RolePermissionCheckbox: React.FC<RolePermissionCheckboxProps> = ({ row, ro
     </div>
   )
 }
-
-export default RolePermissionCheckbox
