@@ -8,10 +8,10 @@ import (
 )
 
 type GlobalController struct {
-	GlobalService *GlobalService
+	GlobalService GlobalService
 }
 
-func NewGlobalController(globalService *GlobalService) *GlobalController {
+func NewGlobalController(globalService GlobalService) *GlobalController {
 	return &GlobalController{
 		GlobalService: globalService,
 	}

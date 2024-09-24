@@ -10,17 +10,25 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type UserService struct {
-	Entry *entry.Entry
+type UserService interface {
+	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, id string) (*User, error)
+	Create(ctx context.Context, user *User) (*models.Record, error)
+	Update(ctx context.Context, id string, user *User) (*models.Record, error)
+	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
-func NewUserService(entry *entry.Entry) *UserService {
-	return &UserService{
+type userService struct {
+	Entry entry.Entry
+}
+
+func NewUserService(entry entry.Entry) UserService {
+	return &userService{
 		Entry: entry,
 	}
 }
 
-func (service *UserService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
+func (service *userService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 	email := queryParams.Get("email")
 	if email != "" {
@@ -49,7 +57,7 @@ func (service *UserService) Find(ctx context.Context, queryParams url.Values) (*
 	return result, nil
 }
 
-func (service *UserService) FindOne(ctx context.Context, id string) (*User, error) {
+func (service *userService) FindOne(ctx context.Context, id string) (*User, error) {
 	user := &User{}
 	err := service.Entry.ModelQuery(ctx, user).
 		AndWhere(dbx.HashExp{"id": id}).
@@ -63,7 +71,7 @@ func (service *UserService) FindOne(ctx context.Context, id string) (*User, erro
 	return user, nil
 }
 
-func (service *UserService) Create(ctx context.Context, user *User) (*models.Record, error) {
+func (service *userService) Create(ctx context.Context, user *User) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(User).TableName())
 	if err != nil {
 		return nil, err
@@ -81,7 +89,7 @@ func (service *UserService) Create(ctx context.Context, user *User) (*models.Rec
 	return record, nil
 }
 
-func (service *UserService) Update(ctx context.Context, id string, user *User) (*models.Record, error) {
+func (service *userService) Update(ctx context.Context, id string, user *User) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(User).TableName(), id)
 	if err != nil {
 		return nil, err
@@ -95,7 +103,7 @@ func (service *UserService) Update(ctx context.Context, id string, user *User) (
 	return record, nil
 }
 
-func (service *UserService) Delete(ctx context.Context, id string) (*models.Record, error) {
+func (service *userService) Delete(ctx context.Context, id string) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(User).TableName(), id)
 	if err != nil {
 		return nil, err

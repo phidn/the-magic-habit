@@ -7,10 +7,10 @@ import (
 )
 
 type PermissionController struct {
-	PermissionService *PermissionService
+	PermissionService PermissionService
 }
 
-func NewPermissionController(permissionService *PermissionService) *PermissionController {
+func NewPermissionController(permissionService PermissionService) *PermissionController {
 	return &PermissionController{
 		PermissionService: permissionService,
 	}

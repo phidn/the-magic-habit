@@ -17,19 +17,24 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type GlobalService struct {
-	Entry   *entry.Entry
+type GlobalService interface {
+	ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error)
+	Upload(file *multipart.FileHeader) (string, error)
+}
+
+type globalService struct {
+	Entry   entry.Entry
 	Storage *infrastructure.SupaStorage
 }
 
-func NewGlobalService(entry *entry.Entry, storage *infrastructure.SupaStorage) *GlobalService {
-	return &GlobalService{
+func NewGlobalService(entry entry.Entry, storage *infrastructure.SupaStorage) GlobalService {
+	return &globalService{
 		Entry:   entry,
 		Storage: storage,
 	}
 }
 
-func (service *GlobalService) ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error) {
+func (service *globalService) ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error) {
 	options := []Option{}
 
 	fieldValue := utils.If(resource.FieldValue == "", "id", resource.FieldValue)
@@ -71,7 +76,7 @@ func (service *GlobalService) ListOptions(ctx context.Context, resource Resource
 	return options, nil
 }
 
-func (service *GlobalService) Upload(file *multipart.FileHeader) (string, error) {
+func (service *globalService) Upload(file *multipart.FileHeader) (string, error) {
 	fileData, err := file.Open()
 	if err != nil {
 		return "", err

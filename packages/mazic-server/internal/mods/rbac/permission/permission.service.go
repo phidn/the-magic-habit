@@ -12,17 +12,25 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type PermissionService struct {
-	Entry *entry.Entry
+type PermissionService interface {
+	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, id string) (*Permission, error)
+	Create(ctx context.Context, permission *Permission) (*models.Record, error)
+	Update(ctx context.Context, id string, permission *Permission) (*models.Record, error)
+	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
-func NewPermissionService(entry *entry.Entry) *PermissionService {
-	return &PermissionService{
+type permissionService struct {
+	Entry entry.Entry
+}
+
+func NewPermissionService(entry entry.Entry) PermissionService {
+	return &permissionService{
 		Entry: entry,
 	}
 }
 
-func (service *PermissionService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
+func (service *permissionService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -52,7 +60,7 @@ func (service *PermissionService) Find(ctx context.Context, queryParams url.Valu
 	return result, nil
 }
 
-func (service *PermissionService) FindOne(ctx context.Context, id string) (*Permission, error) {
+func (service *permissionService) FindOne(ctx context.Context, id string) (*Permission, error) {
 	permission := &Permission{}
 	err := service.Entry.ModelQuery(ctx, permission).
 		AndWhere(dbx.HashExp{"id": id}).
@@ -66,7 +74,7 @@ func (service *PermissionService) FindOne(ctx context.Context, id string) (*Perm
 	return permission, nil
 }
 
-func (service *PermissionService) Create(ctx context.Context, permission *Permission) (*models.Record, error) {
+func (service *permissionService) Create(ctx context.Context, permission *Permission) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(Permission).TableName())
 	if err != nil {
 		return nil, err
@@ -81,7 +89,7 @@ func (service *PermissionService) Create(ctx context.Context, permission *Permis
 	return record, nil
 }
 
-func (service *PermissionService) Update(ctx context.Context, id string, permission *Permission) (*models.Record, error) {
+func (service *permissionService) Update(ctx context.Context, id string, permission *Permission) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Permission).TableName(), id)
 	if err != nil {
 		return nil, err
@@ -94,7 +102,7 @@ func (service *PermissionService) Update(ctx context.Context, id string, permiss
 	return record, nil
 }
 
-func (service *PermissionService) Delete(ctx context.Context, id string) (*models.Record, error) {
+func (service *permissionService) Delete(ctx context.Context, id string) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Permission).TableName(), id)
 	if err != nil {
 		return nil, err

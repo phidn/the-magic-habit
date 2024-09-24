@@ -14,15 +14,20 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type AuthService struct {
+type AuthService interface {
+	Login(ctx context.Context, email, password string) (*Tokens, *user.User, error)
+	GetMe(ctx context.Context, userId string) (*user.User, error)
+}
+
+type authService struct {
 	app *infrastructure.Pocket
 }
 
-func NewAuthService(app *infrastructure.Pocket) *AuthService {
-	return &AuthService{app: app}
+func NewAuthService(app *infrastructure.Pocket) AuthService {
+	return &authService{app: app}
 }
 
-func (service *AuthService) Login(ctx context.Context, email, password string) (*Tokens, *user.User, error) {
+func (service *authService) Login(ctx context.Context, email, password string) (*Tokens, *user.User, error) {
 	user := new(user.User)
 	err := service.app.Dao().DB().
 		NewQuery(`SELECT id, password_hash, roles FROM sys_user WHERE email = {:email}`).
@@ -68,7 +73,7 @@ func (service *AuthService) Login(ctx context.Context, email, password string) (
 	}, user, nil
 }
 
-func (service *AuthService) GetMe(ctx context.Context, userId string) (*user.User, error) {
+func (service *authService) GetMe(ctx context.Context, userId string) (*user.User, error) {
 	user := new(user.User)
 	err := service.app.Dao().DB().
 		NewQuery(`SELECT id, first_name, last_name, email, avatar FROM sys_user WHERE id = {:id}`).

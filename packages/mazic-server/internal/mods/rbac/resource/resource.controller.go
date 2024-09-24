@@ -7,10 +7,10 @@ import (
 )
 
 type ResourceController struct {
-	ResourceService *ResourceService
+	ResourceService ResourceService
 }
 
-func NewResourceController(resourceService *ResourceService) *ResourceController {
+func NewResourceController(resourceService ResourceService) *ResourceController {
 	return &ResourceController{
 		ResourceService: resourceService,
 	}

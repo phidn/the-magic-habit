@@ -7,10 +7,10 @@ import (
 )
 
 type ActionController struct {
-	ActionService *ActionService
+	ActionService ActionService
 }
 
-func NewActionController(actionService *ActionService) *ActionController {
+func NewActionController(actionService ActionService) *ActionController {
 	return &ActionController{
 		ActionService: actionService,
 	}

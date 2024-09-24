@@ -10,17 +10,25 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type ActionService struct {
-	Entry *entry.Entry
+type ActionService interface {
+	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, id string) (*Action, error)
+	Create(ctx context.Context, action *Action) (*models.Record, error)
+	Update(ctx context.Context, id string, action *Action) (*models.Record, error)
+	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
-func NewActionService(entry *entry.Entry) *ActionService {
-	return &ActionService{
+type actionService struct {
+	Entry entry.Entry
+}
+
+func NewActionService(entry entry.Entry) ActionService {
+	return &actionService{
 		Entry: entry,
 	}
 }
 
-func (service *ActionService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
+func (service *actionService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -44,7 +52,7 @@ func (service *ActionService) Find(ctx context.Context, queryParams url.Values) 
 	return result, nil
 }
 
-func (service *ActionService) FindOne(ctx context.Context, id string) (*Action, error) {
+func (service *actionService) FindOne(ctx context.Context, id string) (*Action, error) {
 	action := &Action{}
 	err := service.Entry.ModelQuery(ctx, action).
 		AndWhere(dbx.HashExp{"id": id}).
@@ -58,7 +66,7 @@ func (service *ActionService) FindOne(ctx context.Context, id string) (*Action, 
 	return action, nil
 }
 
-func (service *ActionService) Create(ctx context.Context, action *Action) (*models.Record, error) {
+func (service *actionService) Create(ctx context.Context, action *Action) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(Action).TableName())
 	if err != nil {
 		return nil, err
@@ -73,7 +81,7 @@ func (service *ActionService) Create(ctx context.Context, action *Action) (*mode
 	return record, nil
 }
 
-func (service *ActionService) Update(ctx context.Context, id string, action *Action) (*models.Record, error) {
+func (service *actionService) Update(ctx context.Context, id string, action *Action) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Action).TableName(), id)
 	if err != nil {
 		return nil, err
@@ -86,7 +94,7 @@ func (service *ActionService) Update(ctx context.Context, id string, action *Act
 	return record, nil
 }
 
-func (service *ActionService) Delete(ctx context.Context, id string) (*models.Record, error) {
+func (service *actionService) Delete(ctx context.Context, id string) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Action).TableName(), id)
 	if err != nil {
 		return nil, err

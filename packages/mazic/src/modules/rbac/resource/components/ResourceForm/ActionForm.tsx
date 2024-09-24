@@ -7,6 +7,7 @@ export const ActionForm = () => {
   return (
     <div className="mazic_row">
       <FormMultipleSelect
+        maxCount={999}
         field="actions"
         options={options}
         placeholder="Select resource actions..."

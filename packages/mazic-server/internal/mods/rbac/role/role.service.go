@@ -10,17 +10,25 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type RoleService struct {
-	Entry *entry.Entry
+type RoleService interface {
+	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, id string) (*Role, error)
+	Create(ctx context.Context, role *Role) (*models.Record, error)
+	Update(ctx context.Context, id string, role *Role) (*models.Record, error)
+	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
-func NewRoleService(entry *entry.Entry) *RoleService {
-	return &RoleService{
+type roleService struct {
+	Entry entry.Entry
+}
+
+func NewRoleService(entry entry.Entry) RoleService {
+	return &roleService{
 		Entry: entry,
 	}
 }
 
-func (service *RoleService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
+func (service *roleService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -44,7 +52,7 @@ func (service *RoleService) Find(ctx context.Context, queryParams url.Values) (*
 	return result, nil
 }
 
-func (service *RoleService) FindOne(ctx context.Context, id string) (*Role, error) {
+func (service *roleService) FindOne(ctx context.Context, id string) (*Role, error) {
 	role := &Role{}
 	err := service.Entry.ModelQuery(ctx, role).
 		AndWhere(dbx.HashExp{"id": id}).
@@ -58,7 +66,7 @@ func (service *RoleService) FindOne(ctx context.Context, id string) (*Role, erro
 	return role, nil
 }
 
-func (service *RoleService) Create(ctx context.Context, role *Role) (*models.Record, error) {
+func (service *roleService) Create(ctx context.Context, role *Role) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(Role).TableName())
 	if err != nil {
 		return nil, err
@@ -73,7 +81,7 @@ func (service *RoleService) Create(ctx context.Context, role *Role) (*models.Rec
 	return record, nil
 }
 
-func (service *RoleService) Update(ctx context.Context, id string, role *Role) (*models.Record, error) {
+func (service *roleService) Update(ctx context.Context, id string, role *Role) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Role).TableName(), id)
 	if err != nil {
 		return nil, err
@@ -86,7 +94,7 @@ func (service *RoleService) Update(ctx context.Context, id string, role *Role) (
 	return record, nil
 }
 
-func (service *RoleService) Delete(ctx context.Context, id string) (*models.Record, error) {
+func (service *roleService) Delete(ctx context.Context, id string) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Role).TableName(), id)
 	if err != nil {
 		return nil, err

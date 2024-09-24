@@ -10,17 +10,25 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type ResourceService struct {
-	Entry *entry.Entry
+type ResourceService interface {
+	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, id string) (*Resource, error)
+	Create(ctx context.Context, resource *Resource) (*models.Record, error)
+	Update(ctx context.Context, id string, resource *Resource) (*models.Record, error)
+	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
-func NewResourceService(entry *entry.Entry) *ResourceService {
-	return &ResourceService{
+type resourceService struct {
+	Entry entry.Entry
+}
+
+func NewResourceService(entry entry.Entry) ResourceService {
+	return &resourceService{
 		Entry: entry,
 	}
 }
 
-func (service *ResourceService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
+func (service *resourceService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
 	listExpression := []dbx.Expression{}
 
 	is_active := queryParams.Get("is_active")
@@ -44,7 +52,7 @@ func (service *ResourceService) Find(ctx context.Context, queryParams url.Values
 	return result, nil
 }
 
-func (service *ResourceService) FindOne(ctx context.Context, id string) (*Resource, error) {
+func (service *resourceService) FindOne(ctx context.Context, id string) (*Resource, error) {
 	resource := &Resource{}
 	err := service.Entry.ModelQuery(ctx, resource).
 		AndWhere(dbx.HashExp{"id": id}).
@@ -58,7 +66,7 @@ func (service *ResourceService) FindOne(ctx context.Context, id string) (*Resour
 	return resource, nil
 }
 
-func (service *ResourceService) Create(ctx context.Context, resource *Resource) (*models.Record, error) {
+func (service *resourceService) Create(ctx context.Context, resource *Resource) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(Resource).TableName())
 	if err != nil {
 		return nil, err
@@ -73,7 +81,7 @@ func (service *ResourceService) Create(ctx context.Context, resource *Resource) 
 	return record, nil
 }
 
-func (service *ResourceService) Update(ctx context.Context, id string, resource *Resource) (*models.Record, error) {
+func (service *resourceService) Update(ctx context.Context, id string, resource *Resource) (*models.Record, error) {
 	record, err := service.Entry.Dao().FindRecordById(new(Resource).TableName(), id)
 	if err != nil {
 		return nil, err
@@ -86,7 +94,7 @@ func (service *ResourceService) Update(ctx context.Context, id string, resource 
 	return record, nil
 }
 
-func (service *ResourceService) Delete(ctx context.Context, id string) (*models.Record, error) {
+func (service *resourceService) Delete(ctx context.Context, id string) (*models.Record, error) {
 	record, err := service.Entry.FindRecordById(ctx, new(Resource).TableName(), id)
 	if err != nil {
 		return nil, err

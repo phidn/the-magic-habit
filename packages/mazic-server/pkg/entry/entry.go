@@ -15,21 +15,29 @@ import (
 	"github.com/pocketbase/dbx"
 )
 
-type Entry struct {
+type Entry interface {
+	Dao() *daos.Dao
+	ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQuery
+	Find(ctx context.Context, slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error)
+	FindCollectionByName(ctx context.Context, name string) (*models.Collection, error)
+	FindRecordById(ctx context.Context, name string, id string) (*models.Record, error)
+}
+
+type entry struct {
 	App *infrastructure.Pocket
 }
 
-func NewEntry(app *infrastructure.Pocket) *Entry {
-	return &Entry{
+func NewEntry(app *infrastructure.Pocket) Entry {
+	return &entry{
 		App: app,
 	}
 }
 
-func (entry *Entry) Dao() *daos.Dao {
+func (entry *entry) Dao() *daos.Dao {
 	return entry.App.Dao()
 }
 
-func (entry *Entry) ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQuery {
+func (entry *entry) ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQuery {
 	tableName := m.TableName()
 	return entry.Dao().DB().
 		Select("{{" + tableName + "}}.*").
@@ -37,7 +45,7 @@ func (entry *Entry) ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQ
 		From(tableName)
 }
 
-func (entry *Entry) Find(ctx context.Context, slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error) {
+func (entry *entry) Find(ctx context.Context, slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error) {
 	model, err := entry.getModelFromSlice(slices)
 	if err != nil {
 		return nil, err
@@ -89,7 +97,7 @@ func (entry *Entry) Find(ctx context.Context, slices any, expressions []dbx.Expr
 	return result, nil
 }
 
-func (entry *Entry) FindCollectionByName(ctx context.Context, name string) (*models.Collection, error) {
+func (entry *entry) FindCollectionByName(ctx context.Context, name string) (*models.Collection, error) {
 	model := &models.Collection{}
 
 	err := entry.ModelQuery(ctx, model).
@@ -106,7 +114,7 @@ func (entry *Entry) FindCollectionByName(ctx context.Context, name string) (*mod
 	return model, nil
 }
 
-func (entry *Entry) FindRecordById(ctx context.Context, name string, id string) (*models.Record, error) {
+func (entry *entry) FindRecordById(ctx context.Context, name string, id string) (*models.Record, error) {
 	collection, err := entry.FindCollectionByName(ctx, name)
 	if err != nil {
 		return nil, err
@@ -123,7 +131,7 @@ func (entry *Entry) FindRecordById(ctx context.Context, name string, id string) 
 	return record, nil
 }
 
-func (entry *Entry) ParsePagination(queryParams url.Values, result *schema.ListItems) error {
+func (entry *entry) ParsePagination(queryParams url.Values, result *schema.ListItems) error {
 	params, err := url.ParseQuery(queryParams.Encode())
 	if err != nil {
 		return err
@@ -152,7 +160,7 @@ func (entry *Entry) ParsePagination(queryParams url.Values, result *schema.ListI
 }
 
 // validates the sort query parameter: sort=name:ASC
-func (entry *Entry) ValidateSort(m models.Model, queryParams url.Values) (bool, string, string) {
+func (entry *entry) ValidateSort(m models.Model, queryParams url.Values) (bool, string, string) {
 	collection, err := entry.Dao().FindCollectionByNameOrId(m.TableName())
 	if err != nil {
 		return false, "", ""

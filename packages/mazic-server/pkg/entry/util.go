@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-func (entry *Entry) getModelFromSlice(slices any) (models.Model, error) {
+func (entry *entry) getModelFromSlice(slices any) (models.Model, error) {
 	sliceType := reflect.TypeOf(slices)
 	if sliceType.Kind() != reflect.Ptr || sliceType.Elem().Kind() != reflect.Slice {
 		return nil, errors.New("expected a pointer to a slice")
