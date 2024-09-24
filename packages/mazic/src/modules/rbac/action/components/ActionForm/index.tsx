@@ -1,9 +1,8 @@
 import { FormsCommon } from '@mazic/components/Commons/FormsCommon'
 import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
-import { extractFields } from '@mazic/utils/form'
 
-import { actionSchema } from '../../schemas/actionSchema'
+import { actionSchema, detailFields } from '../../schemas/actionSchema'
 
 import { DetailForm } from './DetailForm'
 
@@ -12,7 +11,7 @@ export const ActionForm = (props: IFormProps) => {
     {
       title: 'Action Details',
       elementRender: () => <DetailForm />,
-      fields: extractFields(DetailForm),
+      fields: detailFields,
     },
     {
       title: 'Action Status',

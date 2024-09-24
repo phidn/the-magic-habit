@@ -2,7 +2,8 @@ import { FormsCommon } from '@mazic/components/Commons/FormsCommon'
 import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 import { IFormSection } from '@mazic/types/form'
-import { extractFields } from '@mazic/utils/form'
+
+import { detailFields } from '../../schemas/permissionSchema'
 
 import { DetailForm } from './DetailForm'
 
@@ -11,7 +12,7 @@ export const PermissionForm = (props: IFormProps) => {
     {
       title: 'Permission Details',
       elementRender: () => <DetailForm />,
-      fields: extractFields(DetailForm),
+      fields: detailFields,
     },
     {
       title: 'Permission Status',

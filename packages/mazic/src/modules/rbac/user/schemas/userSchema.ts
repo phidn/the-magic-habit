@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const userSchema = z.object({
+const detailSection = {
   id: z.string().optional(),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().optional(),
@@ -10,6 +10,12 @@ export const userSchema = z.object({
     .union([z.string(), z.instanceof(File)])
     .optional()
     .nullable(),
+}
+
+export const detailFields = Object.keys(detailSection)
+
+export const userSchema = z.object({
+  ...detailSection,
   verified: z.boolean().default(true),
   roles: z.array(z.string()).optional(),
 })

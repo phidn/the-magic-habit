@@ -41,8 +41,6 @@ export const RolePermissionForm = ({
     await onSubmitForm(payload)
   }
 
-  console.log('values', methods.watch('rolesPermissions'))
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
