@@ -17,6 +17,19 @@ const usePermissionList = (params: IParams) => {
   return { ...data?.data, ...rest }
 }
 
+const usePermissionByResource = (params: IParams) => {
+  const { data } = useQuery({
+    queryFn: () => permissionService.query<ApiResponse<TPermission[]>>(params),
+    queryKey: [QUERY_KEY, 'permissions_list', params],
+    enabled: !!params.resource_id,
+  })
+  const _data = data?.data?.data || []
+  return {
+    data: _data,
+    actions: _data.map((item) => item.action_id),
+  }
+}
+
 const usePermissionDetail = (permissionId: string) => {
   const { data, ...rest } = useQuery({
     queryFn: () => permissionService.get<ApiResponse<TPermission>>(permissionId),
@@ -60,6 +73,7 @@ const useSeedPermission = () => {
 
 export const usePermissionApis = {
   list: usePermissionList,
+  listByResource: usePermissionByResource,
   detail: usePermissionDetail,
   create: useCreatePermission,
   update: useUpdatePermission,

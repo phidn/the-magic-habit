@@ -1,36 +1,36 @@
 import { useFormContext } from 'react-hook-form'
 
 import { FormInput, FormItem, FormSelect } from '@mazic/components/FormControl'
-import { useApis } from '@mazic/hooks/useApis'
-import { dataToOptions, optionSelected } from '@mazic/utils/form'
+import { RESOURCES, useGetOptions, usePageDetails } from '@mazic/hooks'
+import { optionSelected } from '@mazic/utils/form'
+
+import { usePermissionApis } from '../../hooks/usePermissionApis'
 
 export const DetailForm = () => {
   const methods = useFormContext()
+  const { isEdit } = usePageDetails()
 
-  const { data: actionData } = useApis.action.list({ page: 1, pageSize: -1 })
-  const { data: resourceData } = useApis.resource.list({ page: 1, pageSize: -1 })
-  const actionOptions = dataToOptions({
-    data: actionData || [],
-    valueKey: 'id',
-    labelKey: 'name',
-    restKeys: ['code'],
-  })
-  const resourceOptions = dataToOptions({
-    data: resourceData || [],
-    valueKey: 'id',
-    labelKey: 'name',
-    restKeys: ['code'],
+  const { options: resourceOptions } = useGetOptions(RESOURCES.RESOURCE)
+  const { options: actionOptions } = useGetOptions(RESOURCES.ACTION)
+  const { actions: existActions } = usePermissionApis.listByResource({
+    pageSize: -1,
+    resource_id: methods.getValues('resource_id'),
   })
 
-  const triggerUpdateCode = () => {
-    const resourceId = methods.getValues('resource_id')
-    const actionId = methods.getValues('action_id')
-    if (resourceId && actionId) {
-      const resource = optionSelected(resourceOptions, resourceId)
-      const action = optionSelected(actionOptions, actionId)
-      methods.setValue('code', `${resource?.code}.${action?.code}`)
+  const resourceActionsMap = new Map(
+    resourceOptions.map((option) => [option.value, option.actions])
+  )
+
+  const _actionOptions = actionOptions.filter((option) => {
+    if (isEdit && option.value === methods.watch('action_id')) {
+      return true
     }
-  }
+    if (existActions.includes(option.value)) {
+      return false
+    }
+    const _actions = resourceActionsMap.get(methods.watch('resource_id'))
+    return _actions?.includes(option.value)
+  })
 
   return (
     <div className="mazic_row">
@@ -45,22 +45,25 @@ export const DetailForm = () => {
           field="resource_id"
           options={resourceOptions}
           placeholder="Select resource..."
-          onChange={(value: string) => {
-            methods.clearErrors('resource_id')
-            methods.setValue('resource_id', value)
-            triggerUpdateCode()
+          afterChange={() => {
+            methods.clearErrors('action_id')
+            methods.setValue('action_id', null)
+            methods.setValue('code', '')
           }}
         />
       </FormItem>
       <FormItem label="Action" required>
         <FormSelect
           field="action_id"
-          options={actionOptions}
+          options={_actionOptions}
           placeholder="Select action..."
-          onChange={(value: string) => {
-            methods.clearErrors('action_id')
-            methods.setValue('action_id', value)
-            triggerUpdateCode()
+          disabled={!methods.getValues('resource_id')}
+          afterChange={(value) => {
+            const resource = optionSelected(resourceOptions, methods.getValues('resource_id'))
+            const action = optionSelected(actionOptions, value)
+            if (resource?.code && action?.code) {
+              methods.setValue('code', `${resource?.code}.${action?.code}`)
+            }
           }}
         />
       </FormItem>

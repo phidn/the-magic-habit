@@ -2,15 +2,25 @@ import { Button } from '@mazic-design-system'
 
 import { DataTable, Toolbar } from '@mazic/components'
 import { FILTER_COMMON } from '@mazic/config/dataTable'
-import { useDataTable, useFilter } from '@mazic/hooks'
-import { commonFilterSchema as filterSchema } from '@mazic/schemas/filterSchema'
+import { RESOURCES, useDataTable, useFilter, useGetOptions } from '@mazic/hooks'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
 import { usePermissionApis } from '../hooks/usePermissionApis'
 import { usePermissionColumns } from '../hooks/usePermissionColumns'
+import { filterSchema } from '../schemas/permissionSchema'
 
 const PermissionListPage = () => {
-  const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
+  const { options: resourceOptions } = useGetOptions(RESOURCES.RESOURCE)
+
+  const filterFields: DataTableFilterField[] = [
+    FILTER_COMMON.status,
+    {
+      title: 'Resource',
+      filterKey: 'resource_id',
+      options: resourceOptions,
+      multiSelect: true,
+    },
+  ]
   const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
   const { data, meta, refetch } = usePermissionApis.list(params)

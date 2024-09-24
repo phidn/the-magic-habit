@@ -5,6 +5,7 @@ export const resourceSchema = z.object({
   code: z.string().min(1, 'Code is required'),
   description: z.string().optional().default(''),
   is_active: z.boolean().default(true),
+  actions: z.array(z.string()).default([]),
 })
 
 export type TResourceCreate = z.infer<typeof resourceSchema>

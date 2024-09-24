@@ -32,6 +32,6 @@ func (user *Role) ParseRecord(record *models.Record) error {
 func (role *Role) Validate() error {
 	return validation.ValidateStruct(role,
 		validation.Field(&role.Name, validation.Required),
-		validation.Field(&role.IsActive, validation.Required, validation.In(true, false)),
+		validation.Field(&role.IsActive, validation.In(true, false)),
 	)
 }

@@ -687,8 +687,8 @@ func (dao *Dao) cascadeRecordDelete(mainRecord *models.Record, refs map[*models.
 				query.AndWhere(dbx.HashExp{prefixedFieldName: mainRecord.Id})
 			} else {
 				query.AndWhere(dbx.Exists(dbx.NewExp(fmt.Sprintf(
-					`SELECT 1 FROM json_each(CASE WHEN json_valid([[%s]]) THEN [[%s]] ELSE json_array([[%s]]) END) {{__je__}} WHERE [[__je__.value]]={:jevalue}`,
-					prefixedFieldName, prefixedFieldName, prefixedFieldName,
+					`SELECT 1 FROM json_array_elements_text([[%s]]) AS je WHERE je = {:jevalue}`,
+					prefixedFieldName,
 				), dbx.Params{
 					"jevalue": mainRecord.Id,
 				})))
@@ -750,16 +750,6 @@ func (dao *Dao) deleteRefRecords(mainRecord *models.Record, refRecords []*models
 				ids = append(ids[:i], ids[i+1:]...)
 				break
 			}
-		}
-
-		// cascade delete the reference
-		// (only if there are no other active references in case of multiple select)
-		if options.CascadeDelete && len(ids) == 0 {
-			if err := dao.DeleteRecord(refRecord); err != nil {
-				return err
-			}
-			// no further actions are needed (the reference is deleted)
-			continue
 		}
 
 		if field.Required && len(ids) == 0 {

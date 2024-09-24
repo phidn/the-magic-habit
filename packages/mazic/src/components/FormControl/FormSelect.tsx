@@ -10,16 +10,14 @@ import {
   SelectValue,
 } from '@mazic-design-system'
 
+import { IOption } from '@mazic/types/form'
+
 interface FormSelectProps {
   field: string
   fieldDeps?: [string, string][]
-  options: {
-    label: string
-    value: string
-    disabled?: boolean
-    [key: string]: any
-  }[]
+  options: IOption[]
   onChange?: (value: any) => void
+  afterChange?: (value: any) => void
   type?: string
   validation?: any
   placeholder?: string
@@ -33,7 +31,7 @@ const FormSelect = ({
   validation,
   placeholder,
   onChange,
-  fieldDeps = [],
+  afterChange,
   ...props
 }: FormSelectProps) => {
   const methods = useFormContext()
@@ -45,13 +43,7 @@ const FormSelect = ({
   const handleChange = (value: string) => {
     methods.clearErrors(field)
     methods.setValue(field, value)
-    if (fieldDeps?.length) {
-      const selectedOption = options.find((opt) => opt.value === value)
-      fieldDeps.forEach((dep) => {
-        const [depField, depKey] = dep
-        methods.setValue(depField, selectedOption?.[depKey])
-      })
-    }
+    afterChange?.(value)
   }
 
   return (

@@ -30,23 +30,35 @@ func NewGlobalService(entry *entry.Entry, storage *infrastructure.SupaStorage) *
 }
 
 func (service *GlobalService) ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error) {
-	var options []Option
+	options := []Option{}
+
+	fieldValue := utils.If(resource.FieldValue == "", "id", resource.FieldValue)
+	fieldLabel := utils.If(resource.FieldLabel == "", "name", resource.FieldLabel)
+	fieldOrder := utils.If(resource.OrderBy == "", fieldLabel, resource.OrderBy)
+
+	selectStrings := []string{
+		fmt.Sprintf(`%s as value`, fieldValue),
+		fmt.Sprintf(`%s as label`, fieldLabel),
+	}
+	if len(resource.ExtraFields) > 0 {
+		for _, field := range resource.ExtraFields {
+			selectStrings = append(selectStrings, fmt.Sprintf(`%s as %s`, field, field))
+		}
+	}
 
 	query := service.Entry.Dao().DB().
-		Select(
-			fmt.Sprintf(`%s as value`, resource.FieldValue),
-			fmt.Sprintf(`%s as label`, resource.FieldLabel),
-		).
+		Select(selectStrings...).
 		WithContext(ctx).
 		From(resource.Table).
-		OrderBy(fmt.Sprintf(`%s ASC`, utils.If(resource.OrderBy == "", resource.FieldLabel, resource.OrderBy)))
+		OrderBy(fmt.Sprintf(`%s ASC`, fieldOrder))
 
 	if resource.Limit > 0 {
 		query = query.Limit(resource.Limit)
 	}
 	if resource.SearchKeyword != "" {
+		searchFields := utils.If(len(resource.SearchFields) == 0, []string{"name"}, resource.SearchFields)
 		conditions := []dbx.Expression{}
-		for _, field := range resource.SearchFields {
+		for _, field := range searchFields {
 			conditions = append(conditions, dbx.Like(field, resource.SearchKeyword))
 		}
 		query = query.Where(dbx.Or(conditions...))
@@ -55,6 +67,7 @@ func (service *GlobalService) ListOptions(ctx context.Context, resource Resource
 	if err := query.All(&options); err != nil {
 		return nil, err
 	}
+
 	return options, nil
 }
 

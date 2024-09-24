@@ -1,5 +1,4 @@
 import React from 'react'
-import { UseFormWatch } from 'react-hook-form'
 import { z } from 'zod'
 
 export const getRequiredFields = (schema: z.ZodObject<any>) => {
@@ -15,13 +14,7 @@ export const getRequiredFields = (schema: z.ZodObject<any>) => {
   return requiredFields
 }
 
-export const isValidSection = (schema: z.ZodObject<any>, watch: UseFormWatch<any>) => {
-  const values = watch()
-  const validationResult = schema.safeParse(values)
-  return validationResult.success
-}
-
-export const isValidSectionV2 = (values: any, schema: z.ZodObject<any>, fields?: string[]) => {
+export const isValidSection = (values: any, schema: z.ZodObject<any>, fields?: string[]) => {
   if (fields?.length) {
     const shape = schema.shape
 

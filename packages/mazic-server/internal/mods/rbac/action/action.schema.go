@@ -33,6 +33,6 @@ func (action *Action) Validate() error {
 	return validation.ValidateStruct(action,
 		validation.Field(&action.Name, validation.Required),
 		validation.Field(&action.Code, validation.Required),
-		validation.Field(&action.IsActive, validation.Required, validation.In(true, false)),
+		validation.Field(&action.IsActive, validation.In(true, false)),
 	)
 }

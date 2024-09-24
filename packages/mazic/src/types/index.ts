@@ -42,6 +42,7 @@ export interface IPaginationApi {
 export interface IParams {
   page?: number
   pageSize?: number
+  enabled?: boolean
   [key: string]: any
 }
 
@@ -66,4 +67,8 @@ export interface IFormProps {
   schema?: ZodObject<any>
   onSubmitForm: (values: any) => any
   isPendingSubmit?: boolean
+}
+
+export type TObjectAny = {
+  [key: string]: any
 }

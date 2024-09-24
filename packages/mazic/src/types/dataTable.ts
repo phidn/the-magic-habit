@@ -1,15 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table'
 
-export interface IOption {
-  label: string
-  value: any
-  icon?: React.ComponentType<{ className?: string }>
-  enableCount?: boolean
-}
+import { IOption } from './form'
 
 export interface DataTableFilterField {
   title?: string
-  label?: string
+  // label?: string
   filterKey: string
   placeholder?: string
   options: IOption[]

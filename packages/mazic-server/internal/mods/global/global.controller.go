@@ -22,9 +22,6 @@ func (controller *GlobalController) ListOptions(c echo.Context) error {
 	resource := resourceMap[queryParams.Get("resource")]
 
 	if resource.Table == "" {
-		return resp.NewNotFoundError(c, "", nil)
-	}
-	if resource.FieldLabel == "" || resource.FieldValue == "" {
 		return resp.NewApplicationError(c, "", nil)
 	}
 

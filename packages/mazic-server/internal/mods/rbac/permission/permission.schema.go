@@ -29,6 +29,9 @@ func (permission *Permission) ParseRecord(record *models.Record) error {
 	record.Set("code", permission.Code)
 	record.Set("is_active", permission.IsActive)
 
+	record.Set("resource_id", permission.ResourceId)
+	record.Set("action_id", permission.ActionId)
+
 	return nil
 }
 
@@ -36,6 +39,6 @@ func (permission *Permission) Validate() error {
 	return validation.ValidateStruct(permission,
 		validation.Field(&permission.Name, validation.Required),
 		validation.Field(&permission.Code, validation.Required),
-		validation.Field(&permission.IsActive, validation.Required, validation.In(true, false)),
+		validation.Field(&permission.IsActive, validation.In(true, false)),
 	)
 }

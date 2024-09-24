@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 
 import { FormMessage, MultiSelect } from '@mazic-design-system'
 
-import { IOption } from '@mazic/types/dataTable'
+import { IOption } from '@mazic/types/form'
 
 interface FormMultipleSelectProps {
   field: string

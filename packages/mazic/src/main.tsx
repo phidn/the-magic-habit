@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 
 import { AlertDialogCommon } from '@mazic/components/Commons/AlertCommon'
-import { skipError } from '@mazic/utils/utils'
 
 import './utils/i18n'
 
@@ -13,8 +12,6 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 import { routers } from './routers/routers'
 
 import './styles/mazic.scss'
-
-skipError()
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 

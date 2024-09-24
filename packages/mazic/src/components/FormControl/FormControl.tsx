@@ -7,7 +7,8 @@ import { z, ZodObject } from 'zod'
 import { usePageDetails } from '@mazic/hooks'
 import { useUploadFile } from '@mazic/hooks/useUploadFile'
 import { MutationApiResponse } from '@mazic/types'
-import { isValidSectionV2 } from '@mazic/utils/form'
+import { IFormSection } from '@mazic/types/form'
+import { isValidSection } from '@mazic/utils/form'
 
 import { FormHeader, TFormHeaderTitle } from './FormHeader'
 import { FormOutline } from './FormOutline'
@@ -16,14 +17,7 @@ import { FormSections } from './FormSections'
 export interface FormControlProps {
   formTitle?: string
   formOutlineTitle?: string
-  formSections: {
-    id?: string
-    title: string
-    elementRender: () => JSX.Element
-    fields?: string[]
-    isValid?: boolean
-    enabled?: boolean
-  }[]
+  formSections: IFormSection[]
   schema?: ZodObject<any>
   initialValues: any
   onSubmitForm: (values: any) => MutationApiResponse | Promise<MutationApiResponse>
@@ -34,7 +28,7 @@ export interface FormControlProps {
   isHasFile?: boolean
 }
 
-export const FormControl: React.FC<FormControlProps> = (props) => {
+export const FormControl = (props: FormControlProps) => {
   const {
     schema = z.object({}),
     initialValues,
@@ -56,15 +50,12 @@ export const FormControl: React.FC<FormControlProps> = (props) => {
     values: initialValues,
   })
 
-  console.log('>> Form values', methods.watch())
-  console.log('>> Form errors', methods.formState.errors)
-
   const _formSections = formSections.map((section, idx) => {
     return {
       ...section,
       id: section.id || `section-${idx}`,
       enabled: typeof section.enabled === 'undefined' ? true : section.enabled,
-      isValid: isValidSectionV2(methods.watch(), schema, section.fields),
+      isValid: isValidSection(methods.watch(), schema, section.fields),
     }
   })
 
@@ -96,8 +87,8 @@ export const FormControl: React.FC<FormControlProps> = (props) => {
         if (isCreatedAndReset) {
           return methods.reset(initialValues)
         }
-        if (typeof data?.data === 'string' && data?.data) {
-          navigate(pathname.replace('/new', `/edit/${data.data}`), { replace: true })
+        if (typeof data?.data?.id === 'string' && data?.data?.id) {
+          navigate(pathname.replace('/new', `/edit/${data.data?.id}`), { replace: true })
         }
       }
     } catch (error) {

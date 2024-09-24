@@ -2,18 +2,25 @@ package global
 
 import "regexp"
 
+/*
+  Default: FieldLabel = "name", FieldValue = "id", SearchFields = ["name"]
+*/
 var resourceMap = map[string]ResourceOption{
 	"ROLE": {
-		Table:        "sys_role",
-		FieldLabel:   "name",
-		FieldValue:   "id",
-		SearchFields: []string{"name"},
+		Table: "sys_role",
 	},
 	"ACTION": {
-		Table:        "sys_action",
-		FieldLabel:   "name",
-		FieldValue:   "id",
-		SearchFields: []string{"name"},
+		Table:       "sys_action",
+		ExtraFields: []string{"code"},
+	},
+	"RESOURCE": {
+		Table:       "sys_resource",
+		ExtraFields: []string{"code", "actions"},
+	},
+	"RESOURCE_NAME": {
+		Table:       "sys_resource",
+		FieldValue:  "name",
+		ExtraFields: []string{"code", "actions"},
 	},
 }
 

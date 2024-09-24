@@ -3,6 +3,7 @@ import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 import { extractFields } from '@mazic/utils/form'
 
+import { ActionForm } from './ActionForm'
 import { DetailForm } from './DetailForm'
 
 export const ResourceForm = (props: IFormProps) => {
@@ -11,6 +12,11 @@ export const ResourceForm = (props: IFormProps) => {
       title: 'Resource Details',
       elementRender: () => <DetailForm />,
       fields: extractFields(DetailForm),
+    },
+    {
+      title: 'Resource Actions',
+      elementRender: () => <ActionForm />,
+      fields: extractFields(ActionForm),
     },
     {
       title: 'Resource Status',

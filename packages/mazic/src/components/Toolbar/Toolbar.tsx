@@ -39,20 +39,18 @@ export const Toolbar = <TData,>({
     <div className="flex items-center justify-between py-2">
       <div className="flex flex-1 items-center space-x-2">
         <ToolbarSearch search={search.value} onChangeSearch={search.onChange} />
-        {(filterFields || [])
-          .filter((x) => table.getColumn(x?.filterKey || ''))
-          .map((filterField: any, index: number) => {
-            return (
-              <FacetedFilter
-                key={filterField.filterKey || index}
-                title={filterField?.title}
-                options={filterField.options}
-                multiSelect={filterField?.multiSelect}
-                selectedValue={filterField?.selectedValue}
-                onChange={filterField?.onChange}
-              />
-            )
-          })}
+        {(filterFields || []).map((filterField: any, index: number) => {
+          return (
+            <FacetedFilter
+              key={filterField.filterKey || index}
+              title={filterField?.title}
+              options={filterField.options}
+              multiSelect={filterField?.multiSelect}
+              selectedValue={filterField?.selectedValue}
+              onChange={filterField?.onChange}
+            />
+          )
+        })}
 
         {isFiltered && (
           <Button

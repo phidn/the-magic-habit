@@ -5,7 +5,9 @@ import (
 	"mazic/pocketbase/models"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
+	"mazic/server/pkg/utils"
 	"net/url"
+	"strings"
 
 	"github.com/pocketbase/dbx"
 )
@@ -26,6 +28,12 @@ func (service *PermissionService) Find(ctx context.Context, queryParams url.Valu
 	is_active := queryParams.Get("is_active")
 	if is_active != "" {
 		listExpression = append(listExpression, dbx.NewExp("is_active = {:is_active}", dbx.Params{"is_active": is_active}))
+	}
+
+	resource_id := queryParams.Get("resource_id")
+	if resource_id != "" {
+		ids := strings.Split(resource_id, ",")
+		listExpression = append(listExpression, dbx.In("resource_id", utils.ToInterfaceSlice(ids)...))
 	}
 
 	search := queryParams.Get("search")

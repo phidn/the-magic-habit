@@ -1,20 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { entryService } from '@mazic/services/entryService'
-import { IOption } from '@mazic/types/dataTable'
-import { ApiResponse } from '@mazic/types/index'
+import { IOption } from '@mazic/types/form'
+import { ApiResponse, TObjectAny } from '@mazic/types/index'
 
 /**
  * Get options from the API
  * @param resource
  * @returns
  */
-export const useGetOptions = (resource: string) => {
-  const { data, ...rest } = useQuery({
-    queryFn: () => entryService.getOptions<ApiResponse<IOption[]>>(resource),
-    queryKey: ['options', resource],
+export const useGetOptions = (resource: string, params?: TObjectAny, enabled = true) => {
+  const { data } = useQuery({
+    queryFn: () => entryService.getOptions<ApiResponse<IOption[]>>(resource, params),
+    queryKey: ['options', resource, params],
+    enabled,
   })
-  return { ...data?.data, ...rest }
+
+  const options = data?.data?.data || []
+  return { options }
 }
 
 /**
@@ -24,4 +27,7 @@ export const useGetOptions = (resource: string) => {
  */
 export const RESOURCES = {
   ROLE: 'ROLE',
+  RESOURCE: 'RESOURCE',
+  RESOURCE_NAME: 'RESOURCE_NAME',
+  ACTION: 'ACTION',
 } as const

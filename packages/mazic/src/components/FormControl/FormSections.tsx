@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@mazic-design-system'
 
-import { FormControlProps } from './FormControl'
+import { IFormSection } from '@mazic/types/form'
+
 import { FormEditable } from './FormEditable'
 
 interface FormSectionsProps {
-  sections: FormControlProps['formSections'] | FormControlProps['formSections']
+  sections: IFormSection[]
 }
 
 export const FormSections = ({ sections }: FormSectionsProps) => {
