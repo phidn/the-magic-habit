@@ -28,7 +28,7 @@ export const useMenuList = (): MenuList => {
       },
       {
         groupLabel: 'System',
-        menus: [getMenuWithSubmenus(MENUS.COMPANY_SETTING), getMenuWithSubmenus(MENUS.SYSTEM)],
+        menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
       },
     ],
   }

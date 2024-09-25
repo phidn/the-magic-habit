@@ -40,15 +40,4 @@ export const MENUS: Menus = {
       },
     ],
   },
-  COMPANY_SETTING: {
-    href: '/#',
-    label: 'Company Setting',
-    icon: CompanyIcon,
-    submenus: [
-      {
-        href: '/close-reason',
-        label: 'Close reason',
-      },
-    ],
-  },
 }

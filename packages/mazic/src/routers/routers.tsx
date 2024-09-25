@@ -1,7 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import { LoginPage } from '@mazic/modules/auth'
-import { closeReasonRoute } from '@mazic/modules/crm/closeReason'
 import { dashboardRoute } from '@mazic/modules/dashboard/dashboard.route'
 import { actionRoute } from '@mazic/modules/rbac/action/actionRoute'
 import { permissionRoute } from '@mazic/modules/rbac/permission/permissionRoute'
@@ -25,7 +24,6 @@ const _routes = [
   ...permissionRoute,
   ...roleRoute,
   ...rolePermissionRoute,
-  ...closeReasonRoute,
   ...userRoute,
 ]
 
