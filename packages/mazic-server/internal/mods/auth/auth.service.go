@@ -8,6 +8,7 @@ import (
 	"mazic/server/internal/mods/rbac/user"
 	"mazic/server/pkg/infrastructure"
 	"mazic/server/pkg/token"
+	"mazic/server/pkg/utils"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -46,7 +47,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 	accessToken, err := token.CreateToken(config.Config.AccessTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
 		"token_id": security.RandomSnowflakeId(),
-		"roles":    []string{""},
+		"roles":    utils.ToInterfaceSlice(user.Roles),
 		"exp":      now.Add(config.Config.AccessTokenExpiresIn).Unix(),
 		"iat":      now.Unix(),
 		"nbf":      now.Unix(),
@@ -58,7 +59,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 	refreshToken, err := token.CreateToken(config.Config.RefreshTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
 		"token_id": security.RandomSnowflakeId(),
-		"roles":    []string{""},
+		"roles":    utils.ToInterfaceSlice(user.Roles),
 		"exp":      now.Add(config.Config.RefreshTokenExpiresIn).Unix(),
 		"iat":      now.Unix(),
 		"nbf":      now.Unix(),
