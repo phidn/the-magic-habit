@@ -1,9 +1,9 @@
 package mods
 
 import (
-	"mazic/server/internal/mods/auth"
 	"mazic/server/internal/mods/global"
 	"mazic/server/internal/mods/rbac/action"
+	"mazic/server/internal/mods/rbac/auth"
 	"mazic/server/internal/mods/rbac/permission"
 	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/internal/mods/rbac/role"

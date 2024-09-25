@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from '@mazic-design-system'
 
-import { useLogout } from '@mazic/modules/auth'
+import { useLogout } from '@mazic/modules/rbac/auth'
 import { useStore } from '@mazic/store/useStore'
 
 export const UserNav = () => {

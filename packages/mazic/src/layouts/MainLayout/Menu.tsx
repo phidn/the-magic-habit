@@ -11,7 +11,7 @@ import {
 
 import { MenuLink } from '@mazic/components/Commons'
 import { useMenuList } from '@mazic/hooks/useMenuList'
-import { useLogout } from '@mazic/modules/auth'
+import { useLogout } from '@mazic/modules/rbac/auth'
 import { cn } from '@mazic/utils/cn'
 
 import { CollapseMenuButton } from './CollapseMenuButton'

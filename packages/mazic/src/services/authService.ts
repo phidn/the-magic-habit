@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios'
 
-import { LoginSchemaType } from '@mazic/modules/auth'
+import { LoginSchemaType } from '@mazic/modules/rbac/auth'
 import { TUser } from '@mazic/modules/rbac/user/schemas/userSchema'
 import http from '@mazic/utils/http'
 import { getAccessTokenFromLS, getRefreshTokenFromLS } from '@mazic/utils/localStorage'

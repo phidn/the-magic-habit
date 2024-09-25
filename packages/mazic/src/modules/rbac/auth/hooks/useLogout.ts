@@ -8,7 +8,6 @@ export const useLogout = () => {
 
   return useMutation({
     mutationFn: async () => {
-      // authService.logout()
       await new Promise((resolve) => setTimeout(resolve, 1000))
       return true
     },
