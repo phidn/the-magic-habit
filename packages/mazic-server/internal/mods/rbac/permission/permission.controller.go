@@ -91,3 +91,12 @@ func (controller *PermissionController) Delete(c echo.Context) error {
 
 	return resp.NewApiDeleted(c, "The permission has been deleted.")
 }
+
+func (controller *PermissionController) Seed(c echo.Context) error {
+	err := controller.PermissionService.Seed(c.Request().Context())
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to delete permission.", err)
+	}
+
+	return resp.NewApiDeleted(c, "The permission has been deleted.")
+}

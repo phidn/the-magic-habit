@@ -11,9 +11,10 @@ var _ models.Model = (*Permission)(nil)
 type Permission struct {
 	models.BaseModel
 
-	Name     string `db:"name" json:"name"`
-	Code     string `db:"code" json:"code"`
-	IsActive bool   `db:"is_active" json:"is_active"`
+	Name        string `db:"name" json:"name"`
+	Code        string `db:"code" json:"code"`
+	Description string `db:"description" json:"description"`
+	IsActive    bool   `db:"is_active" json:"is_active"`
 
 	ResourceId string `db:"resource_id" json:"resource_id"`
 	ActionId   string `db:"action_id" json:"action_id"`
@@ -27,6 +28,7 @@ func (permission *Permission) ParseRecord(record *models.Record) error {
 
 	record.Set("name", permission.Name)
 	record.Set("code", permission.Code)
+	record.Set("description", permission.Description)
 	record.Set("is_active", permission.IsActive)
 
 	record.Set("resource_id", permission.ResourceId)

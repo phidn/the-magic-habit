@@ -2,7 +2,10 @@ package permission
 
 import (
 	"context"
+	"fmt"
 	"mazic/pocketbase/models"
+	"mazic/server/internal/mods/rbac/action"
+	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
 	"mazic/server/pkg/utils"
@@ -18,6 +21,7 @@ type PermissionService interface {
 	Create(ctx context.Context, permission *Permission) (*models.Record, error)
 	Update(ctx context.Context, id string, permission *Permission) (*models.Record, error)
 	Delete(ctx context.Context, id string) (*models.Record, error)
+	Seed(ctx context.Context) error
 }
 
 type permissionService struct {
@@ -111,4 +115,71 @@ func (service *permissionService) Delete(ctx context.Context, id string) (*model
 		return nil, err
 	}
 	return record, nil
+}
+
+func (service *permissionService) Seed(ctx context.Context) error {
+	var resources []resource.Resource
+	var actions []action.Action
+
+	// Fetch all active resources
+	err := service.Entry.Dao().DB().
+		Select("id", "name", "code").
+		From(new(resource.Resource).TableName()).
+		Where(dbx.HashExp{"is_active": true}).
+		All(&resources)
+	if err != nil {
+		return fmt.Errorf("failed to fetch resources: %w", err)
+	}
+
+	// Fetch all active actions
+	err = service.Entry.Dao().DB().
+		Select("id", "name", "code").
+		From(new(action.Action).TableName()).
+		Where(dbx.HashExp{"is_active": true}).
+		All(&actions)
+	if err != nil {
+		return fmt.Errorf("failed to fetch actions: %w", err)
+	}
+
+	// Pre-fetch all existing permissions
+	var existingPermissions []Permission
+	err = service.Entry.Dao().DB().
+		Select("code").
+		From(new(Permission).TableName()).
+		All(&existingPermissions)
+	if err != nil {
+		return fmt.Errorf("failed to fetch existing permissions: %w", err)
+	}
+
+	existingPermissionMap := make(map[string]struct{})
+	for _, perm := range existingPermissions {
+		existingPermissionMap[perm.Code] = struct{}{}
+	}
+
+	// Loop through resources and actions to create missing permissions
+	for _, resource := range resources {
+		for _, action := range actions {
+			permissionCode := fmt.Sprintf("%s.%s", resource.Code, action.Code)
+
+			// Skip if permission already exists
+			if _, exists := existingPermissionMap[permissionCode]; exists {
+				continue
+			}
+
+			// Create new permission
+			newPermission := &Permission{
+				Name:        fmt.Sprintf("%s %s", action.Name, resource.Name),
+				Code:        permissionCode,
+				Description: fmt.Sprintf("Permission to %s %s", action.Name, resource.Name),
+				IsActive:    true,
+				ResourceId:  resource.Id,
+				ActionId:    action.Id,
+			}
+			if _, err := service.Create(ctx, newPermission); err != nil {
+				return fmt.Errorf("failed to create permission %s: %w", permissionCode, err)
+			}
+		}
+	}
+
+	return nil
 }

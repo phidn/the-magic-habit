@@ -9,7 +9,7 @@ import (
 )
 
 type RolePermissionService interface {
-	Find(ctx context.Context) ([]RolePermission, error)
+	Find(ctx context.Context) ([]RolePermissionMatrix, error)
 	Update(ctx context.Context, records []RolePermissionRecord) error
 }
 
@@ -23,8 +23,8 @@ func NewRolePermissionService(entry entry.Entry) RolePermissionService {
 	}
 }
 
-func (service *rolePermissionService) Find(ctx context.Context) ([]RolePermission, error) {
-	records := []RolePermission{}
+func (service *rolePermissionService) Find(ctx context.Context) ([]RolePermissionMatrix, error) {
+	records := []RolePermissionMatrix{}
 	rawQuery := `
 		SELECT
 			COALESCE(rp.id, '') as id,

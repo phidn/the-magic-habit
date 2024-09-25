@@ -27,6 +27,7 @@ func (route *PermissionRoute) SetupRoutes() {
 		e.Router.POST("/mz/permissions", route.controller.Create, route.authMiddleware.IsAuthenticated)
 		e.Router.PUT("/mz/permissions/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
 		e.Router.DELETE("/mz/permissions/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
+		e.Router.POST("/mz/permissions/seed", route.controller.Seed, route.authMiddleware.IsAuthenticated)
 		return nil
 	})
 }

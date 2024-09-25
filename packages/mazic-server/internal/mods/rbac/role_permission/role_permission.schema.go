@@ -1,6 +1,6 @@
 package role_permission
 
-type RolePermission struct {
+type RolePermissionMatrix struct {
 	Id string `json:"id" db:"id"`
 
 	RoleId       string `json:"role_id" db:"role_id"`
@@ -11,10 +11,6 @@ type RolePermission struct {
 	PermissionName string `json:"permission_name" db:"permission_name"`
 	ResourceId     string `json:"resource_id" db:"resource_id"`
 	ResourceName   string `json:"resource_name" db:"resource_name"`
-}
-
-func (m *RolePermission) TableName() string {
-	return "sys_role_permission"
 }
 
 type RolePermissionRecord struct {
