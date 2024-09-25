@@ -83,17 +83,16 @@ model sys_action {
 
 model sys_permission {
   action_id   String   @default("")
-  code        String   @unique(map: "idx_ea4s61a") @default("")
+  code        String   @unique(map: "idx_wk0bqvu") @default("")
   created     DateTime @default(now()) @db.Timestamptz(6)
   description String   @default("")
   id          String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  name        String   @unique(map: "idx_cl3ugwl") @default("")
+  name        String   @unique(map: "idx_cl4ugwl") @default("")
   resource_id String   @default("")
   updated     DateTime @default(now()) @db.Timestamptz(6)
   is_active   Boolean  @default(false)
 
   @@unique([resource_id, action_id], map: "idx_5xtoxww")
-  @@unique([resource_id, action_id], map: "idx_kb9px1t")
 }
 
 model sys_resource {
@@ -122,7 +121,7 @@ model sys_role_permission {
   role_id       String   @default("")
   updated       DateTime @default(now()) @db.Timestamptz(6)
 
-  @@unique([role_id, permission_id], map: "idx_wkljljh")
+  @@unique([role_id, permission_id], map: "idx_wkljljk")
 }
 
 model sys_user {
