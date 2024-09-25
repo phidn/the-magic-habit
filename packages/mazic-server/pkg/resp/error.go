@@ -1,7 +1,6 @@
 package resp
 
 import (
-	"mazic/pocketbase/tools/security"
 	"mazic/server/config"
 	"mazic/server/pkg/utils"
 	"net/http"
@@ -49,7 +48,7 @@ func NewUnauthorizedError(c echo.Context, message string, err any) error {
 }
 
 func NewApiError(c echo.Context, code int, name, message string, err any) error {
-	traceId := security.RandomSnowflakeId()
+	traceId := utils.RandomString()
 	if utils.IsError(err) {
 		err = err.(error).Error()
 	}

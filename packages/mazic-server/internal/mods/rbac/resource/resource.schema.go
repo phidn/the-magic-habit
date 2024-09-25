@@ -1,8 +1,8 @@
 package resource
 
 import (
-	"mazic/pocketbase/models"
-	"mazic/pocketbase/tools/types"
+	"github.com/pocketbase/pocketbase/models"
+	"github.com/pocketbase/pocketbase/tools/types"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )

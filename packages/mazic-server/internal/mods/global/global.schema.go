@@ -1,6 +1,6 @@
 package global
 
-import "mazic/pocketbase/tools/types"
+import "github.com/pocketbase/pocketbase/tools/types"
 
 type ResourceOption struct {
 	Table         string

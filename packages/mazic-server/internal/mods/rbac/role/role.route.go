@@ -1,9 +1,10 @@
 package role
 
 import (
-	"mazic/pocketbase/core"
 	middlewares "mazic/server/internal/middlewares"
 	"mazic/server/pkg/infrastructure"
+
+	"github.com/pocketbase/pocketbase/core"
 )
 
 type RoleRoute struct {

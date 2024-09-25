@@ -1,7 +1,7 @@
 package action
 
 import (
-	"mazic/pocketbase/models"
+	"github.com/pocketbase/pocketbase/models"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )

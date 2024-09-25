@@ -1,10 +1,11 @@
 package middlewares
 
 import (
-	"mazic/pocketbase/apis"
 	"mazic/server/config"
 	"mazic/server/pkg/token"
 	"strings"
+
+	"github.com/pocketbase/pocketbase/apis"
 
 	"github.com/labstack/echo/v5"
 )

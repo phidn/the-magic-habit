@@ -3,7 +3,6 @@ package auth
 import (
 	"context"
 	"errors"
-	"mazic/pocketbase/tools/security"
 	"mazic/server/config"
 	"mazic/server/internal/mods/rbac/user"
 	"mazic/server/pkg/infrastructure"
@@ -46,7 +45,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 
 	accessToken, err := token.CreateToken(config.Config.AccessTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
-		"token_id": security.RandomSnowflakeId(),
+		"token_id": utils.RandomString(),
 		"roles":    utils.ToInterfaceSlice(user.Roles),
 		"exp":      now.Add(config.Config.AccessTokenExpiresIn).Unix(),
 		"iat":      now.Unix(),
@@ -58,7 +57,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 
 	refreshToken, err := token.CreateToken(config.Config.RefreshTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
-		"token_id": security.RandomSnowflakeId(),
+		"token_id": utils.RandomString(),
 		"roles":    utils.ToInterfaceSlice(user.Roles),
 		"exp":      now.Add(config.Config.RefreshTokenExpiresIn).Unix(),
 		"iat":      now.Unix(),

@@ -1,6 +1,8 @@
 package utils
 
-import "strconv"
+import (
+	"strconv"
+)
 
 func If[T any](condition bool, ifTrue T, ifFalse T) T {
 	if condition {

@@ -2,10 +2,11 @@ package user
 
 import (
 	"context"
-	"mazic/pocketbase/models"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
 	"net/url"
+
+	"github.com/pocketbase/pocketbase/models"
 
 	"github.com/pocketbase/dbx"
 )

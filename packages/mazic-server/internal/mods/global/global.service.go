@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"mazic/pocketbase/tools/security"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/infrastructure"
 	"mazic/server/pkg/supa_storage"
@@ -100,7 +99,7 @@ func (service *globalService) Upload(file *multipart.FileHeader) (string, error)
 		return "", err
 	}
 
-	filePath := fmt.Sprintf("%s-%s", security.RandomSnowflakeId(), file.Filename)
+	filePath := fmt.Sprintf("%s-%s", utils.RandomString(), file.Filename)
 
 	_, err = service.Storage.UploadFile(service.Storage.Bucket, filePath, fileData, supa_storage.FileOptions{
 		ContentType: valid_pointer.PointerString(mimetype),

@@ -1,7 +1,7 @@
 package infrastructure
 
 import (
-	"mazic/pocketbase"
+	"github.com/pocketbase/pocketbase"
 )
 
 type Pocket struct {

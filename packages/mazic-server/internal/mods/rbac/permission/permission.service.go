@@ -3,7 +3,6 @@ package permission
 import (
 	"context"
 	"fmt"
-	"mazic/pocketbase/models"
 	"mazic/server/internal/mods/rbac/action"
 	"mazic/server/internal/mods/rbac/resource"
 	"mazic/server/pkg/entry"
@@ -11,6 +10,8 @@ import (
 	"mazic/server/pkg/utils"
 	"net/url"
 	"strings"
+
+	"github.com/pocketbase/pocketbase/models"
 
 	"github.com/pocketbase/dbx"
 )

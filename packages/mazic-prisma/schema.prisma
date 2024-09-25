@@ -3,137 +3,137 @@ generator db {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = "file:../mazic-server/pb_data/data.db"
 }
 
 model admins {
-  id              String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  avatar          Int      @default(0)
-  email           String   @unique
-  tokenKey        String   @unique
+  id              String @id
+  avatar          Int    @default(0)
+  email           String @unique(map: "sqlite_autoindex__admins_2")
+  tokenKey        String @unique(map: "sqlite_autoindex__admins_3")
   passwordHash    String
-  lastResetSentAt String   @default("")
-  created         DateTime @default(now()) @db.Timestamptz(6)
-  updated         DateTime @default(now()) @db.Timestamptz(6)
+  lastResetSentAt String @default("")
+  created         String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated         String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
   @@map("_admins")
 }
 
 model collections {
-  id            String          @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  system        Boolean         @default(false)
-  type          String          @default("base")
-  name          String          @unique
-  schema        Json            @default("[]") @db.Json
-  indexes       Json            @default("[]") @db.Json
+  id            String              @id
+  system        Boolean             @default(false)
+  type          String              @default("base")
+  name          String              @unique(map: "sqlite_autoindex__collections_2")
+  schema        Unsupported("json") @default(dbgenerated("\"[]\""))
+  indexes       Unsupported("json") @default(dbgenerated("\"[]\""))
   listRule      String?
   viewRule      String?
   createRule    String?
   updateRule    String?
   deleteRule    String?
-  options       Json            @default("{}") @db.Json
-  created       DateTime        @default(now()) @db.Timestamptz(6)
-  updated       DateTime        @default(now()) @db.Timestamptz(6)
+  options       Unsupported("json") @default(dbgenerated("\"{}\""))
+  created       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   externalAuths externalAuths[]
 
   @@map("_collections")
 }
 
 model externalAuths {
-  id           String      @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
+  id           String      @id
   collectionId String
   recordId     String
   provider     String
   providerId   String
-  created      DateTime    @default(now()) @db.Timestamptz(6)
-  updated      DateTime    @default(now()) @db.Timestamptz(6)
+  created      String      @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated      String      @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   collections  collections @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
-  @@unique([collectionId, provider, providerId], map: "_externalauths_collection_provider_idx")
-  @@unique([collectionId, recordId, provider], map: "_externalauths_record_provider_idx")
+  @@unique([collectionId, provider, providerId], map: "_externalAuths_collection_provider_idx")
+  @@unique([collectionId, recordId, provider], map: "_externalAuths_record_provider_idx")
   @@map("_externalAuths")
 }
 
 model migrations {
-  file    String   @id @db.VarChar(255)
-  applied DateTime @db.Timestamptz(6)
+  file    String @id
+  applied Int
 
   @@map("_migrations")
 }
 
 model params {
-  id      String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  key     String   @unique
-  value   Json?    @db.Json
-  created DateTime @default(now()) @db.Timestamptz(6)
-  updated DateTime @default(now()) @db.Timestamptz(6)
+  id      String               @id
+  key     String               @unique(map: "sqlite_autoindex__params_2")
+  value   Unsupported("json")?
+  created String               @default("")
+  updated String               @default("")
 
   @@map("_params")
 }
 
 model sys_action {
-  code      String   @unique(map: "idx_ajti1fk") @default("")
-  created   DateTime @default(now()) @db.Timestamptz(6)
-  id        String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  name      String   @unique(map: "idx_hm9tgfg") @default("")
-  updated   DateTime @default(now()) @db.Timestamptz(6)
-  is_active Boolean  @default(false)
+  code      String  @unique(map: "idx_AJtI1FK") @default("")
+  created   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id        String  @id @default("'r'||lower(hex(randomblob(7)))")
+  is_active Boolean @default(false)
+  name      String  @unique(map: "idx_Xj8ydPd") @default("")
+  updated   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_permission {
-  action_id   String   @default("")
-  code        String   @unique(map: "idx_wk0bqvu") @default("")
-  created     DateTime @default(now()) @db.Timestamptz(6)
-  description String   @default("")
-  id          String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  name        String   @unique(map: "idx_cl4ugwl") @default("")
-  resource_id String   @default("")
-  updated     DateTime @default(now()) @db.Timestamptz(6)
-  is_active   Boolean  @default(false)
+  action_id   String  @default("")
+  code        String  @unique(map: "idx_Wk0bqVU") @default("")
+  created     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  description String  @default("")
+  id          String  @id @default("'r'||lower(hex(randomblob(7)))")
+  is_active   Boolean @default(false)
+  name        String  @unique(map: "idx_cL4UgWL") @default("")
+  resource_id String  @default("")
+  updated     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
-  @@unique([resource_id, action_id], map: "idx_5xtoxww")
+  @@unique([resource_id, action_id], map: "idx_5XTOxWW")
 }
 
 model sys_resource {
-  code      String   @unique(map: "idx_rk2phv9") @default("")
-  created   DateTime @default(now()) @db.Timestamptz(6)
-  id        String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  name      String   @unique(map: "idx_p2vqkrr") @default("")
-  updated   DateTime @default(now()) @db.Timestamptz(6)
-  is_active Boolean  @default(false)
-  actions   Json     @default("[]") @db.Json
+  actions   Unsupported("json") @default(dbgenerated("'[]'"))
+  code      String              @unique(map: "idx_rK2pHv9") @default("")
+  created   String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id        String              @id @default("'r'||lower(hex(randomblob(7)))")
+  is_active Boolean             @default(false)
+  name      String              @unique(map: "idx_p2vQkRr") @default("")
+  updated   String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_role {
-  created     DateTime @default(now()) @db.Timestamptz(6)
-  description String   @default("")
-  id          String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  name        String   @unique(map: "idx_eyici8a") @default("")
-  updated     DateTime @default(now()) @db.Timestamptz(6)
-  is_active   Boolean  @default(false)
+  created     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  description String  @default("")
+  id          String  @id @default("'r'||lower(hex(randomblob(7)))")
+  is_active   Boolean @default(false)
+  name        String  @unique(map: "idx_eyiCi8a") @default("")
+  updated     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_role_permission {
-  created       DateTime @default(now()) @db.Timestamptz(6)
-  id            String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  permission_id String   @default("")
-  role_id       String   @default("")
-  updated       DateTime @default(now()) @db.Timestamptz(6)
+  created       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id            String @id @default("'r'||lower(hex(randomblob(7)))")
+  permission_id String @default("")
+  role_id       String @default("")
+  updated       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
-  @@unique([role_id, permission_id], map: "idx_wkljljk")
+  @@unique([role_id, permission_id], map: "idx_WKLjlJK")
 }
 
 model sys_user {
-  avatar        String   @default("")
-  created       DateTime @default(now()) @db.Timestamptz(6)
-  email         String   @unique(map: "idx_3q5o1p3") @default("")
-  id            String   @id @default(dbgenerated("generate_snowflake()")) @db.VarChar(32)
-  password_hash String   @default("")
-  roles         Json     @default("[]") @db.Json
-  updated       DateTime @default(now()) @db.Timestamptz(6)
-  username      String   @unique(map: "idx_1ihlfng") @default("")
-  verified      Boolean  @default(false)
-  first_name    String   @default("")
-  last_name     String   @default("")
+  avatar        String              @default("")
+  created       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  email         String              @unique(map: "idx_3q5O1p3") @default("")
+  first_name    String              @default("")
+  id            String              @id @default("'r'||lower(hex(randomblob(7)))")
+  last_name     String              @default("")
+  password_hash String              @default("")
+  roles         Unsupported("json") @default(dbgenerated("'[]'"))
+  updated       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  username      String              @unique(map: "idx_1IHlFNg") @default("")
+  verified      Boolean             @default(false)
 }

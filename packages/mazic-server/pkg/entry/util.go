@@ -2,8 +2,9 @@ package entry
 
 import (
 	"errors"
-	"mazic/pocketbase/models"
 	"reflect"
+
+	"github.com/pocketbase/pocketbase/models"
 )
 
 func (entry *entry) getModelFromSlice(slices any) (models.Model, error) {

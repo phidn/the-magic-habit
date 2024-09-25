@@ -3,9 +3,10 @@ package role_permission
 import (
 	"context"
 	"fmt"
-	"mazic/pocketbase/daos"
 	"mazic/server/pkg/entry"
 	"strings"
+
+	"github.com/pocketbase/pocketbase/daos"
 )
 
 type RolePermissionService interface {
