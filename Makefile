@@ -54,6 +54,11 @@ clear-debug:
 
 # ===== NX ======== #
 
+automate-updating-dependencies:
+	@echo "Automating updating dependencies..."
+	yarn nx migrate latest
+	@echo "Dependencies updated."
+
 graph:
 	@echo "Generating graph..."
 	yarn nx graph
