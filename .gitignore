@@ -17,7 +17,7 @@ node_modules
 *.launch
 .settings/
 *.sublime-workspace
-.vscode/
+.vscode/settings.json
 
 # misc
 /.sass-cache
