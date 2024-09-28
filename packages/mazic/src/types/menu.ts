@@ -12,7 +12,7 @@ export type Menu = {
   submenus?: Submenu[]
 }
 
-export type MenuItem = Menu | Submenu
+export type TMenuItem = Menu | Submenu
 
 export type Group = {
   groupLabel: string
@@ -23,6 +23,6 @@ export type MenuList = {
   menuList: Group[]
 }
 
-export type Menus = {
+export type TMenus = {
   [key: string]: Menu
 }

@@ -1,7 +1,72 @@
-import { useLocation } from 'react-router-dom'
+import { To, useLocation } from 'react-router-dom'
 
-import { MENUS } from '@mazic/config/menus'
-import { Menu, MenuList, Submenu } from '@mazic/types/menu'
+import { DashboardIcon, GuardIcon } from '@mazic-design-system'
+
+import { Menu, MenuList, Submenu, TMenuItem, TMenus } from '@mazic/types/menu'
+
+export const MENUS: TMenus = {
+  DASHBOARD: {
+    href: '/',
+    label: 'Dashboard',
+    icon: DashboardIcon,
+    submenus: [
+      {
+        href: '/habits',
+        label: 'Habit',
+      },
+    ],
+  },
+  SYSTEM: {
+    href: '/#',
+    label: 'Administration',
+    icon: GuardIcon,
+    submenus: [
+      {
+        href: '/user',
+        label: 'User',
+      },
+      {
+        href: '/roles-permissions',
+        label: 'Roles & Permissions',
+      },
+      {
+        href: '/role',
+        label: 'Role',
+      },
+      {
+        href: '/permission',
+        label: 'Permission',
+      },
+      {
+        href: '/resource',
+        label: 'Resource',
+      },
+      {
+        href: '/action',
+        label: 'Action',
+      },
+    ],
+  },
+}
+
+export const findMenuByHref = (targetHref: To): TMenuItem => {
+  for (const key in MENUS) {
+    if (MENUS[key].href === targetHref) {
+      return MENUS[key]
+    }
+
+    if (MENUS[key].submenus && MENUS[key].submenus.length > 0) {
+      const found = MENUS[key].submenus.find((submenu) => submenu.href === targetHref)
+      if (found) {
+        return found
+      }
+    }
+  }
+  return {
+    label: '',
+    href: targetHref.toString(),
+  }
+}
 
 export const useMenuList = (): MenuList => {
   const { pathname } = useLocation()
