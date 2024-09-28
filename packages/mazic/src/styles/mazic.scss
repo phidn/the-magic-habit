@@ -1,6 +1,6 @@
 @import 'var';
 
-.mazic_row {
+.mazic-row {
   margin-left: -$numberPadding;
   margin-right: -$numberPadding;
   @include flex;
@@ -9,7 +9,7 @@
 @for $col from 1 through 12 {
   $colWidth: percentage(calc($col/12));
 
-  .mazic_col_#{$col} {
+  .mazic-col-#{$col} {
     max-width: $colWidth;
     flex: 0 0 $colWidth;
     padding: $numberPadding;

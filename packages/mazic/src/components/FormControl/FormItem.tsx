@@ -17,7 +17,7 @@ interface FormItemProps {
 export const FormItem = ({ label, col = 4, required = false, children }: FormItemProps) => {
   const { field } = children.props
   return (
-    <div className={`mazic_col_${col}`}>
+    <div className={`mazic-col-${col}`}>
       <Label htmlFor={field}>
         {label}
         {required && <span className="text-destructive">{' *'}</span>}

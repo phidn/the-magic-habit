@@ -33,7 +33,7 @@ export const DetailForm = () => {
   })
 
   return (
-    <div className="mazic_row">
+    <div className="mazic-row">
       <FormItem label="Name" required>
         <FormInput field="name" placeholder="Enter permission name..." />
       </FormItem>

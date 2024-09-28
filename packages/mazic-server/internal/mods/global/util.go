@@ -1,9 +1,11 @@
 package global
 
-import "regexp"
+import (
+	"regexp"
+)
 
 /*
-  Default: FieldLabel = "name", FieldValue = "id", SearchFields = ["name"]
+Default: FieldLabel = "name", FieldValue = "id", SearchFields = ["name"]
 */
 var resourceMap = map[string]ResourceOption{
 	"ROLE": {
@@ -24,17 +26,11 @@ var resourceMap = map[string]ResourceOption{
 	},
 }
 
-var (
-	allowedMimeRegex = []string{
-		"image/*",
-	}
-)
-
-func validateMimeType(mimeType string, allowedMimeRegex []string) bool {
-	for _, regex := range allowedMimeRegex {
-		if !regexp.MustCompile(regex).MatchString(mimeType) {
-			return false
+func validateMimeType(mimeType string, regexArray ...string) bool {
+	for _, regex := range regexArray {
+		if regexp.MustCompile(regex).MatchString(mimeType) {
+			return true
 		}
 	}
-	return true
+	return false
 }

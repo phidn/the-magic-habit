@@ -113,11 +113,11 @@ export const FormControl = (props: FormControlProps) => {
           initialValues={initialValues}
           isValidForm={isValidForm}
         />
-        <div className="mazic_row">
-          <div className="mazic_col_9">
+        <div className="mazic-row">
+          <div className="mazic-col-9">
             <FormSections sections={_formSections} />
           </div>
-          <div className="mazic_col_3">
+          <div className="mazic-col-3">
             <FormOutline
               formSections={_formSections}
               formTitle={formOutlineTitle ? `${formOutlineTitle} Information` : 'Information'}

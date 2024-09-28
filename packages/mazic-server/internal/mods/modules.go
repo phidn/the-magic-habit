@@ -2,6 +2,7 @@ package mods
 
 import (
 	"mazic/server/internal/mods/global"
+	"mazic/server/internal/mods/habit"
 	"mazic/server/internal/mods/rbac/action"
 	"mazic/server/internal/mods/rbac/auth"
 	"mazic/server/internal/mods/rbac/permission"
@@ -103,6 +104,17 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(role_permission *role_permission.RolePermissionRoute) error {
 			role_permission.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("habit", fx.Options(
+		fx.Provide(
+			habit.NewHabitService,
+			habit.NewHabitController,
+			habit.NewHabitRoute,
+		),
+		fx.Invoke(func(habit *habit.HabitRoute) error {
+			habit.SetupRoutes()
 			return nil
 		}),
 	)),

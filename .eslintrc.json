@@ -1,7 +1,7 @@
 {
   "root": true,
   "extends": ["plugin:prettier/recommended"],
-  "plugins": ["@nx", "prefer-arrow", "simple-import-sort", "unused-imports", "unicorn"],
+  "plugins": ["@nx", "simple-import-sort", "unused-imports", "unicorn"],
   "rules": {
     "func-style": [
       "error",
@@ -19,14 +19,6 @@
     "no-unused-vars": "off",
     "no-control-regex": 0,
     "no-undef": "off",
-    "prefer-arrow/prefer-arrow-functions": [
-      "error",
-      {
-        "disallowPrototype": true,
-        "singleReturnOnly": false,
-        "classPropertiesAllowed": false
-      }
-    ],
     "simple-import-sort/imports": [
       "error",
       {
@@ -129,6 +121,13 @@
             "max": 1
           }
         ]
+      }
+    },
+    {
+      "files": ["./packages/design-system/**/*.ts", "./packages/design-system/**/*.tsx"],
+      "rules": {
+        "simple-import-sort/imports": "off",
+        "simple-import-sort/exports": "off"
       }
     }
   ]

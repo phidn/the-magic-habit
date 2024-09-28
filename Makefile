@@ -40,11 +40,14 @@ cd-prisma:
 
 clear:
 	make clear-nx && \
+	make clear-vite && \
 	make clear-debug
+
+clear-vite:
+	rm -rf node_modules/.vite
 
 clear-nx:
 	rm -rf .nx && \
-	rm -rf node_modules/.vite && \
 	yarn nx reset
 
 clear-debug:
@@ -104,7 +107,7 @@ server:
 	@echo "Starting server..."
 	export APP_ENV=development && \
 	cd packages/mazic-server && \
-	wgo run -tags pq --verbose main.go serve
+	wgo run -tags pq -xdir pb_data --verbose main.go serve
 	@echo "Successfully started server..."
 
 pocketbase:

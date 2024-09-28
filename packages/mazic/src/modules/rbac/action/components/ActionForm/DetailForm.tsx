@@ -1,7 +1,7 @@
 import { FormInput, FormItem } from '@mazic/components/FormControl'
 
 export const DetailForm = () => (
-  <div className="mazic_row">
+  <div className="mazic-row">
     <FormItem label="Name" required>
       <FormInput field="name" placeholder="Enter action name..." />
     </FormItem>

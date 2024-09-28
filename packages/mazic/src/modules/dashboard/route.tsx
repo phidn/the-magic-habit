@@ -2,7 +2,7 @@ import { lazy } from 'react'
 
 const DashboardPage = lazy(() => import('./page'))
 
-export const dashboardRoute = [
+export const route = [
   {
     path: '/',
     Component: DashboardPage,

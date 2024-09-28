@@ -14,7 +14,7 @@ const ContentLayout = ({ title, children }: ContentLayoutProps) => {
   return (
     <div>
       <Navbar title={title} />
-      <div className="container pt-8 pb-8 px-4 sm:px-8">{children}</div>
+      <div className="max-w-[1200px] w-full mx-auto p-6">{children}</div>
     </div>
   )
 }

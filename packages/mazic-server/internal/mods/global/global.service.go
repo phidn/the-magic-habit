@@ -89,7 +89,10 @@ func (service *globalService) Upload(file *multipart.FileHeader) (string, error)
 	}
 
 	mimetype := http.DetectContentType(buff)
-	isAllowed := validateMimeType(mimetype, allowedMimeRegex)
+
+	// TODO: only allow image & svg
+	isAllowed := validateMimeType(mimetype, "image/*")
+
 	if !isAllowed {
 		return "", errors.New("file type not allowed")
 	}

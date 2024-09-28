@@ -7,12 +7,12 @@ export const DetailForm = () => {
   const { isAdd } = usePageDetails()
 
   return (
-    <div className="mazic_row">
-      <div className="mazic_col_2 mr-10">
+    <div className="mazic-row">
+      <div className="mazic-col-2 mr-10">
         <FormImage field="avatar" />
       </div>
-      <div className="mazic_col_8">
-        <div className="mazic_row">
+      <div className="mazic-col-8">
+        <div className="mazic-row">
           <FormItem label="First name" required col={6}>
             <FormInput field="first_name" placeholder="Enter first name..." />
           </FormItem>

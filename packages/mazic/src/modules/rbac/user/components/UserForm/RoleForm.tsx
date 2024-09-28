@@ -5,7 +5,7 @@ export const RoleForm = () => {
   const { options } = useGetOptions(RESOURCES.ROLE)
 
   return (
-    <div className="mazic_row">
+    <div className="mazic-row">
       <FormMultipleSelect field="roles" options={options} placeholder="Select user roles" />
     </div>
   )

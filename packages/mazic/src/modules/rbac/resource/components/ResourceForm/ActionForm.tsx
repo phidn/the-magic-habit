@@ -5,7 +5,7 @@ export const ActionForm = () => {
   const { options } = useGetOptions(RESOURCES.ACTION)
 
   return (
-    <div className="mazic_row">
+    <div className="mazic-row">
       <FormMultipleSelect
         maxCount={999}
         field="actions"
