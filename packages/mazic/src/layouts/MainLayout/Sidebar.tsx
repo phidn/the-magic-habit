@@ -10,7 +10,7 @@ import { Menu } from './Menu'
 import { SidebarToggle } from './SidebarToggle'
 
 export const Sidebar = () => {
-  const sidebar = useStore().sidebar
+  const sidebar = useStore((store) => store.sidebar)
 
   if (!sidebar) return null
 

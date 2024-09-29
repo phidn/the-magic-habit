@@ -6,7 +6,7 @@ import { Checkbox } from '@mazic-design-system'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { TResource } from '../schemas/resourceSchema'
@@ -15,7 +15,11 @@ import { useResourceApis } from './useResourceApis'
 
 export const useResourceColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TResource>[] => {
   const mutationDelete = useResourceApis.delete()
-  const { showAlertLoading, hideAlert, setAlert } = useStore()
+  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
+    state.showAlertLoading,
+    state.hideAlert,
+    state.setAlert,
+  ])
   const { statusColumn, createdAtColumn } = useColumnCommon()
 
   return useMemo(

@@ -6,7 +6,7 @@ import { Checkbox } from '@mazic-design-system'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { habitApis } from './apis'
@@ -14,7 +14,11 @@ import { THabit } from './validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {
   const mutationDelete = habitApis.delete()
-  const { showAlertLoading, hideAlert, setAlert } = useStore()
+  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
+    state.showAlertLoading,
+    state.hideAlert,
+    state.setAlert,
+  ])
   const { createdAtColumn } = useColumnCommon()
 
   return useMemo(

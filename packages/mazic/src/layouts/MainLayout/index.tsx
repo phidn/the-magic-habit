@@ -20,7 +20,7 @@ const ContentLayout = ({ title, children }: ContentLayoutProps) => {
 }
 
 export const MainLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
-  const { isOpen } = useStore().sidebar
+  const isOpen = useStore((store) => store.sidebar.isOpen)
 
   return (
     <div>

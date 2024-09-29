@@ -13,7 +13,7 @@ type Props = {
 const AuthRoute = ({ children }: Props) => {
   const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  const { setCurrentUser } = useStore()
+  const setCurrentUser = useStore((store) => store.setCurrentUser)
 
   const getMeMutation = useMutation({
     mutationFn: () => authService.getMe(),

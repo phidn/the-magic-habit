@@ -6,7 +6,7 @@ import { Checkbox } from '@mazic-design-system'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks'
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { TAction } from '../schemas/actionSchema'
@@ -15,7 +15,11 @@ import { useActionApis } from './useActionApis'
 
 export const useActionColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TAction>[] => {
   const mutationDelete = useActionApis.delete()
-  const { showAlertLoading, hideAlert, setAlert } = useStore()
+  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
+    state.showAlertLoading,
+    state.hideAlert,
+    state.setAlert,
+  ])
   const { statusColumn, createdAtColumn } = useColumnCommon()
 
   return useMemo(

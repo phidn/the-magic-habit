@@ -7,7 +7,7 @@ import { Badge, Checkbox } from '@mazic-design-system'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { TUser } from '../schemas/userSchema'
@@ -17,7 +17,11 @@ import { useUserApis } from './useUserApis'
 export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUser>[] => {
   const { t } = useTranslation()
   const mutationDelete = useUserApis.delete()
-  const { showAlertLoading, hideAlert, setAlert } = useStore()
+  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
+    state.showAlertLoading,
+    state.hideAlert,
+    state.setAlert,
+  ])
   const { createdAtColumn } = useColumnCommon()
 
   return useMemo(

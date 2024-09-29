@@ -9,7 +9,7 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ title }: NavbarProps) => {
-  const { openItem } = useStore().sidebar
+  const openItem = useStore((store) => store.sidebar.openItem)
 
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">

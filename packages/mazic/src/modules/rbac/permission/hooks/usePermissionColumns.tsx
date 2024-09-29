@@ -6,7 +6,7 @@ import { Checkbox } from '@mazic-design-system'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks'
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { TPermission } from '../schemas/permissionSchema'
@@ -17,7 +17,11 @@ export const usePermissionColumns = ({
   refreshTable,
 }: ITableColsProps): ColumnDef<TPermission>[] => {
   const mutationDelete = usePermissionApis.delete()
-  const { showAlertLoading, hideAlert, setAlert } = useStore()
+  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
+    state.showAlertLoading,
+    state.hideAlert,
+    state.setAlert,
+  ])
   const { statusColumn, createdAtColumn } = useColumnCommon()
 
   return useMemo(
