@@ -6,7 +6,8 @@ export type TZodAny = {
 }
 
 export interface IOption {
-  label: string
+  label?: string
+  renderLabel?: () => JSX.Element
   value: any
   code?: string
   icon?: React.ComponentType<{ className?: string }>

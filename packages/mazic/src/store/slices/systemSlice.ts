@@ -1,6 +1,6 @@
 import { ImmerStateCreator } from '@mazic/types/index'
 
-type TAlert = {
+type TModal = {
   open: boolean
   title: string
   description: string
@@ -8,14 +8,19 @@ type TAlert = {
   loadingConfirm?: boolean
 }
 
-export type SystemSlice = {
-  alert: TAlert
-  setAlert: (alert: TAlert) => void
+export type TSystemSlice = {
+  alert: TModal
+  setAlert: (alert: TModal) => void
   hideAlert: () => void
   showAlertLoading: () => void
+
+  modal: TModal
+  setModal: (modal: Partial<TModal>) => void
+  hideModal: () => void
+  showModalLoading: () => void
 }
 
-const systemSlice: ImmerStateCreator<SystemSlice> = (set) => ({
+export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
   alert: {
     open: false,
     title: '',
@@ -39,6 +44,29 @@ const systemSlice: ImmerStateCreator<SystemSlice> = (set) => ({
     set((state) => {
       state.alert.loadingConfirm = true
     }),
-})
 
-export default systemSlice
+  modal: {
+    open: false,
+    title: '',
+    description: '',
+    onConfirm: () => null,
+    loadingConfirm: false,
+  },
+  setModal: (modal) =>
+    set((state) => {
+      state.modal.open = !!modal.open
+      state.modal.title = modal.title || ''
+    }),
+  hideModal: () =>
+    set((state) => {
+      state.modal.open = false
+    }),
+  showModalLoading: () =>
+    set((state) => {
+      state.modal.loadingConfirm = true
+    }),
+  hideModalLoading: () =>
+    set((state) => {
+      state.modal.loadingConfirm = true
+    }),
+})

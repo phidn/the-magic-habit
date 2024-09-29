@@ -5,34 +5,33 @@ import (
 	"github.com/pocketbase/pocketbase/tools/types"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 var _ models.Model = (*Habit)(nil)
 var _ models.Model = (*HabitEntry)(nil)
 
-type DaysOfWeek string
-
 const (
-	MONDAY    DaysOfWeek = "MONDAY"
-	TUESDAY   DaysOfWeek = "TUESDAY"
-	WEDNESDAY DaysOfWeek = "WEDNESDAY"
-	THURSDAY  DaysOfWeek = "THURSDAY"
-	FRIDAY    DaysOfWeek = "FRIDAY"
-	SATURDAY  DaysOfWeek = "SATURDAY"
-	SUNDAY    DaysOfWeek = "SUNDAY"
+	MONDAY    = "MONDAY"
+	TUESDAY   = "TUESDAY"
+	WEDNESDAY = "WEDNESDAY"
+	THURSDAY  = "THURSDAY"
+	FRIDAY    = "FRIDAY"
+	SATURDAY  = "SATURDAY"
+	SUNDAY    = "SUNDAY"
 )
 
 type Habit struct {
 	models.BaseModel
 
-	Title     string     `db:"title" json:"title"`
-	Metric    string     `db:"metric" json:"metric"`
-	WeekStart DaysOfWeek `db:"week_start" json:"week_start"`
-	Color     string     `db:"color" json:"color"`
-	Order     int        `db:"order" json:"order"`
-	UserId    string     `db:"user_id" json:"user_id"`
-	IsDeleted bool       `db:"is_deleted" json:"is_deleted"`
-	IsPrivate bool       `db:"is_private" json:"is_private"`
+	Title     string `db:"title" json:"title"`
+	Metric    string `db:"metric" json:"metric"`
+	WeekStart string `db:"week_start" json:"week_start"`
+	Color     string `db:"color" json:"color"`
+	Order     int    `db:"order" json:"order"`
+	UserId    string `db:"user_id" json:"user_id"`
+	IsDeleted bool   `db:"is_deleted" json:"is_deleted"`
+	IsPrivate bool   `db:"is_private" json:"is_private"`
 
 	Entries []*HabitEntry `json:"entries"`
 }
@@ -56,7 +55,14 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 }
 
 func (habit *Habit) Validate() error {
-	return validation.ValidateStruct(habit)
+	return validation.ValidateStruct(habit,
+		validation.Field(&habit.Title, validation.Required),
+		validation.Field(&habit.Metric, validation.Required),
+		validation.Field(&habit.WeekStart, validation.In(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)),
+		validation.Field(&habit.Color, validation.Required),
+		validation.Field(&habit.Order, is.Int),
+		validation.Field(&habit.UserId, validation.Required),
+	)
 }
 
 type HabitEntry struct {

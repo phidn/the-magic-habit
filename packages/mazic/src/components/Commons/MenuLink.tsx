@@ -6,7 +6,7 @@ import { useStore } from '@mazic/store/useStore'
 
 export const MenuLink = forwardRef(
   ({ to, children, ...restProps }: LinkProps, ref?: LegacyRef<HTMLAnchorElement>) => {
-    const { setOpenItem } = useStore().sidebar
+    const [setOpenItem] = useStore((state) => [state.sidebar.setOpenItem])
 
     const onClick = () => {
       const menu = findMenuByHref(to)

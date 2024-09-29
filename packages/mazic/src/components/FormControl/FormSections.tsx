@@ -2,8 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@mazic-design-system'
 
 import { IFormSection } from '@mazic/types/form'
 
-import { FormEditable } from './FormEditable'
-
 interface FormSectionsProps {
   sections: IFormSection[]
 }
@@ -15,9 +13,7 @@ export const FormSections = ({ sections }: FormSectionsProps) => {
         <CardHeader>
           <CardTitle>{section.title}</CardTitle>
         </CardHeader>
-        <CardContent>
-          <FormEditable>{section.elementRender()}</FormEditable>
-        </CardContent>
+        <CardContent>{section.elementRender()}</CardContent>
       </Card>
     ) : null
   })

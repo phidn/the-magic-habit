@@ -1,16 +1,17 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-type Theme = 'dark' | 'light' | 'system'
+type TTheme = 'dark' | 'light' | 'system'
+type TMode = 'dark' | 'light'
 
 type ThemeProviderProps = {
   children: React.ReactNode
-  defaultTheme?: Theme
+  defaultTheme?: TTheme
   storageKey?: string
 }
 
 type ThemeProviderState = {
-  theme: Theme
-  setTheme: (theme: Theme) => void
+  theme: TTheme
+  setTheme: (theme: TTheme) => void
 }
 
 const initialState: ThemeProviderState = {
@@ -26,8 +27,8 @@ export const ThemeProvider = ({
   storageKey = 'vite-ui-theme',
   ...props
 }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+  const [theme, setTheme] = useState<TTheme>(
+    () => (localStorage.getItem(storageKey) as TTheme) || defaultTheme
   )
 
   useEffect(() => {
@@ -49,7 +50,7 @@ export const ThemeProvider = ({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
+    setTheme: (theme: TTheme) => {
       localStorage.setItem(storageKey, theme)
       setTheme(theme)
     },
@@ -63,9 +64,13 @@ export const ThemeProvider = ({
 }
 
 export const useTheme = () => {
-  const context = useContext(ThemeProviderContext)
+  const { theme, setTheme } = useContext(ThemeProviderContext)
 
-  if (context === undefined) throw new Error('useTheme must be used within a ThemeProvider')
+  const mode: TMode = theme === 'dark' ? 'dark' : 'light'
 
-  return context
+  return {
+    theme,
+    mode,
+    setTheme,
+  }
 }

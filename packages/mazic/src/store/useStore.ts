@@ -2,14 +2,15 @@ import merge from 'lodash/merge'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
+import { useShallow } from 'zustand/react/shallow'
 
 import { CONFIG } from '@mazic/config/config'
 
 import rehydrateSlice, { RehydrateSlice } from './slices/rehydrateSlice'
-import systemSlice, { SystemSlice } from './slices/systemSlice'
+import { systemSlice, TSystemSlice } from './slices/systemSlice'
 import sidebarSlice, { UserSlice } from './slices/userSlice'
 
-type Store = RehydrateSlice & UserSlice & SystemSlice
+type Store = RehydrateSlice & UserSlice & TSystemSlice
 
 export const useStore = create<Store>()(
   persist(
@@ -33,3 +34,7 @@ export const useStore = create<Store>()(
     }
   )
 )
+
+export const useStoreShallow = <U>(selector: (state: Store) => U) => {
+  return useStore(useShallow<Store, U>(selector))
+}

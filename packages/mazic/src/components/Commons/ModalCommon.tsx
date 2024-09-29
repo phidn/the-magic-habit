@@ -10,10 +10,11 @@ import {
   AlertDialogTitle,
 } from '@mazic-design-system'
 
-import { useStore } from '@mazic/store/useStore'
+import { useStoreShallow } from '@mazic/store/useStore'
 
 export const AlertDialogCommon = () => {
-  const { alert, hideAlert } = useStore()
+  const [alert, hideAlert] = useStoreShallow((state) => [state.alert, state.hideAlert])
+
   return (
     <AlertDialog open={alert.open}>
       <AlertDialogContent>
@@ -25,6 +26,28 @@ export const AlertDialogCommon = () => {
           <AlertDialogCancel onClick={hideAlert}>Cancel</AlertDialogCancel>
           <AlertDialogAction onClick={alert.onConfirm}>
             {alert.loadingConfirm && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  )
+}
+
+export const ModalCommon = () => {
+  const [modal, hideModal] = useStoreShallow((state) => [state.modal, state.hideModal])
+
+  return (
+    <AlertDialog open={modal.open}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{modal.title}</AlertDialogTitle>
+          <AlertDialogDescription>{modal.description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={hideModal}>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={modal.onConfirm}>
+            {modal.loadingConfirm && <Loader2Icon className="mr-2 h-4 w-4 animate-spin" />}
             Continue
           </AlertDialogAction>
         </AlertDialogFooter>

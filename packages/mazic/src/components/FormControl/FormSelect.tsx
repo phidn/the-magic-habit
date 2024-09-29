@@ -14,7 +14,6 @@ import { IOption } from '@mazic/types/form'
 
 interface FormSelectProps {
   field: string
-  fieldDeps?: [string, string][]
   options: IOption[]
   onChange?: (value: any) => void
   afterChange?: (value: any) => void
@@ -59,7 +58,7 @@ const FormSelect = ({
         <SelectContent>
           {options.map((opt, index: number) => (
             <SelectItem value={opt.value} disabled={opt?.disabled} key={index}>
-              {opt.label}
+              {opt?.label || opt?.renderLabel?.()}
             </SelectItem>
           ))}
         </SelectContent>

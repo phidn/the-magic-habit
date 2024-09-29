@@ -11,7 +11,7 @@ export const MENUS: TMenus = {
     icon: DashboardIcon,
     submenus: [
       {
-        href: '/habits',
+        href: '/habit',
         label: 'Habit',
       },
     ],
@@ -88,7 +88,7 @@ export const useMenuList = (): MenuList => {
   return {
     menuList: [
       {
-        groupLabel: 'CRM',
+        groupLabel: '',
         menus: [getMenuItem(MENUS.DASHBOARD)],
       },
       {

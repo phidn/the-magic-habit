@@ -1,14 +1,7 @@
 import { useEffect } from 'react'
 import { flexRender, Table as TTable } from '@tanstack/react-table'
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@mazic-design-system'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@mazic-design-system'
 
 import { DataTablePagination } from '../DataTable/DataTablePagination'
 

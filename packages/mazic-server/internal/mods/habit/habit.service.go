@@ -74,10 +74,13 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 
 	habitEntriesMap := map[string][]*HabitEntry{}
 
-	for _, entry := range *habitEntries {
-		if _, ok := habitEntriesMap[entry.HabitId]; !ok {
-			habitEntriesMap[entry.HabitId] = []*HabitEntry{}
+	for _, habit := range *habits {
+		if _, ok := habitEntriesMap[habit.Id]; !ok {
+			habitEntriesMap[habit.Id] = []*HabitEntry{}
 		}
+	}
+
+	for _, entry := range *habitEntries {
 		if entry.Value == 0 {
 			entry.Level = 0
 		}

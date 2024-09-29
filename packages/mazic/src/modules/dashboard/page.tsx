@@ -1,10 +1,11 @@
+import { habitApis } from '../habit/apis'
+
 import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
 import { Overview } from './components/Overview/Overview'
-import { apis } from './apis'
 import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
-  const { data: listHabits } = apis.useList({ pageSize: -1 })
+  const { data: listHabits } = habitApis.useList({ pageSize: -1 })
 
   return (
     <DashboardStyled>

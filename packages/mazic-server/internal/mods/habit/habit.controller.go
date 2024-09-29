@@ -43,6 +43,9 @@ func (controller *HabitController) Create(c echo.Context) error {
 	if err := c.Bind(habit); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
+
+	habit.UserId = c.Get("state.user_id").(string)
+
 	if err := habit.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
@@ -63,6 +66,8 @@ func (controller *HabitController) Update(c echo.Context) error {
 	if err := c.Bind(habit); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
+
+	habit.UserId = c.Get("state.user_id").(string)
 	if err := habit.Validate(); err != nil {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
