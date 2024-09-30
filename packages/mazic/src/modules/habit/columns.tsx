@@ -14,10 +14,9 @@ import { THabit } from './validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {
   const mutationDelete = habitApis.delete()
-  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
-    state.showAlertLoading,
-    state.hideAlert,
-    state.setAlert,
+  const [hideModal, showModalDelete] = useStoreShallow((state) => [
+    state.hideModal,
+    state.showModalDelete,
   ])
   const { createdAtColumn } = useColumnCommon()
 
@@ -93,16 +92,11 @@ export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TH
             pathDetail={`/habit/view/${cell.row.original.id}`}
             pathEdit={`/habit/edit/${cell.row.original.id}`}
             onDelete={() => {
-              setAlert({
-                open: true,
-                title: 'Delete item',
-                description:
-                  'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
+              showModalDelete({
                 onConfirm: () => {
-                  showAlertLoading()
                   mutationDelete.mutate(cell.row.original.id as string, {
                     onSuccess: () => {
-                      hideAlert()
+                      hideModal()
                       typeof refreshTable === 'function' && refreshTable()
                     },
                   })
@@ -115,6 +109,6 @@ export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TH
         enableHiding: true,
       },
     ],
-    [createdAtColumn, hideAlert, mutationDelete, refreshTable, setAlert, showAlertLoading]
+    [createdAtColumn, hideModal, mutationDelete, refreshTable, showModalDelete]
   )
 }

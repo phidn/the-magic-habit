@@ -1,6 +1,7 @@
 // This file is generated automatically.
 export * from './CheckboxLabel'
 export * from './FormCheckbox'
+export * from './FormColorPicker'
 export * from './FormControl'
 export * from './FormEditable'
 export * from './FormHeader'

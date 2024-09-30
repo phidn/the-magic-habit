@@ -3,59 +3,50 @@ import { ImmerStateCreator } from '@mazic/types/index'
 type TModal = {
   open: boolean
   title: string
-  description: string
+  description?: string
+  body?: string | JSX.Element
+  confirmText?: string
   onConfirm?: () => void
   loadingConfirm?: boolean
 }
 
 export type TSystemSlice = {
-  alert: TModal
-  setAlert: (alert: TModal) => void
-  hideAlert: () => void
-  showAlertLoading: () => void
-
   modal: TModal
-  setModal: (modal: Partial<TModal>) => void
+  showModal: (modal: Partial<TModal>) => void
+  showModalDelete: (modal: Partial<TModal>) => void
   hideModal: () => void
   showModalLoading: () => void
 }
 
 export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
-  alert: {
-    open: false,
-    title: '',
-    description: '',
-    onConfirm: () => null,
-    loadingConfirm: false,
-  },
-  setAlert: (alert) =>
-    set((state) => {
-      state.alert = alert
-    }),
-  hideAlert: () =>
-    set((state) => {
-      state.alert.open = false
-    }),
-  showAlertLoading: () =>
-    set((state) => {
-      state.alert.loadingConfirm = true
-    }),
-  hideAlertLoading: () =>
-    set((state) => {
-      state.alert.loadingConfirm = true
-    }),
-
   modal: {
     open: false,
     title: '',
     description: '',
+    body: '',
     onConfirm: () => null,
     loadingConfirm: false,
   },
-  setModal: (modal) =>
+  showModal: (modal) =>
     set((state) => {
-      state.modal.open = !!modal.open
-      state.modal.title = modal.title || ''
+      state.modal = { ...state.modal, ...modal, open: true }
+    }),
+  showModalDelete: (modal) =>
+    set((state) => {
+      state.modal = {
+        ...state.modal,
+        ...modal,
+        open: true,
+        title: 'Delete item',
+        body: 'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
+        confirmText: 'Delete',
+        onConfirm: () => {
+          set((state) => {
+            state.modal.loadingConfirm = true
+          })
+          modal.onConfirm?.()
+        },
+      }
     }),
   hideModal: () =>
     set((state) => {

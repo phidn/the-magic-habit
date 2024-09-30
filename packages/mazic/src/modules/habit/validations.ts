@@ -10,7 +10,7 @@ export const habitSchema = z.object({
   week_start: z.string().optional().default('MONDAY'),
   color: z.string().min(1, 'Color is required').default('blue'),
   order: z.number().optional().default(0),
-  is_private: z.boolean().optional(),
+  is_private: z.boolean().optional().default(true),
 })
 
 type THabitEntry = {

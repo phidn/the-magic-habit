@@ -17,10 +17,9 @@ import { useUserApis } from './useUserApis'
 export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUser>[] => {
   const { t } = useTranslation()
   const mutationDelete = useUserApis.delete()
-  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
-    state.showAlertLoading,
-    state.hideAlert,
-    state.setAlert,
+  const [hideModal, showModalDelete] = useStoreShallow((state) => [
+    state.hideModal,
+    state.showModalDelete,
   ])
   const { createdAtColumn } = useColumnCommon()
 
@@ -105,16 +104,11 @@ export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUs
             pathDetail={`/user/view/${cell.row.original.id}`}
             pathEdit={`/user/edit/${cell.row.original.id}`}
             onDelete={() => {
-              setAlert({
-                open: true,
-                title: 'Delete item',
-                description:
-                  'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
+              showModalDelete({
                 onConfirm: () => {
-                  showAlertLoading()
                   mutationDelete.mutate(cell.row.original.id, {
                     onSuccess: () => {
-                      hideAlert()
+                      hideModal()
                       typeof refreshTable === 'function' && refreshTable()
                     },
                   })
@@ -127,6 +121,6 @@ export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUs
         enableHiding: true,
       },
     ],
-    [createdAtColumn, hideAlert, mutationDelete, refreshTable, setAlert, showAlertLoading, t]
+    [createdAtColumn, hideModal, mutationDelete, refreshTable, showModalDelete, t]
   )
 }

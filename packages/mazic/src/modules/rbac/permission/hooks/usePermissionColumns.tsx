@@ -17,10 +17,9 @@ export const usePermissionColumns = ({
   refreshTable,
 }: ITableColsProps): ColumnDef<TPermission>[] => {
   const mutationDelete = usePermissionApis.delete()
-  const [showAlertLoading, hideAlert, setAlert] = useStoreShallow((state) => [
-    state.showAlertLoading,
-    state.hideAlert,
-    state.setAlert,
+  const [hideModal, showModalDelete] = useStoreShallow((state) => [
+    state.hideModal,
+    state.showModal,
   ])
   const { statusColumn, createdAtColumn } = useColumnCommon()
 
@@ -83,16 +82,11 @@ export const usePermissionColumns = ({
             pathDetail={`/permission/view/${cell.row.original.id}`}
             pathEdit={`/permission/edit/${cell.row.original.id}`}
             onDelete={() => {
-              setAlert({
-                open: true,
-                title: 'Delete item',
-                description:
-                  'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
+              showModalDelete({
                 onConfirm: () => {
-                  showAlertLoading()
                   mutationDelete.mutate(cell.row.original.id, {
                     onSuccess: () => {
-                      hideAlert()
+                      hideModal()
                       typeof refreshTable === 'function' && refreshTable()
                     },
                   })
@@ -105,14 +99,6 @@ export const usePermissionColumns = ({
         enableHiding: true,
       },
     ],
-    [
-      createdAtColumn,
-      hideAlert,
-      mutationDelete,
-      refreshTable,
-      setAlert,
-      showAlertLoading,
-      statusColumn,
-    ]
+    [createdAtColumn, mutationDelete, refreshTable, hideModal, showModalDelete, statusColumn]
   )
 }
