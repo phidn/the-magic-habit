@@ -10,14 +10,6 @@ import { THabit, THabitCreate } from './validations'
 
 const QUERY_KEY = 'habits' as const
 
-const useHabitList = (params: IParams) => {
-  const { data, ...rest } = useQuery({
-    queryFn: () => habitService.query<ApiResponse<THabit[]>>(params),
-    queryKey: [QUERY_KEY, 'habits_list', params],
-  })
-  return { ...data?.data, ...rest }
-}
-
 const useHabitDetail = (habitId: string) => {
   const { data, ...rest } = useQuery({
     queryFn: () => habitService.get<ApiResponse<THabit>>(habitId),
@@ -45,7 +37,9 @@ const useCreateHabit = () => {
 const useDeleteHabit = () => {
   return useMutation({
     mutationFn: (habitId: string) => habitService.delete(habitId),
-    onSuccess: () => toast.success('Successfully deleted habit'),
+    onSuccess: () => {
+      toast.success('Successfully deleted habit')
+    },
     onError: (error: ErrorResponse) => {
       toast.error(error?.error?.message || 'Failed to delete habit')
     },

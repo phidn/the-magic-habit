@@ -29,7 +29,7 @@ export const ModalCommon = () => {
               Close
             </Button>
           </ModalClose>
-          <Button variant="destructive" onClick={modal.onConfirm}>
+          <Button variant="destructive" onClick={modal.onConfirm} isLoading={modal.loadingConfirm}>
             {modal.confirmText || 'Continue'}
           </Button>
         </ModalFooter>

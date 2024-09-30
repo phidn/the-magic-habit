@@ -5,7 +5,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic-design-system'
 
-import { useStore } from '@mazic/store/useStore'
+// import { useStore } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
 
 dayjs.extend(advancedFormat)
@@ -25,7 +25,7 @@ export const ActivityBlock = ({ block, activity, metric, color }: Props) => {
 
   const isToday = dayjs().isSame(dayjs(activity.date), 'day')
   const [isActive, setIsActive] = useState(false)
-  const setModal = useStore((state) => state.setModal)
+  // const setModal = useStore((state) => state.setModal)
 
   return (
     <Tooltip>
@@ -45,11 +45,10 @@ export const ActivityBlock = ({ block, activity, metric, color }: Props) => {
         onMouseEnter={() => setIsActive(true)}
         onMouseLeave={() => setIsActive(false)}
         onClick={() => {
-          console.log('child click activity:', activity)
-          setModal({
-            open: true,
-            title: 'Delete item',
-          })
+          // setModal({
+          //   open: true,
+          //   title: 'Delete item',
+          // })
         }}
       >
         {block}

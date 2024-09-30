@@ -5,7 +5,7 @@ import { Overview } from './components/Overview/Overview'
 import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
-  const { data: listHabits } = habitApis.useList({ pageSize: -1 })
+  const { data: listHabits, refetch } = habitApis.useList({ pageSize: -1 })
 
   return (
     <DashboardStyled>
@@ -22,7 +22,7 @@ const DashboardPage = () => {
       </div>
       <div className="mazic-row mt-12">
         {listHabits.map((habit, idx) => {
-          return <HabitHeatmap key={habit?.id || idx} habit={habit} />
+          return <HabitHeatmap key={habit?.id || idx} habit={habit} refetch={refetch} />
         })}
       </div>
     </DashboardStyled>

@@ -30,7 +30,7 @@ const queryClient = new QueryClient({
 root.render(
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
-      <Toaster richColors />
+      <Toaster richColors visibleToasts={1} className="mb-16" />
       <ModalCommon />
       <Suspense fallback={<div>Loading...</div>}>
         <RouterProvider router={routers} />

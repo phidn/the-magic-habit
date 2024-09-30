@@ -39,6 +39,7 @@ export default defineConfig({
   build: {
     outDir: '../../dist/packages/mazic',
     reportCompressedSize: true,
+    sourcemap: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },

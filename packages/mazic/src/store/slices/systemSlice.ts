@@ -16,6 +16,12 @@ export type TSystemSlice = {
   showModalDelete: (modal: Partial<TModal>) => void
   hideModal: () => void
   showModalLoading: () => void
+
+  loading: {
+    isOpen: boolean
+    setLoading: (isOpen: boolean) => void
+    hideLoading: () => void
+  }
 }
 
 export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
@@ -51,6 +57,7 @@ export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
   hideModal: () =>
     set((state) => {
       state.modal.open = false
+      state.modal.loadingConfirm = false
     }),
   showModalLoading: () =>
     set((state) => {
@@ -60,4 +67,16 @@ export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
     set((state) => {
       state.modal.loadingConfirm = true
     }),
+
+  loading: {
+    isOpen: false,
+    setLoading: (isOpen: boolean) =>
+      set((state) => {
+        state.loading.isOpen = isOpen
+      }),
+    hideLoading: () =>
+      set((state) => {
+        state.loading.isOpen = false
+      }),
+  },
 })
