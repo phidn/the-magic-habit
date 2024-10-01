@@ -29,18 +29,21 @@ export const ActivityBlock = ({ svgProps, data, metric, color, rx }: Props) => {
   const tooltipContent = `${metricLabel} on ${dateFormat}.`
 
   const isToday = activityDate.isSame(dayjs(), 'day')
-  if (isToday) {
-    svgProps.style = {
-      ...(svgProps.style || {}),
-      outline: `1px solid ${color}`,
-      outlineOffset: '-1px',
-      borderRadius: rx,
-    }
-  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <rect {...svgProps} />
+        <rect
+          {...svgProps}
+          style={{
+            ...svgProps.style,
+            ...(isToday && {
+              outline: `1px solid ${color}`,
+              outlineOffset: '-1px',
+              borderRadius: rx,
+            }),
+          }}
+        />
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent>{tooltipContent}</TooltipContent>

@@ -1,14 +1,13 @@
-$w-heatmap: "w-heatmap";
+$w-heatmap: 'w-heatmap';
 
 svg.#{$w-heatmap} {
   rect {
     &:hover {
-      stroke: var(--rhm-rect-hover-stroke, rgba(0, 0, 0, 0.14));
-      stroke-width: 1px;
+      outline: 1px solid var(--slate-500);
+      outline-offset: -1px;
+      border-radius: 2px;
     }
     &:active {
-      fill: var(--rhm-rect-active, #196127);
-      stroke-width: 0;
     }
   }
 }
