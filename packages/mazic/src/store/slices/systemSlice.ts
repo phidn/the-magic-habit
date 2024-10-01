@@ -24,15 +24,17 @@ export type TSystemSlice = {
   }
 }
 
+const initModal = {
+  open: false,
+  title: '',
+  description: '',
+  body: '',
+  onConfirm: () => null,
+  loadingConfirm: false,
+}
+
 export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
-  modal: {
-    open: false,
-    title: '',
-    description: '',
-    body: '',
-    onConfirm: () => null,
-    loadingConfirm: false,
-  },
+  modal: initModal,
   showModal: (modal) =>
     set((state) => {
       state.modal = { ...state.modal, ...modal, open: true }
@@ -56,8 +58,7 @@ export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
     }),
   hideModal: () =>
     set((state) => {
-      state.modal.open = false
-      state.modal.loadingConfirm = false
+      state.modal = initModal
     }),
   showModalLoading: () =>
     set((state) => {

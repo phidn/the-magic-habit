@@ -2452,7 +2452,6 @@ __metadata:
     prettier: "npm:^3.2.5"
     qs: "npm:^6.12.3"
     react: "npm:18.3.1"
-    react-activity-calendar: "npm:^2.5.3"
     react-day-picker: "npm:^8.10.0"
     react-dom: "npm:18.3.1"
     react-dropzone: "npm:^14.2.3"
@@ -5279,13 +5278,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chroma-js@npm:^2.4.3":
-  version: 2.4.4
-  resolution: "@types/chroma-js@npm:2.4.4"
-  checksum: 10c0/8acd341c523fc960686ed9e60f23ae643da35bddf012b4b18cb0d941ee3bf82087262245ffa8c886ea31571cd5dc6eb553e849fab3c0509ea2c3a045a246178c
-  languageName: node
-  linkType: hard
-
 "@types/d3-array@npm:^3.0.3":
   version: 3.2.1
   resolution: "@types/d3-array@npm:3.2.1"
@@ -6931,13 +6923,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chroma-js@npm:^3.1.1":
-  version: 3.1.1
-  resolution: "chroma-js@npm:3.1.1"
-  checksum: 10c0/fb5e3cd958a954b8cd44017f70aff42ae37bc561cdcea0ebeeb6d2df5989e7402e02c674274af2eefd1478ee172e05ce51ac353e3cbe1db139f599b338523339
-  languageName: node
-  linkType: hard
-
 "ci-info@npm:^3.2.0":
   version: 3.9.0
   resolution: "ci-info@npm:3.9.0"
@@ -7563,13 +7548,6 @@ __metadata:
   version: 3.6.0
   resolution: "date-fns@npm:3.6.0"
   checksum: 10c0/0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
-  languageName: node
-  linkType: hard
-
-"date-fns@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "date-fns@npm:4.1.0"
-  checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
   languageName: node
   linkType: hard
 
@@ -13135,20 +13113,6 @@ __metadata:
     iconv-lite: "npm:0.4.24"
     unpipe: "npm:1.0.0"
   checksum: 10c0/b201c4b66049369a60e766318caff5cb3cc5a900efd89bdac431463822d976ad0670912c931fdbdcf5543207daf6f6833bca57aa116e1661d2ea91e12ca692c4
-  languageName: node
-  linkType: hard
-
-"react-activity-calendar@npm:^2.5.3":
-  version: 2.5.3
-  resolution: "react-activity-calendar@npm:2.5.3"
-  dependencies:
-    "@types/chroma-js": "npm:^2.4.3"
-    chroma-js: "npm:^3.1.1"
-    date-fns: "npm:^4.1.0"
-  peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
-  checksum: 10c0/2b26a756c3cfacfffcf0633292de360368bd51cf876ffcc5663a826b3e09c9eee106507bdbc5320885c91eac041f1b5ce107eb5abc792afdec29119fec6cd3aa
   languageName: node
   linkType: hard
 

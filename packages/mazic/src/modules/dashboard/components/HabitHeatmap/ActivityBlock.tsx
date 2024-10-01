@@ -1,59 +1,50 @@
-import { useState } from 'react'
-import { Activity, BlockElement } from 'react-activity-calendar'
+import { SVGProps } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic-design-system'
 
-// import { useStore } from '@mazic/store/useStore'
+import { HeatMapValue } from '@mazic/components/HeatMap'
 import { pluralize } from '@mazic/utils/pluralize'
 
 dayjs.extend(advancedFormat)
 
 interface Props {
-  block: BlockElement
-  activity: Activity
+  svgProps: SVGProps<SVGRectElement>
+  data: HeatMapValue & {
+    column: number
+    row: number
+    index: number
+  }
   metric: string
   color: string
+  rx: number
 }
 
-export const ActivityBlock = ({ block, activity, metric, color }: Props) => {
-  const dateFormat = dayjs(activity.date, 'YYYY-MM-DD').format('MMMM Do')
-  const metricLabel =
-    activity.count === 0 ? 'No activity' : `${activity.count} ${pluralize(metric, activity.count)}`
+export const ActivityBlock = ({ svgProps, data, metric, color, rx }: Props) => {
+  const activityDate = dayjs(data.date, 'YYYY/MM/DD')
+  const dateFormat = activityDate.format('MMMM Do')
+  const _count = data.count || 0
+  const metricLabel = _count === 0 ? 'No activity' : `${_count} ${pluralize(metric, _count)}`
   const tooltipContent = `${metricLabel} on ${dateFormat}.`
 
-  const isToday = dayjs().isSame(dayjs(activity.date), 'day')
-  const [isActive, setIsActive] = useState(false)
-  // const setModal = useStore((state) => state.setModal)
-
+  const isToday = activityDate.isSame(dayjs(), 'day')
+  if (isToday) {
+    svgProps.style = {
+      ...(svgProps.style || {}),
+      outline: `1px solid ${color}`,
+      outlineOffset: '-1px',
+      borderRadius: rx,
+    }
+  }
   return (
     <Tooltip>
-      <TooltipTrigger
-        asChild
-        style={{
-          ...((isToday || isActive) && {
-            stroke: 'unset',
-            strokeWidth: 'unset',
-            outline: `1px solid ${color}`,
-            outlineOffset: '-1px',
-            border: 'none',
-            borderRadius: '0.2rem',
-          }),
-          cursor: 'pointer',
-        }}
-        onMouseEnter={() => setIsActive(true)}
-        onMouseLeave={() => setIsActive(false)}
-        onClick={() => {
-          // setModal({
-          //   open: true,
-          //   title: 'Delete item',
-          // })
-        }}
-      >
-        {block}
+      <TooltipTrigger asChild>
+        <rect {...svgProps} />
       </TooltipTrigger>
-      <TooltipPortal>{isActive && <TooltipContent>{tooltipContent}</TooltipContent>}</TooltipPortal>
+      <TooltipPortal>
+        <TooltipContent>{tooltipContent}</TooltipContent>
+      </TooltipPortal>
     </Tooltip>
   )
 }

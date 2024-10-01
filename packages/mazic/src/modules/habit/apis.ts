@@ -55,7 +55,7 @@ export const habitApis = {
     const dataList = (data?.data?.data || []).map((item) => {
       item.activities = (item.entries || []).map((entry) => {
         return {
-          date: dayjs(entry.date).format('YYYY-MM-DD'),
+          date: dayjs(entry.date).format('YYYY/MM/DD'),
           count: entry.count,
           level: entry.level,
         }

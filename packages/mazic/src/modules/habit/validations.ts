@@ -1,6 +1,6 @@
-import { Activity } from 'react-activity-calendar'
 import { z } from 'zod'
 
+import { HeatMapValue } from '@mazic/components/HeatMap'
 import { ColorName } from '@mazic/config/baseColors'
 
 export const habitSchema = z.object({
@@ -26,7 +26,7 @@ type THabitEntry = {
 export type THabit = z.infer<typeof habitSchema> & {
   color: ColorName
   entries: THabitEntry[]
-  activities: Activity[]
+  activities: HeatMapValue[]
 }
 
 export type THabitCreate = THabit

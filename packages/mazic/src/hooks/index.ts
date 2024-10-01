@@ -2,6 +2,7 @@
 export * from './useApis'
 export * from './useColumnCommon'
 export * from './useDataTable'
+export * from './useDebounce'
 export * from './useFilter'
 export * from './useGetOptions'
 export * from './useMenuList'

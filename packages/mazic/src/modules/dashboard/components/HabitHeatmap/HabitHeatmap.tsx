@@ -1,4 +1,3 @@
-import ActivityCalendar, { Activity, BlockElement, ThemeInput } from 'react-activity-calendar'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
@@ -16,6 +15,7 @@ import {
   TooltipProvider,
 } from '@mazic-design-system'
 
+import HeatMap from '@mazic/components/HeatMap'
 import { colors, getThemeColor } from '@mazic/config/baseColors'
 import { useTheme } from '@mazic/contexts/ThemeProvider'
 import { habitApis } from '@mazic/modules/habit/apis'
@@ -32,21 +32,12 @@ interface Props {
 }
 
 export const HabitHeatmap = ({ habit, refetch }: Props) => {
-  const { title, activities, metric } = habit || {}
+  const { title, activities, metric, color } = habit || {}
   const { mode } = useTheme()
 
-  const habitColor = getThemeColor(habit?.color)
-  const minimalTheme: ThemeInput = {
-    light: [colors.slate[1].hex, `hsl(${habitColor?.activeColor.light})`],
-    dark: [colors.slate[8].hex, `hsl(${habitColor?.activeColor.dark})`],
-  }
+  const habitColor = getThemeColor(color)
   const activeModeColor = `hsl(${habitColor?.activeColor?.[mode]})`
-
-  const renderBlock = (block: BlockElement, activity: Activity) => {
-    return (
-      <ActivityBlock block={block} activity={activity} color={activeModeColor} metric={metric} />
-    )
-  }
+  const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
 
   const mutationDelete = habitApis.delete()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
@@ -61,9 +52,9 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
   return (
     <div className="w-full m-2">
       <Card>
-        <CardHeader className="flex flex-col items-start justify-between space-y-2 py-4 sm:flex-row sm:items-center sm:space-y-0 md:h-16">
+        <CardHeader className="flex justify-between py-4 flex-row items-center space-y-0">
           <CardTitle>{title}</CardTitle>
-          <div className="ml-auto flex w-full space-x-2 sm:justify-end">
+          <div className="ml-auto flex w-full space-x-2 justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <EllipsisVerticalIcon />
@@ -95,16 +86,36 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
             </DropdownMenu>
           </div>
         </CardHeader>
-        <CardContent className="flex justify-center">
+        <CardContent className="flex justify-center h-48">
           <TooltipProvider delayDuration={300}>
-            <ActivityCalendar
-              colorScheme={mode}
-              data={activities || []}
-              renderBlock={renderBlock}
-              hideTotalCount
-              showWeekdayLabels
-              theme={minimalTheme}
-              blockSize={15}
+            <HeatMap
+              width={900}
+              startDate={dayjs('2024-01-01').toDate()}
+              endDate={dayjs('2024-12-31').toDate()}
+              value={activities}
+              legendCellSize={15}
+              rectSize={15}
+              weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
+              panelColors={{
+                0: bgColor,
+                1: colors[habit.color][2].hex,
+                2: colors[habit.color][3].hex,
+                3: colors[habit.color][4].hex,
+                4: activeModeColor,
+              }}
+              rectRender={(props, data) => {
+                return (
+                  <ActivityBlock
+                    svgProps={props}
+                    data={data}
+                    metric={metric}
+                    color={activeModeColor}
+                    rx={3}
+                  />
+                )
+              }}
+              legendRender={(props) => <rect {...props} rx={3} />}
+              rectProps={{ rx: 3 }}
             />
           </TooltipProvider>
         </CardContent>
