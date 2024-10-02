@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 import React from 'react'
 
-import { HeatMapValue, SVGProps } from './SVG'
+import { HeatMapExtended, HeatMapValue, SVGProps } from './SVG'
 
 export const rectStyle: CSSProperties = {
   display: 'block',
@@ -9,11 +9,7 @@ export const rectStyle: CSSProperties = {
 }
 
 export interface RectProps extends React.SVGProps<SVGRectElement> {
-  value?: HeatMapValue & {
-    column: number
-    row: number
-    index: number
-  }
+  value?: HeatMapValue & HeatMapExtended
   render?: SVGProps['rectRender']
 }
 

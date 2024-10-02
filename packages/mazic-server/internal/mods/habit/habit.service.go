@@ -21,6 +21,7 @@ type HabitService interface {
 	Create(ctx context.Context, habit *Habit) (*models.Record, error)
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
 	Delete(ctx context.Context, id string) (*models.Record, error)
+	CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error)
 }
 
 type habitService struct {
@@ -192,6 +193,21 @@ func (service *habitService) Delete(ctx context.Context, id string) (*models.Rec
 		return nil, err
 	}
 	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+func (service *habitService) CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(HabitEntry).TableName())
+	if err != nil {
+		return nil, err
+	}
+
+	record := models.NewRecord(collection)
+	habitEntry.ParseRecord(record)
+
+	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
 	return record, nil

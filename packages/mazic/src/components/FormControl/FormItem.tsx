@@ -1,7 +1,5 @@
 import { cloneElement } from 'react'
 
-import { Label } from '@mazic-design-system'
-
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
 interface FormItemProps {
@@ -15,13 +13,12 @@ interface FormItemProps {
 }
 
 export const FormItem = ({ label, col = 4, required = false, children }: FormItemProps) => {
-  const { field } = children.props
   return (
     <div className={`mazic-col-${col}`}>
-      <Label htmlFor={field}>
+      <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-1">
         {label}
         {required && <span className="text-destructive">{' *'}</span>}
-      </Label>
+      </div>
       {children}
     </div>
   )

@@ -5,7 +5,6 @@ import (
 	"github.com/pocketbase/pocketbase/tools/types"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/go-ozzo/ozzo-validation/v4/is"
 )
 
 var _ models.Model = (*Habit)(nil)
@@ -28,7 +27,7 @@ type Habit struct {
 	Metric    string `db:"metric" json:"metric"`
 	WeekStart string `db:"week_start" json:"week_start"`
 	Color     string `db:"color" json:"color"`
-	Order     int    `db:"order" json:"order"`
+	Order     int64  `db:"order" json:"order"`
 	UserId    string `db:"user_id" json:"user_id"`
 	IsDeleted bool   `db:"is_deleted" json:"is_deleted"`
 	IsPrivate bool   `db:"is_private" json:"is_private"`
@@ -60,7 +59,6 @@ func (habit *Habit) Validate() error {
 		validation.Field(&habit.Metric, validation.Required),
 		validation.Field(&habit.WeekStart, validation.In(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY)),
 		validation.Field(&habit.Color, validation.Required),
-		validation.Field(&habit.Order, is.Int),
 		validation.Field(&habit.UserId, validation.Required),
 	)
 }
@@ -79,4 +77,21 @@ type HabitEntry struct {
 
 func (habitEntry *HabitEntry) TableName() string {
 	return "mz_habit_entries"
+}
+
+func (habitEntry *HabitEntry) Validate() error {
+	return validation.ValidateStruct(habitEntry,
+		validation.Field(&habitEntry.Date, validation.Required),
+		validation.Field(&habitEntry.Value, validation.Required),
+		validation.Field(&habitEntry.HabitId, validation.Required),
+	)
+}
+
+func (habitEntry *HabitEntry) ParseRecord(record *models.Record) error {
+	record.Set("habit_id", habitEntry.HabitId)
+	record.Set("date", habitEntry.Date)
+	record.Set("value", habitEntry.Value)
+	record.Set("journal", habitEntry.Journal)
+
+	return nil
 }

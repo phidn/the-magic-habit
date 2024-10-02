@@ -11,7 +11,14 @@ export type HeatMapValue = {
   date: string
   content?: string | string[] | React.ReactNode
   count: number
+}
+export type HeatMapExtended = {
+  column: number
+  row: number
+  index: number
+  id: string
   level: number
+  journal: string
 }
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -24,11 +31,7 @@ export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   legendRender?: LegendProps['legendRender']
   rectRender?: (
     data: React.SVGProps<SVGRectElement>,
-    valueItem: HeatMapValue & {
-      column: number
-      row: number
-      index: number
-    }
+    valueItem: HeatMapValue & HeatMapExtended
   ) => React.ReactElement | void
   value?: Array<HeatMapValue>
   weekLabels?: string[] | false

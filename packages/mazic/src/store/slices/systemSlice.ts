@@ -1,3 +1,5 @@
+import { TButtonVariant } from '@mazic-design-system'
+
 import { ImmerStateCreator } from '@mazic/types/index'
 
 type TModal = {
@@ -5,9 +7,11 @@ type TModal = {
   title: string
   description?: string
   body?: string | JSX.Element
+  confirmVariant?: TButtonVariant
   confirmText?: string
   onConfirm?: () => void
   loadingConfirm?: boolean
+  showFooter?: boolean
 }
 
 export type TSystemSlice = {
@@ -24,13 +28,15 @@ export type TSystemSlice = {
   }
 }
 
-const initModal = {
+const initModal: TModal = {
   open: false,
   title: '',
   description: '',
   body: '',
+  confirmVariant: 'default',
   onConfirm: () => null,
   loadingConfirm: false,
+  showFooter: true,
 }
 
 export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
@@ -48,6 +54,7 @@ export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
         title: 'Delete item',
         body: 'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
         confirmText: 'Delete',
+        confirmVariant: 'destructive',
         onConfirm: () => {
           set((state) => {
             state.modal.loadingConfirm = true

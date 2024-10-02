@@ -4,8 +4,6 @@ import { RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 
-import { ModalCommon } from '@mazic/components/Commons/ModalCommon'
-
 import './utils/i18n'
 
 import { ThemeProvider } from './contexts/ThemeProvider'
@@ -31,7 +29,6 @@ root.render(
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <Toaster richColors visibleToasts={1} className="mb-16" />
-      <ModalCommon />
       <Suspense fallback={<div>Loading...</div>}>
         <RouterProvider router={routers} />
       </Suspense>

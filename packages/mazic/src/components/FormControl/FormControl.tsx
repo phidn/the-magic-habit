@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,7 +19,7 @@ export interface FormControlProps {
   formSections: IFormSection[]
   schema?: ZodObject<any>
   initialValues: any
-  onSubmitForm: (values: any) => MutationApiResponse | Promise<MutationApiResponse>
+  onSubmitForm: (values: any) => Promise<MutationApiResponse>
   isCreatedAndReset?: boolean
 
   isPendingSubmit?: boolean
@@ -79,7 +78,7 @@ export const FormControl = (props: FormControlProps) => {
         }
       }
 
-      const { data } = await onSubmitForm(values)
+      const result = await onSubmitForm(values)
       if (pageDetails.isEditView && typeof refreshData === 'function') {
         refreshData()
       }
@@ -87,8 +86,9 @@ export const FormControl = (props: FormControlProps) => {
         if (isCreatedAndReset) {
           return methods.reset(initialValues)
         }
-        if (typeof data?.data?.id === 'string' && data?.data?.id) {
-          navigate(pathname.replace('/new', `/edit/${data.data?.id}`), { replace: true })
+        const _id = result?.data?.data?.id
+        if (typeof _id === 'string' && _id) {
+          navigate(pathname.replace('/new', `/edit/${_id}`), { replace: true })
         }
       }
     } catch (error) {

@@ -32,7 +32,7 @@ interface Props {
 }
 
 export const HabitHeatmap = ({ habit, refetch }: Props) => {
-  const { title, activities, metric, color } = habit || {}
+  const { title, activities, color } = habit || {}
   const { mode } = useTheme()
 
   const habitColor = getThemeColor(color)
@@ -108,13 +108,13 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
                   <ActivityBlock
                     svgProps={props}
                     data={data}
-                    metric={metric}
+                    habit={habit}
                     color={activeModeColor}
                     rx={3}
+                    refetch={refetch}
                   />
                 )
               }}
-              legendRender={(props) => <rect {...props} rx={3} />}
               rectProps={{ rx: 3 }}
             />
           </TooltipProvider>

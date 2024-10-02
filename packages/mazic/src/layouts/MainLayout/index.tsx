@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
-import { useIsFetching } from '@tanstack/react-query'
-import { toast, Toaster } from 'sonner'
-
+import { ModalCommon } from '@mazic/components/Commons/ModalCommon'
 import { useStore } from '@mazic/store/useStore'
 import { cn } from '@mazic/utils/cn'
 
@@ -45,6 +42,7 @@ export const MainLayout = ({ title, children }: { title: string; children: React
       >
         <Footer />
       </footer>
+      <ModalCommon />
     </div>
   )
 }

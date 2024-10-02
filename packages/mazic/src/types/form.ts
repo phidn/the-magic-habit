@@ -23,7 +23,7 @@ export interface IMethodsProps {
 
 export interface IFormSection {
   id?: string
-  title: string
+  title?: string
   elementRender: () => JSX.Element
   fields?: string[]
   isValid?: boolean

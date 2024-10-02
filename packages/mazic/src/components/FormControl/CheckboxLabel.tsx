@@ -14,14 +14,11 @@ export const CheckBoxLabel = ({ id, title, checked }: CheckBoxLabelProps) => {
   return (
     <div className="flex items-center space-x-2 mb-2">
       <Checkbox id={_id} checked={checked} />
-      <label
-        htmlFor={_id}
-        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-      >
+      <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         <a href={`#${_id}`} onClick={(e) => handleScroll(e, _id)}>
           {title}
         </a>
-      </label>
+      </div>
     </div>
   )
 }

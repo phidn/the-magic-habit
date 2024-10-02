@@ -6,7 +6,7 @@ import { ApiResponse, IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
 import { habitService } from './services'
-import { THabit, THabitCreate } from './validations'
+import { THabit, THabitCheckIn, THabitCreate } from './validations'
 
 const QUERY_KEY = 'habits' as const
 
@@ -55,9 +55,11 @@ export const habitApis = {
     const dataList = (data?.data?.data || []).map((item) => {
       item.activities = (item.entries || []).map((entry) => {
         return {
+          id: entry.id,
           date: dayjs(entry.date).format('YYYY/MM/DD'),
           count: entry.count,
           level: entry.level,
+          journal: entry.journal,
         }
       })
       return item
@@ -69,4 +71,10 @@ export const habitApis = {
   detail: useHabitDetail,
   update: useUpdateHabit,
   delete: useDeleteHabit,
+  useCheckIn: () => {
+    return useMutation({
+      mutationFn: (payload: THabitCheckIn) => habitService.checkIn(payload),
+      onSuccess: () => toast.success('Successfully checked-in'),
+    })
+  },
 }

@@ -28,6 +28,7 @@ func (route *HabitRoute) SetupRoutes() {
 		e.Router.POST("/mz/habits", route.controller.Create, route.authMiddleware.IsAuthenticated)
 		e.Router.PUT("/mz/habits/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
 		e.Router.DELETE("/mz/habits/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
+		e.Router.POST("/mz/habits/check-in", route.controller.CheckIn, route.authMiddleware.IsAuthenticated)
 		return nil
 	})
 }

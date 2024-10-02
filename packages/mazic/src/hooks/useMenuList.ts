@@ -1,6 +1,6 @@
 import { To, useLocation } from 'react-router-dom'
 
-import { DashboardIcon, GuardIcon } from '@mazic-design-system'
+import { AtomIcon, DashboardIcon, GuardIcon } from '@mazic-design-system'
 
 import { Menu, MenuList, Submenu, TMenuItem, TMenus } from '@mazic/types/menu'
 
@@ -9,12 +9,11 @@ export const MENUS: TMenus = {
     href: '/',
     label: 'Dashboard',
     icon: DashboardIcon,
-    submenus: [
-      {
-        href: '/habit',
-        label: 'Habit',
-      },
-    ],
+  },
+  HABIT: {
+    href: '/habit',
+    label: 'Habit',
+    icon: AtomIcon,
   },
   SYSTEM: {
     href: '/#',
@@ -89,7 +88,7 @@ export const useMenuList = (): MenuList => {
     menuList: [
       {
         groupLabel: '',
-        menus: [getMenuItem(MENUS.DASHBOARD)],
+        menus: [getMenuItem(MENUS.DASHBOARD), getMenuItem(MENUS.HABIT)],
       },
       {
         groupLabel: 'System',

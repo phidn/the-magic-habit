@@ -23,16 +23,22 @@ export const ModalCommon = () => {
           <ModalDescription>{modal.description}</ModalDescription>
         </ModalHeader>
         <ModalBody>{modal.body}</ModalBody>
-        <ModalFooter>
-          <ModalClose asChild>
-            <Button variant="outline" onClick={hideModal}>
-              Close
+        {modal.showFooter && (
+          <ModalFooter>
+            <ModalClose asChild>
+              <Button variant="outline" onClick={hideModal}>
+                Close
+              </Button>
+            </ModalClose>
+            <Button
+              variant={modal.confirmVariant}
+              onClick={modal.onConfirm}
+              isLoading={modal.loadingConfirm}
+            >
+              {modal.confirmText || 'Continue'}
             </Button>
-          </ModalClose>
-          <Button variant="destructive" onClick={modal.onConfirm} isLoading={modal.loadingConfirm}>
-            {modal.confirmText || 'Continue'}
-          </Button>
-        </ModalFooter>
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   )

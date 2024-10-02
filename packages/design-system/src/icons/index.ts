@@ -1,5 +1,6 @@
 // This file is generated automatically.
 export * from './ArrowLeftIcon'
+export * from './AtomIcon'
 export * from './CalendarIcon'
 export * from './CaretSortIcon'
 export * from './CheckIcon'

@@ -30,3 +30,15 @@ export type THabit = z.infer<typeof habitSchema> & {
 }
 
 export type THabitCreate = THabit
+
+export const habitCheckInSchema = z.object({
+  id: z.string().optional(),
+  habit_id: z.string().min(1, 'Habit is required'),
+  date: z.date({
+    message: 'Date is required',
+  }),
+  value: z.number().min(0, 'Value must be greater than or equal to 0'),
+  journal: z.string().optional().default(''),
+})
+
+export type THabitCheckIn = z.infer<typeof habitCheckInSchema>

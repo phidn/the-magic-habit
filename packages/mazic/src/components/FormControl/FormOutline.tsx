@@ -19,7 +19,7 @@ export const FormOutline = ({ formSections, formTitle }: FormOutlineProps) => {
             <CheckBoxLabel
               key={index}
               id={section.id || index}
-              title={section.title}
+              title={section.title || ''}
               checked={Boolean(section?.isValid)}
             />
           ) : null
