@@ -10,15 +10,11 @@ const DashboardPage = () => {
   return (
     <DashboardStyled>
       <div className="mazic-row">
-        <div className="mazic-col-4">
-          <Overview />
-        </div>
-        <div className="mazic-col-4">
-          <Overview />
-        </div>
-        <div className="mazic-col-4">
-          <Overview />
-        </div>
+        {!!listHabits?.length && (
+          <div className="mazic-col-12">
+            <Overview habits={listHabits} range="MONTH" />
+          </div>
+        )}
       </div>
       <div className="mazic-row mt-12">
         {listHabits.map((habit, idx) => {

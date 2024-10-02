@@ -1,5 +1,6 @@
 // This file is generated automatically.
 export * from './useApis'
+export * from './useColorMode'
 export * from './useColumnCommon'
 export * from './useDataTable'
 export * from './useDebounce'

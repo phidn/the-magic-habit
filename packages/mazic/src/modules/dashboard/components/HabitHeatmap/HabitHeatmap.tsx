@@ -16,8 +16,8 @@ import {
 } from '@mazic-design-system'
 
 import HeatMap from '@mazic/components/HeatMap'
-import { colors, getThemeColor } from '@mazic/config/baseColors'
-import { useTheme } from '@mazic/contexts/ThemeProvider'
+import { colors } from '@mazic/config/baseColors'
+import { useColorMode } from '@mazic/hooks'
 import { habitApis } from '@mazic/modules/habit/apis'
 import { THabit } from '@mazic/modules/habit/validations'
 import { useStoreShallow } from '@mazic/store/useStore'
@@ -33,10 +33,8 @@ interface Props {
 
 export const HabitHeatmap = ({ habit, refetch }: Props) => {
   const { title, activities, color } = habit || {}
-  const { mode } = useTheme()
+  const { mode, colorMode: activeModeColor } = useColorMode(color)
 
-  const habitColor = getThemeColor(color)
-  const activeModeColor = `hsl(${habitColor?.activeColor?.[mode]})`
   const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
 
   const mutationDelete = habitApis.delete()

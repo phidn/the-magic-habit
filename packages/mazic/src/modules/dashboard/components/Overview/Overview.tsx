@@ -1,3 +1,7 @@
+import dayjs from 'dayjs'
+import isoWeek from 'dayjs/plugin/isoWeek'
+import weekOfYear from 'dayjs/plugin/weekOfYear'
+import snakeCase from 'lodash/snakeCase'
 import { Bar, BarChart, XAxis } from 'recharts'
 
 import {
@@ -12,62 +16,128 @@ import {
   ChartTooltipContent,
 } from '@mazic-design-system'
 
+import { useColorMode } from '@mazic/hooks'
+import { THabit } from '@mazic/modules/habit/validations'
+import { pluralize } from '@mazic/utils/pluralize'
+
+dayjs.extend(weekOfYear)
+dayjs.extend(isoWeek)
+
 export const description = 'A stacked bar chart with a legend'
 
-const chartData = [
-  { date: '2024-07-15', running: 450, swimming: 300 },
-  { date: '2024-07-16', running: 380, swimming: 420 },
-  { date: '2024-07-17', running: 520, swimming: 120 },
-  { date: '2024-07-18', running: 140, swimming: 550 },
-  { date: '2024-07-19', running: 600, swimming: 350 },
-  { date: '2024-07-20', running: 480, swimming: 400 },
-]
+const getWeekDates = () => {
+  const startOfWeek = dayjs().startOf('isoWeek')
+  const endOfWeek = dayjs().endOf('isoWeek')
 
-const chartConfig = {
-  running: {
-    label: 'Running',
-    color: 'hsl(var(--chart-1))',
-  },
-  swimming: {
-    label: 'Swimming',
-    color: 'hsl(var(--chart-2))',
-  },
-} satisfies ChartConfig
+  const dates = []
+  let currentDate = startOfWeek
 
-export function Overview() {
+  while (currentDate.isBefore(endOfWeek) || currentDate.isSame(endOfWeek, 'day')) {
+    dates.push(currentDate.format('YYYY-MM-DD'))
+    currentDate = currentDate.add(1, 'day')
+  }
+
+  return dates
+}
+
+const getRangeDates = (type: TChartRange) => {
+  switch (type) {
+    case 'WEEK':
+      return getWeekDates()
+    case 'MONTH':
+      return Array.from({ length: 30 }, (_, i) =>
+        dayjs().subtract(i, 'day').format('YYYY-MM-DD')
+      ).reverse()
+    case 'YEAR':
+      return Array.from({ length: 12 }, (_, i) =>
+        dayjs().subtract(i, 'month').format('YYYY-MM-DD')
+      ).reverse()
+    default:
+      return []
+  }
+}
+
+type TChartRange = 'WEEK' | 'MONTH' | 'YEAR'
+
+interface Props {
+  habits: THabit[]
+  range: TChartRange
+}
+
+interface ChartItem {
+  date: string
+  [key: string]: number | string
+}
+
+export function Overview({ habits, range }: Props) {
+  const getColor = useColorMode
+  const chartConfig = habits.reduce((acc, habit) => {
+    acc[snakeCase(habit.title)] = {
+      label: habit.title,
+      color: getColor(habit.color).colorMode,
+    }
+    return acc
+  }, {} as ChartConfig)
+  const metricMap = new Map(habits.map((habit) => [snakeCase(habit.title), habit.metric]))
+
+  const chartData = getRangeDates(range).map((date) => {
+    const item: ChartItem = { date }
+    for (const habit of habits) {
+      const _title = snakeCase(habit.title)
+      item[_title] = 0
+      for (const entry of habit.entries) {
+        const entryDate = dayjs(entry.date).format('YYYY-MM-DD')
+        if (entryDate === date) {
+          item[_title] += entry.value
+        }
+      }
+    }
+    return item
+  })
+
+  const lastIndex = chartData.reduce((lastIndex, item, index) => {
+    const hasValue = Object.keys(item).some((key) => key !== 'date' && +item[key] > 0)
+    return hasValue ? index : lastIndex
+  }, -1)
+
+  const totalHasValue = chartData.reduce((total, item) => {
+    return total + (Object.keys(item).some((key) => key !== 'date' && +item[key] > 0) ? 1 : 0)
+  }, 0)
+  const percentage = Math.round((totalHasValue / chartData.length) * 100)
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>You are almost there</CardTitle>
-        <CardDescription>1/3 day goals completed</CardDescription>
+        <CardDescription>{percentage}% goals completed</CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="h-[200px] w-full">
           <BarChart accessibilityLayer data={chartData}>
             <XAxis
               dataKey="date"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => {
-                return new Date(value).toLocaleDateString('en-US', {
-                  weekday: 'short',
-                })
-              }}
+              tickFormatter={(value) => dayjs(value).format('MMM DD')}
             />
-            <Bar dataKey="running" stackId="a" fill="var(--color-running)" radius={[0, 0, 4, 4]} />
-            <Bar
-              dataKey="swimming"
-              stackId="a"
-              fill="var(--color-swimming)"
-              radius={[4, 4, 0, 0]}
-            />
+            {Object.keys(chartConfig).map((key) => {
+              return (
+                <Bar
+                  key={key}
+                  dataKey={key}
+                  stackId="a"
+                  fill={chartConfig[key as keyof typeof chartConfig]?.color}
+                  radius={0}
+                />
+              )
+            })}
             <ChartTooltip
               content={
                 <ChartTooltipContent
                   hideLabel
                   className="w-[180px]"
-                  formatter={(value, name, item, index) => (
+                  formatter={(value, name) => (
                     <>
                       <div
                         className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
@@ -80,24 +150,16 @@ export function Overview() {
                       {chartConfig[name as keyof typeof chartConfig]?.label || name}
                       <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
                         {value}
-                        <span className="font-normal text-muted-foreground">kcal</span>
+                        <span className="ml-1 font-normal text-muted-foreground">
+                          {pluralize(metricMap.get(name as string) || '', Number(value))}
+                        </span>
                       </div>
-                      {/* Add this after the last item */}
-                      {index === 1 && (
-                        <div className="mt-1.5 flex basis-full items-center border-t pt-1.5 text-xs font-medium text-foreground">
-                          Total
-                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                            {item.payload.running + item.payload.swimming}
-                            <span className="font-normal text-muted-foreground">kcal</span>
-                          </div>
-                        </div>
-                      )}
                     </>
                   )}
                 />
               }
               cursor={false}
-              defaultIndex={1}
+              defaultIndex={lastIndex}
             />
           </BarChart>
         </ChartContainer>
