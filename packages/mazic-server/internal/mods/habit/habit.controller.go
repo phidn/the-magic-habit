@@ -117,3 +117,17 @@ func (controller *HabitController) CheckIn(c echo.Context) error {
 
 	return resp.NewApiCreated(c, checkInEntry, "The habit has been checked in.")
 }
+
+func (controller *HabitController) DeleteCheckIn(c echo.Context) error {
+	habit := &HabitEntry{}
+	if err := c.Bind(&habit); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+
+	_, err := controller.HabitService.DeleteCheckIn(c.Request().Context(), c.PathParam("id"))
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to delete habit.", err)
+	}
+
+	return resp.NewApiDeleted(c, "The habit has been deleted.")
+}

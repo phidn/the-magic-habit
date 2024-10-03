@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import capitalize from 'lodash/capitalize'
+import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent } from '@mazic-design-system'
 
@@ -12,18 +13,25 @@ interface Props {
   habit: THabit
   checkInEntry: THabitCheckIn
   onSubmitForm: (data: THabitCheckIn) => Promise<void>
+  onDeleteForm: (id: string) => void
+  isNumberCheckIn: boolean
 }
 
-export const FormCheckIn = ({ habit, checkInEntry, onSubmitForm }: Props) => {
+export const FormCheckIn = (props: Props) => {
+  const { habit, checkInEntry, onSubmitForm, onDeleteForm, isNumberCheckIn } = props
   const methods = useForm<THabitCheckIn>({
     resolver: zodResolver(habitCheckInSchema),
     values: checkInEntry,
   })
 
+  const isDirty = !isEqual(checkInEntry, methods.watch())
+
   // console.log('values', methods.watch())
   // console.log('errors', methods.formState.errors)
 
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
+
+  const isNewEntry = !checkInEntry.id
 
   return (
     <FormProvider {...methods}>
@@ -35,9 +43,11 @@ export const FormCheckIn = ({ habit, checkInEntry, onSubmitForm }: Props) => {
                 <FormItem label="Date" required col={12}>
                   <FormDatePicker field="date" disabled />
                 </FormItem>
-                <FormItem label={capitalize(habit.metric)} required col={12}>
-                  <FormInput type="number" field="value" placeholder="Enter value.." />
-                </FormItem>
+                {isNumberCheckIn && (
+                  <FormItem label={capitalize(habit.metric || '')} required col={12}>
+                    <FormInput type="number" field="value" placeholder="Enter value.." />
+                  </FormItem>
+                )}
                 <FormItem label="Journal" col={12}>
                   <FormInput field="journal" placeholder="Enter journal.." />
                 </FormItem>
@@ -46,7 +56,16 @@ export const FormCheckIn = ({ habit, checkInEntry, onSubmitForm }: Props) => {
           </div>
         </div>
         <div className="mazic-row justify-end gap-2 mt-4">
-          <Button>Save</Button>
+          {!isNewEntry && (
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={() => onDeleteForm(checkInEntry.id as string)}
+            >
+              Delete
+            </Button>
+          )}
+          <Button disabled={!isDirty}>{isNumberCheckIn ? 'Save' : 'Complete'}</Button>
         </div>
       </form>
     </FormProvider>

@@ -227,9 +227,10 @@ const uncountableWords = new Set([
   'zoology',
 ])
 
-export const pluralize = (word: string, count: number): string => {
-  if (uncountableWords.has(word.toLowerCase())) {
-    return word
+export const pluralize = (word: string | undefined | null, count: number): string => {
+  const _word = word || ''
+  if (uncountableWords.has(_word.toLowerCase())) {
+    return _word
   }
-  return count > 1 ? `${word}s` : word
+  return count > 1 ? `${_word}s` : _word
 }

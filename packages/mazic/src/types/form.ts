@@ -10,7 +10,7 @@ export interface IOption {
   renderLabel?: () => JSX.Element
   value: any
   code?: string
-  icon?: React.ComponentType<{ className?: string }>
+  renderIcon?: () => JSX.Element
   enableCount?: boolean
   disabled?: boolean
   [key: string]: any

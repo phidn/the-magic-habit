@@ -11,4 +11,5 @@ export const habitService = {
   update: <T = any>(id: string, payload: THabit) => http.put<T>('/habits/' + id, payload),
   delete: <T = any>(id: string) => http.delete<T>('/habits/' + id),
   checkIn: <T = any>(payload: THabitCheckIn) => http.post<T>('/habits/check-in', payload),
+  deleteCheckIn: <T = any>(id: string) => http.delete<T>('/habits/check-in/' + id),
 }

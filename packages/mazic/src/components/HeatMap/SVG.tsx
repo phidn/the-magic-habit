@@ -19,6 +19,7 @@ export type HeatMapExtended = {
   id: string
   level: number
   journal: string
+  is_done?: boolean
 }
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {

@@ -90,6 +90,9 @@ func Reduce[T, M any](s []T, f func(M, T) M, initValue M) M {
 
 func Min(list []interface{}) float64 {
 	_list := ConvertToFloat64Slice(list)
+	if len(_list) == 0 {
+		return 0
+	}
 	min := _list[0]
 	for _, v := range _list {
 		if v < min {
@@ -101,6 +104,9 @@ func Min(list []interface{}) float64 {
 
 func Max(list []interface{}) float64 {
 	_list := ConvertToFloat64Slice(list)
+	if len(_list) == 0 {
+		return 0
+	}
 	max := _list[0]
 	for _, v := range _list {
 		if v > max {

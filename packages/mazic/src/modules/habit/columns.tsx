@@ -9,6 +9,7 @@ import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
+import { checkInMap } from './components/HabitForm/DetailForm'
 import { habitApis } from './apis'
 import { THabit } from './validations'
 
@@ -61,16 +62,24 @@ export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TH
         enableHiding: true,
       },
       {
-        accessorKey: 'week_start',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Week start" />,
-        cell: ({ row }) => row.getValue('week_start'),
+        accessorKey: 'color',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Color" />,
+        cell: ({ row }) => row.getValue('color'),
         enableSorting: true,
         enableHiding: true,
       },
       {
-        accessorKey: 'color',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Color" />,
-        cell: ({ row }) => row.getValue('color'),
+        accessorKey: 'check_in_type',
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Check-in type" />,
+        cell: ({ row }) => {
+          const val = checkInMap.get(row.getValue('check_in_type'))
+          return (
+            <div className="flex items-center">
+              {val?.icon && <val.icon className="mr-2 h-4 w-4" />}
+              {val?.label}
+            </div>
+          )
+        },
         enableSorting: true,
         enableHiding: true,
       },

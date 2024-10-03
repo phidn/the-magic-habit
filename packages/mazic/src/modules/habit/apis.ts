@@ -60,6 +60,7 @@ export const habitApis = {
           count: entry.count,
           level: entry.level,
           journal: entry.journal,
+          is_done: entry.is_done,
         }
       })
       return item
@@ -75,6 +76,12 @@ export const habitApis = {
     return useMutation({
       mutationFn: (payload: THabitCheckIn) => habitService.checkIn(payload),
       onSuccess: () => toast.success('Successfully checked-in'),
+    })
+  },
+  useDeleteCheckIn: () => {
+    return useMutation({
+      mutationFn: (checkInId: string) => habitService.deleteCheckIn(checkInId),
+      onSuccess: () => toast.success('Successfully deleted check-in'),
     })
   },
 }

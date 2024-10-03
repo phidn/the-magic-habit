@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import snakeCase from 'lodash/snakeCase'
-import { Bar, BarChart, XAxis } from 'recharts'
+import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
 
 import {
   Card,
@@ -78,7 +78,7 @@ export function Overview({ habits, range }: Props) {
     }
     return acc
   }, {} as ChartConfig)
-  const metricMap = new Map(habits.map((habit) => [snakeCase(habit.title), habit.metric]))
+  const habitMap = new Map(habits.map((habit) => [snakeCase(habit.title), habit]))
 
   const chartData = getRangeDates(range).map((date) => {
     const item: ChartItem = { date }
@@ -114,6 +114,7 @@ export function Overview({ habits, range }: Props) {
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[200px] w-full">
           <BarChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={false} />
             <XAxis
               dataKey="date"
               tickLine={false}
@@ -135,8 +136,8 @@ export function Overview({ habits, range }: Props) {
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  hideLabel
                   className="w-[180px]"
+                  labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
                   formatter={(value, name) => (
                     <>
                       <div
@@ -148,12 +149,14 @@ export function Overview({ habits, range }: Props) {
                         }
                       />
                       {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                      <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                        {value}
-                        <span className="ml-1 font-normal text-muted-foreground">
-                          {pluralize(metricMap.get(name as string) || '', Number(value))}
-                        </span>
-                      </div>
+                      {habitMap.get(name as string)?.check_in_type === 'NUMBER' && (
+                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                          {value}
+                          <span className="ml-1 font-normal text-muted-foreground">
+                            {pluralize(habitMap.get(name as string)?.metric, Number(value))}
+                          </span>
+                        </div>
+                      )}
                     </>
                   )}
                 />

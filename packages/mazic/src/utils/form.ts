@@ -78,9 +78,16 @@ export const optionSelected = <T extends { value: any }>(
   return options.find((option) => option?.value === value)
 }
 
-export const getDefaultsBySchema = <Schema extends z.AnyZodObject>(schema: Schema, data?: any) => {
+export const getDefaultsBySchema = (schema: z.ZodObject<any> | z.ZodEffects<any>, data?: any) => {
+  let shape = {}
+  if (schema instanceof z.ZodEffects) {
+    shape = schema._def.schema.shape
+  }
+  if (schema instanceof z.ZodObject) {
+    shape = schema.shape
+  }
   return Object.fromEntries(
-    Object.entries(schema.shape).map(([key, value]) => {
+    Object.entries(shape).map(([key, value]) => {
       if (typeof data?.[key] !== 'undefined') {
         return [key, data[key]]
       }

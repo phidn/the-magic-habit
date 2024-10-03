@@ -2,18 +2,24 @@ import { habitApis } from '../habit/apis'
 
 import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
 import { Overview } from './components/Overview/Overview'
+import { OverviewTimeline } from './OverviewTimeline/OverviewTimeline'
 import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
-  const { data: listHabits, refetch } = habitApis.useList({ pageSize: -1 })
+  const { data: listHabits, refetch } = habitApis.useList({ pageSize: -1, entry_expand: true })
 
   return (
     <DashboardStyled>
       <div className="mazic-row">
         {!!listHabits?.length && (
-          <div className="mazic-col-12">
-            <Overview habits={listHabits} range="MONTH" />
-          </div>
+          <>
+            <div className="mazic-col-8">
+              <Overview habits={listHabits} range="MONTH" />
+            </div>
+            <div className="mazic-col-4">
+              <OverviewTimeline habits={listHabits} />
+            </div>
+          </>
         )}
       </div>
       <div className="mazic-row mt-12">

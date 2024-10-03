@@ -49,6 +49,9 @@ export const FormControl = (props: FormControlProps) => {
     values: initialValues,
   })
 
+  // console.log('values', methods.watch())
+  console.log('errors', methods.formState.errors)
+
   const _formSections = formSections.map((section, idx) => {
     return {
       ...section,

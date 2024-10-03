@@ -58,7 +58,10 @@ const FormSelect = ({
         <SelectContent>
           {options.map((opt, index: number) => (
             <SelectItem value={opt.value} disabled={opt?.disabled} key={index}>
-              {opt?.label || opt?.renderLabel?.()}
+              <div className="flex items-center">
+                {opt.icon && <opt.icon className="mr-2 h-4 w-4" />}
+                {opt?.label || opt?.renderLabel?.()}
+              </div>
             </SelectItem>
           ))}
         </SelectContent>

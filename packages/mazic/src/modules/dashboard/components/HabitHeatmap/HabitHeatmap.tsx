@@ -33,6 +33,8 @@ interface Props {
 
 export const HabitHeatmap = ({ habit, refetch }: Props) => {
   const { title, activities, color } = habit || {}
+  const isNumberCheckIn = habit.check_in_type === 'NUMBER'
+
   const { mode, colorMode: activeModeColor } = useColorMode(color)
 
   const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
@@ -46,6 +48,9 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
   if (!activities?.length) {
     return null
   }
+
+  const endDate = dayjs().endOf('month').add(1, 'month')
+  const startDate = endDate.subtract(1, 'year')
 
   return (
     <div className="w-full m-2">
@@ -88,19 +93,26 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
           <TooltipProvider delayDuration={300}>
             <HeatMap
               width={900}
-              startDate={dayjs('2024-01-01').toDate()}
-              endDate={dayjs('2024-12-31').toDate()}
+              startDate={startDate.toDate()}
+              endDate={endDate.toDate()}
               value={activities}
               legendCellSize={15}
               rectSize={15}
               weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-              panelColors={{
-                0: bgColor,
-                1: colors[habit.color][2].hex,
-                2: colors[habit.color][3].hex,
-                3: colors[habit.color][4].hex,
-                4: activeModeColor,
-              }}
+              panelColors={
+                isNumberCheckIn
+                  ? {
+                      0: bgColor,
+                      1: colors[habit.color][2].hex,
+                      2: colors[habit.color][3].hex,
+                      3: colors[habit.color][4].hex,
+                      4: activeModeColor,
+                    }
+                  : {
+                      0: bgColor,
+                      4: activeModeColor,
+                    }
+              }
               rectRender={(props, data) => {
                 return (
                   <ActivityBlock
@@ -110,6 +122,7 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
                     color={activeModeColor}
                     rx={3}
                     refetch={refetch}
+                    isNumberCheckIn={isNumberCheckIn}
                   />
                 )
               }}

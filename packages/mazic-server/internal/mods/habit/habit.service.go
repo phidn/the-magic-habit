@@ -3,14 +3,11 @@ package habit
 import (
 	"context"
 	"mazic/server/pkg/entry"
-	"mazic/server/pkg/mz_time"
 	"mazic/server/pkg/schema"
 	"mazic/server/pkg/utils"
 	"net/url"
-	"time"
 
 	"github.com/pocketbase/pocketbase/models"
-	"github.com/pocketbase/pocketbase/tools/types"
 
 	"github.com/pocketbase/dbx"
 )
@@ -22,6 +19,7 @@ type HabitService interface {
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
 	Delete(ctx context.Context, id string) (*models.Record, error)
 	CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error)
+	DeleteCheckIn(ctx context.Context, id string) (*models.Record, error)
 }
 
 type habitService struct {
@@ -59,6 +57,15 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 		return nil, err
 	}
 
+	if len(*habits) == 0 {
+		return result, nil
+	}
+
+	isEntryExpand := queryParams.Get("entry_expand") == "true"
+	if !isEntryExpand {
+		return result, nil
+	}
+
 	habitIds := utils.ExtractFieldToSlice(*habits, "Id")
 
 	habitEntries := &[]*HabitEntry{}
@@ -70,8 +77,8 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 		return nil, err
 	}
 
-	values := utils.ExtractFieldToSlice(*habitEntries, "Value")
-	maxValue := utils.Max(values)
+	allValues := utils.ExtractFieldToSlice(*habitEntries, "Value")
+	allAvgValue := utils.Avg(allValues)
 
 	habitEntriesMap := map[string][]*HabitEntry{}
 
@@ -82,62 +89,39 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 	}
 
 	for _, entry := range *habitEntries {
-		if entry.Value == 0 {
-			entry.Level = 0
-		}
-		if entry.Value > 0 && entry.Value < maxValue/4 {
-			entry.Level = 1
-		}
-		if entry.Value >= maxValue/4 && entry.Value < maxValue/2 {
-			entry.Level = 2
-		}
-		if entry.Value >= maxValue/2 && entry.Value < maxValue*3/4 {
-			entry.Level = 3
-		}
-		if entry.Value >= maxValue*3/4 {
-			entry.Level = 4
-		}
-
-		entry.Count = entry.Value
 		habitEntriesMap[entry.HabitId] = append(habitEntriesMap[entry.HabitId], entry)
 	}
 
 	for _, habit := range *habits {
 		if entries, ok := habitEntriesMap[habit.Id]; ok {
-			existingDates := make(map[string]bool)
+			values := utils.ExtractFieldToSlice(entries, "Value")
+			maxValue := utils.Max(values)
 			for _, entry := range entries {
-				entryDate := mz_time.TimeFormat(entry.Date.Time(), mz_time.YYYYMMDD)
-				existingDates[entryDate] = true
-			}
-
-			today := time.Now()
-			prevYear := today.AddDate(-1, 0, 0)
-			startHeatmap := mz_time.StartOfWeek(prevYear)
-			_startHeatmap := mz_time.TimeFormat(startHeatmap, mz_time.YYYYMMDD)
-			habitDate, _ := types.ParseDateTime(startHeatmap)
-
-			if !existingDates[_startHeatmap] {
-				emptyEntry := &HabitEntry{
-					Date:  habitDate,
-					Value: 0,
-					Level: 0,
+				if entry.Value > 0 {
+					if entry.Value > 0 && entry.Value < maxValue/4 {
+						entry.Level = 1
+					}
+					if entry.Value >= maxValue/4 && entry.Value < maxValue/2 {
+						entry.Level = 2
+					}
+					if entry.Value >= maxValue/2 && entry.Value < maxValue*3/4 {
+						entry.Level = 3
+					}
+					if entry.Value >= maxValue*3/4 {
+						entry.Level = 4
+					}
+					entry.Count = entry.Value
+				} else {
+					if *entry.IsDone {
+						entry.Level = 4
+						entry.Count = 1
+						entry.Value = allAvgValue
+					} else {
+						entry.Level = 0
+						entry.Count = 0
+					}
 				}
-				entries = append([]*HabitEntry{emptyEntry}, entries...)
 			}
-
-			endHeatmap := mz_time.EndOfWeek(today)
-			_endHeatmap := mz_time.TimeFormat(endHeatmap, mz_time.YYYYMMDD)
-			habitDate, _ = types.ParseDateTime(endHeatmap)
-
-			if !existingDates[_endHeatmap] {
-				emptyEntry := &HabitEntry{
-					Date:  habitDate,
-					Value: 0,
-					Level: 0,
-				}
-				entries = append(entries, emptyEntry)
-			}
-
 			habit.Entries = entries
 		}
 	}
@@ -199,15 +183,37 @@ func (service *habitService) Delete(ctx context.Context, id string) (*models.Rec
 }
 
 func (service *habitService) CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error) {
-	collection, err := service.Entry.FindCollectionByName(ctx, new(HabitEntry).TableName())
-	if err != nil {
-		return nil, err
-	}
+	tableName := new(HabitEntry).TableName()
+	var record *models.Record
 
-	record := models.NewRecord(collection)
+	if habitEntry.Id == "" {
+		collection, err := service.Entry.FindCollectionByName(ctx, tableName)
+		if err != nil {
+			return nil, err
+		}
+
+		record = models.NewRecord(collection)
+	} else {
+		existingRecord, err := service.Entry.Dao().FindRecordById(tableName, habitEntry.Id)
+		if err != nil {
+			return nil, err
+		}
+		record = existingRecord
+	}
 	habitEntry.ParseRecord(record)
 
 	if err := service.Entry.Dao().Save(record); err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+func (service *habitService) DeleteCheckIn(ctx context.Context, id string) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(HabitEntry).TableName(), id)
+	if err != nil {
+		return nil, err
+	}
+	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
 		return nil, err
 	}
 	return record, nil
