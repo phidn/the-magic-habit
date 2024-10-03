@@ -96,6 +96,7 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 		if entries, ok := habitEntriesMap[habit.Id]; ok {
 			values := utils.ExtractFieldToSlice(entries, "Value")
 			maxValue := utils.Max(values)
+			avgValue := utils.Avg(values)
 			for _, entry := range entries {
 				if entry.Value > 0 {
 					if entry.Value > 0 && entry.Value < maxValue/4 {
@@ -111,11 +112,14 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 						entry.Level = 4
 					}
 					entry.Count = entry.Value
+					numberFactor := allAvgValue / avgValue
+					entry.BarValue = entry.Value * numberFactor
 				} else {
 					if *entry.IsDone {
 						entry.Level = 4
 						entry.Count = 1
 						entry.Value = allAvgValue
+						entry.BarValue = allAvgValue
 					} else {
 						entry.Level = 0
 						entry.Count = 0

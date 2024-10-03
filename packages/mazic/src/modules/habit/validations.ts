@@ -32,6 +32,7 @@ type THabitEntry = {
   habit_id: string
   level: number
   count: number
+  bar_value: number
   is_done?: boolean
 }
 

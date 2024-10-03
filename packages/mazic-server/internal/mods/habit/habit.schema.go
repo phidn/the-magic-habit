@@ -65,8 +65,9 @@ type HabitEntry struct {
 	Value   float64        `db:"value" json:"value"`
 	IsDone  *bool          `db:"is_done" json:"is_done"`
 
-	Level int     `db:"level" json:"level"`
-	Count float64 `json:"count"`
+	Level    int     `db:"level" json:"level"`
+	Count    float64 `json:"count"`
+	BarValue float64 `json:"bar_value"`
 }
 
 func (habitEntry *HabitEntry) TableName() string {

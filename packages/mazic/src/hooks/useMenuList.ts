@@ -12,7 +12,7 @@ export const MENUS: TMenus = {
   },
   HABIT: {
     href: '/habit',
-    label: 'Habit',
+    label: 'All Habits',
     icon: AtomIcon,
   },
   SYSTEM: {

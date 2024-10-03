@@ -14,6 +14,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  CheckIcon,
 } from '@mazic-design-system'
 
 import { useColorMode } from '@mazic/hooks'
@@ -88,9 +89,10 @@ export function Overview({ habits, range }: Props) {
       for (const entry of habit.entries) {
         const entryDate = dayjs(entry.date).format('YYYY-MM-DD')
         if (entryDate === date) {
-          item[_title] += entry.value
+          item[_title] += entry.bar_value
         }
       }
+      item[_title] = item[_title].toFixed(2)
     }
     return item
   })
@@ -106,7 +108,7 @@ export function Overview({ habits, range }: Props) {
   const percentage = Math.round((totalHasValue / chartData.length) * 100)
 
   return (
-    <Card>
+    <Card className="h-[350px]">
       <CardHeader>
         <CardTitle>You are almost there</CardTitle>
         <CardDescription>{percentage}% goals completed</CardDescription>
@@ -136,7 +138,6 @@ export function Overview({ habits, range }: Props) {
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  className="w-[180px]"
                   labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
                   formatter={(value, name) => (
                     <>
@@ -157,6 +158,12 @@ export function Overview({ habits, range }: Props) {
                           </span>
                         </div>
                       )}
+                      {habitMap.get(name as string)?.check_in_type !== 'NUMBER' &&
+                        Number(value) > 0 && (
+                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                            <CheckIcon />
+                          </div>
+                        )}
                     </>
                   )}
                 />

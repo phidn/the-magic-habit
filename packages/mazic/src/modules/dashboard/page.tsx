@@ -2,7 +2,7 @@ import { habitApis } from '../habit/apis'
 
 import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
 import { Overview } from './components/Overview/Overview'
-import { OverviewTimeline } from './OverviewTimeline/OverviewTimeline'
+import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
@@ -22,7 +22,7 @@ const DashboardPage = () => {
           </>
         )}
       </div>
-      <div className="mazic-row mt-12">
+      <div className="mazic-row mt-2">
         {listHabits.map((habit, idx) => {
           return <HabitHeatmap key={habit?.id || idx} habit={habit} refetch={refetch} />
         })}
