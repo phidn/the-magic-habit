@@ -6,17 +6,19 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { CONFIG } from '@mazic/config/config'
 
+import { loadingSlice, TLoadingSlice } from './slices/loadingSlice'
+import { modalSlice, TModalSlice } from './slices/modalSlice'
 import rehydrateSlice, { RehydrateSlice } from './slices/rehydrateSlice'
-import { systemSlice, TSystemSlice } from './slices/systemSlice'
 import sidebarSlice, { UserSlice } from './slices/userSlice'
 
-type Store = RehydrateSlice & UserSlice & TSystemSlice
+type Store = RehydrateSlice & UserSlice & TLoadingSlice & TModalSlice
 
 export const useStore = create<Store>()(
   persist(
     immer((...arg) => ({
       ...rehydrateSlice(...arg),
-      ...systemSlice(...arg),
+      ...loadingSlice(...arg),
+      ...modalSlice(...arg),
       ...sidebarSlice(...arg),
     })),
     {

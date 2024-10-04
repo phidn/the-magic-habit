@@ -1,13 +1,13 @@
 import { TUser } from '@mazic/modules/rbac/user/schemas/userSchema'
 import { ImmerStateCreator } from '@mazic/types/index'
-import { MenuItem } from '@mazic/types/menu'
+import { TMenuItem } from '@mazic/types/menu'
 
 export interface UserSlice {
   sidebar: {
     isOpen: boolean
-    openItem: MenuItem
+    openItem: TMenuItem
     toggle: () => void
-    setOpenItem: (openItem: MenuItem) => void
+    setOpenItem: (openItem: TMenuItem) => void
   }
   currentUser: TUser | Partial<TUser>
   setCurrentUser: (user: TUser) => void
@@ -21,7 +21,7 @@ const userSlice: ImmerStateCreator<UserSlice> = (set) => ({
       href: '',
     },
     toggle: () => set((state: any) => void (state.sidebar.isOpen = !state.sidebar.isOpen)),
-    setOpenItem: (openItem: MenuItem) =>
+    setOpenItem: (openItem: TMenuItem) =>
       set((state: any) => void (state.sidebar.openItem = openItem)),
   },
   currentUser: {

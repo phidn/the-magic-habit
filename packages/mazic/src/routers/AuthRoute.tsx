@@ -33,7 +33,7 @@ const AuthRoute = ({ children }: Props) => {
   }, [])
 
   return isAuthenticated ? (
-    <MainLayout title="dashboard">
+    <MainLayout>
       <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
     </MainLayout>
   ) : null

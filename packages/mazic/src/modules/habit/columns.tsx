@@ -98,7 +98,6 @@ export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TH
         ),
         cell: ({ cell }) => (
           <ActionColumn
-            pathDetail={`/habit/view/${cell.row.original.id}`}
             pathEdit={`/habit/edit/${cell.row.original.id}`}
             onDelete={() => {
               showModalDelete({

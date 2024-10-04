@@ -14,18 +14,12 @@ type TModal = {
   showFooter?: boolean
 }
 
-export type TSystemSlice = {
+export type TModalSlice = {
   modal: TModal
   showModal: (modal: Partial<TModal>) => void
   showModalDelete: (modal: Partial<TModal>) => void
   hideModal: () => void
   showModalLoading: () => void
-
-  loading: {
-    isOpen: boolean
-    setLoading: (isOpen: boolean) => void
-    hideLoading: () => void
-  }
 }
 
 const initModal: TModal = {
@@ -39,7 +33,7 @@ const initModal: TModal = {
   showFooter: true,
 }
 
-export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
+export const modalSlice: ImmerStateCreator<TModalSlice> = (set) => ({
   modal: initModal,
   showModal: (modal) =>
     set((state) => {
@@ -75,16 +69,4 @@ export const systemSlice: ImmerStateCreator<TSystemSlice> = (set) => ({
     set((state) => {
       state.modal.loadingConfirm = true
     }),
-
-  loading: {
-    isOpen: false,
-    setLoading: (isOpen: boolean) =>
-      set((state) => {
-        state.loading.isOpen = isOpen
-      }),
-    hideLoading: () =>
-      set((state) => {
-        state.loading.isOpen = false
-      }),
-  },
 })

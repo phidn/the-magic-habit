@@ -4,11 +4,7 @@ import { SheetMenu } from './SheetMenu'
 import { ThemeToggle } from './ThemeToggle'
 import { UserNav } from './UserNav'
 
-interface NavbarProps {
-  title: string
-}
-
-export const Navbar = ({ title }: NavbarProps) => {
+export const Navbar = () => {
   const openItem = useStore((store) => store.sidebar.openItem)
 
   return (
@@ -16,7 +12,7 @@ export const Navbar = ({ title }: NavbarProps) => {
       <div className="mx-4 sm:mx-8 flex h-14 items-center">
         <div className="flex items-center space-x-4 lg:space-x-0">
           <SheetMenu />
-          <h1 className="font-bold">{openItem?.label || title}</h1>
+          <h1 className="font-bold">{openItem?.label}</h1>
         </div>
         <div className="flex flex-1 items-center space-x-2 justify-end">
           <ThemeToggle />

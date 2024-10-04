@@ -6,21 +6,7 @@ import { Footer } from './Footer'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
-interface ContentLayoutProps {
-  title: string
-  children: React.ReactNode
-}
-
-const ContentLayout = ({ title, children }: ContentLayoutProps) => {
-  return (
-    <div>
-      <Navbar title={title} />
-      <div className="max-w-[1200px] w-full mx-auto p-6">{children}</div>
-    </div>
-  )
-}
-
-export const MainLayout = ({ title, children }: { title: string; children: React.ReactNode }) => {
+export const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const isOpen = useStore((store) => store.sidebar.isOpen)
 
   return (
@@ -32,7 +18,10 @@ export const MainLayout = ({ title, children }: { title: string; children: React
           !isOpen ? 'lg:ml-[90px]' : 'lg:ml-72'
         )}
       >
-        <ContentLayout title={title}>{children}</ContentLayout>
+        <div>
+          <Navbar />
+          <div className="max-w-[1200px] w-full mx-auto p-6">{children}</div>
+        </div>
       </main>
       <footer
         className={cn(
