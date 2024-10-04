@@ -1,8 +1,10 @@
-import { Button } from '@mazic-design-system'
+import { Button, TrashIcon } from '@mazic-design-system'
 
 import { DataTable, Toolbar } from '@mazic/components'
+import { ToolbarFloating } from '@mazic/components/ToolbarFloating/ToolbarFloating'
 import { FILTER_COMMON } from '@mazic/config/dataTable'
 import { RESOURCES, useDataTable, useFilter, useGetOptions } from '@mazic/hooks'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
 import { usePermissionApis } from '../hooks/usePermissionApis'
@@ -36,6 +38,12 @@ const PermissionListPage = () => {
   })
 
   const seedPermission = usePermissionApis.seed()
+  const bulkDelete = usePermissionApis.bulkDelete()
+
+  const [hideModal, showModalBulkDelete] = useStoreShallow((state) => [
+    state.hideModal,
+    state.showModalBulkDelete,
+  ])
 
   return (
     <>
@@ -50,13 +58,38 @@ const PermissionListPage = () => {
             variant="outline"
             className="h-8 px-2 lg:px-3 mr-2"
             isLoading={seedPermission.isPending}
-            onClick={() => seedPermission.mutate()}
+            onClick={() =>
+              seedPermission.mutate(undefined, {
+                onSuccess: () => refetch(),
+              })
+            }
           >
             Seed
           </Button>
         )}
       />
       <DataTable table={table} />
+      <ToolbarFloating
+        table={table}
+        bulkActions={{
+          label: 'Delete',
+          icon: <TrashIcon className="size-3.5" />,
+          onClick: () => {
+            showModalBulkDelete({
+              onConfirm: () => {
+                bulkDelete.mutate(Object.keys(table.getState().rowSelection), {
+                  onSuccess: () => {
+                    table.resetRowSelection()
+                    refetch()
+                    hideModal()
+                  },
+                })
+              },
+            })
+          },
+          loading: bulkDelete.isPending,
+        }}
+      />
     </>
   )
 }

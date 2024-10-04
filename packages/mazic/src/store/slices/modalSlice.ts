@@ -18,6 +18,7 @@ export type TModalSlice = {
   modal: TModal
   showModal: (modal: Partial<TModal>) => void
   showModalDelete: (modal: Partial<TModal>) => void
+  showModalBulkDelete: (modal: Partial<TModal>) => void
   hideModal: () => void
   showModalLoading: () => void
 }
@@ -47,6 +48,24 @@ export const modalSlice: ImmerStateCreator<TModalSlice> = (set) => ({
         open: true,
         title: 'Delete item',
         body: 'If you delete this item, it will be gone forever. Are you sure you want to delete it?',
+        confirmText: 'Delete',
+        confirmVariant: 'destructive',
+        onConfirm: () => {
+          set((state) => {
+            state.modal.loadingConfirm = true
+          })
+          modal.onConfirm?.()
+        },
+      }
+    }),
+  showModalBulkDelete: (modal) =>
+    set((state) => {
+      state.modal = {
+        ...state.modal,
+        ...modal,
+        open: true,
+        title: 'Delete items',
+        body: 'If you delete these items, they will be gone forever. Are you sure you want to delete them?',
         confirmText: 'Delete',
         confirmVariant: 'destructive',
         onConfirm: () => {

@@ -101,7 +101,7 @@ export const Menu = ({ isOpen }: MenuProps) => {
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    // onClick={() => {}}
+                    onClick={() => logout.mutate()}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5"
                   >
@@ -113,7 +113,6 @@ export const Menu = ({ isOpen }: MenuProps) => {
                         'whitespace-nowrap',
                         isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
                       )}
-                      onClick={() => logout.mutate()}
                     >
                       Sign out
                     </p>

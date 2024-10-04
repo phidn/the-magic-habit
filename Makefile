@@ -46,6 +46,7 @@ clear:
 clear-vite:
 	rm -rf node_modules/.vite
 
+nx-clear: clear-nx
 clear-nx:
 	rm -rf .nx && \
 	yarn nx reset

@@ -17,7 +17,7 @@ export const useActionColumns = ({ refreshTable }: ITableColsProps): ColumnDef<T
   const mutationDelete = useActionApis.delete()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
-    state.showModal,
+    state.showModalDelete,
   ])
   const { statusColumn, createdAtColumn } = useColumnCommon()
 
@@ -32,7 +32,6 @@ export const useActionColumns = ({ refreshTable }: ITableColsProps): ColumnDef<T
               (table.getIsSomePageRowsSelected() && 'indeterminate')
             }
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
             className="translate-y-[2px]"
           />
         ),
@@ -40,7 +39,6 @@ export const useActionColumns = ({ refreshTable }: ITableColsProps): ColumnDef<T
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
             className="translate-y-[2px]"
           />
         ),

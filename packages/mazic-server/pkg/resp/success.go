@@ -44,7 +44,7 @@ func NewApiCreated(c echo.Context, data interface{}, message string) error {
 }
 
 func NewApiDeleted(c echo.Context, message string) error {
-	return c.JSON(http.StatusCreated, ApiResponse{
+	return c.JSON(http.StatusAccepted, ApiResponse{
 		Success: true,
 		Message: utils.If(message != "", message, "The resource has been deleted."),
 	})

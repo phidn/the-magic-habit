@@ -22,6 +22,7 @@ type PermissionService interface {
 	Create(ctx context.Context, permission *Permission) (*models.Record, error)
 	Update(ctx context.Context, id string, permission *Permission) (*models.Record, error)
 	Delete(ctx context.Context, id string) (*models.Record, error)
+	BulkDelete(ctx context.Context, ids []string) error
 	Seed(ctx context.Context) error
 }
 
@@ -116,6 +117,17 @@ func (service *permissionService) Delete(ctx context.Context, id string) (*model
 		return nil, err
 	}
 	return record, nil
+}
+
+func (service *permissionService) BulkDelete(ctx context.Context, ids []string) error {
+	_, err := service.Entry.Dao().DB().
+		Delete(new(Permission).TableName(), dbx.In("id", utils.ToInterfaceSlice(ids)...)).
+		WithContext(ctx).
+		Execute()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (service *permissionService) Seed(ctx context.Context) error {

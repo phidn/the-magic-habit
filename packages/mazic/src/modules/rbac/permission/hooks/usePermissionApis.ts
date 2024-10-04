@@ -64,6 +64,16 @@ const useDeletePermission = () => {
   })
 }
 
+const useBulkDeletePermission = () => {
+  return useMutation({
+    mutationFn: (ids: string[]) => permissionService.bulkDelete(ids),
+    onSuccess: () => toast.success('Successfully deleted permissions'),
+    onError: (error: ErrorResponse) => {
+      toast.error(error?.error?.message || 'Failed to delete permissions')
+    },
+  })
+}
+
 const useSeedPermission = () => {
   return useMutation({
     mutationFn: () => permissionService.seed(),
@@ -78,5 +88,6 @@ export const usePermissionApis = {
   create: useCreatePermission,
   update: useUpdatePermission,
   delete: useDeletePermission,
+  bulkDelete: useBulkDeletePermission,
   seed: useSeedPermission,
 }

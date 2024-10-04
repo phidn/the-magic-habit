@@ -92,6 +92,20 @@ func (controller *PermissionController) Delete(c echo.Context) error {
 	return resp.NewApiDeleted(c, "The permission has been deleted.")
 }
 
+func (controller *PermissionController) BulkDelete(c echo.Context) error {
+	ids := []string{}
+	if err := c.Bind(&ids); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+
+	err := controller.PermissionService.BulkDelete(c.Request().Context(), ids)
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to delete permissions.", err)
+	}
+
+	return resp.NewApiDeleted(c, "The permissions have been deleted.")
+}
+
 func (controller *PermissionController) Seed(c echo.Context) error {
 	err := controller.PermissionService.Seed(c.Request().Context())
 	if err != nil {

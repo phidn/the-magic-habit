@@ -32,7 +32,6 @@ export const useRoleColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TRo
               (table.getIsSomePageRowsSelected() && 'indeterminate')
             }
             onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
             className="translate-y-[2px]"
           />
         ),
@@ -40,7 +39,6 @@ export const useRoleColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TRo
           <Checkbox
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
-            aria-label="Select row"
             className="translate-y-[2px]"
           />
         ),

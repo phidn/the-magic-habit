@@ -29,7 +29,9 @@ export const commonParamsSchema = {
   is_active: z.string().optional(),
 }
 
-export const useDataTable = <TData, TValue>(props: IUseDataTableProps<TData, TValue>) => {
+export const useDataTable = <TData extends { id: string }, TValue>(
+  props: IUseDataTableProps<TData, TValue>
+) => {
   const { data, columns, pageCount, params = {} } = props
   const navigate = useNavigate()
 
@@ -109,6 +111,7 @@ export const useDataTable = <TData, TValue>(props: IUseDataTableProps<TData, TVa
     manualPagination: true,
     manualSorting: true,
     manualFiltering: true,
+    getRowId: (row) => row.id,
   })
 
   return {
