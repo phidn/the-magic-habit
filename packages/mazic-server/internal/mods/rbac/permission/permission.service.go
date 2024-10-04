@@ -136,7 +136,7 @@ func (service *permissionService) Seed(ctx context.Context) error {
 
 	// Fetch all active resources
 	err := service.Entry.Dao().DB().
-		Select("id", "name", "code").
+		Select("id", "name", "code", "actions").
 		From(new(resource.Resource).TableName()).
 		Where(dbx.HashExp{"is_active": true}).
 		All(&resources)
@@ -144,7 +144,6 @@ func (service *permissionService) Seed(ctx context.Context) error {
 		return fmt.Errorf("failed to fetch resources: %w", err)
 	}
 
-	// Fetch all active actions
 	err = service.Entry.Dao().DB().
 		Select("id", "name", "code").
 		From(new(action.Action).TableName()).
@@ -152,6 +151,10 @@ func (service *permissionService) Seed(ctx context.Context) error {
 		All(&actions)
 	if err != nil {
 		return fmt.Errorf("failed to fetch actions: %w", err)
+	}
+	actionMap := make(map[string]action.Action)
+	for _, action := range actions {
+		actionMap[action.Id] = action
 	}
 
 	// Pre-fetch all existing permissions
@@ -171,7 +174,8 @@ func (service *permissionService) Seed(ctx context.Context) error {
 
 	// Loop through resources and actions to create missing permissions
 	for _, resource := range resources {
-		for _, action := range actions {
+		for _, actionId := range resource.Actions {
+			action := actionMap[actionId.(string)]
 			permissionCode := fmt.Sprintf("%s.%s", resource.Code, action.Code)
 
 			// Skip if permission already exists

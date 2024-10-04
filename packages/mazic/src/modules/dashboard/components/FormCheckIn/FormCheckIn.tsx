@@ -24,7 +24,7 @@ export const FormCheckIn = (props: Props) => {
     values: checkInEntry,
   })
 
-  const isDirty = !isEqual(checkInEntry, methods.watch())
+  const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
 
   // console.log('values', methods.watch())
   // console.log('errors', methods.formState.errors)
@@ -65,7 +65,7 @@ export const FormCheckIn = (props: Props) => {
               Delete
             </Button>
           )}
-          <Button disabled={!isDirty}>{isNumberCheckIn ? 'Save' : 'Complete'}</Button>
+          <Button disabled={!isSave}>{isNumberCheckIn ? 'Save' : 'Complete'}</Button>
         </div>
       </form>
     </FormProvider>

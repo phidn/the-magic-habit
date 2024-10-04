@@ -112,5 +112,5 @@ func (controller *PermissionController) Seed(c echo.Context) error {
 		return resp.NewApplicationError(c, "Failed to delete permission.", err)
 	}
 
-	return resp.NewApiDeleted(c, "The permission has been deleted.")
+	return resp.NewApiDeleted(c, "The permission has been seeded.")
 }

@@ -23,8 +23,12 @@ func NewRolePermissionRoute(app *infrastructure.Pocket, controller *RolePermissi
 
 func (route *RolePermissionRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/roles-permissions", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/roles-permissions", route.controller.Update, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/roles-permissions")
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		r.GET("", route.controller.Find)
+		r.PUT("", route.controller.Update)
 		return nil
 	})
 }

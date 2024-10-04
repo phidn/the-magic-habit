@@ -23,11 +23,15 @@ func NewResourceRoute(app *infrastructure.Pocket, controller *ResourceController
 
 func (route *ResourceRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/resources", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.GET("/mz/resources/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/resources", route.controller.Create, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/resources/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/resources/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/resources")
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		r.GET("", route.controller.Find)
+		r.GET("/:id", route.controller.GetById)
+		r.POST("", route.controller.Create)
+		r.PUT("/:id", route.controller.Update)
+		r.DELETE("/:id", route.controller.Delete)
 		return nil
 	})
 }

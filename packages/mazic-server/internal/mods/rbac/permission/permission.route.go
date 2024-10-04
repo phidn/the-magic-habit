@@ -23,13 +23,17 @@ func NewPermissionRoute(app *infrastructure.Pocket, controller *PermissionContro
 
 func (route *PermissionRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/permissions", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.GET("/mz/permissions/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/permissions", route.controller.Create, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/permissions/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/permissions/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/permissions/delete", route.controller.BulkDelete, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/permissions/seed", route.controller.Seed, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/permissions")
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		r.GET("", route.controller.Find)
+		r.GET("/:id", route.controller.GetById)
+		r.POST("", route.controller.Create)
+		r.PUT("/:id", route.controller.Update)
+		r.DELETE("/:id", route.controller.Delete)
+		r.POST("/delete", route.controller.BulkDelete)
+		r.POST("/seed", route.controller.Seed)
 		return nil
 	})
 }

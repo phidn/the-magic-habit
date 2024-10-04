@@ -23,11 +23,15 @@ func NewUserRoute(app *infrastructure.Pocket, controller *UserController, authMi
 
 func (route *UserRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/users", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.GET("/mz/users/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/users", route.controller.Create, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/users/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/users/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/users")
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		r.GET("", route.controller.Find)
+		r.GET("/:id", route.controller.GetById)
+		r.POST("", route.controller.Create)
+		r.PUT("/:id", route.controller.Update)
+		r.DELETE("/:id", route.controller.Delete)
 		return nil
 	})
 }

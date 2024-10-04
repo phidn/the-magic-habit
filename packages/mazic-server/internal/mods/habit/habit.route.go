@@ -23,13 +23,16 @@ func NewHabitRoute(app *infrastructure.Pocket, controller *HabitController, auth
 
 func (route *HabitRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/habits", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.GET("/mz/habits/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/habits", route.controller.Create, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/habits/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/habits/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/habits/check-in", route.controller.CheckIn, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/habits/check-in/:id", route.controller.DeleteCheckIn, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/habits")
+		r.Use(route.authMiddleware.IsAuthenticated)
+
+		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions("habit.view"))
+		r.GET("/:id", route.controller.GetById, route.authMiddleware.HasPermissions("habit.view"))
+		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions("habit.create"))
+		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions("habit.update"))
+		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions("habit.delete"))
+		r.POST("/check-in", route.controller.CheckIn, route.authMiddleware.HasPermissions("habit_check_in.save"))
+		r.DELETE("/check-in/:id", route.controller.DeleteCheckIn, route.authMiddleware.HasPermissions("habit_check_in.delete"))
 		return nil
 	})
 }

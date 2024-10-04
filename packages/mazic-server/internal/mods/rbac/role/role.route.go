@@ -23,11 +23,15 @@ func NewRoleRoute(app *infrastructure.Pocket, controller *RoleController, authMi
 
 func (route *RoleRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET("/mz/roles", route.controller.Find, route.authMiddleware.IsAuthenticated)
-		e.Router.GET("/mz/roles/:id", route.controller.GetById, route.authMiddleware.IsAuthenticated)
-		e.Router.POST("/mz/roles", route.controller.Create, route.authMiddleware.IsAuthenticated)
-		e.Router.PUT("/mz/roles/:id", route.controller.Update, route.authMiddleware.IsAuthenticated)
-		e.Router.DELETE("/mz/roles/:id", route.controller.Delete, route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz/roles")
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		r.GET("", route.controller.Find)
+		r.GET("/:id", route.controller.GetById)
+		r.POST("", route.controller.Create)
+		r.PUT(":/id", route.controller.Update)
+		r.DELETE("/:id", route.controller.Delete)
 		return nil
 	})
 }

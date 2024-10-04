@@ -2,19 +2,26 @@ package middlewares
 
 import (
 	"mazic/server/config"
+	"mazic/server/pkg/entry"
+	"mazic/server/pkg/resp"
 	"mazic/server/pkg/token"
+	"mazic/server/pkg/utils"
 	"strings"
 
+	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"
 
 	"github.com/labstack/echo/v5"
 )
 
 type AuthMiddleware struct {
+	Entry entry.Entry
 }
 
-func NewAuthMiddleware() *AuthMiddleware {
-	return &AuthMiddleware{}
+func NewAuthMiddleware(entry entry.Entry) *AuthMiddleware {
+	return &AuthMiddleware{
+		Entry: entry,
+	}
 }
 
 func (middleware *AuthMiddleware) IsAuthenticated(next echo.HandlerFunc) echo.HandlerFunc {
@@ -40,40 +47,38 @@ func (middleware *AuthMiddleware) IsAuthenticated(next echo.HandlerFunc) echo.Ha
 		}
 
 		c.Set("state.user_id", details["sub"])
+		c.Set("state.roles", details["roles"])
 		return next(c)
 	}
 }
 
-// func (middleware *Middleware) HasPermissions(requiredPermissions ...string) echo.MiddlewareFunc {
-// 	return func(next echo.HandlerFunc) echo.HandlerFunc {
-// 		return func(c echo.Context) error {
-// 			// Get user ID from context (set by IsAuthenticated)
-// 			userID := c.Get("state.user_id").(string)
+func (middleware *AuthMiddleware) HasPermissions(requiredPermissions ...string) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			roles := c.Get("state.roles").([]interface{})
 
-// 			// Fetch user permissions using UserService
-// 			rawQuery := `
-// 				SELECT P.code
-// 				FROM
-// 					sys_role_permission rp
-// 					LEFT JOIN sys_permission P ON rp.permission_id = P.ID
-// 				WHERE
-// 					role_id IN ( SELECT role_id FROM sys_user_role WHERE user_id = @user_id )
-// 			`
-// 			var userPermissions []string
-// 			err := middleware.DB.Raw(rawQuery, sql.Named("user_id", userID)).Scan(&userPermissions).Error
-// 			if err != nil {
-// 				return util.ResError(c, errors.Forbidden("", config.MSG_PERMISSION_DENIED), http.StatusForbidden)
-// 			}
+			var permissions []string
+			err := middleware.Entry.Dao().DB().
+				Select("p.code").
+				From("sys_role_permission rp").
+				LeftJoin("sys_permission p", dbx.NewExp("rp.permission_id = p.id")).
+				Where(dbx.In("role_id", roles...)).
+				AndWhere(dbx.NewExp("p.code IS NOT NULL")).
+				Column(&permissions)
 
-// 			// Check if user has all the required permissions
-// 			for _, requiredPermission := range requiredPermissions {
-// 				if !util.Contains(userPermissions, requiredPermission) {
-// 					return util.ResError(c, errors.Forbidden("", config.MSG_PERMISSION_DENIED), http.StatusForbidden)
-// 				}
-// 			}
+			if err != nil {
+				return resp.NewApplicationError(c, "Failed to get user permissions.", err)
+			}
 
-// 			// User has necessary permissions, continue
-// 			return next(c)
-// 		}
-// 	}
-// }
+			// Check if user has all the required permissions
+			for _, requiredPermission := range requiredPermissions {
+				if !utils.Contains(permissions, requiredPermission) {
+					return resp.NewForbiddenError(c, "You do not have permission to access this resource.", nil)
+				}
+			}
+
+			// User has necessary permissions, continue
+			return next(c)
+		}
+	}
+}
