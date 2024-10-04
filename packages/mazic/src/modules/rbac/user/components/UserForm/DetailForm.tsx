@@ -8,7 +8,7 @@ export const DetailForm = () => {
 
   return (
     <div className="mazic-row">
-      <div className="mazic-col-2 mr-10">
+      <div className="mazic-col-3">
         <FormImage field="avatar" />
       </div>
       <div className="mazic-col-8">

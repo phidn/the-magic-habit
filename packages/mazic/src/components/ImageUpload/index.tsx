@@ -24,7 +24,7 @@ const ImageUploadArea = ({
   <label
     htmlFor={id}
     className={cn(
-      'w-36 h-36 p-1 relative flex flex-col items-center justify-center border-2 border-dashed rounded-full cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors duration-300',
+      'w-36 h-36 relative flex flex-col items-center justify-center border-2 border-dashed rounded-full cursor-pointer dark:hover:bg-bray-800 dark:bg-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors duration-300',
       disabled && 'cursor-not-allowed',
       labelClassName,
       isDragActive
