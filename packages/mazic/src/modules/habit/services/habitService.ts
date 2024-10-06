@@ -1,7 +1,7 @@
 import { IParams } from '@mazic/types/index'
 import http from '@mazic/utils/http'
 
-import { THabit, THabitCheckIn, THabitCreate } from './validations'
+import { THabit, THabitCheckIn, THabitCreate } from '../utils/validations'
 
 export const habitService = {
   list: <T = any>(params?: IParams) => http.get<T>('/habits', { params }),

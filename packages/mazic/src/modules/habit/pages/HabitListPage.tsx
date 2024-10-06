@@ -3,8 +3,8 @@ import { useDataTable, useFilter } from '@mazic/hooks'
 import { commonFilterSchema as filterSchema } from '@mazic/schemas/filterSchema'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
-import { useListHabit } from '../apis'
-import { useHabitColumns } from '../columns'
+import { useListHabit } from '../hooks/apis'
+import { useHabitColumns } from '../hooks/useHabitColumns'
 
 const HabitListPage = () => {
   const filterFields: DataTableFilterField[] = []

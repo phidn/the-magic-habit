@@ -13,7 +13,7 @@ import {
   TimelineTitle,
 } from '@mazic/ui'
 
-import { THabit } from '@mazic/modules/habit/validations'
+import { THabit } from '@mazic/modules/habit'
 
 interface Props {
   habits: THabit[]

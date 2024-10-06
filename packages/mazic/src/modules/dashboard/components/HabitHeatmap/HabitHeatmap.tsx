@@ -18,8 +18,7 @@ import {
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { useColorMode } from '@mazic/hooks'
-import { useDeleteCheckIn } from '@mazic/modules/habit/apis'
-import { THabit } from '@mazic/modules/habit/validations'
+import { checkInType, THabit, useDeleteCheckIn } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
 import { ActivityBlock } from './ActivityBlock'
@@ -33,7 +32,7 @@ interface Props {
 
 export const HabitHeatmap = ({ habit, refetch }: Props) => {
   const { title, activities, color } = habit || {}
-  const isNumberCheckIn = habit.check_in_type === 'NUMBER'
+  const isNumberCheckIn = habit.check_in_type === checkInType.NUMBER
 
   const { mode, colorMode: activeModeColor } = useColorMode(color)
 

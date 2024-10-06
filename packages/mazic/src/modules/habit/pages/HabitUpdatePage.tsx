@@ -1,6 +1,6 @@
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
-import { useHabitDetail, useUpdateHabit } from '../apis'
+import { useHabitDetail, useUpdateHabit } from '../hooks/apis'
 import { HabitForm } from '../components/HabitForm'
 import { habitSchema } from '../validations'
 

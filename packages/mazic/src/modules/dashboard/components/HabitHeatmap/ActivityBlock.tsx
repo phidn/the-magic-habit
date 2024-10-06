@@ -5,8 +5,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic/ui'
 
 import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
-import { useCheckIn, useDeleteCheckIn } from '@mazic/modules/habit/apis'
-import { THabit, THabitCheckIn } from '@mazic/modules/habit/validations'
+import { THabit, THabitCheckIn, useCheckIn, useDeleteCheckIn } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
 

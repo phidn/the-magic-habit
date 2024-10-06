@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import dayjs from 'dayjs'
 import { toast } from 'sonner'
 
 import { useStore } from '@mazic/store/useStore'
 import { ApiResponse, IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
-import { habitService } from './services'
-import { THabit, THabitCheckIn, THabitCreate } from './validations'
+import { habitService } from '../services/habitService'
+import { normalizeHabitData } from '../utils/utils'
+import { THabit, THabitCheckIn, THabitCreate } from '../utils/validations'
 
 const QUERY_KEY = 'habits' as const
 
@@ -53,20 +53,8 @@ export const useListHabit = (params?: IParams) => {
     queryFn: () => habitService.list<ApiResponse<THabit[]>>(params),
     queryKey: [QUERY_KEY, 'listHabits', params, userId],
   })
-  const dataList = (data?.data?.data || []).map((item) => {
-    item.activities = (item.entries || []).map((entry) => {
-      return {
-        id: entry.id,
-        date: dayjs(entry.date).format('YYYY/MM/DD'),
-        count: entry.count,
-        level: entry.level,
-        journal: entry.journal,
-        is_done: entry.is_done,
-      }
-    })
-    return item
-  })
 
+  const dataList = normalizeHabitData(data?.data?.data || [])
   return { ...data?.data, data: dataList, ...rest }
 }
 

@@ -1,6 +1,6 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
-import { useCreateHabit } from '../apis'
+import { useCreateHabit } from '../hooks/apis'
 import { HabitForm } from '../components/HabitForm'
 import { habitSchema } from '../validations'
 

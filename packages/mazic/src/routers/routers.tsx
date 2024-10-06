@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
-import { route as dashboardRoute } from '@mazic/modules/dashboard/route'
-import { habitRoute } from '@mazic/modules/habit/route'
+import { dashboardRoute } from '@mazic/modules/dashboard'
+import { habitRoute } from '@mazic/modules/habit'
 import { actionRoute } from '@mazic/modules/rbac/action/actionRoute'
 import { LoginPage } from '@mazic/modules/rbac/auth'
 import { permissionRoute } from '@mazic/modules/rbac/permission/permissionRoute'

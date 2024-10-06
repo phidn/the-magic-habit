@@ -1,24 +1,27 @@
 import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 
-import { THabit } from '../../validations'
+import { checkInType } from '../../utils/utils'
+import { THabit } from '../../utils/validations'
 
 import { DetailForm } from './DetailForm'
 
 export const HabitForm = (props: IFormProps) => {
+  const validateHabitDetails = (values: THabit) => {
+    if (values.check_in_type === checkInType.NUMBER) {
+      return !!(values.title && values.metric)
+    }
+    if (values.check_in_type === checkInType.CHECKBOX) {
+      return !!values.title
+    }
+    return true
+  }
+
   const formSections = [
     {
       title: 'Habit Details',
       elementRender: () => <DetailForm />,
-      validFunc: (values: THabit): boolean => {
-        if (values.check_in_type === 'NUMBER') {
-          return !!(values.title && values.metric)
-        }
-        if (values.check_in_type === 'CHECKBOX') {
-          return !!values.title
-        }
-        return true
-      },
+      validFunc: validateHabitDetails,
     },
     {
       title: 'Habit Privacy',

@@ -1,13 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 
 import { NoDataCta } from '@mazic/components'
-
-import { useListHabit } from '../habit/apis'
+import { useListHabit } from '@mazic/modules/habit'
 
 import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
-import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
   const { data: listHabits, refetch } = useListHabit({ pageSize: -1, entry_expand: true })
@@ -27,7 +25,7 @@ const DashboardPage = () => {
   }
 
   return (
-    <DashboardStyled>
+    <div>
       <div className="mazic-row">
         <div className="mazic-col-8">
           <Overview habits={listHabits} range="MONTH" />
@@ -41,7 +39,7 @@ const DashboardPage = () => {
           return <HabitHeatmap key={habit?.id || idx} habit={habit} refetch={refetch} />
         })}
       </div>
-    </DashboardStyled>
+    </div>
   )
 }
 

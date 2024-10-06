@@ -9,9 +9,9 @@ import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
-import { checkInMap } from './components/HabitForm/DetailForm'
-import { useDeleteHabit } from './apis'
-import { THabit } from './validations'
+import { useDeleteHabit } from '../hooks/apis'
+import { checkInMap } from '../utils/utils'
+import { THabit } from '../utils/validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {
   const mutationDelete = useDeleteHabit()

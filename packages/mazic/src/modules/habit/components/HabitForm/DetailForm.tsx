@@ -1,22 +1,14 @@
 import { useFormContext } from 'react-hook-form'
 
-import { CheckboxIcon, NumberIcon } from '@mazic/ui'
-
 import { FormItem, FormSelect } from '@mazic/components/FormControl'
 import { FormColorPicker } from '@mazic/components/FormControl/FormColorPicker'
 import { FormInput } from '@mazic/components/FormControl/FormInput'
 
-export const checkInOpts = [
-  { value: 'NUMBER', label: 'Number', icon: NumberIcon },
-  { value: 'CHECKBOX', label: 'Checkbox', icon: CheckboxIcon },
-]
-
-export const checkInMap = new Map(checkInOpts.map((opt) => [opt.value, opt]))
+import { checkInOpts, checkInType } from '../../utils/utils'
 
 export const DetailForm = () => {
   const methods = useFormContext()
-  const checkInType = methods.watch('check_in_type')
-  const metricRequired = checkInType === 'NUMBER'
+  const metricRequired = methods.watch('check_in_type') === checkInType.NUMBER
 
   return (
     <div className="mazic-row">
