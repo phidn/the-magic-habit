@@ -1,0 +1,19 @@
+{
+  "name": "mazic-shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mazic-shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/mazic-shared",
+        "main": "packages/mazic-shared/src/index.ts",
+        "tsConfig": "packages/mazic-shared/tsconfig.lib.json",
+        "assets": ["packages/mazic-shared/*.md"]
+      }
+    }
+  }
+}

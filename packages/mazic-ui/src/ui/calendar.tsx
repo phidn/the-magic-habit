@@ -4,7 +4,7 @@ import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-import { buttonVariants } from '@mazic/design-system'
+import { buttonVariants } from '@mazic/ui'
 import { cn } from '@/utils/cn'
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>

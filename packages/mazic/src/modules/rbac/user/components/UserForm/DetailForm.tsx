@@ -1,4 +1,4 @@
-import { Input } from '@mazic/design-system'
+import { Input } from '@mazic/ui'
 
 import { FormImage, FormInput, FormItem } from '@mazic/components/FormControl'
 import { usePageDetails } from '@mazic/hooks'

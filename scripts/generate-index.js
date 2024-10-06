@@ -2,9 +2,9 @@ const fs = require('fs')
 const path = require('path')
 
 const paths = [
-  path.resolve(__dirname, '../packages/design-system/src/icons'),
-  path.resolve(__dirname, '../packages/design-system/src/ui'),
-  path.resolve(__dirname, '../packages/design-system/src/aceui'),
+  path.resolve(__dirname, '../packages/mazic-ui/src/icons'),
+  path.resolve(__dirname, '../packages/mazic-ui/src/ui'),
+  path.resolve(__dirname, '../packages/mazic-ui/src/aceui'),
   path.resolve(__dirname, '../packages/mazic/src/hooks'),
   path.resolve(__dirname, '../packages/mazic/src/components/FormControl'),
   path.resolve(__dirname, '../packages/mazic/src/components/Commons'),

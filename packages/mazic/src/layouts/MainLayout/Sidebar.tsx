@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { PanelsTopLeft } from 'lucide-react'
 
-import { Button, cn } from '@mazic/design-system'
+import { Button, cn } from '@mazic/ui'
 
 import { useStore } from '@mazic/store/useStore'
 

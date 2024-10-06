@@ -1,4 +1,4 @@
-import { cn } from '@mazic/design-system'
+import { cn } from '@mazic/ui'
 
 import { ModalCommon } from '@mazic/components/Commons/ModalCommon'
 import { useStore } from '@mazic/store/useStore'

@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 type BulkAction = {
   icon: React.ReactNode

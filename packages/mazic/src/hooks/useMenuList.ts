@@ -1,6 +1,6 @@
 import { To, useLocation } from 'react-router-dom'
 
-import { AtomIcon, DashboardIcon, GuardIcon } from '@mazic/design-system'
+import { AtomIcon, DashboardIcon, GuardIcon } from '@mazic/ui'
 
 import { permissionsConfig } from '@mazic/shared'
 

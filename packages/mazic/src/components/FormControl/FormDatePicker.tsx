@@ -11,7 +11,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 interface FormDatePickerProps {
   field: string

@@ -14,7 +14,7 @@ import {
   FormMessage,
   Input,
   Label,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import Logo from '@mazic/components/Logo/Logo'
 import { authService } from '@mazic/services/authService'

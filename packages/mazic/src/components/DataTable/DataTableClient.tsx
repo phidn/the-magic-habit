@@ -17,7 +17,7 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@mazic/design-system'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@mazic/ui'
 
 import FilterBar from '../FilterBar/FilterBar'
 

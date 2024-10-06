@@ -11,7 +11,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
-      "@mazic/shared": ["packages/shared/src/index.ts"]
+      "@mazic/shared": ["packages/mazic-shared/src/index.ts"]
     }
   },
   "files": [],

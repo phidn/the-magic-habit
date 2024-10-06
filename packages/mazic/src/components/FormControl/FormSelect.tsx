@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import { IOption } from '@mazic/types/form'
 

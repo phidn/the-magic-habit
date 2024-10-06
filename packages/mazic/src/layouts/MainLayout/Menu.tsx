@@ -8,7 +8,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import { MenuLink } from '@mazic/components/Commons'
 import { useMenuList } from '@mazic/hooks/useMenuList'

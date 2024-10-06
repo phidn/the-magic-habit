@@ -1,0 +1,13 @@
+{
+  "name": "mazic-ui",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mazic-ui/src",
+  "projectType": "library",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project mazic-ui --web",
+  "targets": {
+    "formatCode": {
+      "command": "prettier --write  \"packages/mazic-ui/**/*.+(js|jsx|ts|tsx)\""
+    }
+  }
+}

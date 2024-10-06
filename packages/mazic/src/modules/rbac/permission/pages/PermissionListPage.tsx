@@ -1,4 +1,4 @@
-import { Button, TrashIcon } from '@mazic/design-system'
+import { Button, TrashIcon } from '@mazic/ui'
 
 import { DataTable, Toolbar } from '@mazic/components'
 import { ToolbarFloating } from '@mazic/components/ToolbarFloating/ToolbarFloating'

@@ -27,7 +27,7 @@ const quickType = async ({ json, language, schemaName = 'Root' }) => {
 }
 
 const main = async () => {
-  const paths = ['./packages/shared/src/config/permissions/permissions.json']
+  const paths = ['./packages/mazic-shared/src/config/permissions/permissions.json']
   for (let idx = 0; idx < paths.length; idx++) {
     const _path = paths[idx]
     const fileName = path.basename(_path).split('.')[0]

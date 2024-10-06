@@ -19,7 +19,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import { MenuLink } from '@mazic/components/Commons'
 

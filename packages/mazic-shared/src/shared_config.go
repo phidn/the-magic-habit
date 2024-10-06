@@ -16,7 +16,7 @@ type SharedConfig struct {
 var Config SharedConfig
 
 func (config *SharedConfig) LoadConfig() error {
-	path, err := filepath.Abs(filepath.Join("../shared", "src", "config", "permissions", "permissions.json"))
+	path, err := filepath.Abs(filepath.Join("../mazic-shared", "src", "config", "permissions", "permissions.json"))
 	if err != nil {
 		return fmt.Errorf("error getting absolute path: %w", err)
 	}

@@ -8,7 +8,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 // import { NAV_ITEMS } from '@mazic/config/navItems'
 import { NavItem } from '@mazic/types'

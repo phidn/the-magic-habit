@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import isEqual from 'lodash/isEqual'
 
-import { Button } from '@mazic/design-system'
+import { Button } from '@mazic/ui'
 
 import { DataTableClient } from '@mazic/components/DataTable'
 import { TRole } from '@mazic/schemas/roleSchema'

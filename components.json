@@ -11,7 +11,7 @@
     "prefix": ""
   },
   "aliases": {
-    "components": "packages/design-system/src",
-    "utils": "packages/design-system/src/utils"
+    "components": "packages/mazic-ui/src",
+    "utils": "packages/mazic-ui/src/utils"
   }
 }

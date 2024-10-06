@@ -1,6 +1,6 @@
 import { Row } from '@tanstack/react-table'
 
-import { ChevronDown, ChevronRightIcon, cn } from '@mazic/design-system'
+import { ChevronDown, ChevronRightIcon, cn } from '@mazic/ui'
 
 interface IExpandingColumnProps<T = any> {
   row: Row<T>

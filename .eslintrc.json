@@ -24,7 +24,7 @@
       {
         "groups": [
           ["^react", "^@?\\w"],
-          ["^@mazic/design-system(/.*|$)"],
+          ["^@mazic/ui(/.*|$)"],
           ["^@mazic/shared(/.*|$)"],
           ["^@mazic(/.*|$)"],
           ["^(@|~)(/.*|$)"],
@@ -124,7 +124,7 @@
       }
     },
     {
-      "files": ["./packages/design-system/**/*.ts", "./packages/design-system/**/*.tsx"],
+      "files": ["./packages/mazic-ui/**/*.ts", "./packages/mazic-ui/**/*.tsx"],
       "rules": {
         "simple-import-sort/imports": "off",
         "simple-import-sort/exports": "off"

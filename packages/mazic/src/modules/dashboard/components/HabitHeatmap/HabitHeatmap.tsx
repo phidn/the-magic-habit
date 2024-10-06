@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
   EllipsisVerticalIcon,
   TooltipProvider,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'

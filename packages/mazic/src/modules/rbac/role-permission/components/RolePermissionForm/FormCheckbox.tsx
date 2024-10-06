@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { Row } from '@tanstack/react-table'
 import { cloneDeep, get, set } from 'lodash'
 
-import { Checkbox } from '@mazic/design-system'
+import { Checkbox } from '@mazic/ui'
 
 interface CheckboxProps<T = any> {
   row: Row<T>

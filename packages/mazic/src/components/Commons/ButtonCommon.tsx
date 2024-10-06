@@ -1,4 +1,4 @@
-import { Button, ButtonLink, PlusIcon } from '@mazic/design-system'
+import { Button, ButtonLink, PlusIcon } from '@mazic/ui'
 
 interface ButtonLinksProps {
   href?: string

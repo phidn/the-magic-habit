@@ -122,12 +122,7 @@ gen-index:
 	node scripts/generate-index.js
 	@echo "Icons generated."
 
-# gen-ts:
-# 	@echo "Starting generate typescript..."
-# 	cd packages/shared/src/config/permissions && \
-# 	npx quicktype permissions.json -o permissions.d.ts --just-types --top-level Permission
-# 	@echo "Typescript generated."
-gen-ts:
+gen-schema:
 	@echo "Starting generate typescript..."
 	node scripts/generate-typescript.js
 	@echo "Typescript generated."

@@ -18,7 +18,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Separator,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   column?: Column<TData, TValue>

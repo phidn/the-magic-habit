@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import isEqual from 'lodash/isEqual'
 import { ChevronLeft } from 'lucide-react'
 
-import { Badge, BadgeProps, Button, cn } from '@mazic/design-system'
+import { Badge, BadgeProps, Button, cn } from '@mazic/ui'
 
 import { PageDetails } from '@mazic/hooks/usePageDetails'
 

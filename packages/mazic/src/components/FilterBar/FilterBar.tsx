@@ -1,7 +1,7 @@
 import { Cross2Icon } from '@radix-ui/react-icons'
 import { Table as TTable } from '@tanstack/react-table'
 
-import { Button } from '@mazic/design-system'
+import { Button } from '@mazic/ui'
 
 import { DataTableViewOptions } from '../DataTable/DataTableViewOptions'
 

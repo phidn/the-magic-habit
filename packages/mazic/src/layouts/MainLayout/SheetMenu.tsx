@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { MenuIcon, PanelsTopLeft } from 'lucide-react'
 
-import { Button, Sheet, SheetContent, SheetHeader, SheetTrigger } from '@mazic/design-system'
+import { Button, Sheet, SheetContent, SheetHeader, SheetTrigger } from '@mazic/ui'
 
 import { Menu } from './Menu'
 

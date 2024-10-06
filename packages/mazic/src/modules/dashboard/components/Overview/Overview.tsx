@@ -15,7 +15,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   CheckIcon,
-} from '@mazic/design-system'
+} from '@mazic/ui'
 
 import { useColorMode } from '@mazic/hooks'
 import { THabit } from '@mazic/modules/habit/validations'

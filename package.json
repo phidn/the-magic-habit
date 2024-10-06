@@ -12,14 +12,14 @@
   "scripts": {
     "dev:web": "nx serve mazic",
     "dev:server": "nx serve mazic-api",
-    "formatCode": "yarn formatCode:mazic && yarn formatCode:design-system",
+    "formatCode": "yarn formatCode:mazic && yarn formatCode:ui",
     "formatCode:mazic": "nx run mazic:formatCode",
-    "formatCode:design-system": "nx run design-system:formatCode",
+    "formatCode:ui": "nx run ui:formatCode",
     "lint": "yarn nx-clear && yarn lint:mazic",
     "lint:mazic": "nx run mazic:lint",
-    "lintFix": "yarn lintFix:mazic && yarn lintFix:design-system",
+    "lintFix": "yarn lintFix:mazic && yarn lintFix:ui",
     "lintFix:mazic": "eslint --fix --ext .ts,.tsx ./packages/mazic",
-    "lintFix:design-system": "eslint --fix --ext .ts,.tsx ./packages/design-system"
+    "lintFix:ui": "eslint --fix --ext .ts,.tsx ./packages/mazic-ui"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",

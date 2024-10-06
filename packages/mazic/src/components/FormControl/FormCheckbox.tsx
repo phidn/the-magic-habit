@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { CheckedState } from '@radix-ui/react-checkbox'
 
-import { Checkbox, FormMessage } from '@mazic/design-system'
+import { Checkbox, FormMessage } from '@mazic/ui'
 
 export interface FormCheckboxProps {
   field: string

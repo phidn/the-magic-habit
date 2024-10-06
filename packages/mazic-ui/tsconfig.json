@@ -10,8 +10,8 @@
     "declaration": true,
     "moduleResolution": "node",
     "paths": {
-      "@mazic/design-system": ["packages/design-system/src/index.ts"],
-      "@/utils/*": ["packages/design-system/src/utils/*"],
+      "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
+      "@/utils/*": ["packages/mazic-ui/src/utils/*"],
     }
   },
   "files": [],

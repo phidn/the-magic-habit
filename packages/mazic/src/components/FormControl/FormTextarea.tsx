@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { FormMessage, Textarea } from '@mazic/design-system'
+import { FormMessage, Textarea } from '@mazic/ui'
 
 interface FormTextareaProps {
   field: string
