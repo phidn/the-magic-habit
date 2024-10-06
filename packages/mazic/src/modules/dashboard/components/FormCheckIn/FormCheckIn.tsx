@@ -6,7 +6,7 @@ import isEqual from 'lodash/isEqual'
 import { Button, Card, CardContent, cn } from '@mazic/ui'
 
 import { FormDatePicker, FormInput, FormItem } from '@mazic/components'
-import { habitCheckInSchema, THabit, THabitCheckIn } from '@mazic/modules/habit'
+import { checkInSchema, THabit, THabitCheckIn } from '@mazic/modules/habit'
 
 interface Props {
   habit: THabit
@@ -19,7 +19,7 @@ interface Props {
 export const FormCheckIn = (props: Props) => {
   const { habit, checkInEntry, onSubmitForm, onDeleteForm, isNumberCheckIn } = props
   const methods = useForm<THabitCheckIn>({
-    resolver: zodResolver(habitCheckInSchema),
+    resolver: zodResolver(checkInSchema),
     values: checkInEntry,
   })
 

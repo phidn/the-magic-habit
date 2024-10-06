@@ -18,7 +18,7 @@ type HabitService interface {
 	Create(ctx context.Context, habit *Habit) (*models.Record, error)
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
 	Delete(ctx context.Context, userId, id string) error
-	CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error)
+	CheckIn(ctx context.Context, habitEntry *CheckIn) (*models.Record, error)
 	DeleteCheckIn(ctx context.Context, id string) (*models.Record, error)
 }
 
@@ -70,65 +70,65 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 
 	habitIds := utils.ExtractFieldToSlice(*habits, "Id")
 
-	habitEntries := &[]*HabitEntry{}
-	err = service.Entry.ModelQuery(ctx, new(HabitEntry)).
+	checkInList := &[]*CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(CheckIn)).
 		AndWhere(dbx.In("habit_id", habitIds...)).
-		All(habitEntries)
+		All(checkInList)
 
 	if err != nil {
 		return nil, err
 	}
 
-	allValues := utils.ExtractFieldToSlice(*habitEntries, "Value")
+	allValues := utils.ExtractFieldToSlice(*checkInList, "Value")
 	allAvgValue := utils.Avg(allValues)
 
-	habitEntriesMap := map[string][]*HabitEntry{}
+	checkInMap := map[string][]*CheckIn{}
 
 	for _, habit := range *habits {
-		if _, ok := habitEntriesMap[habit.Id]; !ok {
-			habitEntriesMap[habit.Id] = []*HabitEntry{}
+		if _, ok := checkInMap[habit.Id]; !ok {
+			checkInMap[habit.Id] = []*CheckIn{}
 		}
 	}
 
-	for _, entry := range *habitEntries {
-		habitEntriesMap[entry.HabitId] = append(habitEntriesMap[entry.HabitId], entry)
+	for _, checkIn := range *checkInList {
+		checkInMap[checkIn.HabitId] = append(checkInMap[checkIn.HabitId], checkIn)
 	}
 
 	for _, habit := range *habits {
-		if entries, ok := habitEntriesMap[habit.Id]; ok {
-			values := utils.ExtractFieldToSlice(entries, "Value")
+		if items, ok := checkInMap[habit.Id]; ok {
+			values := utils.ExtractFieldToSlice(items, "Value")
 			maxValue := utils.Max(values)
 			avgValue := utils.Avg(values)
-			for _, entry := range entries {
-				if entry.Value > 0 {
-					if entry.Value > 0 && entry.Value < maxValue/4 {
-						entry.Level = 1
+			for _, checkIn := range items {
+				if checkIn.Value > 0 {
+					if checkIn.Value > 0 && checkIn.Value < maxValue/4 {
+						checkIn.Level = 1
 					}
-					if entry.Value >= maxValue/4 && entry.Value < maxValue/2 {
-						entry.Level = 2
+					if checkIn.Value >= maxValue/4 && checkIn.Value < maxValue/2 {
+						checkIn.Level = 2
 					}
-					if entry.Value >= maxValue/2 && entry.Value < maxValue*3/4 {
-						entry.Level = 3
+					if checkIn.Value >= maxValue/2 && checkIn.Value < maxValue*3/4 {
+						checkIn.Level = 3
 					}
-					if entry.Value >= maxValue*3/4 {
-						entry.Level = 4
+					if checkIn.Value >= maxValue*3/4 {
+						checkIn.Level = 4
 					}
-					entry.Count = entry.Value
+					checkIn.Count = checkIn.Value
 					numberFactor := allAvgValue / avgValue
-					entry.BarValue = entry.Value * numberFactor
+					checkIn.BarValue = checkIn.Value * numberFactor
 				} else {
-					if *entry.IsDone {
-						entry.Level = 4
-						entry.Count = 1
-						entry.Value = allAvgValue
-						entry.BarValue = allAvgValue
+					if *checkIn.IsDone {
+						checkIn.Level = 4
+						checkIn.Count = 1
+						checkIn.Value = allAvgValue
+						checkIn.BarValue = allAvgValue
 					} else {
-						entry.Level = 0
-						entry.Count = 0
+						checkIn.Level = 0
+						checkIn.Count = 0
 					}
 				}
 			}
-			habit.Entries = entries
+			habit.CheckInItems = items
 		}
 	}
 
@@ -188,19 +188,8 @@ func (service *habitService) Delete(ctx context.Context, userId, id string) erro
 	return nil
 }
 
-// func (service *habitService) Delete(ctx context.Context, id string) (*models.Record, error) {
-// 	record, err := service.Entry.FindRecordById(ctx, new(Habit).TableName(), id)
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
-// 		return nil, err
-// 	}
-// 	return record, nil
-// }
-
-func (service *habitService) CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error) {
-	tableName := new(HabitEntry).TableName()
+func (service *habitService) CheckIn(ctx context.Context, habitEntry *CheckIn) (*models.Record, error) {
+	tableName := new(CheckIn).TableName()
 	var record *models.Record
 
 	if habitEntry.Id == "" {
@@ -226,7 +215,7 @@ func (service *habitService) CheckIn(ctx context.Context, habitEntry *HabitEntry
 }
 
 func (service *habitService) DeleteCheckIn(ctx context.Context, id string) (*models.Record, error) {
-	record, err := service.Entry.FindRecordById(ctx, new(HabitEntry).TableName(), id)
+	record, err := service.Entry.FindRecordById(ctx, new(CheckIn).TableName(), id)
 	if err != nil {
 		return nil, err
 	}

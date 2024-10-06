@@ -98,7 +98,7 @@ func (controller *HabitController) Delete(c echo.Context) error {
 }
 
 func (controller *HabitController) CheckIn(c echo.Context) error {
-	checkInEntry := &HabitEntry{}
+	checkInEntry := &CheckIn{}
 	if err := c.Bind(checkInEntry); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
@@ -119,7 +119,7 @@ func (controller *HabitController) CheckIn(c echo.Context) error {
 }
 
 func (controller *HabitController) DeleteCheckIn(c echo.Context) error {
-	habit := &HabitEntry{}
+	habit := &CheckIn{}
 	if err := c.Bind(&habit); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}

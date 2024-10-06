@@ -26,7 +26,7 @@ export const habitSchema = z
     }
   })
 
-type THabitEntry = {
+type TCheckIn = {
   id: string
   date: string
   value: number
@@ -41,13 +41,13 @@ type THabitEntry = {
 export type THabit = z.infer<typeof habitSchema> & {
   id: string
   color: ColorName
-  entries: THabitEntry[]
+  entries: TCheckIn[]
   activities: HeatMapValue[]
 }
 
 export type THabitCreate = THabit
 
-export const habitCheckInSchema = z
+export const checkInSchema = z
   .object({
     id: z.string().optional(),
     habit_id: z.string().min(1, 'Habit is required'),
@@ -68,4 +68,4 @@ export const habitCheckInSchema = z
     }
   })
 
-export type THabitCheckIn = z.infer<typeof habitCheckInSchema>
+export type THabitCheckIn = z.infer<typeof checkInSchema>

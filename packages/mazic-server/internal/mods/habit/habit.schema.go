@@ -8,7 +8,7 @@ import (
 )
 
 var _ models.Model = (*Habit)(nil)
-var _ models.Model = (*HabitEntry)(nil)
+var _ models.Model = (*CheckIn)(nil)
 
 type Habit struct {
 	models.BaseModel
@@ -23,7 +23,7 @@ type Habit struct {
 	IsDeleted   bool   `db:"is_deleted" json:"is_deleted"`
 	IsPrivate   bool   `db:"is_private" json:"is_private"`
 
-	Entries []*HabitEntry `json:"entries"`
+	CheckInItems []*CheckIn `json:"entries"`
 }
 
 func (habit *Habit) TableName() string {
@@ -56,7 +56,7 @@ func (habit *Habit) Validate() error {
 	)
 }
 
-type HabitEntry struct {
+type CheckIn struct {
 	models.BaseModel
 
 	Date    types.DateTime `db:"date" json:"date"`
@@ -70,11 +70,11 @@ type HabitEntry struct {
 	BarValue float64 `json:"bar_value"`
 }
 
-func (habitEntry *HabitEntry) TableName() string {
-	return "mz_habit_entries"
+func (habitEntry *CheckIn) TableName() string {
+	return "mz_check_in"
 }
 
-func (habitEntry *HabitEntry) Validate() error {
+func (habitEntry *CheckIn) Validate() error {
 	return validation.ValidateStruct(habitEntry,
 		validation.Field(&habitEntry.Date, validation.Required),
 		validation.Field(&habitEntry.Value, validation.When(habitEntry.IsDone == nil, validation.Required).Else(validation.Empty)),
@@ -83,7 +83,7 @@ func (habitEntry *HabitEntry) Validate() error {
 	)
 }
 
-func (habitEntry *HabitEntry) ParseRecord(record *models.Record) error {
+func (habitEntry *CheckIn) ParseRecord(record *models.Record) error {
 
 	record.Set("id", habitEntry.Id)
 	record.Set("habit_id", habitEntry.HabitId)
