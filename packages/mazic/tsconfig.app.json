@@ -23,6 +23,8 @@
     "src/**/*.d.ts",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/**/*.json"
+    "src/**/*.json",
+    "../shared/src/**/*.ts",
+    "../shared/src/**/*.tsx",
   ]
 }

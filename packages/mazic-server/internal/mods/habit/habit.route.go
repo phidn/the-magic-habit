@@ -1,6 +1,7 @@
 package habit
 
 import (
+	"mazic/server/config"
 	middlewares "mazic/server/internal/middlewares"
 	"mazic/server/pkg/infrastructure"
 
@@ -26,13 +27,17 @@ func (route *HabitRoute) SetupRoutes() {
 		r := e.Router.Group("/mz/habits")
 		r.Use(route.authMiddleware.IsAuthenticated)
 
-		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions("habit.view"))
-		r.GET("/:id", route.controller.GetById, route.authMiddleware.HasPermissions("habit.view"))
-		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions("habit.create"))
-		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions("habit.update"))
-		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions("habit.delete"))
-		r.POST("/check-in", route.controller.CheckIn, route.authMiddleware.HasPermissions("habit_check_in.save"))
-		r.DELETE("/check-in/:id", route.controller.DeleteCheckIn, route.authMiddleware.HasPermissions("habit_check_in.delete"))
+		habitCodes := config.Config.Shared.Permissions.Habit
+		checkInCodes := config.Config.Shared.Permissions.HabitCheckIn
+
+		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions(habitCodes.View))
+		r.GET("/:id", route.controller.GetById, route.authMiddleware.HasPermissions(habitCodes.View))
+		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions(habitCodes.Create))
+		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions(habitCodes.Update))
+		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions(habitCodes.Delete))
+		r.POST("/check-in", route.controller.CheckIn, route.authMiddleware.HasPermissions(checkInCodes.Save))
+		r.DELETE("/check-in/:id", route.controller.DeleteCheckIn, route.authMiddleware.HasPermissions(checkInCodes.Delete))
+
 		return nil
 	})
 }

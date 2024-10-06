@@ -4,8 +4,9 @@ import (
 	"context"
 	"errors"
 	"mazic/server/config"
+	"mazic/server/internal/mods/rbac/permission"
 	"mazic/server/internal/mods/rbac/user"
-	"mazic/server/pkg/infrastructure"
+	"mazic/server/pkg/entry"
 	"mazic/server/pkg/token"
 	"mazic/server/pkg/utils"
 	"time"
@@ -20,16 +21,18 @@ type AuthService interface {
 }
 
 type authService struct {
-	app *infrastructure.Pocket
+	Entry entry.Entry
 }
 
-func NewAuthService(app *infrastructure.Pocket) AuthService {
-	return &authService{app: app}
+func NewAuthService(entry entry.Entry) AuthService {
+	return &authService{
+		Entry: entry,
+	}
 }
 
 func (service *authService) Login(ctx context.Context, email, password string) (*Tokens, *user.User, error) {
 	user := new(user.User)
-	err := service.app.Dao().DB().
+	err := service.Entry.Dao().DB().
 		NewQuery(`SELECT id, password_hash, roles FROM sys_user WHERE email = {:email}`).
 		WithContext(ctx).
 		Bind(dbx.Params{"email": email}).
@@ -75,13 +78,28 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 
 func (service *authService) GetMe(ctx context.Context, userId string) (*user.User, error) {
 	user := new(user.User)
-	err := service.app.Dao().DB().
-		NewQuery(`SELECT id, first_name, last_name, email, avatar FROM sys_user WHERE id = {:id}`).
+	err := service.Entry.Dao().DB().
+		NewQuery(`SELECT id, first_name, last_name, email, avatar, roles FROM sys_user WHERE id = {:id}`).
 		WithContext(ctx).
 		Bind(dbx.Params{"id": userId}).
 		One(&user)
 	if err != nil {
 		return nil, err
 	}
+
+	var permissions []permission.Permission
+	err = service.Entry.Dao().DB().
+		Select("p.id", "p.name", "p.code").
+		From("sys_role_permission rp").
+		LeftJoin("sys_permission p", dbx.NewExp("rp.permission_id = p.id")).
+		Where(dbx.In("role_id", user.Roles...)).
+		AndWhere(dbx.NewExp("p.code IS NOT NULL")).
+		All(&permissions)
+
+	if err != nil {
+		return nil, err
+	}
+
+	user.Permissions = permissions
 	return user, nil
 }

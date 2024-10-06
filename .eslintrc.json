@@ -25,7 +25,7 @@
         "groups": [
           ["^react", "^@?\\w"],
           ["^@mazic-design-system(/.*|$)"],
-          ["^@mazic-common(/.*|$)"],
+          ["^@mazic-shared(/.*|$)"],
           ["^@mazic(/.*|$)"],
           ["^(@|~)(/.*|$)"],
           ["^\\u0000"],

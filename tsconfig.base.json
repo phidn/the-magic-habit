@@ -15,10 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mazic-common": ["packages/common/src/index.ts"],
       "@mazic-design-system": ["packages/design-system/src/index.ts"],
-      "@mazic/prisma": ["packages/prisma/src/index.ts"]
+      "@mazic/shared": ["packages/shared/src/index.ts"],
+      "@mazic/prisma": ["packages/prisma/src/index.ts"],
+      "@mazic/*": ["packages/mazic/src/*"]
     }
   },
-  "exclude": ["node_modules", "tmp", "packages/*/node_modules", "packages/mazic-api"]
+  "exclude": ["node_modules", "tmp", "packages/*/node_modules", "packages/mazic-server"]
 }

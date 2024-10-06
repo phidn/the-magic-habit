@@ -2,6 +2,7 @@ package user
 
 import (
 	"mazic/server/config"
+	"mazic/server/internal/mods/rbac/permission"
 
 	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/types"
@@ -25,7 +26,8 @@ type User struct {
 	Avatar       string `db:"avatar" json:"avatar"`
 	Verified     bool   `db:"verified" json:"verified"`
 
-	Roles types.JsonArray[any] `db:"roles" json:"roles"`
+	Roles       types.JsonArray[any]    `db:"roles" json:"roles"`
+	Permissions []permission.Permission `db:"-" json:"permissions"`
 }
 
 func (m *User) TableName() string {

@@ -41,7 +41,8 @@ cd-prisma:
 clear:
 	make clear-nx && \
 	make clear-vite && \
-	make clear-debug
+	make clear-debug && \
+	taskkill //IM node.exe //F
 
 clear-vite:
 	rm -rf node_modules/.vite
@@ -85,17 +86,6 @@ web: switch-node-version
 	@echo "Starting web..."
 	yarn nx run mazic:serve
 
-shadcn:
-	@echo "Starting shadcn..."
-	# npx shadcn@latest add tabs
-	npx shadcn@latest add $(c)
-	@echo "Shadcn generated."
-
-gen-index:
-	@echo "Starting generate design system..."
-	node scripts/generate-index.js
-	@echo "Icons generated."
-
 # ===== SERVER ======== #
 
 swagger:
@@ -117,3 +107,27 @@ pocketbase:
 	wgo run -tags pq ./examples/base serve
 	@echo "Successfully started pocketbase server..."
 
+
+# ===== GENERATE ======== #
+
+
+shadcn:
+	@echo "Starting shadcn..."
+	# npx shadcn@latest add tabs
+	npx shadcn@latest add $(c)
+	@echo "Shadcn generated."
+
+gen-index:
+	@echo "Starting generate design system..."
+	node scripts/generate-index.js
+	@echo "Icons generated."
+
+# gen-ts:
+# 	@echo "Starting generate typescript..."
+# 	cd packages/shared/src/config/permissions && \
+# 	npx quicktype permissions.json -o permissions.d.ts --just-types --top-level Permission
+# 	@echo "Typescript generated."
+gen-ts:
+	@echo "Starting generate typescript..."
+	node scripts/generate-typescript.js
+	@echo "Typescript generated."

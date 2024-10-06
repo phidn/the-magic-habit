@@ -6,9 +6,6 @@
   "tags": [],
   "// targets": "to see all targets run: nx show project mazic --web",
   "targets": {
-    "formatCode": {
-      "command": "prettier --write  \"packages/mazic/**/*.+(js|jsx|ts|tsx)\""
-    },
     "lint": {
 			"executor": "@nx/eslint:lint",
 			"outputs": ["{options.outputFile}"]

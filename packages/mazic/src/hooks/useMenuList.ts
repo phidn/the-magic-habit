@@ -2,6 +2,8 @@ import { To, useLocation } from 'react-router-dom'
 
 import { AtomIcon, DashboardIcon, GuardIcon } from '@mazic-design-system'
 
+import { permissionsConfig } from '@mazic/shared'
+import { useStore } from '@mazic/store/useStore'
 import { Menu, MenuList, Submenu, TMenuItem, TMenus } from '@mazic/types/menu'
 
 export const MENUS: TMenus = {
@@ -69,6 +71,9 @@ export const findMenuByHref = (targetHref: To): TMenuItem => {
 
 export const useMenuList = (): MenuList => {
   const { pathname } = useLocation()
+  const currentUser = useStore((state) => state.currentUser)
+  const permissionMap = new Map((currentUser?.permissions || []).map((p) => [p.code, p]))
+  const isSystemAccess = permissionMap.has(permissionsConfig.administration.all_actions)
 
   const getMenuItem = <T extends Menu | Submenu>(menu: T): T => ({
     ...menu,
@@ -93,7 +98,8 @@ export const useMenuList = (): MenuList => {
       {
         groupLabel: 'System',
         menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
+        is_access: isSystemAccess,
       },
-    ],
+    ].filter((group) => group?.is_access !== false),
   }
 }

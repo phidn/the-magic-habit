@@ -52,7 +52,7 @@ func (middleware *AuthMiddleware) IsAuthenticated(next echo.HandlerFunc) echo.Ha
 	}
 }
 
-func (middleware *AuthMiddleware) HasPermissions(requiredPermissions ...string) echo.MiddlewareFunc {
+func (middleware *AuthMiddleware) HasPermissions(requiredCodes ...string) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			roles := c.Get("state.roles").([]interface{})
@@ -71,8 +71,13 @@ func (middleware *AuthMiddleware) HasPermissions(requiredPermissions ...string) 
 			}
 
 			// Check if user has all the required permissions
-			for _, requiredPermission := range requiredPermissions {
-				if !utils.Contains(permissions, requiredPermission) {
+			for _, code := range requiredCodes {
+				// resource, action := utils.SplitString(requiredPermission, ".")
+				// permissionCode := config.Config.Shared.GetPermissionCode(resource, action)
+				// if permissionCode == "" {
+				// 	return resp.NewApplicationError(c, "Invalid permission code.", nil)
+				// }
+				if !utils.Contains(permissions, code) {
 					return resp.NewForbiddenError(c, "You do not have permission to access this resource.", nil)
 				}
 			}

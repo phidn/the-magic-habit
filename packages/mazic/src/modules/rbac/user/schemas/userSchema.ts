@@ -1,5 +1,7 @@
 import { z } from 'zod'
 
+import { TPermission } from '../../permission/schemas/permissionSchema'
+
 const detailSection = {
   id: z.string().optional(),
   first_name: z.string().min(1, 'First name is required'),
@@ -23,4 +25,5 @@ export const userSchema = z.object({
 export type TUserCreate = z.infer<typeof userSchema>
 export type TUser = TUserCreate & {
   id: string
+  permissions: TPermission[]
 }

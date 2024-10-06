@@ -1,6 +1,7 @@
 package resource
 
 import (
+	"mazic/server/config"
 	middlewares "mazic/server/internal/middlewares"
 	"mazic/server/pkg/infrastructure"
 
@@ -25,7 +26,9 @@ func (route *ResourceRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		r := e.Router.Group("/mz/resources")
 		r.Use(route.authMiddleware.IsAuthenticated)
-		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
+
+		allActionsCode := config.Config.Shared.Permissions.Administration.AllActions
+		r.Use(route.authMiddleware.HasPermissions(allActionsCode))
 
 		r.GET("", route.controller.Find)
 		r.GET("/:id", route.controller.GetById)
