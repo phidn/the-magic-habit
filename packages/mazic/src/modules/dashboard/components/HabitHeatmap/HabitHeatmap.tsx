@@ -55,7 +55,7 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
           <div className="ml-auto flex w-full space-x-2 justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <EllipsisVerticalIcon />
+                <EllipsisVerticalIcon className="no-focus" />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem className="cursor-pointer">

@@ -45,7 +45,7 @@ export const OverviewTimeline = ({ habits }: Props) => {
   const sortedItems = items.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
 
   return (
-    <ScrollArea className="h-[350px] rounded-md border p-4">
+    <ScrollArea className="h-[350px] rounded-md border p-4 bg-card">
       <Timeline className="pl-10">
         {sortedItems.map((item, idx) => (
           <TimelineItem key={idx}>
