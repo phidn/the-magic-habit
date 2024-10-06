@@ -6,11 +6,11 @@ import { Checkbox } from '@mazic/ui'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
+import { checkInMap } from '@mazic/modules/check-in'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { useDeleteHabit } from '../hooks/apis'
-import { checkInMap } from '../utils/utils'
 import { THabit } from '../utils/validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {

@@ -2,6 +2,7 @@ package habit
 
 import (
 	"context"
+	"mazic/server/internal/mods/habit/check_in"
 	"mazic/server/pkg/entry"
 	"mazic/server/pkg/schema"
 	"mazic/server/pkg/utils"
@@ -18,8 +19,6 @@ type HabitService interface {
 	Create(ctx context.Context, habit *Habit) (*models.Record, error)
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
 	Delete(ctx context.Context, userId, id string) error
-	CheckIn(ctx context.Context, habitEntry *CheckIn) (*models.Record, error)
-	DeleteCheckIn(ctx context.Context, id string) (*models.Record, error)
 }
 
 type habitService struct {
@@ -70,8 +69,8 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 
 	habitIds := utils.ExtractFieldToSlice(*habits, "Id")
 
-	checkInList := &[]*CheckIn{}
-	err = service.Entry.ModelQuery(ctx, new(CheckIn)).
+	checkInList := &[]*check_in.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
 		AndWhere(dbx.In("habit_id", habitIds...)).
 		All(checkInList)
 
@@ -82,11 +81,11 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 	allValues := utils.ExtractFieldToSlice(*checkInList, "Value")
 	allAvgValue := utils.Avg(allValues)
 
-	checkInMap := map[string][]*CheckIn{}
+	checkInMap := map[string][]*check_in.CheckIn{}
 
 	for _, habit := range *habits {
 		if _, ok := checkInMap[habit.Id]; !ok {
-			checkInMap[habit.Id] = []*CheckIn{}
+			checkInMap[habit.Id] = []*check_in.CheckIn{}
 		}
 	}
 
@@ -186,41 +185,4 @@ func (service *habitService) Delete(ctx context.Context, userId, id string) erro
 		return err
 	}
 	return nil
-}
-
-func (service *habitService) CheckIn(ctx context.Context, habitEntry *CheckIn) (*models.Record, error) {
-	tableName := new(CheckIn).TableName()
-	var record *models.Record
-
-	if habitEntry.Id == "" {
-		collection, err := service.Entry.FindCollectionByName(ctx, tableName)
-		if err != nil {
-			return nil, err
-		}
-
-		record = models.NewRecord(collection)
-	} else {
-		existingRecord, err := service.Entry.Dao().FindRecordById(tableName, habitEntry.Id)
-		if err != nil {
-			return nil, err
-		}
-		record = existingRecord
-	}
-	habitEntry.ParseRecord(record)
-
-	if err := service.Entry.Dao().Save(record); err != nil {
-		return nil, err
-	}
-	return record, nil
-}
-
-func (service *habitService) DeleteCheckIn(ctx context.Context, id string) (*models.Record, error) {
-	record, err := service.Entry.FindRecordById(ctx, new(CheckIn).TableName(), id)
-	if err != nil {
-		return nil, err
-	}
-	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
-		return nil, err
-	}
-	return record, nil
 }

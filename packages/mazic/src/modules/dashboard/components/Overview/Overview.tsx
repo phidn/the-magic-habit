@@ -18,7 +18,8 @@ import {
 } from '@mazic/ui'
 
 import { useColorMode } from '@mazic/hooks'
-import { checkInType, THabit } from '@mazic/modules/habit'
+import { checkInType } from '@mazic/modules/check-in'
+import { THabit } from '@mazic/modules/habit'
 import { pluralize } from '@mazic/utils/pluralize'
 
 dayjs.extend(weekOfYear)

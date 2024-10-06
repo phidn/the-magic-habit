@@ -1,14 +1,14 @@
 package habit
 
 import (
+	"mazic/server/internal/mods/habit/check_in"
+
 	"github.com/pocketbase/pocketbase/models"
-	"github.com/pocketbase/pocketbase/tools/types"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
 var _ models.Model = (*Habit)(nil)
-var _ models.Model = (*CheckIn)(nil)
 
 type Habit struct {
 	models.BaseModel
@@ -23,7 +23,7 @@ type Habit struct {
 	IsDeleted   bool   `db:"is_deleted" json:"is_deleted"`
 	IsPrivate   bool   `db:"is_private" json:"is_private"`
 
-	CheckInItems []*CheckIn `json:"entries"`
+	CheckInItems []*check_in.CheckIn `json:"entries"`
 }
 
 func (habit *Habit) TableName() string {
@@ -54,43 +54,4 @@ func (habit *Habit) Validate() error {
 		validation.Field(&habit.CheckInType, validation.In("NUMBER", "CHECKBOX")),
 		validation.Field(&habit.UserId, validation.Required),
 	)
-}
-
-type CheckIn struct {
-	models.BaseModel
-
-	Date    types.DateTime `db:"date" json:"date"`
-	Journal string         `db:"journal" json:"journal"`
-	HabitId string         `db:"habit_id" json:"habit_id"`
-	Value   float64        `db:"value" json:"value"`
-	IsDone  *bool          `db:"is_done" json:"is_done"`
-
-	Level    int     `db:"level" json:"level"`
-	Count    float64 `json:"count"`
-	BarValue float64 `json:"bar_value"`
-}
-
-func (habitEntry *CheckIn) TableName() string {
-	return "mz_check_in"
-}
-
-func (habitEntry *CheckIn) Validate() error {
-	return validation.ValidateStruct(habitEntry,
-		validation.Field(&habitEntry.Date, validation.Required),
-		validation.Field(&habitEntry.Value, validation.When(habitEntry.IsDone == nil, validation.Required).Else(validation.Empty)),
-		validation.Field(&habitEntry.IsDone, validation.When(habitEntry.Value == 0, validation.Required)),
-		validation.Field(&habitEntry.HabitId, validation.Required),
-	)
-}
-
-func (habitEntry *CheckIn) ParseRecord(record *models.Record) error {
-
-	record.Set("id", habitEntry.Id)
-	record.Set("habit_id", habitEntry.HabitId)
-	record.Set("date", habitEntry.Date)
-	record.Set("journal", habitEntry.Journal)
-	record.Set("value", habitEntry.Value)
-	record.Set("is_done", habitEntry.IsDone)
-
-	return nil
 }

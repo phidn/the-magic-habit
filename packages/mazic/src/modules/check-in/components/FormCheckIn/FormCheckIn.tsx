@@ -6,7 +6,9 @@ import isEqual from 'lodash/isEqual'
 import { Button, Card, CardContent, cn } from '@mazic/ui'
 
 import { FormDatePicker, FormInput, FormItem } from '@mazic/components'
-import { checkInSchema, THabit, THabitCheckIn } from '@mazic/modules/habit'
+import { THabit } from '@mazic/modules/habit'
+
+import { checkInSchema, THabitCheckIn } from '../../utils/validations'
 
 interface Props {
   habit: THabit

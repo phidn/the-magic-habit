@@ -7,7 +7,7 @@ import { ErrorResponse } from '@mazic/types/response'
 
 import { habitService } from '../services/habitService'
 import { normalizeHabitData } from '../utils/utils'
-import { THabit, THabitCheckIn, THabitCreate } from '../utils/validations'
+import { THabit, THabitCreate } from '../utils/validations'
 
 const QUERY_KEY = 'habits' as const
 
@@ -56,18 +56,4 @@ export const useListHabit = (params?: IParams) => {
 
   const dataList = normalizeHabitData(data?.data?.data || [])
   return { ...data?.data, data: dataList, ...rest }
-}
-
-export const useCheckIn = () => {
-  return useMutation({
-    mutationFn: (payload: THabitCheckIn) => habitService.checkIn(payload),
-    onSuccess: () => toast.success('Successfully checked-in'),
-  })
-}
-
-export const useDeleteCheckIn = () => {
-  return useMutation({
-    mutationFn: (checkInId: string) => habitService.deleteCheckIn(checkInId),
-    onSuccess: () => toast.success('Successfully deleted check-in'),
-  })
 }

@@ -23,6 +23,5 @@ export const habitRoute = [
   },
 ]
 
-export { type THabit, type THabitCheckIn, checkInSchema } from './utils/validations'
-export { checkInType } from './utils/utils'
-export { useCheckIn, useDeleteCheckIn, useListHabit } from './hooks/apis'
+export { type THabit } from './utils/validations'
+export { useListHabit } from './hooks/apis'

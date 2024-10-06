@@ -2,7 +2,8 @@ package mods
 
 import (
 	"mazic/server/internal/mods/global"
-	"mazic/server/internal/mods/habit"
+	"mazic/server/internal/mods/habit/check_in"
+	"mazic/server/internal/mods/habit/habit"
 	"mazic/server/internal/mods/rbac/action"
 	"mazic/server/internal/mods/rbac/auth"
 	"mazic/server/internal/mods/rbac/permission"
@@ -115,6 +116,17 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(habit *habit.HabitRoute) error {
 			habit.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("check_in", fx.Options(
+		fx.Provide(
+			check_in.NewCheckInService,
+			check_in.NewCheckInController,
+			check_in.NewCheckInRoute,
+		),
+		fx.Invoke(func(check_in *check_in.CheckInRoute) error {
+			check_in.SetupRoutes()
 			return nil
 		}),
 	)),

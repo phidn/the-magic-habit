@@ -18,7 +18,8 @@ import {
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { useColorMode } from '@mazic/hooks'
-import { checkInType, THabit, useDeleteCheckIn } from '@mazic/modules/habit'
+import { checkInType, useDeleteCheckIn } from '@mazic/modules/check-in'
+import { THabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
 import { ActivityBlock } from './ActivityBlock'
