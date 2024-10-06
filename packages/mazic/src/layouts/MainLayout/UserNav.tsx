@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { LayoutGrid, LogOut, User } from 'lucide-react'
+import { LayoutGrid, LogOut } from 'lucide-react'
 
 import {
   Avatar,
@@ -59,12 +59,6 @@ export const UserNav = () => {
             <Link to="/dashboard" className="flex items-center">
               <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
               Dashboard
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link to="/account" className="flex items-center">
-              <User className="w-4 h-4 mr-3 text-muted-foreground" />
-              Account
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
