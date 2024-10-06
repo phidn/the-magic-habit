@@ -1,25 +1,21 @@
 import { lazy } from 'react'
 
-const HabitListPage = lazy(() => import('./pages/HabitListPage'))
-const HabitUpdatePage = lazy(() => import('./pages/HabitUpdatePage'))
-const HabitCreatePage = lazy(() => import('./pages/HabitCreatePage'))
-
 export const habitRoute = [
   {
     path: '/habit',
-    Component: HabitListPage,
+    Component: lazy(() => import('./pages/HabitListPage')),
   },
   {
     path: '/habit/view/:id',
-    Component: HabitUpdatePage,
+    Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
     path: '/habit/edit/:id',
-    Component: HabitUpdatePage,
+    Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
     path: '/habit/new',
-    Component: HabitCreatePage,
+    Component: lazy(() => import('./pages/HabitCreatePage')),
   },
 ]
 

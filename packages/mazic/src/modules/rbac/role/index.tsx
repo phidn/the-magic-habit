@@ -1,24 +1,20 @@
 import { lazy } from 'react'
 
-const RoleListPage = lazy(() => import('./pages/RoleListPage'))
-const RoleCreatePage = lazy(() => import('./pages/RoleCreatePage'))
-const RoleUpdatePage = lazy(() => import('./pages/RoleUpdatePage'))
-
 export const roleRoute = [
   {
     path: '/role',
-    Component: RoleListPage,
+    Component: lazy(() => import('./pages/RoleListPage')),
   },
   {
     path: '/role/view/:id',
-    Component: RoleUpdatePage,
+    Component: lazy(() => import('./pages/RoleUpdatePage')),
   },
   {
     path: '/role/edit/:id',
-    Component: RoleUpdatePage,
+    Component: lazy(() => import('./pages/RoleUpdatePage')),
   },
   {
     path: '/role/new',
-    Component: RoleCreatePage,
+    Component: lazy(() => import('./pages/RoleCreatePage')),
   },
 ]

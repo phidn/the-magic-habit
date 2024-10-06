@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { NoDataCta } from '@mazic/components'
 import { useListHabit } from '@mazic/modules/habit'
 
-import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
+import { CheckHeatmap } from '../check-in'
+
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
@@ -36,7 +37,7 @@ const DashboardPage = () => {
       </div>
       <div className="mazic-row mt-2">
         {listHabits.map((habit, idx) => {
-          return <HabitHeatmap key={habit?.id || idx} habit={habit} refetch={refetch} />
+          return <CheckHeatmap key={habit?.id || idx} habit={habit} refetch={refetch} />
         })}
       </div>
     </div>

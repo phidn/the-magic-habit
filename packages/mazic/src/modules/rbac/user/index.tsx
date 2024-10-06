@@ -1,24 +1,20 @@
 import { lazy } from 'react'
 
-const UserListPage = lazy(() => import('./pages/UserListPage'))
-const UserCreatePage = lazy(() => import('./pages/UserCreatePage'))
-const UserUpdatePage = lazy(() => import('./pages/UserUpdatePage'))
-
 export const userRoute = [
   {
     path: '/user',
-    Component: UserListPage,
+    Component: lazy(() => import('./pages/UserListPage')),
   },
   {
     path: '/user/view/:id',
-    Component: UserUpdatePage,
+    Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
     path: '/user/edit/:id',
-    Component: UserUpdatePage,
+    Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
     path: '/user/new',
-    Component: UserCreatePage,
+    Component: lazy(() => import('./pages/UserCreatePage')),
   },
 ]

@@ -1,24 +1,20 @@
 import { lazy } from 'react'
 
-const PermissionListPage = lazy(() => import('./pages/PermissionListPage'))
-const PermissionCreatePage = lazy(() => import('./pages/PermissionCreatePage'))
-const PermissionUpdatePage = lazy(() => import('./pages/PermissionUpdatePage'))
-
 export const permissionRoute = [
   {
     path: '/permission',
-    Component: PermissionListPage,
+    Component: lazy(() => import('./pages/PermissionListPage')),
   },
   {
     path: '/permission/view/:id',
-    Component: PermissionUpdatePage,
+    Component: lazy(() => import('./pages/PermissionUpdatePage')),
   },
   {
     path: '/permission/edit/:id',
-    Component: PermissionUpdatePage,
+    Component: lazy(() => import('./pages/PermissionUpdatePage')),
   },
   {
     path: '/permission/new',
-    Component: PermissionCreatePage,
+    Component: lazy(() => import('./pages/PermissionCreatePage')),
   },
 ]
