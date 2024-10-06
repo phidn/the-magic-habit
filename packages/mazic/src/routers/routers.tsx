@@ -2,13 +2,13 @@ import { createBrowserRouter } from 'react-router-dom'
 
 import { dashboardRoute } from '@mazic/modules/dashboard'
 import { habitRoute } from '@mazic/modules/habit'
-import { actionRoute } from '@mazic/modules/rbac/action/actionRoute'
+import { actionRoute } from '@mazic/modules/rbac/action'
 import { LoginPage } from '@mazic/modules/rbac/auth'
-import { permissionRoute } from '@mazic/modules/rbac/permission/permissionRoute'
-import { resourceRoute } from '@mazic/modules/rbac/resource/resourceRoute'
-import { roleRoute } from '@mazic/modules/rbac/role/roleRoute'
-import { rolePermissionRoute } from '@mazic/modules/rbac/role-permission/rolePermissionRoute'
-import { userRoute } from '@mazic/modules/rbac/user/userRoute'
+import { permissionRoute } from '@mazic/modules/rbac/permission'
+import { resourceRoute } from '@mazic/modules/rbac/resource'
+import { roleRoute } from '@mazic/modules/rbac/role'
+import { rolePermissionRoute } from '@mazic/modules/rbac/role-permission'
+import { userRoute } from '@mazic/modules/rbac/user'
 import AuthRoute from '@mazic/routers/AuthRoute'
 
 const publicRoutes = [
@@ -18,7 +18,7 @@ const publicRoutes = [
   },
 ]
 
-const _routes = [
+const protectedRoutes = [
   ...dashboardRoute,
   ...actionRoute,
   ...resourceRoute,
@@ -27,17 +27,13 @@ const _routes = [
   ...rolePermissionRoute,
   ...userRoute,
   ...habitRoute,
-]
-
-const protectedRoutes = _routes.map((route) => {
-  return {
-    path: route.path,
-    element: (
-      <AuthRoute>
-        <route.Component />
-      </AuthRoute>
-    ),
-  }
-})
+].map((route) => ({
+  path: route.path,
+  element: (
+    <AuthRoute>
+      <route.Component />
+    </AuthRoute>
+  ),
+}))
 
 export const routers = createBrowserRouter([...publicRoutes, ...protectedRoutes])

@@ -1,8 +1,8 @@
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
-import { useHabitDetail, useUpdateHabit } from '../hooks/apis'
 import { HabitForm } from '../components/HabitForm'
-import { habitSchema } from '../validations'
+import { useHabitDetail, useUpdateHabit } from '../hooks/apis'
+import { habitSchema } from '../utils/validations'
 
 const HabitUpdatePage = () => {
   const pageDetails = usePageDetails()
