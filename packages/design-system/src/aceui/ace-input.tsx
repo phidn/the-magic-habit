@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 
-import { cn } from '@mazic-design-system'
+import { cn } from '@/utils/cn'
 
 export type AceInputProps = React.InputHTMLAttributes<HTMLInputElement>
 

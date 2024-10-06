@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 
-import { Checkbox } from '@mazic-design-system'
+import { Checkbox } from '@mazic/design-system'
 
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'

@@ -1,6 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import { CheckboxIcon, NumberIcon } from '@mazic-design-system'
+import { CheckboxIcon, NumberIcon } from '@mazic/design-system'
 
 import { FormItem, FormSelect } from '@mazic/components/FormControl'
 import { FormColorPicker } from '@mazic/components/FormControl/FormColorPicker'

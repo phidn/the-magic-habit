@@ -9,16 +9,16 @@ import {
   AceDivide,
   Alert,
   AlertDescription,
+  cn,
   ExclamationTriangleIcon,
   FormMessage,
   Input,
   Label,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import Logo from '@mazic/components/Logo/Logo'
 import { authService } from '@mazic/services/authService'
 import { AuthResponse } from '@mazic/types/response'
-import { cn } from '@mazic/utils/cn'
 
 const LoginSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email address'),

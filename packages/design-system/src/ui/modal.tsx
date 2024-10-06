@@ -3,7 +3,7 @@
 import * as React from 'react'
 
 import { useMediaQuery } from '../hooks/useMediaQuery'
-import { cn } from '../utils'
+import { cn } from '@/utils/cn'
 
 import {
   Dialog,

@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Separator,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { DataTableFilterField } from '@mazic/types/dataTable'
 

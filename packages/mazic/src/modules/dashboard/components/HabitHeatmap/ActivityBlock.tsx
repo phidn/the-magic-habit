@@ -2,7 +2,7 @@ import { SVGProps } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
-import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic-design-system'
+import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic/design-system'
 
 import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
 import { habitApis } from '@mazic/modules/habit/apis'

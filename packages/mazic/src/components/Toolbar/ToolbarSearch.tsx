@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Input } from '@mazic-design-system'
+import { Input } from '@mazic/design-system'
 
 interface ToolbarSearchProps {
   search: string

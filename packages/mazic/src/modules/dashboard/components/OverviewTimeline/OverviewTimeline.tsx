@@ -11,7 +11,7 @@ import {
   TimelineItem,
   TimelineTime,
   TimelineTitle,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { THabit } from '@mazic/modules/habit/validations'
 

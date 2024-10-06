@@ -3,11 +3,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import capitalize from 'lodash/capitalize'
 import isEqual from 'lodash/isEqual'
 
-import { Button, Card, CardContent } from '@mazic-design-system'
+import { Button, Card, CardContent, cn } from '@mazic/design-system'
 
 import { FormDatePicker, FormInput, FormItem } from '@mazic/components'
 import { habitCheckInSchema, THabit, THabitCheckIn } from '@mazic/modules/habit/validations'
-import { cn } from '@mazic/utils/cn'
 
 interface Props {
   habit: THabit

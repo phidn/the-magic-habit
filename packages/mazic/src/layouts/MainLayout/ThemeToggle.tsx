@@ -1,6 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 
-import { Button } from '@mazic-design-system'
+import { Button } from '@mazic/design-system'
 
 import { useTheme } from '@mazic/contexts/ThemeProvider'
 

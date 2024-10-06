@@ -8,8 +8,10 @@
     "strict": true,
     "composite": true,
     "declaration": true,
+    "moduleResolution": "node",
     "paths": {
-      "@mazic-design-system": ["packages/design-system/src/index.ts"],
+      "@mazic/design-system": ["packages/design-system/src/index.ts"],
+      "@/utils/*": ["packages/design-system/src/utils/*"],
     }
   },
   "files": [],

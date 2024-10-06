@@ -2,17 +2,17 @@ import { Ellipsis, LogOut } from 'lucide-react'
 
 import {
   Button,
+  cn,
   ScrollArea,
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { MenuLink } from '@mazic/components/Commons'
 import { useMenuList } from '@mazic/hooks/useMenuList'
 import { useLogout } from '@mazic/modules/rbac/auth'
-import { cn } from '@mazic/utils/cn'
 
 import { CollapseMenuButton } from './CollapseMenuButton'
 

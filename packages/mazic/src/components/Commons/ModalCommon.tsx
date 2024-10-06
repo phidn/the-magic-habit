@@ -8,7 +8,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalTitle,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { useStoreShallow } from '@mazic/store/useStore'
 

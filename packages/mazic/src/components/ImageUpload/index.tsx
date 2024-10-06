@@ -3,9 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import { Plus, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { Avatar, AvatarImage, Input, RadialProgress } from '@mazic-design-system'
-
-import { cn } from '@mazic/utils/cn'
+import { Avatar, AvatarImage, cn, Input, RadialProgress } from '@mazic/design-system'
 
 import {
   ImageUploadAreaProps,

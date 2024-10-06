@@ -3,7 +3,7 @@ import { AxiosResponse } from 'axios'
 import { ZodObject } from 'zod'
 import { StateCreator } from 'zustand'
 
-import { Icons } from '@mazic-design-system'
+import { Icons } from '@mazic/design-system'
 
 export interface NavItem {
   title: string

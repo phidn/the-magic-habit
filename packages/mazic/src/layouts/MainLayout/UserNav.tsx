@@ -17,7 +17,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { useLogout } from '@mazic/modules/rbac/auth'
 import { useStore } from '@mazic/store/useStore'

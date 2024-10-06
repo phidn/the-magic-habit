@@ -11,7 +11,7 @@
     "declaration": true,
     "moduleResolution": "node",
     "paths": {
-      "@mazic-design-system": ["packages/design-system/src/index.ts"],
+      "@mazic/design-system": ["packages/design-system/src/index.ts"],
       "@mazic/shared": ["packages/shared/src/index.ts"],
       "@mazic/*": ["packages/mazic/src/*"]
     }

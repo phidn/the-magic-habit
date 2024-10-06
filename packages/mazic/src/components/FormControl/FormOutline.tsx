@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@mazic-design-system'
+import { Card, CardContent, CardHeader, CardTitle } from '@mazic/design-system'
 
 import { CheckBoxLabel, FormControlProps } from '@mazic/components/FormControl'
 

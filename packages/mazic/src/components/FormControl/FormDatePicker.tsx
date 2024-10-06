@@ -3,6 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { format } from 'date-fns'
 
 import {
+  cn,
   Button,
   Calendar,
   CalendarIcon,
@@ -10,9 +11,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@mazic-design-system'
-
-import { cn } from '@mazic/utils/cn'
+} from '@mazic/design-system'
 
 interface FormDatePickerProps {
   field: string

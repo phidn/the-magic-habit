@@ -1,7 +1,6 @@
 import dayjs from 'dayjs'
 
 import { CONFIG } from '@mazic/config/config'
-import { IUser } from '@mazic/types'
 
 export const setAccessTokenToLS = (access_token: string) => {
   localStorage.setItem('access_token', access_token)

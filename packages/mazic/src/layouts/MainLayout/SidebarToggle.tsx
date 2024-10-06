@@ -1,8 +1,6 @@
 import { ChevronLeft } from 'lucide-react'
 
-import { Button } from '@mazic-design-system'
-
-import { cn } from '@mazic/utils/cn'
+import { Button, cn } from '@mazic/design-system'
 
 interface SidebarToggleProps {
   isOpen: boolean | undefined

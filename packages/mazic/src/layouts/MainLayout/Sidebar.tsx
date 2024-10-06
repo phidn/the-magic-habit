@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom'
 import { PanelsTopLeft } from 'lucide-react'
 
-import { Button } from '@mazic-design-system'
+import { Button, cn } from '@mazic/design-system'
 
 import { useStore } from '@mazic/store/useStore'
-import { cn } from '@mazic/utils/cn'
 
 import { Menu } from './Menu'
 import { SidebarToggle } from './SidebarToggle'

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Column } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 
-import { Badge } from '@mazic-design-system'
+import { Badge } from '@mazic/design-system'
 
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 

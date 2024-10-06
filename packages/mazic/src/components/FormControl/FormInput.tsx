@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { FormMessage, Input } from '@mazic-design-system'
+import { FormMessage, Input } from '@mazic/design-system'
 
 interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   field: string

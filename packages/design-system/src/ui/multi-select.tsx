@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
   Separator,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 /**
  * Variants for the multi-select component to handle different styles.

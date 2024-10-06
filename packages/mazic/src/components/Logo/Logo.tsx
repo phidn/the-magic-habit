@@ -1,4 +1,4 @@
-import { ShadcnIcon } from '@mazic-design-system'
+import { ShadcnIcon } from '@mazic/design-system'
 
 interface LogoProps {
   hideText?: boolean

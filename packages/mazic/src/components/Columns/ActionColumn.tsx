@@ -1,4 +1,4 @@
-import { Button, ButtonLink, EditIcon, TrashIcon, ViewIcon } from '@mazic-design-system'
+import { Button, ButtonLink, EditIcon, TrashIcon, ViewIcon } from '@mazic/design-system'
 interface ActionColumnProps {
   pathDetail?: string
   pathEdit?: string

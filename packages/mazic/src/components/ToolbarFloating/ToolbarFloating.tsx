@@ -1,4 +1,4 @@
-import { useEffect, useTransition } from 'react'
+import { useEffect } from 'react'
 import { Cross2Icon, ReloadIcon } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 
@@ -10,7 +10,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 type BulkAction = {
   icon: React.ReactNode

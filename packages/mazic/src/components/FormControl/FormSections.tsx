@@ -1,7 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@mazic-design-system'
+import { Card, CardContent, CardHeader, CardTitle, cn } from '@mazic/design-system'
 
 import { IFormSection } from '@mazic/types/form'
-import { cn } from '@mazic/utils/cn'
 
 interface FormSectionsProps {
   sections: IFormSection[]

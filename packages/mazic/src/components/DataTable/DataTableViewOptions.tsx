@@ -9,7 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>

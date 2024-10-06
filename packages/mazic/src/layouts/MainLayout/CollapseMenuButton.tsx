@@ -5,6 +5,7 @@ import { ChevronDown, Dot, LucideIcon } from 'lucide-react'
 
 import {
   Button,
+  cn,
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
@@ -18,10 +19,9 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { MenuLink } from '@mazic/components/Commons'
-import { cn } from '@mazic/utils/cn'
 
 type Submenu = {
   href: string

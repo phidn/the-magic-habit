@@ -1,4 +1,4 @@
-import { Checkbox } from '@mazic-design-system'
+import { Checkbox } from '@mazic/design-system'
 
 import { scrollTo } from '@mazic/utils/utils'
 

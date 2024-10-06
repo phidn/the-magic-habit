@@ -1,6 +1,7 @@
+import { cn } from '@mazic/design-system'
+
 import { ModalCommon } from '@mazic/components/Commons/ModalCommon'
 import { useStore } from '@mazic/store/useStore'
-import { cn } from '@mazic/utils/cn'
 
 import { Footer } from './Footer'
 import { Navbar } from './Navbar'

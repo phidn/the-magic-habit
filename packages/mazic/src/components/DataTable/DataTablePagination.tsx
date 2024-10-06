@@ -13,7 +13,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@mazic-design-system'
+} from '@mazic/design-system'
 
 import { CONFIG } from '@mazic/config/config'
 
