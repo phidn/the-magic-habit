@@ -28,4 +28,5 @@ export interface IFormSection {
   fields?: string[]
   isValid?: boolean
   enabled?: boolean
+  validFunc?: (values: any) => boolean
 }

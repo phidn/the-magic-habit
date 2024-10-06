@@ -53,11 +53,12 @@ export const FormControl = (props: FormControlProps) => {
   // console.log('errors', methods.formState.errors)
 
   const _formSections = formSections.map((section, idx) => {
+    const validFunc = section.validFunc || isValidSection
     return {
       ...section,
       id: section.id || `section-${idx}`,
       enabled: typeof section.enabled === 'undefined' ? true : section.enabled,
-      isValid: isValidSection(methods.watch(), schema, section.fields),
+      isValid: validFunc(methods.watch(), schema, section.fields),
     }
   })
 
