@@ -14,10 +14,13 @@ export const getRequiredFields = (schema: z.ZodObject<any>) => {
   return requiredFields
 }
 
-export const isValidSection = (values: any, schema: z.ZodObject<any>, fields?: string[]) => {
+export const isValidSection = (
+  values: any,
+  schema: z.ZodObject<any> | z.ZodEffects<any>,
+  fields?: string[]
+) => {
   if (fields?.length) {
-    const shape = schema.shape
-
+    const shape = getShapeBySchema(schema) as Record<string, z.ZodTypeAny>
     for (const key of fields) {
       const field = shape[key]
       if (field?.isOptional?.() || field?.isNullable?.()) {
@@ -78,7 +81,7 @@ export const optionSelected = <T extends { value: any }>(
   return options.find((option) => option?.value === value)
 }
 
-export const getDefaultsBySchema = (schema: z.ZodObject<any> | z.ZodEffects<any>, data?: any) => {
+export const getShapeBySchema = (schema: z.ZodObject<any> | z.ZodEffects<any>) => {
   let shape = {}
   if (schema instanceof z.ZodEffects) {
     shape = schema._def.schema.shape
@@ -86,6 +89,11 @@ export const getDefaultsBySchema = (schema: z.ZodObject<any> | z.ZodEffects<any>
   if (schema instanceof z.ZodObject) {
     shape = schema.shape
   }
+  return shape
+}
+
+export const getDefaultsBySchema = (schema: z.ZodObject<any> | z.ZodEffects<any>, data?: any) => {
+  const shape = getShapeBySchema(schema)
   return Object.fromEntries(
     Object.entries(shape).map(([key, value]) => {
       if (typeof data?.[key] !== 'undefined') {

@@ -5,7 +5,7 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic/ui'
 
 import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
-import { habitApis } from '@mazic/modules/habit/apis'
+import { useCheckIn, useDeleteCheckIn } from '@mazic/modules/habit/apis'
 import { THabit, THabitCheckIn } from '@mazic/modules/habit/validations'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -38,8 +38,8 @@ export const ActivityBlock = (props: Props) => {
 
   const [showModal, hideModal] = useStoreShallow((state) => [state.showModal, state.hideModal])
 
-  const checkIn = habitApis.useCheckIn()
-  const deleteCheckIn = habitApis.useDeleteCheckIn()
+  const checkIn = useCheckIn()
+  const deleteCheckIn = useDeleteCheckIn()
 
   const handleCheckIn = () => {
     showModal({

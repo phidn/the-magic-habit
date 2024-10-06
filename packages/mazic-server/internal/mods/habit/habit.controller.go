@@ -17,7 +17,8 @@ func NewHabitController(habitService HabitService) *HabitController {
 }
 
 func (controller *HabitController) Find(c echo.Context) error {
-	result, err := controller.HabitService.Find(c.Request().Context(), c.QueryParams())
+	userId := c.Get("state.user_id").(string)
+	result, err := controller.HabitService.Find(c.Request().Context(), userId, c.QueryParams())
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to get habits.", err)
 	}
@@ -25,12 +26,14 @@ func (controller *HabitController) Find(c echo.Context) error {
 	return resp.NewApiPagination(c, result)
 }
 
-func (controller *HabitController) GetById(c echo.Context) error {
+func (controller *HabitController) FindOne(c echo.Context) error {
 	recordId := c.PathParam("id")
 	if recordId == "" {
 		return resp.NewNotFoundError(c, "", nil)
 	}
-	habit, err := controller.HabitService.FindOne(c.Request().Context(), recordId)
+
+	userId := c.Get("state.user_id").(string)
+	habit, err := controller.HabitService.FindOne(c.Request().Context(), userId, recordId)
 	if err != nil || habit == nil {
 		return resp.NewNotFoundError(c, "", err)
 	}
@@ -84,12 +87,9 @@ func (controller *HabitController) Update(c echo.Context) error {
 }
 
 func (controller *HabitController) Delete(c echo.Context) error {
-	habit := &Habit{}
-	if err := c.Bind(&habit); err != nil {
-		return resp.NewBadRequestError(c, "Failed to read request data.", err)
-	}
+	userId := c.Get("state.user_id").(string)
 
-	_, err := controller.HabitService.Delete(c.Request().Context(), c.PathParam("id"))
+	err := controller.HabitService.Delete(c.Request().Context(), userId, c.PathParam("id"))
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to delete habit.", err)
 	}

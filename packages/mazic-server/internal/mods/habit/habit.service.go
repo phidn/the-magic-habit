@@ -13,11 +13,11 @@ import (
 )
 
 type HabitService interface {
-	Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error)
-	FindOne(ctx context.Context, id string) (*Habit, error)
+	Find(ctx context.Context, userId string, queryParams url.Values) (*schema.ListItems, error)
+	FindOne(ctx context.Context, userId, id string) (*Habit, error)
 	Create(ctx context.Context, habit *Habit) (*models.Record, error)
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
-	Delete(ctx context.Context, id string) (*models.Record, error)
+	Delete(ctx context.Context, userId, id string) error
 	CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error)
 	DeleteCheckIn(ctx context.Context, id string) (*models.Record, error)
 }
@@ -32,8 +32,10 @@ func NewHabitService(entry entry.Entry) HabitService {
 	}
 }
 
-func (service *habitService) Find(ctx context.Context, queryParams url.Values) (*schema.ListItems, error) {
-	listExpression := []dbx.Expression{}
+func (service *habitService) Find(ctx context.Context, userId string, queryParams url.Values) (*schema.ListItems, error) {
+	listExpression := []dbx.Expression{
+		dbx.HashExp{"user_id": userId},
+	}
 
 	title := queryParams.Get("title")
 	if title != "" {
@@ -133,10 +135,11 @@ func (service *habitService) Find(ctx context.Context, queryParams url.Values) (
 	return result, nil
 }
 
-func (service *habitService) FindOne(ctx context.Context, id string) (*Habit, error) {
+func (service *habitService) FindOne(ctx context.Context, userId, id string) (*Habit, error) {
 	habit := &Habit{}
 	err := service.Entry.ModelQuery(ctx, habit).
 		AndWhere(dbx.HashExp{"id": id}).
+		AndWhere(dbx.HashExp{"user_id": userId}).
 		Limit(1).
 		One(habit)
 
@@ -175,16 +178,26 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 	return record, nil
 }
 
-func (service *habitService) Delete(ctx context.Context, id string) (*models.Record, error) {
-	record, err := service.Entry.FindRecordById(ctx, new(Habit).TableName(), id)
+func (service *habitService) Delete(ctx context.Context, userId, id string) error {
+	_, err := service.Entry.Dao().DB().
+		Delete(new(Habit).TableName(), dbx.HashExp{"id": id, "user_id": userId}).
+		Execute()
 	if err != nil {
-		return nil, err
+		return err
 	}
-	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
-		return nil, err
-	}
-	return record, nil
+	return nil
 }
+
+// func (service *habitService) Delete(ctx context.Context, id string) (*models.Record, error) {
+// 	record, err := service.Entry.FindRecordById(ctx, new(Habit).TableName(), id)
+// 	if err != nil {
+// 		return nil, err
+// 	}
+// 	if err := service.Entry.Dao().DeleteRecord(record); err != nil {
+// 		return nil, err
+// 	}
+// 	return record, nil
+// }
 
 func (service *habitService) CheckIn(ctx context.Context, habitEntry *HabitEntry) (*models.Record, error) {
 	tableName := new(HabitEntry).TableName()

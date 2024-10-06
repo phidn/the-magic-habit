@@ -3,18 +3,18 @@ import { useDataTable, useFilter } from '@mazic/hooks'
 import { commonFilterSchema as filterSchema } from '@mazic/schemas/filterSchema'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
-import { habitApis } from '../apis'
+import { useListHabit } from '../apis'
 import { useHabitColumns } from '../columns'
 
 const HabitListPage = () => {
   const filterFields: DataTableFilterField[] = []
   const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
-  const { data, meta, refetch } = habitApis.useList(params)
+  const { data, meta, refetch } = useListHabit(params)
   const columns = useHabitColumns({ refreshTable: refetch })
 
   const { table } = useDataTable({
-    data: data || [],
+    data,
     columns: columns,
     pageCount: meta?.pagination.pageCount,
     filterFields,

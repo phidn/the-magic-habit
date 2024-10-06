@@ -31,7 +31,7 @@ func (route *HabitRoute) SetupRoutes() {
 		checkInCodes := config.Config.Shared.Permissions.HabitCheckIn
 
 		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions(habitCodes.View))
-		r.GET("/:id", route.controller.GetById, route.authMiddleware.HasPermissions(habitCodes.View))
+		r.GET("/:id", route.controller.FindOne, route.authMiddleware.HasPermissions(habitCodes.View))
 		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions(habitCodes.Create))
 		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions(habitCodes.Update))
 		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions(habitCodes.Delete))

@@ -10,11 +10,11 @@ import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { checkInMap } from './components/HabitForm/DetailForm'
-import { habitApis } from './apis'
+import { useDeleteHabit } from './apis'
 import { THabit } from './validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {
-  const mutationDelete = habitApis.delete()
+  const mutationDelete = useDeleteHabit()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

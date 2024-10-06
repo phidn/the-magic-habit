@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z, ZodObject } from 'zod'
+import { z, ZodEffects, ZodObject } from 'zod'
 
 import { usePageDetails } from '@mazic/hooks'
 import { useUploadFile } from '@mazic/hooks/useUploadFile'
@@ -17,7 +17,7 @@ export interface FormControlProps {
   formTitle?: string
   formOutlineTitle?: string
   formSections: IFormSection[]
-  schema?: ZodObject<any>
+  schema?: ZodObject<any> | ZodEffects<any>
   initialValues: any
   onSubmitForm: (values: any) => Promise<MutationApiResponse>
   isCreatedAndReset?: boolean
@@ -50,7 +50,7 @@ export const FormControl = (props: FormControlProps) => {
   })
 
   // console.log('values', methods.watch())
-  console.log('errors', methods.formState.errors)
+  // console.log('errors', methods.formState.errors)
 
   const _formSections = formSections.map((section, idx) => {
     return {

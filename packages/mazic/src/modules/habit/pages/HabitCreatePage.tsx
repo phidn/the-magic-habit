@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
-import { habitApis } from '../apis'
+import { useCreateHabit } from '../apis'
 import { HabitForm } from '../components/HabitForm'
 import { habitSchema } from '../validations'
 
 const HabitCreatePage = () => {
-  const mutation = habitApis.create()
+  const mutation = useCreateHabit()
   return (
     <HabitForm
       initialValues={getDefaultsBySchema(habitSchema)}

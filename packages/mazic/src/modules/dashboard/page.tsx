@@ -1,4 +1,4 @@
-import { habitApis } from '../habit/apis'
+import { useListHabit } from '../habit/apis'
 
 import { HabitHeatmap } from './components/HabitHeatmap/HabitHeatmap'
 import { Overview } from './components/Overview/Overview'
@@ -6,7 +6,7 @@ import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline
 import { DashboardStyled } from './styled'
 
 const DashboardPage = () => {
-  const { data: listHabits, refetch } = habitApis.useList({ pageSize: -1, entry_expand: true })
+  const { data: listHabits, refetch } = useListHabit({ pageSize: -1, entry_expand: true })
 
   return (
     <DashboardStyled>

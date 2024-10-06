@@ -37,6 +37,7 @@ type THabitEntry = {
 }
 
 export type THabit = z.infer<typeof habitSchema> & {
+  id: string
   color: ColorName
   entries: THabitEntry[]
   activities: HeatMapValue[]

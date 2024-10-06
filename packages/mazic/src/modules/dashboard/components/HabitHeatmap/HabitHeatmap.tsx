@@ -18,7 +18,7 @@ import {
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { useColorMode } from '@mazic/hooks'
-import { habitApis } from '@mazic/modules/habit/apis'
+import { useDeleteCheckIn } from '@mazic/modules/habit/apis'
 import { THabit } from '@mazic/modules/habit/validations'
 import { useStoreShallow } from '@mazic/store/useStore'
 
@@ -39,15 +39,11 @@ export const HabitHeatmap = ({ habit, refetch }: Props) => {
 
   const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
 
-  const mutationDelete = habitApis.delete()
+  const mutationDelete = useDeleteCheckIn()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,
   ])
-
-  if (!activities?.length) {
-    return null
-  }
 
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')

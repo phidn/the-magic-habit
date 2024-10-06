@@ -1,6 +1,6 @@
 import { UseMutationResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
-import { ZodObject } from 'zod'
+import { ZodEffects, ZodObject } from 'zod'
 import { StateCreator } from 'zustand'
 
 import { Icons } from '@mazic/ui'
@@ -64,7 +64,7 @@ export interface ApiResponse<T> {
 export interface IFormProps {
   initialValues?: any
   data?: any
-  schema?: ZodObject<any>
+  schema?: ZodObject<any> | ZodEffects<any, any>
   onSubmitForm: (values: any) => any
   isPendingSubmit?: boolean
 }

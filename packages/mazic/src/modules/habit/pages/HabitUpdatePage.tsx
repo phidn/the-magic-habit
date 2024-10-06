@@ -1,13 +1,13 @@
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
-import { habitApis } from '../apis'
+import { useHabitDetail, useUpdateHabit } from '../apis'
 import { HabitForm } from '../components/HabitForm'
 import { habitSchema } from '../validations'
 
 const HabitUpdatePage = () => {
   const pageDetails = usePageDetails()
-  const { data } = habitApis.detail(pageDetails.id)
-  const mutation = habitApis.update(pageDetails.id)
+  const { data } = useHabitDetail(pageDetails.id)
+  const mutation = useUpdateHabit(pageDetails.id)
   return (
     <HabitForm
       initialValues={data}
