@@ -137,3 +137,57 @@ model sys_user {
   username      String              @unique(map: "idx_1IHlFNg") @default("")
   verified      Boolean             @default(false)
 }
+
+model mz_habit_entries {
+  created  String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  date     String  @default("")
+  habit_id String  @default("")
+  id       String  @id @default("'r'||lower(hex(randomblob(7)))")
+  journal  String  @default("")
+  updated  String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  value    Decimal @default(0)
+  is_done  Boolean @default(false)
+
+  mz_habits mz_habits @relation(fields: [habit_id], references: [id], onDelete: Cascade)
+
+  @@unique([habit_id, date], map: "idx_6nFVz4F")
+}
+
+model mz_habits {
+  color         String  @default("")
+  created       String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id            String  @id @default("'r'||lower(hex(randomblob(7)))")
+  metric        String  @default("")
+  order         Decimal @default(0)
+  title         String  @default("")
+  updated       String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  week_start    String  @default("")
+  user_id       String  @default("")
+  is_deleted    Boolean @default(false)
+  is_private    Boolean @default(false)
+  check_in_type String  @default("")
+
+  mz_habit_entries mz_habit_entries[]
+
+}
+
+model mz_statistics {
+  created   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  habit_id  String  @default("")
+  id        String  @id @default("'r'||lower(hex(randomblob(7)))")
+  stat_type String  @default("")
+  updated   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  value     Decimal @default(0)
+
+  @@unique([habit_id, stat_type], map: "idx_N6naouA")
+}
+
+model mz_streaks {
+  created        String               @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  current_streak Decimal              @default(0)
+  habit_id       String               @default("")
+  id             String               @id @default("'r'||lower(hex(randomblob(7)))")
+  longest_streak Decimal              @default(0)
+  streak_days    Unsupported("json")?
+  updated        String               @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+}
