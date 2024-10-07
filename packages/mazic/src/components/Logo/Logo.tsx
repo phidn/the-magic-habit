@@ -1,4 +1,4 @@
-import { ShadcnIcon } from '@mazic/ui'
+import { MazicIcon } from '@mazic/ui'
 
 interface LogoProps {
   hideText?: boolean
@@ -11,7 +11,7 @@ const Logo = (props: LogoProps) => {
     <div className="flex items-center h-8">
       {!hideIcon && (
         <div>
-          <ShadcnIcon className="mx-auto h-8 w-8 mr-1" />
+          <MazicIcon className="mx-auto h-8 w-8 mr-1" />
         </div>
       )}
       {!hideText && <span className="hidden font-bold sm:inline-block">mazic</span>}

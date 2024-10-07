@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
-import { MenuIcon, PanelsTopLeft } from 'lucide-react'
+import { MenuIcon } from 'lucide-react'
 
-import { Button, Sheet, SheetContent, SheetHeader, SheetTrigger } from '@mazic/ui'
+import { Button, MazicIcon, Sheet, SheetContent, SheetHeader, SheetTrigger } from '@mazic/ui'
 
 import { Menu } from './Menu'
 
@@ -17,7 +17,7 @@ export const SheetMenu = () => {
         <SheetHeader>
           <Button className="flex justify-center items-center pb-2 pt-1" variant="link" asChild>
             <Link to="/dashboard" className="flex items-center gap-2">
-              <PanelsTopLeft className="w-6 h-6 mr-1" />
+              <MazicIcon className="w-6 h-6 mr-1" />
               <h1 className="font-bold text-lg">Brand</h1>
             </Link>
           </Button>

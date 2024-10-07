@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom'
-import { PanelsTopLeft } from 'lucide-react'
 
-import { Button, cn } from '@mazic/ui'
+import { Button, cn, MazicIcon } from '@mazic/ui'
 
 import { useStore } from '@mazic/store/useStore'
 
 import { Menu } from './Menu'
 import { SidebarToggle } from './SidebarToggle'
 
-export const Sidebar = () => {
+interface SidebarProps {
+  hideLogoText?: boolean
+}
+
+export const Sidebar = ({ hideLogoText = false }: SidebarProps) => {
   const sidebar = useStore((store) => store.sidebar)
 
   if (!sidebar) return null
@@ -31,17 +34,19 @@ export const Sidebar = () => {
           asChild
         >
           <Link to="/" className="flex items-center gap-2">
-            <PanelsTopLeft className="w-6 h-6 mr-1" />
-            <h1
-              className={cn(
-                'font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300',
-                sidebar?.isOpen === false
-                  ? '-translate-x-96 opacity-0 hidden'
-                  : 'translate-x-0 opacity-100'
-              )}
-            >
-              mazic
-            </h1>
+            <MazicIcon className="w-8 h-8 mr-1" />
+            {!hideLogoText && (
+              <h1
+                className={cn(
+                  'font-bold text-lg whitespace-nowrap transition-[transform,opacity,display] ease-in-out duration-300',
+                  sidebar?.isOpen === false
+                    ? '-translate-x-96 opacity-0 hidden'
+                    : 'translate-x-0 opacity-100'
+                )}
+              >
+                mazic
+              </h1>
+            )}
           </Link>
         </Button>
         <Menu isOpen={sidebar?.isOpen} />
