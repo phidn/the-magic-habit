@@ -4,13 +4,13 @@ export { checkInSchema, type THabitCheckIn } from './utils/validations'
 export { useCheckIn, useDeleteCheckIn } from './hooks/apis'
 
 export { FormCheckIn } from './components/FormCheckIn/FormCheckIn'
-export { CheckHeatmap } from './components/CheckHeatmap/CheckHeatmap'
+export { CheckInHeatmap } from './components/CheckInHeatmap/CheckInHeatmap'
 
 export { checkInType, checkInMap, checkInOpts } from './utils/utils'
 
-export const dashboardRoute = [
+export const checkInRoute = [
   {
-    path: '/',
+    path: '/check-in/:api_key',
     Component: lazy(() => import('./CheckInPage')),
   },
 ]

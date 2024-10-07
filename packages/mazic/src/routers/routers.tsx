@@ -1,5 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 
+import { checkInRoute } from '@mazic/modules/check-in'
 import { dashboardRoute } from '@mazic/modules/dashboard'
 import { habitRoute } from '@mazic/modules/habit'
 import { actionRoute } from '@mazic/modules/rbac/action'
@@ -16,6 +17,7 @@ const publicRoutes = [
     path: '/login',
     element: <LoginPage />,
   },
+  ...checkInRoute,
 ]
 
 const protectedRoutes = [

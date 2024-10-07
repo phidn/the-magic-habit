@@ -26,13 +26,11 @@ export const FormCheckIn = (props: Props) => {
   })
 
   const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
-
-  // console.log('values', methods.watch())
-  // console.log('errors', methods.formState.errors)
-
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
-
   const isNewEntry = !checkInEntry.id
+
+  console.log('values', methods.watch())
+  console.log('errors', methods.formState.errors)
 
   return (
     <FormProvider {...methods}>

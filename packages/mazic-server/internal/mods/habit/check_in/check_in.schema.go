@@ -23,27 +23,27 @@ type CheckIn struct {
 	BarValue float64 `json:"bar_value"`
 }
 
-func (checkInEntry *CheckIn) TableName() string {
+func (c *CheckIn) TableName() string {
 	return "mz_check_in"
 }
 
-func (checkInEntry *CheckIn) Validate() error {
-	return validation.ValidateStruct(checkInEntry,
-		validation.Field(&checkInEntry.Date, validation.Required),
-		validation.Field(&checkInEntry.Value, validation.When(checkInEntry.IsDone == nil, validation.Required).Else(validation.Empty)),
-		validation.Field(&checkInEntry.IsDone, validation.When(checkInEntry.Value == 0, validation.Required)),
-		validation.Field(&checkInEntry.HabitId, validation.Required),
+func (c *CheckIn) Validate() error {
+	return validation.ValidateStruct(c,
+		validation.Field(&c.Date, validation.Required),
+		validation.Field(&c.Value, validation.When(c.IsDone == nil, validation.Required).Else(validation.Empty)),
+		validation.Field(&c.IsDone, validation.When(c.Value == 0, validation.Required)),
+		validation.Field(&c.HabitId, validation.Required),
 	)
 }
 
-func (checkInEntry *CheckIn) ParseRecord(record *models.Record) error {
+func (c *CheckIn) ParseRecord(record *models.Record) error {
 
-	record.Set("id", checkInEntry.Id)
-	record.Set("habit_id", checkInEntry.HabitId)
-	record.Set("date", checkInEntry.Date)
-	record.Set("journal", checkInEntry.Journal)
-	record.Set("value", checkInEntry.Value)
-	record.Set("is_done", checkInEntry.IsDone)
+	record.Set("id", c.Id)
+	record.Set("habit_id", c.HabitId)
+	record.Set("date", c.Date)
+	record.Set("journal", c.Journal)
+	record.Set("value", c.Value)
+	record.Set("is_done", c.IsDone)
 
 	return nil
 }

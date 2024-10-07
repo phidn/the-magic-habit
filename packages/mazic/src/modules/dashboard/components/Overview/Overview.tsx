@@ -87,7 +87,7 @@ export function Overview({ habits, range }: Props) {
     for (const habit of habits) {
       const _title = snakeCase(habit.title)
       item[_title] = 0
-      for (const entry of habit.entries) {
+      for (const entry of habit.check_in_items) {
         const entryDate = dayjs(entry.date).format('YYYY-MM-DD')
         if (entryDate === date) {
           item[_title] += entry.bar_value

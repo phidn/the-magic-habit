@@ -1,6 +1,5 @@
 import { cn } from '@mazic/ui'
 
-import { ModalCommon } from '@mazic/components/Commons/ModalCommon'
 import { useStore } from '@mazic/store/useStore'
 
 import { Footer } from './Footer'
@@ -32,7 +31,6 @@ export const MainLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <Footer />
       </footer>
-      <ModalCommon />
     </div>
   )
 }

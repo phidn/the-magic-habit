@@ -15,6 +15,7 @@ import (
 
 type HabitService interface {
 	Find(ctx context.Context, userId string, queryParams url.Values) (*schema.ListItems, error)
+	FindWidget(ctx context.Context, apiKey string, queryParams url.Values) (*Habit, error)
 	FindOne(ctx context.Context, userId, id string) (*Habit, error)
 	Create(ctx context.Context, habit *Habit) (*models.Record, error)
 	Update(ctx context.Context, id string, habit *Habit) (*models.Record, error)
@@ -78,60 +79,42 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 		return nil, err
 	}
 
-	allValues := utils.ExtractFieldToSlice(*checkInList, "Value")
-	allAvgValue := utils.Avg(allValues)
-
-	checkInMap := map[string][]*check_in.CheckIn{}
-
-	for _, habit := range *habits {
-		if _, ok := checkInMap[habit.Id]; !ok {
-			checkInMap[habit.Id] = []*check_in.CheckIn{}
-		}
-	}
-
-	for _, checkIn := range *checkInList {
-		checkInMap[checkIn.HabitId] = append(checkInMap[checkIn.HabitId], checkIn)
-	}
-
-	for _, habit := range *habits {
-		if items, ok := checkInMap[habit.Id]; ok {
-			values := utils.ExtractFieldToSlice(items, "Value")
-			maxValue := utils.Max(values)
-			avgValue := utils.Avg(values)
-			for _, checkIn := range items {
-				if checkIn.Value > 0 {
-					if checkIn.Value > 0 && checkIn.Value < maxValue/4 {
-						checkIn.Level = 1
-					}
-					if checkIn.Value >= maxValue/4 && checkIn.Value < maxValue/2 {
-						checkIn.Level = 2
-					}
-					if checkIn.Value >= maxValue/2 && checkIn.Value < maxValue*3/4 {
-						checkIn.Level = 3
-					}
-					if checkIn.Value >= maxValue*3/4 {
-						checkIn.Level = 4
-					}
-					checkIn.Count = checkIn.Value
-					numberFactor := allAvgValue / avgValue
-					checkIn.BarValue = checkIn.Value * numberFactor
-				} else {
-					if *checkIn.IsDone {
-						checkIn.Level = 4
-						checkIn.Count = 1
-						checkIn.Value = allAvgValue
-						checkIn.BarValue = allAvgValue
-					} else {
-						checkIn.Level = 0
-						checkIn.Count = 0
-					}
-				}
-			}
-			habit.CheckInItems = items
-		}
+	err = processCheckInList(*habits, *checkInList)
+	if err != nil {
+		return nil, err
 	}
 
 	return result, nil
+}
+
+func (service *habitService) FindWidget(ctx context.Context, apiKey string, queryParams url.Values) (*Habit, error) {
+	habit := &Habit{}
+	err := service.Entry.ModelQuery(ctx, habit).
+		AndWhere(dbx.HashExp{"api_key": apiKey}).
+		Limit(1).
+		One(habit)
+
+	if err != nil {
+		return nil, err
+	}
+
+	checkInList := &[]*check_in.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
+		AndWhere(dbx.HashExp{"habit_id": habit.Id}).
+		All(checkInList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	err = processCheckInItem(*checkInList, 0)
+	if err != nil {
+		return nil, err
+	}
+
+	habit.CheckInItems = *checkInList
+
+	return habit, nil
 }
 
 func (service *habitService) FindOne(ctx context.Context, userId, id string) (*Habit, error) {

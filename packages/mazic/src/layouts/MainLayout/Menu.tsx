@@ -1,14 +1,6 @@
 import { Ellipsis, LogOut } from 'lucide-react'
 
-import {
-  Button,
-  cn,
-  ScrollArea,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@mazic/ui'
+import { Button, cn, ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from '@mazic/ui'
 
 import { MenuLink } from '@mazic/components/Commons'
 import { useMenuList } from '@mazic/hooks/useMenuList'
@@ -35,52 +27,48 @@ export const Menu = ({ isOpen }: MenuProps) => {
                   {groupLabel}
                 </p>
               ) : !isOpen && isOpen !== undefined && groupLabel ? (
-                <TooltipProvider>
-                  <Tooltip delayDuration={100}>
-                    <TooltipTrigger className="w-full">
-                      <div className="w-full flex justify-center items-center">
-                        <Ellipsis className="h-5 w-5" />
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p>{groupLabel}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger className="w-full">
+                    <div className="w-full flex justify-center items-center">
+                      <Ellipsis className="h-5 w-5" />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent side="right">
+                    <p>{groupLabel}</p>
+                  </TooltipContent>
+                </Tooltip>
               ) : (
                 <p className="pb-2"></p>
               )}
               {menus.map(({ href, label, icon: Icon, active, submenus }, index) =>
                 !submenus?.length ? (
                   <div className="w-full" key={index}>
-                    <TooltipProvider disableHoverableContent>
-                      <Tooltip delayDuration={100}>
-                        <TooltipTrigger asChild>
-                          <Button
-                            variant={active ? 'secondary' : 'ghost'}
-                            className="w-full justify-start h-10 mb-1"
-                            asChild
-                          >
-                            <MenuLink to={href}>
-                              <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                                <Icon size={18} />
-                              </span>
-                              <p
-                                className={cn(
-                                  'max-w-[200px] truncate',
-                                  isOpen === false
-                                    ? '-translate-x-96 opacity-0'
-                                    : 'translate-x-0 opacity-100'
-                                )}
-                              >
-                                {label}
-                              </p>
-                            </MenuLink>
-                          </Button>
-                        </TooltipTrigger>
-                        {isOpen === false && <TooltipContent side="right">{label}</TooltipContent>}
-                      </Tooltip>
-                    </TooltipProvider>
+                    <Tooltip delayDuration={100}>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant={active ? 'secondary' : 'ghost'}
+                          className="w-full justify-start h-10 mb-1"
+                          asChild
+                        >
+                          <MenuLink to={href}>
+                            <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                              <Icon size={18} />
+                            </span>
+                            <p
+                              className={cn(
+                                'max-w-[200px] truncate',
+                                isOpen === false
+                                  ? '-translate-x-96 opacity-0'
+                                  : 'translate-x-0 opacity-100'
+                              )}
+                            >
+                              {label}
+                            </p>
+                          </MenuLink>
+                        </Button>
+                      </TooltipTrigger>
+                      {isOpen === false && <TooltipContent side="right">{label}</TooltipContent>}
+                    </Tooltip>
                   </div>
                 ) : (
                   <div className="w-full" key={index}>
@@ -97,30 +85,28 @@ export const Menu = ({ isOpen }: MenuProps) => {
             </li>
           ))}
           <li className="w-full grow flex items-end">
-            <TooltipProvider disableHoverableContent>
-              <Tooltip delayDuration={100}>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => logout.mutate()}
-                    variant="outline"
-                    className="w-full justify-center h-10 mt-5"
+            <Tooltip delayDuration={100}>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={() => logout.mutate()}
+                  variant="outline"
+                  className="w-full justify-center h-10 mt-5"
+                >
+                  <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                    <LogOut size={18} />
+                  </span>
+                  <p
+                    className={cn(
+                      'whitespace-nowrap',
+                      isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
+                    )}
                   >
-                    <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                      <LogOut size={18} />
-                    </span>
-                    <p
-                      className={cn(
-                        'whitespace-nowrap',
-                        isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
-                      )}
-                    >
-                      Sign out
-                    </p>
-                  </Button>
-                </TooltipTrigger>
-                {isOpen === false && <TooltipContent side="right">Sign out</TooltipContent>}
-              </Tooltip>
-            </TooltipProvider>
+                    Sign out
+                  </p>
+                </Button>
+              </TooltipTrigger>
+              {isOpen === false && <TooltipContent side="right">Sign out</TooltipContent>}
+            </Tooltip>
           </li>
         </ul>
       </nav>

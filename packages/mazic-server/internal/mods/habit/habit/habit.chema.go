@@ -2,10 +2,10 @@ package habit
 
 import (
 	"mazic/server/internal/mods/habit/check_in"
-
-	"github.com/pocketbase/pocketbase/models"
+	"mazic/server/pkg/utils"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
+	"github.com/pocketbase/pocketbase/models"
 )
 
 var _ models.Model = (*Habit)(nil)
@@ -22,8 +22,9 @@ type Habit struct {
 	UserId      string `db:"user_id" json:"user_id"`
 	IsDeleted   bool   `db:"is_deleted" json:"is_deleted"`
 	IsPrivate   bool   `db:"is_private" json:"is_private"`
+	ApiKey      string `db:"api_key" json:"api_key"`
 
-	CheckInItems []*check_in.CheckIn `json:"entries"`
+	CheckInItems []*check_in.CheckIn `json:"check_in_items"`
 }
 
 func (habit *Habit) TableName() string {
@@ -41,6 +42,9 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 	record.Set("user_id", habit.UserId)
 	record.Set("is_deleted", habit.IsDeleted)
 	record.Set("is_private", habit.IsPrivate)
+	if record.IsNew() {
+		record.Set("api_key", utils.RandomString())
+	}
 
 	return nil
 }

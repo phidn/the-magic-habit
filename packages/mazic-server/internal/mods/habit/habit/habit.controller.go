@@ -26,6 +26,19 @@ func (controller *HabitController) Find(c echo.Context) error {
 	return resp.NewApiPagination(c, result)
 }
 
+func (controller *HabitController) FindWidget(c echo.Context) error {
+	apiKey := c.PathParam("api_key")
+	if apiKey == "" {
+		return resp.NewNotFoundError(c, "", nil)
+	}
+	result, err := controller.HabitService.FindWidget(c.Request().Context(), apiKey, c.QueryParams())
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to get habits.", err)
+	}
+
+	return resp.NewApiSuccess(c, result, "")
+}
+
 func (controller *HabitController) FindOne(c echo.Context) error {
 	recordId := c.PathParam("id")
 	if recordId == "" {

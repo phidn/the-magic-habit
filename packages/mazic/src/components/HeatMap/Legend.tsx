@@ -32,8 +32,6 @@ export default function Legend({
           const rectProps = {
             ...props,
             x: (size + 1) * idx + leftPad + space * idx,
-            y: rectY,
-            // y: topPad + rectSize * 8 + 6,
             fill: panelColors?.[Number(num)] || '',
             width: size,
             height: size,
@@ -45,6 +43,6 @@ export default function Legend({
         })}
       </Fragment>
     ),
-    [panelColors, props, size, leftPad, space, rectY, legendRender]
+    [panelColors, props, size, leftPad, space, legendRender]
   )
 }

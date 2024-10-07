@@ -1,3 +1,5 @@
+import { ScrollArea, ScrollBar } from '@mazic/ui'
+
 import SVG, { SVGProps } from './SVG'
 
 import './index.scss'
@@ -11,5 +13,10 @@ export interface HeatMapProps extends SVGProps {
 export default function HeatMap(props: HeatMapProps) {
   const { prefixCls = 'w-heatmap', className, ...others } = props
   const cls = [className, prefixCls].filter(Boolean).join(' ')
-  return <SVG className={cls} {...others} />
+  return (
+    <ScrollArea className="h-auto">
+      <SVG className={cls} {...others} />
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  )
 }

@@ -19,5 +19,7 @@ export const habitRoute = [
   },
 ]
 
-export { type THabit } from './utils/validations'
+export { type THabit, type TCheckIn } from './utils/validations'
+export { getActivities } from './utils/utils'
+
 export { useListHabit } from './hooks/apis'

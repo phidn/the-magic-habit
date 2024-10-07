@@ -25,7 +25,7 @@ export const habitSchema = z
     }
   })
 
-type TCheckIn = {
+export type TCheckIn = {
   id: string
   date: string
   value: number
@@ -40,7 +40,7 @@ type TCheckIn = {
 export type THabit = z.infer<typeof habitSchema> & {
   id: string
   color: ColorName
-  entries: TCheckIn[]
+  check_in_items: TCheckIn[]
   activities: HeatMapValue[]
 }
 

@@ -121,41 +121,45 @@ export default function SVG(props: SVGProps) {
       ? topPad + rectSize * 8 + 6
       : (monthLabels !== undefined ? topPad + rectSize + space : topPad) + rectSize * 8 + 6
   return (
-    <svg ref={svgRef} style={{ ..._style, ...style }} {...other}>
-      {legendCellSize !== 0 && (
-        <Legend
-          legendRender={legendRender}
-          panelColors={panelColors}
+    <>
+      <svg ref={svgRef} style={{ ..._style, ...style }} {...other}>
+        <LabelsWeek weekLabels={weekLabels} rectSize={rectSize} space={space} topPad={topPad} />
+        <LabelsMonth
+          monthLabels={monthLabels}
           rectSize={rectSize}
-          rectY={legendTopPad}
-          legendCellSize={legendCellSize}
+          space={space}
           leftPad={leftPad}
-          topPad={topPad}
+          colNum={gridNum}
+          rectY={monthRectY}
+          startDate={initStartDate}
+        />
+        <Day
+          transform={`translate(${leftPad}, ${topPad})`}
+          gridNum={gridNum}
+          initStartDate={initStartDate}
+          endDate={endDate}
+          rectProps={rectProps}
+          rectSize={rectSize}
+          rectRender={rectRender}
+          panelColors={panelColors}
+          value={value}
           space={space}
         />
-      )}
-      <LabelsWeek weekLabels={weekLabels} rectSize={rectSize} space={space} topPad={topPad} />
-      <LabelsMonth
-        monthLabels={monthLabels}
-        rectSize={rectSize}
-        space={space}
-        leftPad={leftPad}
-        colNum={gridNum}
-        rectY={monthRectY}
-        startDate={initStartDate}
-      />
-      <Day
-        transform={`translate(${leftPad}, ${topPad})`}
-        gridNum={gridNum}
-        initStartDate={initStartDate}
-        endDate={endDate}
-        rectProps={rectProps}
-        rectSize={rectSize}
-        rectRender={rectRender}
-        panelColors={panelColors}
-        value={value}
-        space={space}
-      />
-    </svg>
+      </svg>
+      <svg style={{ height: rectSize }}>
+        {legendCellSize !== 0 && (
+          <Legend
+            legendRender={legendRender}
+            panelColors={panelColors}
+            rectSize={rectSize}
+            rectY={legendTopPad}
+            legendCellSize={legendCellSize}
+            leftPad={leftPad}
+            topPad={topPad}
+            space={space}
+          />
+        )}
+      </svg>
+    </>
   )
 }

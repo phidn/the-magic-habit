@@ -5,4 +5,5 @@ import { THabitCheckIn } from '../utils/validations'
 export const checkInService = {
   checkIn: <T = any>(payload: THabitCheckIn) => http.post<T>('/check-in', payload),
   deleteCheckIn: <T = any>(id: string) => http.delete<T>('/check-in/' + id),
+  findWidget: <T = any>(apiKey: string) => http.get<T>('/habits/widget/' + apiKey),
 }

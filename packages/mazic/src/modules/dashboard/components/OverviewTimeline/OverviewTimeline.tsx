@@ -28,7 +28,7 @@ type TimelineItem = {
 
 export const OverviewTimeline = ({ habits }: Props) => {
   const items: TimelineItem[] = habits.reduce((acc, habit) => {
-    for (const entry of habit.entries) {
+    for (const entry of habit.check_in_items) {
       if (entry.journal) {
         const formattedDate = dayjs(entry.date).format('MMM DD')
         const existingItem = acc.find((item) => item.date === formattedDate)

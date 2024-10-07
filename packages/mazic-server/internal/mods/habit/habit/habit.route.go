@@ -25,6 +25,8 @@ func NewHabitRoute(app *infrastructure.Pocket, controller *HabitController, auth
 func (route *HabitRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		r := e.Router.Group("/mz/habits")
+		r.GET("/widget/:api_key", route.controller.FindWidget)
+
 		r.Use(route.authMiddleware.IsAuthenticated)
 		habitCodes := config.Config.Shared.Permissions.Habit
 

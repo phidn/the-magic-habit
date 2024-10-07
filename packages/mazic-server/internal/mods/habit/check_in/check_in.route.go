@@ -25,6 +25,7 @@ func NewCheckInRoute(app *infrastructure.Pocket, controller *CheckInController, 
 func (route *CheckInRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		r := e.Router.Group("/mz/check-in")
+
 		r.Use(route.authMiddleware.IsAuthenticated)
 		checkInCodes := config.Config.Shared.Permissions.HabitCheckIn
 
