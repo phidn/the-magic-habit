@@ -1,4 +1,5 @@
-import { SVGProps } from 'react'
+import { SVGProps, useEffect, useRef } from 'react'
+import { useMatch } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
@@ -22,11 +23,17 @@ interface Props {
   habit: THabit
   rx: number
   isNumberCheckIn: boolean
+  isWidget: boolean
   refetch: () => void
 }
 
 export const ActivityBlock = (props: Props) => {
-  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn } = props
+  const [showModal, hideModal] = useStoreShallow((state) => [state.showModal, state.hideModal])
+  const checkIn = useCheckIn()
+  const deleteCheckIn = useDeleteCheckIn()
+
+  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, isWidget } = props
+
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
   const _count = data.count || 0
@@ -36,18 +43,22 @@ export const ActivityBlock = (props: Props) => {
     : `Checked-in on ${dateFormat}.`
 
   const isToday = activityDate.isSame(dayjs(), 'day')
+  const ref = useRef<SVGRectElement>(null)
 
-  const [showModal, hideModal] = useStoreShallow((state) => [state.showModal, state.hideModal])
-
-  const checkIn = useCheckIn()
-  const deleteCheckIn = useDeleteCheckIn()
+  useEffect(() => {
+    if (isToday && isWidget) {
+      ref.current?.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'center',
+      })
+    }
+  }, [isToday, isWidget])
 
   const handleCheckIn = () => {
     showModal({
       open: true,
       showFooter: false,
-      title: habit.title,
-      confirmText: 'Check-in',
+      title: `${habit.title} Check-In`,
       body: (
         <FormCheckIn
           habit={habit}
@@ -82,6 +93,7 @@ export const ActivityBlock = (props: Props) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <rect
+          ref={ref}
           {...svgProps}
           style={{
             ...svgProps.style,

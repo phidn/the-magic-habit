@@ -29,9 +29,6 @@ export const FormCheckIn = (props: Props) => {
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
   const isNewEntry = !checkInEntry.id
 
-  console.log('values', methods.watch())
-  console.log('errors', methods.formState.errors)
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit}>
@@ -54,7 +51,7 @@ export const FormCheckIn = (props: Props) => {
             </Card>
           </div>
         </div>
-        <div className="mazic-row justify-end gap-2 mt-4">
+        <div className="flex justify-end gap-2 mt-2">
           {!isNewEntry && (
             <Button
               type="button"

@@ -23,15 +23,9 @@ export const CONFIG = {
   },
 }
 
-export const PATH = {
+export const PATH_ROUTE = {
   home: '/',
-  user: '/user',
-  profile: '/user/profile',
-  changePassword: '/user/password',
-  purchaseHistory: 'user/purchase',
-  logout: '/logout',
-  productDetail: ':nameId',
-  cart: '/cart',
+  widget: '/widget/:api_key',
 } as const
 
 export const PATH_API = {

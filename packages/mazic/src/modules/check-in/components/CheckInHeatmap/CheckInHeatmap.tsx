@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useMatch } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
@@ -20,9 +20,8 @@ import {
 
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
-import { CONFIG } from '@mazic/config/config'
-import { useColorMode } from '@mazic/hooks'
-import { useCopy } from '@mazic/hooks/useCopy'
+import { CONFIG, PATH_ROUTE } from '@mazic/config/config'
+import { useColorMode, useCopy } from '@mazic/hooks'
 import { THabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
@@ -58,48 +57,56 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')
 
+  const isWidget = !!useMatch(PATH_ROUTE.widget)
+
   return (
     <div className={cn('w-full', className)}>
       <Card>
         <CardHeader className="flex justify-between py-4 flex-row items-center space-y-0">
           <CardTitle>{title}</CardTitle>
-          <div className="ml-auto flex w-full space-x-2 justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <EllipsisVerticalIcon />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem
-                  className="cursor-pointer"
-                  onClick={() => copy(`${CONFIG.domain}/check-in/${habit.api_key}`)}
-                >
-                  <CopyIcon className="mr-1" /> Copy Magic Link
-                </DropdownMenuItem>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link className="flex items-center" to={`/habit/edit/${habit.id}`}>
-                    <EditIcon className="mr-1" /> Edit
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  className="cursor-pointer text-red-600"
-                  onClick={() => {
-                    showModalDelete({
-                      onConfirm: () => {
-                        mutationDelete.mutate(habit.id as string, {
-                          onSuccess: () => {
-                            hideModal()
-                            refetch()
-                          },
-                        })
-                      },
-                    })
-                  }}
-                >
-                  <TrashIcon className="mr-1" /> Delete
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
+          {!isWidget && (
+            <div className="ml-auto flex w-full space-x-2 justify-end">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="focus:outline-none">
+                  <EllipsisVerticalIcon />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem
+                    className="cursor-pointer"
+                    onClick={() =>
+                      copy(
+                        `${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit.api_key)}`
+                      )
+                    }
+                  >
+                    <CopyIcon className="mr-1" /> Copy Magic Link
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <Link className="flex items-center" to={`/habit/edit/${habit.id}`}>
+                      <EditIcon className="mr-1" /> Edit
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="cursor-pointer text-red-600"
+                    onClick={() => {
+                      showModalDelete({
+                        onConfirm: () => {
+                          mutationDelete.mutate(habit.id as string, {
+                            onSuccess: () => {
+                              hideModal()
+                              refetch()
+                            },
+                          })
+                        },
+                      })
+                    }}
+                  >
+                    <TrashIcon className="mr-1" /> Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          )}
         </CardHeader>
         <CardContent className="flex justify-center">
           <HeatMap
@@ -134,6 +141,7 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
                   rx={3}
                   refetch={refetch}
                   isNumberCheckIn={isNumberCheckIn}
+                  isWidget={isWidget}
                 />
               )
             }}

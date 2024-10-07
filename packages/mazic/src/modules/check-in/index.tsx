@@ -1,5 +1,7 @@
 import { lazy } from 'react'
 
+import { PATH_ROUTE } from '@mazic/config/config'
+
 export { checkInSchema, type THabitCheckIn } from './utils/validations'
 export { useCheckIn, useDeleteCheckIn } from './hooks/apis'
 
@@ -10,7 +12,7 @@ export { checkInType, checkInMap, checkInOpts } from './utils/utils'
 
 export const checkInRoute = [
   {
-    path: '/check-in/:api_key',
+    path: PATH_ROUTE.widget,
     Component: lazy(() => import('./CheckInPage')),
   },
 ]

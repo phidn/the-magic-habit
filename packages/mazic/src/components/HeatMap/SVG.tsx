@@ -120,6 +120,7 @@ export default function SVG(props: SVGProps) {
     monthPlacement === 'top'
       ? topPad + rectSize * 8 + 6
       : (monthLabels !== undefined ? topPad + rectSize + space : topPad) + rectSize * 8 + 6
+
   return (
     <>
       <svg ref={svgRef} style={{ ..._style, ...style }} {...other}>
@@ -146,7 +147,13 @@ export default function SVG(props: SVGProps) {
           space={space}
         />
       </svg>
-      <svg style={{ height: rectSize }}>
+      <svg
+        style={{
+          height: rectSize,
+          float: 'right',
+          width: Object.values(panelColors)?.length === 2 ? 40 : 95,
+        }}
+      >
         {legendCellSize !== 0 && (
           <Legend
             legendRender={legendRender}
