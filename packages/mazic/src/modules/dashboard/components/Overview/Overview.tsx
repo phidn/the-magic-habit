@@ -91,13 +91,14 @@ export function Overview({ habits, range }: Props) {
         const entryDate = dayjs(entry.date).format('YYYY-MM-DD')
         if (entryDate === date) {
           item[_title] += entry.bar_value
+          item[`actual_${_title}`] = entry.value
         }
       }
       item[_title] = item[_title].toFixed(2)
+      item[`actual_${_title}`] = (+item[`actual_${_title}`] || 0).toFixed(2)
     }
     return item
   })
-
   const lastIndex = chartData.reduce((lastIndex, item, index) => {
     const hasValue = Object.keys(item).some((key) => key !== 'date' && +item[key] > 0)
     return hasValue ? index : lastIndex
@@ -140,33 +141,36 @@ export function Overview({ habits, range }: Props) {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
-                  formatter={(value, name) => (
-                    <>
-                      <div
-                        className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
-                        style={
-                          {
-                            '--color-bg': `var(--color-${name})`,
-                          } as React.CSSProperties
-                        }
-                      />
-                      {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                      {habitMap.get(name as string)?.check_in_type === checkInType.NUMBER && (
-                        <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                          {value}
-                          <span className="ml-1 font-normal text-muted-foreground">
-                            {pluralize(habitMap.get(name as string)?.metric, Number(value))}
-                          </span>
-                        </div>
-                      )}
-                      {habitMap.get(name as string)?.check_in_type !== checkInType.NUMBER &&
-                        Number(value) > 0 && (
+                  formatter={(value, name, item) => {
+                    const _value = item.payload[`actual_${name}`]
+                    return (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                          style={
+                            {
+                              '--color-bg': `var(--color-${name})`,
+                            } as React.CSSProperties
+                          }
+                        />
+                        {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                        {habitMap.get(name as string)?.check_in_type === checkInType.NUMBER && (
                           <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
-                            <CheckIcon />
+                            {_value}
+                            <span className="ml-1 font-normal text-muted-foreground">
+                              {pluralize(habitMap.get(name as string)?.metric, Number(_value))}
+                            </span>
                           </div>
                         )}
-                    </>
-                  )}
+                        {habitMap.get(name as string)?.check_in_type !== checkInType.NUMBER &&
+                          Number(value) > 0 && (
+                            <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                              <CheckIcon />
+                            </div>
+                          )}
+                      </>
+                    )
+                  }}
                 />
               }
               cursor={false}
