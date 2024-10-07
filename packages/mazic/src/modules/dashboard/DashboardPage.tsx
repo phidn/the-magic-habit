@@ -41,7 +41,7 @@ const DashboardPage = () => {
               key={habit?.id || idx}
               habit={habit}
               refetch={refetch}
-              className="mb-2"
+              className="my-2"
             />
           )
         })}

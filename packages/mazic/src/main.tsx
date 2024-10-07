@@ -1,16 +1,8 @@
-import { Suspense } from 'react'
 import * as ReactDOM from 'react-dom/client'
-import { RouterProvider } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from 'sonner'
-
-import { TooltipProvider } from '@mazic/ui'
 
 import './utils/i18n'
 
-import { ThemeProvider } from './contexts/ThemeProvider'
-import { routers } from './routers/routers'
-import { ModalCommon } from './components'
+import { AppLayout } from './layouts/AppLayout/AppLayout'
 
 import './styles/mazic.scss'
 import './styles/tailwind.css'
@@ -18,26 +10,5 @@ import './styles/theme.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 0,
-    },
-  },
-})
-
 // TODO: Add page lazy loading
-root.render(
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <Toaster richColors visibleToasts={1} className="mb-16" />
-      <Suspense fallback={<div>Loading...</div>}>
-        <TooltipProvider delayDuration={300}>
-          <RouterProvider router={routers} />
-          <ModalCommon />
-        </TooltipProvider>
-      </Suspense>
-    </ThemeProvider>
-  </QueryClientProvider>
-)
+root.render(<AppLayout />)

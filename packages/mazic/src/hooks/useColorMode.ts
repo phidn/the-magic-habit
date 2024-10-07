@@ -1,8 +1,8 @@
 import { baseColorMap, ColorName } from '@mazic/config/baseColors'
-import { useTheme } from '@mazic/contexts/ThemeProvider'
+import { useStore } from '@mazic/store/useStore'
 
 export const useColorMode = (color: string) => {
-  const { mode } = useTheme()
+  const mode = useStore((state) => state.theme.mode)
   const _color = baseColorMap.get(color as ColorName)
 
   return {

@@ -1,10 +1,11 @@
-const { VITE_API_URL, VITE_DEV } = import.meta.env
+const { VITE_API_URL, VITE_DEV, VITE_DOMAIN } = import.meta.env
 
 export const CONFIG = {
   isProduction: VITE_DEV === 'false',
   isDevelopment: VITE_DEV === 'true',
   title: 'Mazic',
   apiURL: VITE_API_URL || 'http://localhost:3000',
+  domain: VITE_DOMAIN || 'http://localhost:4200',
   TIME: {
     DD_MM_YYYY: 'DD/MM/YYYY',
   },

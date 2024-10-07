@@ -8,10 +8,11 @@ import { CONFIG } from '@mazic/config/config'
 
 import { loadingSlice, TLoadingSlice } from './slices/loadingSlice'
 import { modalSlice, TModalSlice } from './slices/modalSlice'
-import rehydrateSlice, { RehydrateSlice } from './slices/rehydrateSlice'
-import sidebarSlice, { UserSlice } from './slices/userSlice'
+import { rehydrateSlice, TRehydrateSlice } from './slices/rehydrateSlice'
+import { IThemeSlice, themeSlice } from './slices/themeSlice'
+import { TUserSlice, userSlice } from './slices/userSlice'
 
-type Store = RehydrateSlice & UserSlice & TLoadingSlice & TModalSlice
+type Store = TRehydrateSlice & TUserSlice & TLoadingSlice & TModalSlice & IThemeSlice
 
 export const useStore = create<Store>()(
   persist(
@@ -19,7 +20,8 @@ export const useStore = create<Store>()(
       ...rehydrateSlice(...arg),
       ...loadingSlice(...arg),
       ...modalSlice(...arg),
-      ...sidebarSlice(...arg),
+      ...userSlice(...arg),
+      ...themeSlice(...arg),
     })),
     {
       version: 1,

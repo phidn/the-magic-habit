@@ -2,10 +2,10 @@ import { Moon, Sun } from 'lucide-react'
 
 import { Button } from '@mazic/ui'
 
-import { useTheme } from '@mazic/contexts/ThemeProvider'
+import { useStoreShallow } from '@mazic/store/useStore'
 
 export const ThemeToggle = () => {
-  const { setTheme, theme } = useTheme()
+  const [theme, setTheme] = useStoreShallow((state) => [state.theme.mode, state.setTheme])
 
   return (
     <Button

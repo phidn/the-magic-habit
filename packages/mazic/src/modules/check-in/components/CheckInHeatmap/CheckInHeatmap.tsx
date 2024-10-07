@@ -8,18 +8,21 @@ import {
   CardHeader,
   CardTitle,
   cn,
+  CopyIcon,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  EditIcon,
   EllipsisVerticalIcon,
-  ScrollArea,
-  ScrollBar,
+  TrashIcon,
 } from '@mazic/ui'
 
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
+import { CONFIG } from '@mazic/config/config'
 import { useColorMode } from '@mazic/hooks'
+import { useCopy } from '@mazic/hooks/useCopy'
 import { THabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
@@ -37,6 +40,8 @@ interface Props {
 }
 
 export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
+  const copy = useCopy()
+
   const { title, activities, color } = habit || {}
   const isNumberCheckIn = habit.check_in_type === checkInType.NUMBER
 
@@ -61,12 +66,18 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
           <div className="ml-auto flex w-full space-x-2 justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <EllipsisVerticalIcon className="no-focus" />
+                <EllipsisVerticalIcon />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => copy(`${CONFIG.domain}/check-in/${habit.api_key}`)}
+                >
+                  <CopyIcon className="mr-1" /> Copy Magic Link
+                </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">
-                  <Link className="w-full" to={`/habit/edit/${habit.id}`}>
-                    Edit
+                  <Link className="flex items-center" to={`/habit/edit/${habit.id}`}>
+                    <EditIcon className="mr-1" /> Edit
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem
@@ -84,7 +95,7 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
                     })
                   }}
                 >
-                  Delete
+                  <TrashIcon className="mr-1" /> Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

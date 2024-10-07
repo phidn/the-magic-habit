@@ -1,5 +1,5 @@
 import { baseColors } from '@mazic/config/baseColors'
-import { useTheme } from '@mazic/contexts/ThemeProvider'
+import { useStore } from '@mazic/store/useStore'
 import { IOption } from '@mazic/types/form'
 
 import { FormSelect } from './FormSelect'
@@ -9,7 +9,7 @@ interface FormColorPickerProps {
 }
 
 const FormColorPicker = ({ field }: FormColorPickerProps) => {
-  const { theme: mode } = useTheme()
+  const mode = useStore((state) => state.theme.mode)
 
   const options: IOption[] = baseColors.map((theme) => {
     return {

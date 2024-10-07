@@ -40,6 +40,7 @@ export type TCheckIn = {
 export type THabit = z.infer<typeof habitSchema> & {
   id: string
   color: ColorName
+  api_key: string
   check_in_items: TCheckIn[]
   activities: HeatMapValue[]
 }
