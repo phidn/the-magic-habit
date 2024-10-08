@@ -21,11 +21,16 @@ func (controller *AuthController) Login(c echo.Context) error {
 	if err := c.Bind(&loginReq); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
-	tokens, _, err := controller.AuthService.Login(c.Request().Context(), loginReq.Email, loginReq.Password)
+	tokens, user, err := controller.AuthService.Login(c.Request().Context(), loginReq.Email, loginReq.Password)
 	if err != nil {
 		return resp.NewUnauthorizedError(c, "Invalid email or password.", err)
 	}
-	return resp.NewApiSuccess(c, tokens, "")
+	result := map[string]interface{}{
+		"access_token":  tokens.AccessToken,
+		"refresh_token": tokens.RefreshToken,
+		"user":          user,
+	}
+	return resp.NewApiSuccess(c, result, "")
 }
 
 func (controller *AuthController) GetMe(c echo.Context) error {

@@ -18,6 +18,8 @@ import {
 
 import Logo from '@mazic/components/Logo/Logo'
 import { authService } from '@mazic/services/authService'
+import { useStore } from '@mazic/store/useStore'
+import { ApiResponse } from '@mazic/types'
 import { AuthResponse } from '@mazic/types/response'
 
 const LoginSchema = z.object({
@@ -32,6 +34,8 @@ export type LoginSchemaType = z.infer<typeof LoginSchema>
 
 export const LoginPage = () => {
   const navigate = useNavigate()
+  const setCurrentUser = useStore((store) => store.setCurrentUser)
+
   const methods = useForm<LoginSchemaType>({
     resolver: zodResolver(LoginSchema),
   })
@@ -43,8 +47,9 @@ export const LoginPage = () => {
   } = methods
 
   const loginMutation = useMutation({
-    mutationFn: (body: LoginSchemaType) => authService.login<AuthResponse>(body),
-    onSuccess: () => {
+    mutationFn: (body: LoginSchemaType) => authService.login<ApiResponse<AuthResponse>>(body),
+    onSuccess: ({ data }) => {
+      setCurrentUser(data.data.user)
       navigate('/')
     },
     onError: () => {

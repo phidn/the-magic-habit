@@ -10,6 +10,7 @@ export type Menu = {
   active?: boolean
   icon?: any
   submenus?: Submenu[]
+  isAccess?: boolean
 }
 
 export type TMenuItem = Menu | Submenu
@@ -17,7 +18,7 @@ export type TMenuItem = Menu | Submenu
 export type Group = {
   groupLabel: string
   menus: Menu[]
-  is_access?: boolean
+  isAccess?: boolean
 }
 
 export type MenuList = {

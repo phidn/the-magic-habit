@@ -19,7 +19,6 @@ export const CONFIG = {
   stringItemsSeparator: ',',
   appStorage: {
     key: 'app_storage',
-    persistKeys: ['sidebar'],
   },
 }
 

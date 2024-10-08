@@ -1,8 +1,8 @@
-import fs from 'fs'
-import _ from 'lodash'
-import path from 'path'
-import prettier from 'prettier'
-import { InputData, jsonInputForTargetLanguage, quicktype } from 'quicktype-core'
+const fs = require('fs')
+const _ = require('lodash')
+const path = require('path')
+const prettier = require('prettier')
+const { InputData, jsonInputForTargetLanguage, quicktype } = require('quicktype-core')
 
 const quickType = async ({ json, language, schemaName = 'Root' }) => {
   const jsonData = json

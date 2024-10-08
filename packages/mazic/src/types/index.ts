@@ -1,3 +1,4 @@
+import { LazyExoticComponent } from 'react'
 import { UseMutationResult } from '@tanstack/react-query'
 import { AxiosResponse } from 'axios'
 import { ZodEffects, ZodObject } from 'zod'
@@ -74,3 +75,11 @@ export type TObjectAny = {
 }
 
 export type TWithLoaded<T> = T & { loaded: boolean }
+
+export interface IRoute {
+  path: string
+  permission?: string | string[]
+  Component: LazyExoticComponent<() => JSX.Element>
+}
+
+export type TRoutes = IRoute[]

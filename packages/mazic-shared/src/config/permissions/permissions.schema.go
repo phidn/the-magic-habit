@@ -4,10 +4,15 @@ type Permissions struct {
 	Administration Administration `json:"administration"`
 	Habit          Habit          `json:"habit"`
 	HabitCheckIn   HabitCheckIn   `json:"habit_check_in"`
+	Dashboard      Dashboard      `json:"dashboard"`
 }
 
 type Administration struct {
 	AllActions string `json:"all_actions"`
+}
+
+type Dashboard struct {
+	View string `json:"view"`
 }
 
 type Habit struct {

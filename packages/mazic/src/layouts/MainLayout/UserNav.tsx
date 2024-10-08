@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from '@mazic/ui'
 
@@ -29,19 +30,21 @@ export const UserNav = () => {
 
   return (
     <DropdownMenu>
-      <Tooltip delayDuration={100}>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="relative h-8 w-8 rounded-full">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={user.avatar as string} alt="Avatar" />
-                <AvatarFallback>{user.first_name?.slice(0, 1)}</AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">Profile</TooltipContent>
-      </Tooltip>
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="relative h-8 w-8 rounded-full">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage src={user.avatar as string} alt="Avatar" />
+                  <AvatarFallback>{user.first_name?.slice(0, 1)}</AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+          </TooltipTrigger>
+          <TooltipContent side="bottom">Profile</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">

@@ -48,7 +48,7 @@ export const useDeleteHabit = () => {
 }
 
 export const useListHabit = (params?: IParams) => {
-  const userId = useStore((state) => state.currentUser.id)
+  const userId = useStore((state) => state.currentUser.user?.id)
   const { data, ...rest } = useQuery({
     queryFn: () => habitService.list<ApiResponse<THabit[]>>(params),
     queryKey: [QUERY_KEY, 'listHabits', params, userId],

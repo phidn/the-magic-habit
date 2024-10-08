@@ -151,6 +151,7 @@ model mz_habits {
   is_deleted    Boolean       @default(false)
   is_private    Boolean       @default(false)
   check_in_type String        @default("")
+  api_key       String        @default("")
   mz_check_in   mz_check_in[]
 }
 
@@ -187,4 +188,24 @@ model mz_check_in {
   mz_habits mz_habits @relation(fields: [habit_id], references: [id], onDelete: Cascade)
 
   @@unique([habit_id, date], map: "idx_6nFVz4F")
+}
+
+model sys_role_permission_old_20241008 {
+  created       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id            String @id @default("'r'||lower(hex(randomblob(7)))")
+  permission_id String @default("")
+  role_id       String @default("")
+  updated       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+
+  @@map("_sys_role_permission_old_20241008")
+}
+
+model sys_role_permission_old_20241008_1 {
+  created       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id            String @id @default("'r'||lower(hex(randomblob(7)))")
+  permission_id String @default("")
+  role_id       String @default("")
+  updated       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+
+  @@map("_sys_role_permission_old_20241008_1")
 }

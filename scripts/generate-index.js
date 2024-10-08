@@ -3,6 +3,7 @@ const path = require('path')
 
 const paths = [
   path.resolve(__dirname, '../packages/mazic-ui/src/icons'),
+  path.resolve(__dirname, '../packages/mazic-ui/src/illustrations'),
   path.resolve(__dirname, '../packages/mazic-ui/src/ui'),
   path.resolve(__dirname, '../packages/mazic-ui/src/aceui'),
   path.resolve(__dirname, '../packages/mazic/src/hooks'),

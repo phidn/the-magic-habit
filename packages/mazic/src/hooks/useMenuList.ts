@@ -72,17 +72,19 @@ export const findMenuByHref = (targetHref: To): TMenuItem => {
 
 export const useMenuList = (): MenuList => {
   const { pathname } = useLocation()
-  const currentUser = useStore((state) => state.currentUser)
+  const currentUser = useStore((state) => state.currentUser.user)
   const permissionMap = new Map((currentUser?.permissions || []).map((p) => [p.code, p]))
-  const isSystemAccess = permissionMap.has(permissionsConfig.administration.all_actions)
 
-  const getMenuItem = <T extends Menu | Submenu>(menu: T): T => ({
-    ...menu,
-    active: pathname === menu.href || pathname.startsWith(`${menu.href}/`),
-  })
+  const getMenuItem = <T extends Menu | Submenu>(menu: T, isAccess?: boolean): T => {
+    return {
+      ...menu,
+      active: pathname === menu.href || pathname.startsWith(`${menu.href}/`),
+      isAccess: !!isAccess,
+    }
+  }
 
   const getMenuWithSubmenus = (menu: Menu): Menu => {
-    const submenus = menu.submenus?.map(getMenuItem)
+    const submenus = menu.submenus?.map((submenu) => getMenuItem(submenu))
     const active =
       submenus?.some((submenu) => submenu.active) ||
       pathname === menu.href ||
@@ -90,17 +92,20 @@ export const useMenuList = (): MenuList => {
     return { ...menu, submenus, active }
   }
 
+  const isSystemAccess = permissionMap.has(permissionsConfig.administration.all_actions)
+  const isDashboardAccess = permissionMap.has(permissionsConfig.dashboard.view)
+
   return {
     menuList: [
       {
         groupLabel: '',
-        menus: [getMenuItem(MENUS.DASHBOARD), getMenuItem(MENUS.HABIT)],
+        menus: [getMenuItem(MENUS.DASHBOARD, isDashboardAccess), getMenuItem(MENUS.HABIT)],
       },
       {
         groupLabel: 'System',
         menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
-        is_access: isSystemAccess,
+        isAccess: isSystemAccess,
       },
-    ].filter((group) => group?.is_access !== false),
+    ],
   }
 }

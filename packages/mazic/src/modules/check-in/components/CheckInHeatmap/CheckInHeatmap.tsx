@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
   EditIcon,
   EllipsisVerticalIcon,
+  TooltipProvider,
   TrashIcon,
 } from '@mazic/ui'
 
@@ -109,44 +110,46 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
           )}
         </CardHeader>
         <CardContent className="flex justify-center">
-          <HeatMap
-            width={900}
-            startDate={startDate.toDate()}
-            endDate={endDate.toDate()}
-            value={activities}
-            legendCellSize={15}
-            rectSize={15}
-            weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-            panelColors={
-              isNumberCheckIn
-                ? {
-                    0: bgColor,
-                    1: colors[habit.color][2].hex,
-                    2: colors[habit.color][3].hex,
-                    3: colors[habit.color][4].hex,
-                    4: activeModeColor,
-                  }
-                : {
-                    0: bgColor,
-                    4: activeModeColor,
-                  }
-            }
-            rectRender={(props, data) => {
-              return (
-                <ActivityBlock
-                  svgProps={props}
-                  data={data}
-                  habit={habit}
-                  color={activeModeColor}
-                  rx={3}
-                  refetch={refetch}
-                  isNumberCheckIn={isNumberCheckIn}
-                  isWidget={isWidget}
-                />
-              )
-            }}
-            rectProps={{ rx: 3 }}
-          />
+          <TooltipProvider delayDuration={300}>
+            <HeatMap
+              width={900}
+              startDate={startDate.toDate()}
+              endDate={endDate.toDate()}
+              value={activities}
+              legendCellSize={15}
+              rectSize={15}
+              weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
+              panelColors={
+                isNumberCheckIn
+                  ? {
+                      0: bgColor,
+                      1: colors[habit.color][2].hex,
+                      2: colors[habit.color][3].hex,
+                      3: colors[habit.color][4].hex,
+                      4: activeModeColor,
+                    }
+                  : {
+                      0: bgColor,
+                      4: activeModeColor,
+                    }
+              }
+              rectRender={(props, data) => {
+                return (
+                  <ActivityBlock
+                    svgProps={props}
+                    data={data}
+                    habit={habit}
+                    color={activeModeColor}
+                    rx={3}
+                    refetch={refetch}
+                    isNumberCheckIn={isNumberCheckIn}
+                    isWidget={isWidget}
+                  />
+                )
+              }}
+              rectProps={{ rx: 3 }}
+            />
+          </TooltipProvider>
         </CardContent>
       </Card>
     </div>

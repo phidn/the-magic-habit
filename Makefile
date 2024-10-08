@@ -124,5 +124,5 @@ gen-index:
 
 gen-schema:
 	@echo "Starting generate typescript..."
-	node scripts/generate-typescript.js
+	node scripts/generate-schema.js
 	@echo "Typescript generated."

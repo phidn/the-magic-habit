@@ -31,10 +31,13 @@ export const useStore = create<Store>()(
       merge: (persistedState, currentState) => {
         return merge({}, currentState, persistedState)
       },
-      partialize: (state) =>
-        Object.fromEntries(
-          Object.entries(state).filter(([key]) => CONFIG.appStorage.persistKeys.includes(key))
-        ),
+      partialize: (state) => {
+        return {
+          sidebar: {
+            isOpen: state.sidebar.isOpen,
+          },
+        }
+      },
     }
   )
 )

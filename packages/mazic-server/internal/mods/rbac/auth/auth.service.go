@@ -70,10 +70,15 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 		return nil, nil, errors.New("failed to create access token")
 	}
 
+	currentUser, err := service.GetMe(ctx, user.Id)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	return &Tokens{
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
-	}, user, nil
+	}, currentUser, nil
 }
 
 func (service *authService) GetMe(ctx context.Context, userId string) (*user.User, error) {
