@@ -6,8 +6,8 @@ CREATE TABLE "_admins" (
     "tokenKey" TEXT NOT NULL,
     "passwordHash" TEXT NOT NULL,
     "lastResetSentAt" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
@@ -24,8 +24,8 @@ CREATE TABLE "_collections" (
     "updateRule" TEXT,
     "deleteRule" TEXT,
     "options" json NOT NULL DEFAULT "{}",
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
@@ -35,8 +35,8 @@ CREATE TABLE "_externalAuths" (
     "recordId" TEXT NOT NULL,
     "provider" TEXT NOT NULL,
     "providerId" TEXT NOT NULL,
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
     CONSTRAINT "_externalAuths_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "_collections" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -57,120 +57,121 @@ CREATE TABLE "_params" (
 
 -- CreateTable
 CREATE TABLE "sys_action" (
-    "code" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "is_active" BOOLEAN NOT NULL DEFAULT false,
     "name" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "code" TEXT NOT NULL DEFAULT '',
+    "is_active" BOOLEAN NOT NULL DEFAULT false,
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "sys_permission" (
-    "action_id" TEXT NOT NULL DEFAULT '',
-    "code" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "description" TEXT NOT NULL DEFAULT '',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "is_active" BOOLEAN NOT NULL DEFAULT false,
     "name" TEXT NOT NULL DEFAULT '',
+    "code" TEXT NOT NULL DEFAULT '',
+    "description" TEXT NOT NULL DEFAULT '',
+    "is_active" BOOLEAN NOT NULL DEFAULT false,
+    "action_id" TEXT NOT NULL DEFAULT '',
     "resource_id" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "sys_resource" (
-    "actions" json NOT NULL DEFAULT '[]',
-    "code" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "is_active" BOOLEAN NOT NULL DEFAULT false,
     "name" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "code" TEXT NOT NULL DEFAULT '',
+    "is_active" BOOLEAN NOT NULL DEFAULT false,
+    "actions" json NOT NULL DEFAULT '[]',
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "sys_role" (
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "description" TEXT NOT NULL DEFAULT '',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "is_active" BOOLEAN NOT NULL DEFAULT false,
     "name" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "description" TEXT NOT NULL DEFAULT '',
+    "is_active" BOOLEAN NOT NULL DEFAULT false,
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "sys_role_permission" (
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "permission_id" TEXT NOT NULL DEFAULT '',
     "role_id" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "permission_id" TEXT NOT NULL DEFAULT '',
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "sys_user" (
-    "avatar" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
+    "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
     "email" TEXT NOT NULL DEFAULT '',
-    "first_name" TEXT NOT NULL DEFAULT '',
-    "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "last_name" TEXT NOT NULL DEFAULT '',
-    "password_hash" TEXT NOT NULL DEFAULT '',
-    "roles" json NOT NULL DEFAULT '[]',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "username" TEXT NOT NULL DEFAULT '',
-    "verified" BOOLEAN NOT NULL DEFAULT false
-);
-
--- CreateTable
-CREATE TABLE "mz_habit_entries" (
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "date" TEXT NOT NULL DEFAULT '',
-    "habit_id" TEXT NOT NULL DEFAULT '',
-    "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
-    "journal" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "value" DECIMAL NOT NULL DEFAULT 0,
-    "is_done" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "mz_habit_entries_habit_id_fkey" FOREIGN KEY ("habit_id") REFERENCES "mz_habits" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+    "password_hash" TEXT NOT NULL DEFAULT '',
+    "first_name" TEXT NOT NULL DEFAULT '',
+    "last_name" TEXT NOT NULL DEFAULT '',
+    "avatar" TEXT NOT NULL DEFAULT '',
+    "verified" BOOLEAN NOT NULL DEFAULT false,
+    "roles" json NOT NULL DEFAULT '[]',
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "mz_habits" (
-    "color" TEXT NOT NULL DEFAULT '',
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
+    "check_in_type" TEXT NOT NULL DEFAULT '',
+    "color" TEXT NOT NULL DEFAULT '',
     "metric" TEXT NOT NULL DEFAULT '',
     "order" DECIMAL NOT NULL DEFAULT 0,
     "title" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "week_start" TEXT NOT NULL DEFAULT '',
     "user_id" TEXT NOT NULL DEFAULT '',
     "is_deleted" BOOLEAN NOT NULL DEFAULT false,
     "is_private" BOOLEAN NOT NULL DEFAULT false,
-    "check_in_type" TEXT NOT NULL DEFAULT ''
+    "api_key" TEXT NOT NULL DEFAULT '',
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "mz_statistics" (
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
     "habit_id" TEXT NOT NULL DEFAULT '',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
     "stat_type" TEXT NOT NULL DEFAULT '',
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "value" DECIMAL NOT NULL DEFAULT 0
+    "value" DECIMAL NOT NULL DEFAULT 0,
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
 );
 
 -- CreateTable
 CREATE TABLE "mz_streaks" (
-    "created" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')',
-    "current_streak" DECIMAL NOT NULL DEFAULT 0,
-    "habit_id" TEXT NOT NULL DEFAULT '',
     "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
+    "habit_id" TEXT NOT NULL DEFAULT '',
+    "current_streak" DECIMAL NOT NULL DEFAULT 0,
     "longest_streak" DECIMAL NOT NULL DEFAULT 0,
     "streak_days" json,
-    "updated" TEXT NOT NULL DEFAULT 'strftime(''%Y-%m-%d %H:%M:%fZ'')'
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ'))
+);
+
+-- CreateTable
+CREATE TABLE "mz_check_in" (
+    "id" TEXT NOT NULL PRIMARY KEY DEFAULT '''r''||lower(hex(randomblob(7)))',
+    "habit_id" TEXT NOT NULL DEFAULT '',
+    "date" TEXT NOT NULL DEFAULT '',
+    "journal" TEXT NOT NULL DEFAULT '',
+    "value" DECIMAL NOT NULL DEFAULT 0,
+    "is_done" BOOLEAN NOT NULL DEFAULT false,
+    "created" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    "updated" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%fZ')),
+    CONSTRAINT "mz_check_in_habit_id_fkey" FOREIGN KEY ("habit_id") REFERENCES "mz_habits" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateIndex
@@ -200,25 +201,25 @@ CREATE UNIQUE INDEX "sqlite_autoindex__params_2" ON "_params"("key");
 Pragma writable_schema=0;
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_AJtI1FK" ON "sys_action"("code");
-
--- CreateIndex
 CREATE UNIQUE INDEX "idx_Xj8ydPd" ON "sys_action"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_Wk0bqVU" ON "sys_permission"("code");
+CREATE UNIQUE INDEX "idx_AJtI1FK" ON "sys_action"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "idx_cL4UgWL" ON "sys_permission"("name");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "idx_Wk0bqVU" ON "sys_permission"("code");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "idx_5XTOxWW" ON "sys_permission"("resource_id", "action_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_rK2pHv9" ON "sys_resource"("code");
+CREATE UNIQUE INDEX "idx_p2vQkRr" ON "sys_resource"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_p2vQkRr" ON "sys_resource"("name");
+CREATE UNIQUE INDEX "idx_rK2pHv9" ON "sys_resource"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "idx_eyiCi8a" ON "sys_role"("name");
@@ -233,7 +234,7 @@ CREATE UNIQUE INDEX "idx_3q5O1p3" ON "sys_user"("email");
 CREATE UNIQUE INDEX "idx_1IHlFNg" ON "sys_user"("username");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_6nFVz4F" ON "mz_habit_entries"("habit_id", "date");
+CREATE UNIQUE INDEX "idx_N6naouA" ON "mz_statistics"("habit_id", "stat_type");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "idx_N6naouA" ON "mz_statistics"("habit_id", "stat_type");
+CREATE UNIQUE INDEX "idx_6nFVz4F" ON "mz_check_in"("habit_id", "date");
