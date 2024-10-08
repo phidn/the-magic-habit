@@ -1,7 +1,6 @@
 import {
   Button,
   Modal,
-  ModalBody,
   ModalClose,
   ModalContent,
   ModalDescription,
@@ -22,7 +21,7 @@ export const ModalCommon = () => {
           <ModalTitle>{modal.title}</ModalTitle>
           <ModalDescription>{modal.description}</ModalDescription>
         </ModalHeader>
-        <ModalBody>{modal.body}</ModalBody>
+        {modal.body}
         {modal.showFooter && (
           <ModalFooter>
             <ModalClose asChild>
