@@ -1,10 +1,24 @@
 import { Ellipsis, LogOut } from 'lucide-react'
 
-import { Button, cn, ScrollArea, Tooltip, TooltipContent, TooltipTrigger } from '@mazic/ui'
+import {
+  Button,
+  ButtonLink,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  cn,
+  LockIcon,
+  ScrollArea,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@mazic/ui'
 
 import { MenuLink } from '@mazic/components/Commons'
 import { useMenuList } from '@mazic/hooks/useMenuList'
-import { useLogout } from '@mazic/modules/rbac/auth'
 
 import { CollapseMenuButton } from './CollapseMenuButton'
 
@@ -14,7 +28,6 @@ interface MenuProps {
 
 export const Menu = ({ isOpen }: MenuProps) => {
   const { menuList } = useMenuList()
-  const logout = useLogout()
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -84,30 +97,24 @@ export const Menu = ({ isOpen }: MenuProps) => {
               )}
             </li>
           ))}
-          <li className="w-full grow flex items-end">
-            <Tooltip delayDuration={100}>
-              <TooltipTrigger asChild>
-                <Button
-                  onClick={() => logout.mutate()}
-                  variant="outline"
-                  className="w-full justify-center h-10 mt-5"
-                >
-                  <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                    <LogOut size={18} />
-                  </span>
-                  <p
-                    className={cn(
-                      'whitespace-nowrap',
-                      isOpen === false ? 'opacity-0 hidden' : 'opacity-100'
-                    )}
-                  >
-                    Sign out
-                  </p>
-                </Button>
-              </TooltipTrigger>
-              {isOpen === false && <TooltipContent side="right">Sign out</TooltipContent>}
-            </Tooltip>
-          </li>
+          {isOpen && (
+            <li className="w-full grow flex items-end">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Unlock Mazic Habit</CardTitle>
+                  <CardDescription>
+                    Unlock all features and get unlimited lifetime access.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ButtonLink variant="colored">
+                    <LockIcon />
+                    <span>Unlock</span>
+                  </ButtonLink>
+                </CardContent>
+              </Card>
+            </li>
+          )}
         </ul>
       </nav>
     </ScrollArea>

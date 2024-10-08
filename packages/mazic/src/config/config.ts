@@ -24,6 +24,7 @@ export const CONFIG = {
 }
 
 export const PATH_ROUTE = {
+  dashboard: '/',
   home: '/',
   widget: '/widget/:api_key',
 } as const
