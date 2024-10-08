@@ -7,5 +7,5 @@ export interface TRehydrateSlice {
 
 export const rehydrateSlice: StateCreator<TRehydrateSlice> = (set) => ({
   _hasHydrated: false,
-  setHasHydrated: (_hasHydrated: boolean) => set(() => ({ _hasHydrated })),
+  setHasHydrated: (_hasHydrated) => set(() => ({ _hasHydrated })),
 })

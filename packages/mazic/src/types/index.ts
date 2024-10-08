@@ -72,3 +72,5 @@ export interface IFormProps {
 export type TObjectAny = {
   [key: string]: any
 }
+
+export type TWithLoaded<T> = T & { loaded: boolean }

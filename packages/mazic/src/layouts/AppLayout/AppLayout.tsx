@@ -7,6 +7,7 @@ import { TooltipProvider } from '@mazic/ui'
 
 import { ModalCommon } from '@mazic/components'
 import { routers } from '@mazic/routers/routers'
+import { authService } from '@mazic/services/authService'
 import { useStore } from '@mazic/store/useStore'
 
 const queryClient = new QueryClient({
@@ -26,6 +27,20 @@ export const AppLayout = () => {
     root.classList.remove('light', 'dark')
     root.classList.add(theme || 'light')
   }, [theme])
+
+  const setCurrentUser = useStore((store) => store.setCurrentUser)
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      try {
+        const { data } = await authService.getMe()
+        setCurrentUser(data.data)
+      } catch (error) {
+        setCurrentUser(undefined)
+      }
+    }
+    getCurrentUser()
+  }, [setCurrentUser])
 
   return (
     <QueryClientProvider client={queryClient}>

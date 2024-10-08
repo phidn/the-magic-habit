@@ -18,3 +18,5 @@ export const userRoute = [
     Component: lazy(() => import('./pages/UserCreatePage')),
   },
 ]
+
+export { type TUser } from './schemas/userSchema'

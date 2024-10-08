@@ -11,7 +11,7 @@ export type TLoadingSlice = {
 export const loadingSlice: ImmerStateCreator<TLoadingSlice> = (set) => ({
   loading: {
     isOpen: false,
-    setLoading: (isOpen: boolean) =>
+    setLoading: (isOpen) =>
       set((state) => {
         state.loading.isOpen = isOpen
       }),
