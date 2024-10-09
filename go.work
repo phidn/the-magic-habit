@@ -1,7 +1,6 @@
 go 1.22.5
 
 use (
-	./packages/mazic-prisma
 	./packages/mazic-server
 	./packages/mazic-shared
 )
