@@ -13,7 +13,7 @@ export const MENUS: TMenus = {
     label: 'Dashboard',
     icon: DashboardIcon,
   },
-  HABIT: {
+  HABIT_CREATE: {
     href: '/habit/create',
     label: 'Create habit',
     icon: AtomIcon,
@@ -51,25 +51,6 @@ export const MENUS: TMenus = {
   },
 }
 
-export const findMenuByHref = (targetHref: To): TMenuItem => {
-  for (const key in MENUS) {
-    if (MENUS[key].href === targetHref) {
-      return MENUS[key]
-    }
-
-    if (MENUS[key].submenus && MENUS[key].submenus.length > 0) {
-      const found = MENUS[key].submenus.find((submenu) => submenu.href === targetHref)
-      if (found) {
-        return found
-      }
-    }
-  }
-  return {
-    label: '',
-    href: targetHref.toString(),
-  }
-}
-
 export const useMenuList = (): MenuList => {
   const { pathname } = useLocation()
   const currentUser = useStore((state) => state.currentUser.user)
@@ -92,20 +73,39 @@ export const useMenuList = (): MenuList => {
     return { ...menu, submenus, active }
   }
 
-  const isSystemAccess = permissionMap.has(permissionsConfig.administration.all_actions)
-  const isDashboardAccess = permissionMap.has(permissionsConfig.dashboard.view)
-
   return {
     menuList: [
       {
         groupLabel: '',
-        menus: [getMenuItem(MENUS.DASHBOARD, isDashboardAccess), getMenuItem(MENUS.HABIT)],
+        menus: [
+          getMenuItem(MENUS.DASHBOARD, permissionMap.has(permissionsConfig.dashboard.view)),
+          getMenuItem(MENUS.HABIT_CREATE, permissionMap.has(permissionsConfig.habit.create)),
+        ],
       },
       {
         groupLabel: 'System',
         menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
-        isAccess: isSystemAccess,
+        isAccess: permissionMap.has(permissionsConfig.habit.create),
       },
     ],
+  }
+}
+
+export const findMenuByHref = (targetHref: To): TMenuItem => {
+  for (const key in MENUS) {
+    if (MENUS[key].href === targetHref) {
+      return MENUS[key]
+    }
+
+    if (MENUS[key].submenus && MENUS[key].submenus.length > 0) {
+      const found = MENUS[key].submenus.find((submenu) => submenu.href === targetHref)
+      if (found) {
+        return found
+      }
+    }
+  }
+  return {
+    label: '',
+    href: targetHref.toString(),
   }
 }
