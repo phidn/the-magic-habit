@@ -91,9 +91,9 @@ export const useMenuList = (): MenuList => {
         ],
       },
       {
-        groupLabel: 'System',
+        groupLabel: '',
         menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
-        isAccess: permissionMap.has(permissionsConfig.habit.create),
+        isAccess: permissionMap.has(permissionsConfig.administration.all_actions),
       },
     ],
   }

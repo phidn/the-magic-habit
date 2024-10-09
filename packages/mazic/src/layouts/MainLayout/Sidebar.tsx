@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { Button, cn, MazicIcon } from '@mazic/ui'
 
+import { CONFIG } from '@mazic/config/config'
 import { useStore } from '@mazic/store/useStore'
 
 import { Menu } from './Menu'
@@ -44,7 +45,7 @@ export const Sidebar = ({ hideLogoText = false }: SidebarProps) => {
                     : 'translate-x-0 opacity-100'
                 )}
               >
-                mazic
+                {CONFIG.appName}
               </h1>
             )}
           </Link>

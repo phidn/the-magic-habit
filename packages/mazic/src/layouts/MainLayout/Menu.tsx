@@ -18,6 +18,7 @@ import {
 } from '@mazic/ui'
 
 import { MenuLink } from '@mazic/components/Commons'
+import { CONFIG } from '@mazic/config/config'
 import { useMenuList } from '@mazic/hooks/useMenuList'
 
 import { CollapseMenuButton } from './CollapseMenuButton'
@@ -111,13 +112,13 @@ export const Menu = ({ isOpen }: MenuProps) => {
             <li className="w-full grow flex items-end">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Unlock Mazic Habit</CardTitle>
+                  <CardTitle className="text-lg">Unlock {CONFIG.appNameShort}</CardTitle>
                   <CardDescription>
                     Unlock all features and get unlimited lifetime access.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <ButtonLink variant="colored">
+                  <ButtonLink variant="colored" href="/#">
                     <LockIcon />
                     <span>Unlock</span>
                   </ButtonLink>
