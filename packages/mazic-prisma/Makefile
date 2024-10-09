@@ -13,3 +13,13 @@ prisma-init-apply:
 	@echo "Starting prisma init apply..."
 	npx prisma migrate resolve --applied 0_init
 	@echo "Prisma init apply done."
+
+prisma-generate:
+	@echo "Starting prisma generate..."
+	npx prisma generate
+	@echo "Prisma generate done."
+
+prisma-migrate:
+	@echo "Starting prisma migrate..."
+	npx prisma migrate dev --name $(name)
+	@echo "Prisma migrate done."

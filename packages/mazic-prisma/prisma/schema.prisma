@@ -14,8 +14,8 @@ model admins {
   tokenKey        String @unique(map: "sqlite_autoindex__admins_3")
   passwordHash    String
   lastResetSentAt String @default("")
-  created         String @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated         String @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created         String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated         String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
   @@map("_admins")
 }
@@ -33,8 +33,8 @@ model collections {
   updateRule    String?
   deleteRule    String?
   options       Unsupported("json") @default(dbgenerated("\"{}\""))
-  created       String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated       String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   externalAuths externalAuths[]
 
   @@map("_collections")
@@ -46,8 +46,8 @@ model externalAuths {
   recordId     String
   provider     String
   providerId   String
-  created      String      @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated      String      @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created      String      @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated      String      @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   collections  collections @relation(fields: [collectionId], references: [id], onDelete: Cascade)
 
   @@unique([collectionId, recordId, provider], map: "_externalAuths_record_provider_idx")
@@ -73,21 +73,21 @@ model params {
 }
 
 model mz_check_in {
-  id        String    @id @default("('r'||lower(hex(randomblob(7))))")
+  id        String    @id @default("'r'||lower(hex(randomblob(7)))")
   habit_id  String    @default("")
   date      String    @default("")
   journal   String    @default("")
   value     Decimal   @default(0)
   is_done   Boolean   @default(false)
-  created   String    @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated   String    @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created   String    @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated   String    @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   mz_habits mz_habits @relation(fields: [habit_id], references: [id], onDelete: Cascade)
 
   @@unique([habit_id, date], map: "idx_6nFVz4F")
 }
 
 model mz_habits {
-  id            String        @id @default("('r'||lower(hex(randomblob(7))))")
+  id            String        @id @default("'r'||lower(hex(randomblob(7)))")
   check_in_type String        @default("")
   color         String        @default("")
   metric        String        @default("")
@@ -98,73 +98,73 @@ model mz_habits {
   is_deleted    Boolean       @default(false)
   is_private    Boolean       @default(false)
   api_key       String        @default("")
-  created       String        @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated       String        @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created       String        @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated       String        @default("strftime('%Y-%m-%d %H:%M:%fZ')")
   mz_check_in   mz_check_in[]
 }
 
 model sys_action {
-  id        String  @id @default("('r'||lower(hex(randomblob(7))))")
+  id        String  @id @default("'r'||lower(hex(randomblob(7)))")
   name      String  @unique(map: "idx_Xj8ydPd") @default("")
   code      String  @unique(map: "idx_AJtI1FK") @default("")
   is_active Boolean @default(false)
-  created   String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated   String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated   String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_permission {
-  id          String  @id @default("('r'||lower(hex(randomblob(7))))")
+  id          String  @id @default("'r'||lower(hex(randomblob(7)))")
   name        String  @unique(map: "idx_cL4UgWL") @default("")
   code        String  @unique(map: "idx_Wk0bqVU") @default("")
   description String  @default("")
   is_active   Boolean @default(false)
   action_id   String  @default("")
   resource_id String  @default("")
-  created     String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated     String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
   @@unique([resource_id, action_id], map: "idx_5XTOxWW")
 }
 
 model sys_resource {
-  id        String              @id @default("('r'||lower(hex(randomblob(7))))")
+  id        String              @id @default("'r'||lower(hex(randomblob(7)))")
   name      String              @unique(map: "idx_p2vQkRr") @default("")
   code      String              @unique(map: "idx_rK2pHv9") @default("")
   is_active Boolean             @default(false)
   actions   Unsupported("json") @default(dbgenerated("'[]'"))
-  created   String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated   String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created   String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated   String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_role {
-  id          String  @id @default("('r'||lower(hex(randomblob(7))))")
+  id          String  @id @default("'r'||lower(hex(randomblob(7)))")
   name        String  @unique(map: "idx_eyiCi8a") @default("")
   description String  @default("")
   is_active   Boolean @default(false)
-  created     String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated     String  @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated     String  @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
 
 model sys_role_permission {
-  id            String @id @default("('r'||lower(hex(randomblob(7))))")
+  id            String @id @default("'r'||lower(hex(randomblob(7)))")
   role_id       String @default("")
   permission_id String @default("")
-  created       String @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated       String @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  created       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated       String @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 
   @@unique([role_id, permission_id], map: "idx_WKLjlJK")
 }
 
 model sys_user {
-  id            String              @id @default("('r'||lower(hex(randomblob(7))))")
+  id            String              @id @default("'r'||lower(hex(randomblob(7)))")
   email         String              @unique(map: "idx_3q5O1p3") @default("")
-  username      String              @unique(map: "idx_1IHlFNg") @default("")
   password_hash String              @default("")
   first_name    String              @default("")
   last_name     String              @default("")
   avatar        String              @default("")
   verified      Boolean             @default(false)
   roles         Unsupported("json") @default(dbgenerated("'[]'"))
-  created       String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
-  updated       String              @default(dbgenerated("(strftime('%Y-%m-%d %H:%M:%fZ'))"))
+  bio           String              @default("")
+  created       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
 }
