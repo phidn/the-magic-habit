@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useMatch } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
@@ -23,10 +24,9 @@ import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { CONFIG, PATH_ROUTE } from '@mazic/config/config'
 import { useColorMode, useCopy } from '@mazic/hooks'
-import { THabit } from '@mazic/modules/habit'
+import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
-import { useDeleteCheckIn } from '../../hooks/apis'
 import { checkInType } from '../../utils/utils'
 
 import { ActivityBlock } from './ActivityBlock'
@@ -37,29 +37,27 @@ interface Props {
   habit: THabit | undefined
   isLoading?: boolean
   className?: string
+  onDelete?: (id: string) => void
   refetch: () => void
 }
 
-export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) => {
+export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete }: Props) => {
   const copy = useCopy()
-
-  const { title, activities, color } = habit || {}
-  const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
-
-  const { mode, colorMode: activeModeColor } = useColorMode(color)
-
-  const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
-
-  const mutationDelete = useDeleteCheckIn()
+  const mutationDelete = useDeleteHabit()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,
   ])
+  const [deletedBlock, setDeletedBlock] = useState<string[]>([])
+  const { title, activities, color } = habit || {}
+  const blocks = (activities || []).filter((x) => !deletedBlock.includes(x.id))
 
+  const { mode, colorMode: activeModeColor } = useColorMode(color)
+  const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')
-
   const isWidget = !!useMatch(PATH_ROUTE.widget)
+  const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
 
   return (
     <div className={cn('w-full', className)}>
@@ -71,7 +69,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) 
           <CardTitle>{title}</CardTitle>
           {!isWidget && (
             <div className="ml-auto flex w-full space-x-2 justify-end">
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <EllipsisVerticalIcon />
                 </DropdownMenuTrigger>
@@ -99,7 +97,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) 
                           mutationDelete.mutate(habit?.id as string, {
                             onSuccess: () => {
                               hideModal()
-                              refetch()
+                              onDelete?.(habit?.id as string)
                             },
                           })
                         },
@@ -119,7 +117,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) 
               width={900}
               startDate={startDate.toDate()}
               endDate={endDate.toDate()}
-              value={activities}
+              value={blocks}
               legendCellSize={15}
               rectSize={15}
               weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
@@ -145,9 +143,10 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) 
                     habit={habit}
                     color={activeModeColor}
                     rx={3}
-                    refetch={refetch}
                     isNumberCheckIn={isNumberCheckIn}
                     isWidget={isWidget}
+                    onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
+                    refetch={refetch}
                   />
                 )
               }}

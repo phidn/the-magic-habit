@@ -10,6 +10,7 @@ const HabitUpdatePage = () => {
   const mutation = useUpdateHabit(pageDetails.id)
   return (
     <HabitForm
+      title="Update Habit"
       initialValues={data}
       schema={habitSchema}
       onSubmitForm={mutation.mutateAsync}

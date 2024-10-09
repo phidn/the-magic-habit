@@ -3,19 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import isEqual from 'lodash/isEqual'
 import { ChevronLeft } from 'lucide-react'
 
-import { Badge, BadgeProps, Button, cn } from '@mazic/ui'
+import { Button, ButtonLoading, cn } from '@mazic/ui'
 
 import { PageDetails } from '@mazic/hooks/usePageDetails'
 
-export type TFormHeaderTitle = {
-  text?: string
-  variant?: BadgeProps['variant']
-  hidden?: boolean
-}
 interface FormHeaderProps {
   pageDetails: PageDetails
-  title?: string
-  titleBadge?: TFormHeaderTitle
+  title?: string | React.ReactNode
   isPending?: boolean
   onBack?: () => void
   initialValues: any
@@ -23,14 +17,13 @@ interface FormHeaderProps {
 }
 
 export const FormHeader = (props: FormHeaderProps) => {
-  const { onBack, isPending, isValidForm, title, titleBadge, initialValues, pageDetails } = props
+  const { onBack, isPending, isValidForm, title, initialValues, pageDetails } = props
   const methods = useFormContext()
   const navigate = useNavigate()
   const goBack = typeof onBack === 'function' ? onBack : () => navigate(-1)
   const isDirty = !isEqual(initialValues, methods.watch())
 
-  const { isAddView, isView } = pageDetails
-  const _title = isAddView ? 'Add new' : `Edit ${title || ''}`
+  const { isView } = pageDetails
 
   return (
     <div className="flex items-center gap-4 pb-4">
@@ -39,13 +32,8 @@ export const FormHeader = (props: FormHeaderProps) => {
         <span className="sr-only">Back</span>
       </Button>
       <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-        {_title}
+        {title}
       </h1>
-      {titleBadge && !titleBadge?.hidden && (
-        <Badge variant={titleBadge?.variant || 'outline'} className="ml-auto sm:ml-0">
-          {titleBadge?.text || ''}
-        </Badge>
-      )}
       <div className={cn('hidden items-center gap-2 md:ml-auto md:flex', isView && 'md:hidden')}>
         <Button
           variant="outline"
@@ -56,14 +44,14 @@ export const FormHeader = (props: FormHeaderProps) => {
         >
           Reset
         </Button>
-        <Button
+        <ButtonLoading
           size="sm"
           type="submit"
           isLoading={isPending}
           disabled={!isDirty || isPending || !isValidForm}
         >
           Save
-        </Button>
+        </ButtonLoading>
       </div>
       {isView && <div className="h-9"></div>}
     </div>

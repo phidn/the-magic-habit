@@ -63,6 +63,7 @@ export interface ApiResponse<T> {
 }
 
 export interface IFormProps {
+  title?: string | React.ReactNode
   initialValues?: any
   data?: any
   schema?: ZodObject<any> | ZodEffects<any, any>

@@ -25,6 +25,7 @@ interface Props {
   isNumberCheckIn: boolean
   isWidget: boolean
   refetch: () => void
+  onDelete?: (id: string) => void
 }
 
 export const ActivityBlock = (props: Props) => {
@@ -32,7 +33,7 @@ export const ActivityBlock = (props: Props) => {
   const checkIn = useCheckIn()
   const deleteCheckIn = useDeleteCheckIn()
 
-  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, isWidget } = props
+  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, isWidget, onDelete } = props
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
@@ -80,7 +81,7 @@ export const ActivityBlock = (props: Props) => {
             deleteCheckIn.mutate(data.id as string, {
               onSuccess: () => {
                 hideModal()
-                refetch()
+                onDelete?.(data.id as string)
               },
             })
           }}
@@ -93,7 +94,7 @@ export const ActivityBlock = (props: Props) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <rect
-          ref={ref}
+          // ref={ref}
           {...svgProps}
           style={{
             ...svgProps.style,

@@ -9,18 +9,18 @@ import { MutationApiResponse } from '@mazic/types'
 import { IFormSection } from '@mazic/types/form'
 import { isValidSection } from '@mazic/utils/form'
 
-import { FormHeader, TFormHeaderTitle } from './FormHeader'
+import { FormHeader } from './FormHeader'
 import { FormOutline } from './FormOutline'
 import { FormSections } from './FormSections'
 
 export interface FormControlProps {
-  formTitle?: string
+  formTitle?: string | React.ReactNode
   formOutlineTitle?: string
   formSections: IFormSection[]
   schema?: ZodObject<any> | ZodEffects<any>
   initialValues: any
   onSubmitForm: (values: any) => Promise<MutationApiResponse>
-  isCreatedAndReset?: boolean
+  isReset?: boolean
 
   isPendingSubmit?: boolean
   refreshData?: () => void
@@ -37,7 +37,7 @@ export const FormControl = (props: FormControlProps) => {
     onSubmitForm,
     isPendingSubmit = false,
     refreshData,
-    isCreatedAndReset,
+    isReset,
     isHasFile,
   } = props
   const navigate = useNavigate()
@@ -87,7 +87,7 @@ export const FormControl = (props: FormControlProps) => {
         refreshData()
       }
       if (pageDetails.isAddView) {
-        if (isCreatedAndReset) {
+        if (isReset) {
           return methods.reset(initialValues)
         }
         const _id = result?.data?.data?.id
@@ -100,19 +100,12 @@ export const FormControl = (props: FormControlProps) => {
     }
   })
 
-  const _defaultTitle: TFormHeaderTitle = {
-    text: initialValues?.status,
-    variant: initialValues?.status === 'enabled' ? 'default' : 'destructive',
-    hidden: pageDetails.isAddView || typeof initialValues?.status !== 'string',
-  }
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit}>
         <FormHeader
           pageDetails={pageDetails}
           title={formTitle}
-          titleBadge={_defaultTitle}
           isPending={isPendingSubmit}
           initialValues={initialValues}
           isValidForm={isValidForm}

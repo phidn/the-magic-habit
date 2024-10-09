@@ -13,10 +13,10 @@ export type HeatMapValue = {
   count: number
 }
 export type HeatMapExtended = {
+  id: string
   column: number
   row: number
   index: number
-  id: string
   level: number
   journal: string
   is_done?: boolean

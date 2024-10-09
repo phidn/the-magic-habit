@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonLoading,
   Modal,
   ModalClose,
   ModalContent,
@@ -13,6 +14,8 @@ import { useStoreShallow } from '@mazic/store/useStore'
 
 export const ModalCommon = () => {
   const [modal, hideModal] = useStoreShallow((state) => [state.modal, state.hideModal])
+
+  if (!modal.open) return null
 
   return (
     <Modal open={modal.open} onOpenChange={hideModal}>
@@ -29,13 +32,13 @@ export const ModalCommon = () => {
                 Close
               </Button>
             </ModalClose>
-            <Button
+            <ButtonLoading
               variant={modal.confirmVariant}
               onClick={modal.onConfirm}
               isLoading={modal.loadingConfirm}
             >
               {modal.confirmText || 'Continue'}
-            </Button>
+            </ButtonLoading>
           </ModalFooter>
         )}
       </ModalContent>

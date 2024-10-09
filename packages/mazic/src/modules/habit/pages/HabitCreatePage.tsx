@@ -8,6 +8,7 @@ const HabitCreatePage = () => {
   const mutation = useCreateHabit()
   return (
     <HabitForm
+      title="Create Habit"
       initialValues={getDefaultsBySchema(habitSchema)}
       schema={habitSchema}
       onSubmitForm={mutation.mutateAsync}

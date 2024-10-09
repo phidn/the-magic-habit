@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { HeatMapValue } from '@mazic/components/HeatMap'
+import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
 import { ColorName } from '@mazic/config/baseColors'
 import { checkInType } from '@mazic/modules/check-in'
 
@@ -42,7 +42,7 @@ export type THabit = z.infer<typeof habitSchema> & {
   color: ColorName
   api_key: string
   check_in_items: TCheckIn[]
-  activities: HeatMapValue[]
+  activities: (HeatMapValue & HeatMapExtended)[]
 }
 
 export type THabitCreate = THabit

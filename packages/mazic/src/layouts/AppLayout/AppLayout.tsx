@@ -1,25 +1,18 @@
 import { Suspense, useEffect } from 'react'
 import { RouterProvider } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Toaster } from 'sonner'
 
 import { ModalCommon } from '@mazic/components'
 import { routers } from '@mazic/routers/routers'
 import { authService } from '@mazic/services/authService'
-import { useStore } from '@mazic/store/useStore'
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 0,
-    },
-  },
-})
+import { useStoreShallow } from '@mazic/store/useStore'
 
 export const AppLayout = () => {
-  const theme = useStore((state) => state.theme.mode)
-  const setCurrentUser = useStore((store) => store.setCurrentUser)
+  const [theme, setCurrentUser] = useStoreShallow((state) => [
+    state.theme.mode,
+    state.setCurrentUser,
+  ])
+  console.log('Applayout re-render')
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -37,15 +30,14 @@ export const AppLayout = () => {
       }
     }
     getCurrentUser()
-  }, [setCurrentUser])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <Suspense fallback={<div>Loading...</div>}>
       <Toaster richColors visibleToasts={1} className="mb-16" />
-      <Suspense fallback={<div>Loading...</div>}>
-        <RouterProvider router={routers} />
-        <ModalCommon />
-      </Suspense>
-    </QueryClientProvider>
+      <RouterProvider router={routers} />
+      <ModalCommon />
+    </Suspense>
   )
 }

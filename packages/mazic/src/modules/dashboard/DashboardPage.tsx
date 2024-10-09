@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { NoDataCta } from '@mazic/components'
@@ -8,12 +9,13 @@ import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
 const DashboardPage = () => {
-  const {
-    data: listHabits,
-    refetch,
-    isFetching,
-  } = useListHabit({ pageSize: -1, entry_expand: true })
   const navigate = useNavigate()
+
+  const { data, isFetching, refetch } = useListHabit({ pageSize: -1, entry_expand: true })
+
+  const [deleted, setDeleted] = useState<string[]>([])
+  const onDelete = (id: string) => setDeleted([...deleted, id])
+  const listHabits = data.filter((x) => !deleted.includes(x.id))
 
   if (!listHabits?.length) {
     return (
@@ -44,9 +46,10 @@ const DashboardPage = () => {
             <CheckInHeatmap
               key={habit?.id || idx}
               habit={habit}
-              refetch={refetch}
               className="my-2"
               isLoading={isFetching}
+              refetch={refetch}
+              onDelete={onDelete}
             />
           )
         })}

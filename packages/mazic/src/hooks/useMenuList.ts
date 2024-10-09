@@ -14,8 +14,8 @@ export const MENUS: TMenus = {
     icon: DashboardIcon,
   },
   HABIT: {
-    href: '/habit',
-    label: 'All Habits',
+    href: '/habit/create',
+    label: 'Create habit',
     icon: AtomIcon,
   },
   SYSTEM: {
@@ -75,7 +75,7 @@ export const useMenuList = (): MenuList => {
   const currentUser = useStore((state) => state.currentUser.user)
   const permissionMap = new Map((currentUser?.permissions || []).map((p) => [p.code, p]))
 
-  const getMenuItem = <T extends Menu | Submenu>(menu: T, isAccess?: boolean): T => {
+  const getMenuItem = <T extends Menu | Submenu>(menu: T, isAccess = true): T => {
     return {
       ...menu,
       active: pathname === menu.href || pathname.startsWith(`${menu.href}/`),

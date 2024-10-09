@@ -21,7 +21,7 @@ export const habitRoute: TRoutes = [
     Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
-    path: '/habit/new',
+    path: '/habit/create',
     permission: permissionsConfig.habit.create,
     Component: lazy(() => import('./pages/HabitCreatePage')),
   },
@@ -30,4 +30,4 @@ export const habitRoute: TRoutes = [
 export { type THabit, type TCheckIn } from './utils/validations'
 export { getActivities } from './utils/utils'
 
-export { useListHabit } from './hooks/apis'
+export { useListHabit, useDeleteHabit } from './hooks/apis'

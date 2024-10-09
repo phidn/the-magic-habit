@@ -31,12 +31,13 @@ export const HabitForm = (props: IFormProps) => {
 
   return (
     <FormControl
-      formTitle="Habit"
-      formSections={formSections}
+      isReset
+      formTitle={props.title}
       schema={props.schema}
       initialValues={props.initialValues}
       onSubmitForm={props.onSubmitForm}
       isPendingSubmit={props.isPendingSubmit}
+      formSections={formSections}
     />
   )
 }

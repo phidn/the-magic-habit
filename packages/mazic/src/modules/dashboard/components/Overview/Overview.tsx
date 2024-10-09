@@ -17,49 +17,16 @@ import {
   CheckIcon,
 } from '@mazic/ui'
 
-import { useColorMode } from '@mazic/hooks'
+import { baseColorMap, ColorName } from '@mazic/config/baseColors'
 import { checkInType } from '@mazic/modules/check-in'
 import { THabit } from '@mazic/modules/habit'
+import { useStore } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
+
+import { getRangeDates, TChartRange } from '../../utils'
 
 dayjs.extend(weekOfYear)
 dayjs.extend(isoWeek)
-
-export const description = 'A stacked bar chart with a legend'
-
-const getWeekDates = () => {
-  const startOfWeek = dayjs().startOf('isoWeek')
-  const endOfWeek = dayjs().endOf('isoWeek')
-
-  const dates = []
-  let currentDate = startOfWeek
-
-  while (currentDate.isBefore(endOfWeek) || currentDate.isSame(endOfWeek, 'day')) {
-    dates.push(currentDate.format('YYYY-MM-DD'))
-    currentDate = currentDate.add(1, 'day')
-  }
-
-  return dates
-}
-
-const getRangeDates = (type: TChartRange) => {
-  switch (type) {
-    case 'WEEK':
-      return getWeekDates()
-    case 'MONTH':
-      return Array.from({ length: 30 }, (_, i) =>
-        dayjs().subtract(i, 'day').format('YYYY-MM-DD')
-      ).reverse()
-    case 'YEAR':
-      return Array.from({ length: 12 }, (_, i) =>
-        dayjs().subtract(i, 'month').format('YYYY-MM-DD')
-      ).reverse()
-    default:
-      return []
-  }
-}
-
-type TChartRange = 'WEEK' | 'MONTH' | 'YEAR'
 
 interface Props {
   habits: THabit[]
@@ -73,11 +40,12 @@ interface ChartItem {
 }
 
 export function Overview({ habits, range, isLoading }: Props) {
-  const getColor = useColorMode
+  const mode = useStore((state) => state.theme.mode)
   const chartConfig = habits.reduce((acc, habit) => {
+    const _color = baseColorMap.get(habit.color as ColorName)
     acc[snakeCase(habit.title)] = {
       label: habit.title,
-      color: getColor(habit.color).colorMode,
+      color: _color ? `hsl(${_color?.activeColor?.[mode]})` : 'var(--primary)',
     }
     return acc
   }, {} as ChartConfig)
