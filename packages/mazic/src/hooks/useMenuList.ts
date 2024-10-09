@@ -1,9 +1,11 @@
 import { To, useLocation } from 'react-router-dom'
 
-import { AtomIcon, DashboardIcon, GuardIcon } from '@mazic/ui'
+import { AtomIcon, DashboardIcon, EditUserIcon, GuardIcon } from '@mazic/ui'
 
 import { permissionsConfig } from '@mazic/shared'
 
+import { habitPaths } from '@mazic/modules/habit'
+import { userPaths } from '@mazic/modules/rbac/user'
 import { useStore } from '@mazic/store/useStore'
 import { Menu, MenuList, Submenu, TMenuItem, TMenus } from '@mazic/types/menu'
 
@@ -14,9 +16,14 @@ export const MENUS: TMenus = {
     icon: DashboardIcon,
   },
   HABIT_CREATE: {
-    href: '/habit/create',
+    href: habitPaths.create,
     label: 'Create habit',
     icon: AtomIcon,
+  },
+  PROFILE: {
+    href: userPaths.profile,
+    label: 'Profile',
+    icon: EditUserIcon,
   },
   SYSTEM: {
     href: '/#',
@@ -80,6 +87,7 @@ export const useMenuList = (): MenuList => {
         menus: [
           getMenuItem(MENUS.DASHBOARD, permissionMap.has(permissionsConfig.dashboard.view)),
           getMenuItem(MENUS.HABIT_CREATE, permissionMap.has(permissionsConfig.habit.create)),
+          getMenuItem(MENUS.PROFILE, permissionMap.has(permissionsConfig.profile.save)),
         ],
       },
       {

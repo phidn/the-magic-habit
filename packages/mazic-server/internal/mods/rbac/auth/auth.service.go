@@ -84,7 +84,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 func (service *authService) GetMe(ctx context.Context, userId string) (*user.User, error) {
 	user := new(user.User)
 	err := service.Entry.Dao().DB().
-		NewQuery(`SELECT id, first_name, last_name, email, avatar, roles FROM sys_user WHERE id = {:id}`).
+		NewQuery(`SELECT id, first_name, last_name, email, avatar, bio, roles FROM sys_user WHERE id = {:id}`).
 		WithContext(ctx).
 		Bind(dbx.Params{"id": userId}).
 		One(&user)

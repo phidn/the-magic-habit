@@ -14,5 +14,8 @@
   },
   "dashboard": {
     "view": "dashboard.view"
+  },
+  "profile": {
+    "save": "profile.save"
   }
 }

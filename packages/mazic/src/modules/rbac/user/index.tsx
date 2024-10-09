@@ -4,26 +4,39 @@ import { permissionsConfig } from '@mazic/shared'
 
 import { TRoutes } from '@mazic/types'
 
+export const userPaths = {
+  list: '/user',
+  view: '/user/view/:id',
+  edit: '/user/edit/:id',
+  create: '/user/new',
+  profile: '/profile',
+}
+
 export const userRoute: TRoutes = [
   {
-    path: '/user',
+    path: userPaths.list,
     permission: permissionsConfig.administration.all_actions,
     Component: lazy(() => import('./pages/UserListPage')),
   },
   {
-    path: '/user/view/:id',
+    path: userPaths.view,
     permission: permissionsConfig.administration.all_actions,
     Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
-    path: '/user/edit/:id',
+    path: userPaths.edit,
     permission: permissionsConfig.administration.all_actions,
     Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
-    path: '/user/new',
+    path: userPaths.create,
     permission: permissionsConfig.administration.all_actions,
     Component: lazy(() => import('./pages/UserCreatePage')),
+  },
+  {
+    path: userPaths.profile,
+    permission: permissionsConfig.profile.save,
+    Component: lazy(() => import('./pages/UserProfilePage')),
   },
 ]
 

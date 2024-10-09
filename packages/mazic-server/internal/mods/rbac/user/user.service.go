@@ -16,6 +16,7 @@ type UserService interface {
 	FindOne(ctx context.Context, id string) (*User, error)
 	Create(ctx context.Context, user *User) (*models.Record, error)
 	Update(ctx context.Context, id string, user *User) (*models.Record, error)
+	UpdateProfile(ctx context.Context, id string, user *User) (*models.Record, error)
 	Delete(ctx context.Context, id string) (*models.Record, error)
 }
 
@@ -97,6 +98,20 @@ func (service *userService) Update(ctx context.Context, id string, user *User) (
 	}
 
 	user.ParseRecord(record)
+
+	if err := service.Entry.Dao().Save(record); err != nil {
+		return nil, err
+	}
+	return record, nil
+}
+
+func (service *userService) UpdateProfile(ctx context.Context, id string, user *User) (*models.Record, error) {
+	record, err := service.Entry.FindRecordById(ctx, new(User).TableName(), id)
+	if err != nil {
+		return nil, err
+	}
+
+	user.ParseProfile(record)
 
 	if err := service.Entry.Dao().Save(record); err != nil {
 		return nil, err

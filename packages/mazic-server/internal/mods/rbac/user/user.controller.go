@@ -81,6 +81,29 @@ func (controller *UserController) Update(c echo.Context) error {
 	return resp.NewApiSuccess(c, user, "The user has been updated.")
 }
 
+func (controller *UserController) UpdateProfile(c echo.Context) error {
+	user := &User{}
+	if err := c.Bind(user); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if err := user.ValidateProfile(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
+
+	userId := c.Get("state.user_id").(string)
+
+	record, err := controller.UserService.Update(c.Request().Context(), userId, user)
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to update user.", err)
+	}
+
+	user.Id = record.Id
+	user.Created = record.Created
+	user.Updated = record.Updated
+
+	return resp.NewApiSuccess(c, user, "The user has been updated.")
+}
+
 func (controller *UserController) Delete(c echo.Context) error {
 	user := &User{}
 	if err := c.Bind(&user); err != nil {

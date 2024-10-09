@@ -3,6 +3,7 @@ export interface Permissions {
   habit: Habit
   habit_check_in: HabitCheckIn
   dashboard: Dashboard
+  profile: Profile
 }
 
 export interface Administration {
@@ -23,4 +24,8 @@ export interface Habit {
 export interface HabitCheckIn {
   save: string
   delete: string
+}
+
+export interface Profile {
+  save: string
 }

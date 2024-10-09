@@ -4,24 +4,31 @@ import { permissionsConfig } from '@mazic/shared'
 
 import { TRoutes } from '@mazic/types'
 
+export const habitPaths = {
+  list: '/habit',
+  view: '/habit/view/:id',
+  edit: '/habit/edit/:id',
+  create: '/habit/create',
+}
+
 export const habitRoute: TRoutes = [
   {
-    path: '/habit',
+    path: habitPaths.list,
     permission: permissionsConfig.habit.view,
     Component: lazy(() => import('./pages/HabitListPage')),
   },
   {
-    path: '/habit/view/:id',
+    path: habitPaths.view,
     permission: permissionsConfig.habit.view,
     Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
-    path: '/habit/edit/:id',
+    path: habitPaths.edit,
     permission: permissionsConfig.habit.update,
     Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
-    path: '/habit/create',
+    path: habitPaths.create,
     permission: permissionsConfig.habit.create,
     Component: lazy(() => import('./pages/HabitCreatePage')),
   },

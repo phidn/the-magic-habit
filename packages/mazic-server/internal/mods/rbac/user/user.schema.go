@@ -20,10 +20,10 @@ type User struct {
 	FirstName    string `db:"first_name" json:"first_name"`
 	LastName     string `db:"last_name" json:"last_name"`
 	Email        string `db:"email" json:"email"`
-	Username     string `db:"username" json:"username"`
 	Password     string `db:"-" json:"password"`
 	PasswordHash string `db:"password_hash" json:"-"`
 	Avatar       string `db:"avatar" json:"avatar"`
+	Bio          string `db:"bio" json:"bio"`
 	Verified     bool   `db:"verified" json:"verified"`
 
 	Roles       types.JsonArray[any]    `db:"roles" json:"roles"`
@@ -62,8 +62,8 @@ func (user *User) ParseRecord(record *models.Record) error {
 	if user.PasswordHash != "" {
 		record.Set("password_hash", user.PasswordHash)
 	}
-	record.Set("username", user.Username)
 	record.Set("avatar", user.Avatar)
+	record.Set("bio", user.Bio)
 	record.Set("verified", user.Verified)
 	record.Set("roles", user.Roles)
 
@@ -77,4 +77,20 @@ func (user *User) Validate() error {
 		validation.Field(&user.Email, validation.Required, is.Email),
 		validation.Field(&user.Verified, validation.Required, validation.In(true, false)),
 	)
+}
+
+func (user *User) ValidateProfile() error {
+	return validation.ValidateStruct(user,
+		validation.Field(&user.FirstName, validation.Required),
+		validation.Field(&user.LastName, validation.Required),
+	)
+}
+
+func (user *User) ParseProfile(record *models.Record) error {
+	record.Set("first_name", user.FirstName)
+	record.Set("last_name", user.LastName)
+	record.Set("avatar", user.Avatar)
+	record.Set("bio", user.Bio)
+
+	return nil
 }

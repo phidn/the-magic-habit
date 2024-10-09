@@ -26,9 +26,24 @@ const useUserDetail = (userId: string) => {
   return { ...data?.data, ...rest }
 }
 
+const useProfile = () => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => userService.getMe<ApiResponse<TUser>>(),
+    queryKey: [QUERY_KEY, 'profile'],
+  })
+  return { ...data?.data, ...rest }
+}
+
 const useUpdateUser = (userId: string) => {
   return useMutation({
     mutationFn: async (payload: TUser) => userService.update(userId, payload),
+    onSuccess: () => toast.success('Successfully updated user'),
+  })
+}
+
+const useUpdateProfile = () => {
+  return useMutation({
+    mutationFn: async (payload: TUser) => userService.updateProfile(payload),
     onSuccess: () => toast.success('Successfully updated user'),
   })
 }
@@ -60,7 +75,9 @@ const useDeleteUser = () => {
 export const useUserApis = {
   list: useUserList,
   detail: useUserDetail,
+  profile: useProfile,
   update: useUpdateUser,
+  updateProfile: useUpdateProfile,
   create: useCreateUser,
   upsert: useUpsertUser,
   delete: useDeleteUser,

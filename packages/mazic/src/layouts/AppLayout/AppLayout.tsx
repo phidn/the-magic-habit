@@ -12,7 +12,6 @@ export const AppLayout = () => {
     state.theme.mode,
     state.setCurrentUser,
   ])
-  console.log('Applayout re-render')
 
   useEffect(() => {
     const root = window.document.documentElement

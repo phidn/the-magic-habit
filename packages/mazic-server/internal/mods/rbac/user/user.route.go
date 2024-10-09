@@ -26,6 +26,7 @@ func (route *UserRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		r := e.Router.Group("/mz/users")
 		r.Use(route.authMiddleware.IsAuthenticated)
+		r.PUT("/profile", route.controller.UpdateProfile)
 
 		allActionsCode := config.Config.Shared.Permissions.Administration.AllActions
 		r.Use(route.authMiddleware.HasPermissions(allActionsCode))

@@ -5,6 +5,7 @@ type Permissions struct {
 	Habit          Habit          `json:"habit"`
 	HabitCheckIn   HabitCheckIn   `json:"habit_check_in"`
 	Dashboard      Dashboard      `json:"dashboard"`
+	Profile        Profile        `json:"profile"`
 }
 
 type Administration struct {
@@ -25,4 +26,8 @@ type Habit struct {
 type HabitCheckIn struct {
 	Save   string `json:"save"`
 	Delete string `json:"delete"`
+}
+
+type Profile struct {
+	Save string `json:"save"`
 }

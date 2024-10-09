@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { NoDataCta } from '@mazic/components'
 import { CheckInHeatmap } from '@mazic/modules/check-in'
-import { useListHabit } from '@mazic/modules/habit'
+import { habitPaths, useListHabit } from '@mazic/modules/habit'
 
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
@@ -24,7 +24,7 @@ const DashboardPage = () => {
         description="Create your first habit and start tracking your progress."
         action={{
           label: 'Create Habit',
-          onClick: () => navigate('/habit/new'),
+          onClick: () => navigate(habitPaths.create),
         }}
       />
     )
