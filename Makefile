@@ -69,9 +69,9 @@ graph:
 	yarn nx graph
 	@echo "Graph generated."
 
-gen-package-js:
+gen-lib:
 	@echo "Generating package..."
-	yarn nx generate @nx/js:library --name=common --directory=packages/common --importPath=@mazic-common --projectNameAndRootFormat=as-provided --no-interactive
+	yarn nx generate @nx/js:library --name=$(name) --directory=packages/mazic-$(name) --importPath=@mazic-$(name) --projectNameAndRootFormat=as-provided --no-interactive
 	@echo "Package generated."
 
 gen-package-go:

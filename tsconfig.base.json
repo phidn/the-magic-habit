@@ -15,9 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
+      "@mazic/*": ["packages/mazic/src/*"],
       "@mazic/shared": ["packages/mazic-shared/src/index.ts"],
-      "@mazic/*": ["packages/mazic/src/*"]
+      "@mazic/ui": ["packages/mazic-ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "packages/*/node_modules", "packages/mazic-server"]

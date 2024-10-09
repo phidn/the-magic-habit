@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@prisma/client": "5.19.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -85,6 +86,7 @@
     "@babel/preset-react": "^7.14.5",
     "@faker-js/faker": "^8.4.1",
     "@nx-go/nx-go": "^3.2.0",
+    "@nx-tools/nx-prisma": "^6.2.0",
     "@nx/eslint": "19.8.0",
     "@nx/eslint-plugin": "19.8.0",
     "@nx/jest": "19.8.0",
@@ -128,6 +130,7 @@
     "nx": "19.8.0",
     "postcss": "8.4.38",
     "prettier": "^3.2.5",
+    "prisma": "5.19.0",
     "quicktype-core": "^23.0.170",
     "sass": "^1.75.0",
     "tailwindcss": "3.4.3",
