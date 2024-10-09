@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent, cn } from '@mazic/ui'
 
-import { FormDatePicker, FormInput, FormItem } from '@mazic/components'
+import { FormDatePicker, FormInput, FormItem, FormTextarea } from '@mazic/components'
 import { THabit } from '@mazic/modules/habit'
 
 import { checkInSchema, THabitCheckIn } from '../../utils/validations'
@@ -45,7 +45,12 @@ export const FormCheckIn = (props: Props) => {
                   </FormItem>
                 )}
                 <FormItem label="Journal" col={12}>
-                  <FormInput field="journal" placeholder="Enter journal.." />
+                  <FormTextarea
+                    field="journal"
+                    rows={2}
+                    style={{ minHeight: 'unset' }}
+                    placeholder="Enter journal.."
+                  />
                 </FormItem>
               </CardContent>
             </Card>

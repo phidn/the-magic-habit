@@ -1,9 +1,9 @@
-import { Fragment, useEffect } from 'react'
+import { ChangeEvent, Fragment, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormMessage, Textarea } from '@mazic/ui'
 
-interface FormTextareaProps {
+interface FormTextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   field: string
   validation?: any
   placeholder?: string
@@ -25,7 +25,7 @@ const FormTextarea = ({
     methods.register(field, validation)
   }, [methods, field, validation])
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     methods.clearErrors(field)
     methods.setValue(field, e.target.value)
   }

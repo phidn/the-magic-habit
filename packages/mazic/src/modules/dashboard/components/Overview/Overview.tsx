@@ -64,6 +64,7 @@ type TChartRange = 'WEEK' | 'MONTH' | 'YEAR'
 interface Props {
   habits: THabit[]
   range: TChartRange
+  isLoading?: boolean
 }
 
 interface ChartItem {
@@ -71,7 +72,7 @@ interface ChartItem {
   [key: string]: number | string
 }
 
-export function Overview({ habits, range }: Props) {
+export function Overview({ habits, range, isLoading }: Props) {
   const getColor = useColorMode
   const chartConfig = habits.reduce((acc, habit) => {
     acc[snakeCase(habit.title)] = {
@@ -111,11 +112,11 @@ export function Overview({ habits, range }: Props) {
 
   return (
     <Card className="h-[350px]">
-      <CardHeader>
+      <CardHeader isLoading={isLoading}>
         <CardTitle>You are almost there</CardTitle>
         <CardDescription>{percentage}% goals completed</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent isLoading={isLoading}>
         <ChartContainer config={chartConfig} className="h-[200px] w-full">
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />

@@ -13,6 +13,7 @@ export interface HeatMapProps extends SVGProps {
 export default function HeatMap(props: HeatMapProps) {
   const { prefixCls = 'w-heatmap', className, ...others } = props
   const cls = [className, prefixCls].filter(Boolean).join(' ')
+
   return (
     <ScrollArea className="h-auto">
       <SVG className={cls} {...others} />

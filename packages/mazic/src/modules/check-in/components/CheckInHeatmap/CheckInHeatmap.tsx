@@ -34,16 +34,17 @@ import { ActivityBlock } from './ActivityBlock'
 dayjs.extend(advancedFormat)
 
 interface Props {
-  habit: THabit
-  refetch: () => void
+  habit: THabit | undefined
+  isLoading?: boolean
   className?: string
+  refetch: () => void
 }
 
-export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
+export const CheckInHeatmap = ({ habit, isLoading, className, refetch }: Props) => {
   const copy = useCopy()
 
   const { title, activities, color } = habit || {}
-  const isNumberCheckIn = habit.check_in_type === checkInType.NUMBER
+  const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
 
   const { mode, colorMode: activeModeColor } = useColorMode(color)
 
@@ -63,7 +64,10 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
   return (
     <div className={cn('w-full', className)}>
       <Card>
-        <CardHeader className="flex justify-between py-4 flex-row items-center space-y-0">
+        <CardHeader
+          isLoading={isLoading}
+          className="flex justify-between py-4 flex-row items-center space-y-0"
+        >
           <CardTitle>{title}</CardTitle>
           {!isWidget && (
             <div className="ml-auto flex w-full space-x-2 justify-end">
@@ -76,14 +80,14 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
                     className="cursor-pointer"
                     onClick={() =>
                       copy(
-                        `${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit.api_key)}`
+                        `${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit?.api_key || '')}`
                       )
                     }
                   >
                     <CopyIcon className="mr-1" /> Copy Magic Link
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">
-                    <Link className="flex items-center" to={`/habit/edit/${habit.id}`}>
+                    <Link className="flex items-center" to={`/habit/edit/${habit?.id}`}>
                       <EditIcon className="mr-1" /> Edit
                     </Link>
                   </DropdownMenuItem>
@@ -92,7 +96,7 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
                     onClick={() => {
                       showModalDelete({
                         onConfirm: () => {
-                          mutationDelete.mutate(habit.id as string, {
+                          mutationDelete.mutate(habit?.id as string, {
                             onSuccess: () => {
                               hideModal()
                               refetch()
@@ -109,7 +113,7 @@ export const CheckInHeatmap = ({ habit, refetch, className }: Props) => {
             </div>
           )}
         </CardHeader>
-        <CardContent className="flex justify-center">
+        <CardContent isLoading={isLoading} className="flex justify-center">
           <TooltipProvider delayDuration={300}>
             <HeatMap
               width={900}

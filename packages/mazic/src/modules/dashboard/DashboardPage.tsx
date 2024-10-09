@@ -8,7 +8,11 @@ import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
 const DashboardPage = () => {
-  const { data: listHabits, refetch } = useListHabit({ pageSize: -1, entry_expand: true })
+  const {
+    data: listHabits,
+    refetch,
+    isFetching,
+  } = useListHabit({ pageSize: -1, entry_expand: true })
   const navigate = useNavigate()
 
   if (!listHabits?.length) {
@@ -28,10 +32,10 @@ const DashboardPage = () => {
     <div>
       <div className="mazic-row">
         <div className="mazic-col-8">
-          <Overview habits={listHabits} range="MONTH" />
+          <Overview habits={listHabits} range="MONTH" isLoading={isFetching} />
         </div>
         <div className="mazic-col-4">
-          <OverviewTimeline habits={listHabits} />
+          <OverviewTimeline habits={listHabits} isLoading={isFetching} />
         </div>
       </div>
       <div className="mazic-row mt-2">
@@ -42,6 +46,7 @@ const DashboardPage = () => {
               habit={habit}
               refetch={refetch}
               className="my-2"
+              isLoading={isFetching}
             />
           )
         })}

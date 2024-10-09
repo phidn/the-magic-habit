@@ -20,7 +20,7 @@ interface Props {
   svgProps: SVGProps<SVGRectElement>
   data: HeatMapValue & HeatMapExtended
   color: string
-  habit: THabit
+  habit: THabit | undefined
   rx: number
   isNumberCheckIn: boolean
   isWidget: boolean
@@ -37,7 +37,7 @@ export const ActivityBlock = (props: Props) => {
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
   const _count = data.count || 0
-  const metricLabel = _count === 0 ? 'No activity' : `${_count} ${pluralize(habit.metric, _count)}`
+  const metricLabel = _count === 0 ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
   const tooltipContent = isNumberCheckIn
     ? `${metricLabel} on ${dateFormat}.`
     : `Checked-in on ${dateFormat}.`
@@ -58,8 +58,8 @@ export const ActivityBlock = (props: Props) => {
     showModal({
       open: true,
       showFooter: false,
-      title: `${habit.title} Check-In`,
-      body: (
+      title: `${habit?.title || ''} Check-In`,
+      body: habit && (
         <FormCheckIn
           habit={habit}
           isNumberCheckIn={isNumberCheckIn}
