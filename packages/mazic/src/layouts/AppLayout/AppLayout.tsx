@@ -1,5 +1,5 @@
 import { Suspense, useEffect } from 'react'
-import { RouterProvider } from 'react-router-dom'
+import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
 import { ModalCommon } from '@mazic/components'
@@ -36,7 +36,9 @@ export const AppLayout = () => {
     <Suspense fallback={<div>Loading...</div>}>
       <Toaster richColors visibleToasts={1} className="mb-16" />
       <RouterProvider router={routers} />
-      <ModalCommon />
+      <BrowserRouter>
+        <ModalCommon />
+      </BrowserRouter>
     </Suspense>
   )
 }

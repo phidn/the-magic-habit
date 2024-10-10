@@ -20,10 +20,11 @@ import {
   TrashIcon,
 } from '@mazic/ui'
 
+import { CopyLinkModal } from '@mazic/components'
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { CONFIG, PATH_ROUTE } from '@mazic/config/config'
-import { useColorMode, useCopy } from '@mazic/hooks'
+import { useColorMode } from '@mazic/hooks'
 import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 
@@ -42,13 +43,14 @@ interface Props {
 }
 
 export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete }: Props) => {
-  const copy = useCopy()
   const mutationDelete = useDeleteHabit()
-  const [hideModal, showModalDelete] = useStoreShallow((state) => [
+  const [hideModal, showModalDelete, showModal] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,
+    state.showModal,
   ])
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
+
   const { title, activities, color } = habit || {}
   const blocks = (activities || []).filter((x) => !deletedBlock.includes(x.id))
 
@@ -76,13 +78,22 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                 <DropdownMenuContent>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() =>
-                      copy(
-                        `${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit?.api_key || '')}`
-                      )
-                    }
+                    onClick={() => {
+                      showModal({
+                        open: true,
+                        showConfirm: false,
+                        title: 'Widget link',
+                        description: 'Anyone who has this link will be able to view this.',
+                        body: (
+                          <CopyLinkModal
+                            link={`${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit?.api_key || '')}`}
+                          />
+                        ),
+                      })
+                    }}
                   >
-                    <CopyIcon className="mr-1" /> Copy Magic Link
+                    <CopyIcon className="mr-1" />
+                    Widget Link
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">
                     <Link className="flex items-center" to={`/habit/edit/${habit?.id}`}>

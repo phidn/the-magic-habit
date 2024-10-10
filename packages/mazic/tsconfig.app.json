@@ -26,5 +26,7 @@
     "src/**/*.json",
     "../mazic-shared/src/**/*.ts",
     "../mazic-shared/src/**/*.tsx",
+    "../mazic-ui/src/**/*.ts",
+    "../mazic-ui/src/**/*.tsx",
   ]
 }

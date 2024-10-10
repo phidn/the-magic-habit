@@ -19,7 +19,7 @@ export const ModalCommon = () => {
 
   return (
     <Modal open={modal.open} onOpenChange={hideModal}>
-      <ModalContent>
+      <ModalContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <ModalHeader>
           <ModalTitle>{modal.title}</ModalTitle>
           <ModalDescription>{modal.description}</ModalDescription>
@@ -32,13 +32,15 @@ export const ModalCommon = () => {
                 Close
               </Button>
             </ModalClose>
-            <ButtonLoading
-              variant={modal.confirmVariant}
-              onClick={modal.onConfirm}
-              isLoading={modal.loadingConfirm}
-            >
-              {modal.confirmText || 'Continue'}
-            </ButtonLoading>
+            {modal.showConfirm && (
+              <ButtonLoading
+                variant={modal.confirmVariant}
+                onClick={modal.onConfirm}
+                isLoading={modal.loadingConfirm}
+              >
+                {modal.confirmText || 'Continue'}
+              </ButtonLoading>
+            )}
           </ModalFooter>
         )}
       </ModalContent>

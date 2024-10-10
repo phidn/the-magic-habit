@@ -12,6 +12,7 @@ type TModal = {
   onConfirm?: () => void
   loadingConfirm?: boolean
   showFooter?: boolean
+  showConfirm?: boolean
 }
 
 export type TModalSlice = {
@@ -32,6 +33,7 @@ const initModal: TModal = {
   onConfirm: () => null,
   loadingConfirm: false,
   showFooter: true,
+  showConfirm: true,
 }
 
 export const modalSlice: ImmerStateCreator<TModalSlice> = (set) => ({

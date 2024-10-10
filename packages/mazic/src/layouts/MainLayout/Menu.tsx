@@ -2,14 +2,7 @@ import { Ellipsis } from 'lucide-react'
 
 import {
   Button,
-  ButtonLink,
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
   cn,
-  LockIcon,
   ScrollArea,
   Tooltip,
   TooltipContent,
@@ -17,8 +10,8 @@ import {
   TooltipTrigger,
 } from '@mazic/ui'
 
+import { BuyMeCoffee } from '@mazic/components'
 import { MenuLink } from '@mazic/components/Commons'
-import { CONFIG } from '@mazic/config/config'
 import { useMenuList } from '@mazic/hooks/useMenuList'
 
 import { CollapseMenuButton } from './CollapseMenuButton'
@@ -110,20 +103,7 @@ export const Menu = ({ isOpen }: MenuProps) => {
           )}
           {isOpen && (
             <li className="w-full grow flex items-end">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Unlock {CONFIG.appNameShort}</CardTitle>
-                  <CardDescription>
-                    Unlock all features and get unlimited lifetime access.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ButtonLink variant="colored" href="/#">
-                    <LockIcon />
-                    <span>Unlock</span>
-                  </ButtonLink>
-                </CardContent>
-              </Card>
+              <BuyMeCoffee />
             </li>
           )}
         </ul>

@@ -9,7 +9,7 @@ interface Props {
   }
 }
 
-export const NoDataCta = ({ title, description, action }: Props) => {
+export const NoData = ({ title, description, action }: Props) => {
   return (
     <div className="container flex flex-col md:flex-row md:space-x-12 relative h-[calc(100vh_-_160px)]">
       <div className=" md:w-2/3 lg:shrink-0 xl:w-1/2 h-full flex flex-col items-start justify-center">

@@ -36,11 +36,11 @@ export interface ButtonLinkProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement>,
     VariantProps<typeof buttonLinkVariants> {}
 const ButtonLink = React.forwardRef<HTMLAnchorElement, ButtonLinkProps>(
-  ({ className, variant, size, href = '/#', ...props }, ref) => {
+  ({ className, variant, size, href, ...props }, ref) => {
     return (
       <Link
         className={cn(buttonLinkVariants({ variant, size, className }))}
-        to={href}
+        to={href || '/#'}
         ref={ref}
         {...props}
       />

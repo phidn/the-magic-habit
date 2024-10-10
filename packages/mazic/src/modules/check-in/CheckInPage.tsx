@@ -5,11 +5,11 @@ import { useFindWidget } from './hooks/apis'
 
 const CheckInPage = () => {
   const { api_key } = useParams()
-  const { data, refetch, isFetching } = useFindWidget(api_key as string)
+  const { data, refetch, isPending } = useFindWidget(api_key as string)
 
   return (
     <div className="p-2 lg:px-0 mx-auto w-full max-w-[1000px]">
-      <CheckInHeatmap isLoading={isFetching} habit={data} refetch={refetch} />
+      <CheckInHeatmap isLoading={isPending} habit={data} refetch={refetch} />
     </div>
   )
 }
