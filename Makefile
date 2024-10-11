@@ -85,6 +85,13 @@ gen-package-go:
 web: switch-node-version
 	@echo "Starting web..."
 	yarn nx run mazic:serve
+web-build: switch-node-version
+	@echo "Building web..."
+	# yarn nx run mazic:build --skip-nx-cache && \
+	yarn nx run mazic:build && \
+	rm -rf packages/mazic-server/web/dist && \
+	cp -rf dist/packages/mazic packages/mazic-server/web/dist
+	@echo "Web built."
 
 # ===== SERVER ======== #
 
@@ -98,14 +105,22 @@ server:
 	@echo "Starting server..."
 	export APP_ENV=development && \
 	cd packages/mazic-server && \
-	wgo run -tags pq -xdir pb_data --verbose main.go serve
+	wgo run -xdir pb_data --verbose main.go serve
 	@echo "Successfully started server..."
 
-pocketbase:
-	@echo "Starting pocketbase server..."
-	cd packages/mazic-pocketbase && \
-	wgo run -tags pq ./examples/base serve
-	@echo "Successfully started pocketbase server..."
+server-start:
+	@echo "Starting server..."
+	export APP_ENV=development && \
+	cd packages/mazic-server && \
+	go run main.go serve
+	@echo "Successfully started server..."
+
+server-build:
+	@echo "Building server..."
+	export APP_ENV=production && \
+	cd packages/mazic-server && \
+	go build main.go
+	@echo "Server built."
 
 
 # ===== GENERATE ======== #

@@ -3,6 +3,7 @@ import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
 import { ModalCommon } from '@mazic/components'
+import { CONFIG } from '@mazic/config/config'
 import { routers } from '@mazic/routers/routers'
 import { authService } from '@mazic/services/authService'
 import { useStoreShallow } from '@mazic/store/useStore'
@@ -30,6 +31,18 @@ export const AppLayout = () => {
     }
     getCurrentUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
+    if (CONFIG.isDevelopment) {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/react-render-tracker'
+      script.async = true
+      document.body.appendChild(script)
+      return () => {
+        document.body.removeChild(script)
+      }
+    }
   }, [])
 
   return (

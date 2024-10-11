@@ -1,12 +1,12 @@
-const { VITE_API_URL, VITE_DEV, VITE_DOMAIN } = import.meta.env
+const { MZ_API_URL, MZ_DEV, MZ_DOMAIN } = import.meta.env
 
 export const CONFIG = {
-  isProduction: VITE_DEV === 'false',
-  isDevelopment: VITE_DEV === 'true',
+  isProduction: MZ_DEV === 'false',
+  isDevelopment: MZ_DEV === 'true',
   appNameShort: 'Magic Habit',
   appName: 'The Magic Habit',
-  apiURL: VITE_API_URL || 'http://localhost:3000',
-  domain: VITE_DOMAIN || 'http://localhost:4200',
+  apiURL: MZ_API_URL || 'http://localhost:3000',
+  domain: MZ_DOMAIN || 'http://localhost:4200',
   TIME: {
     DD_MM_YYYY: 'DD/MM/YYYY',
   },
