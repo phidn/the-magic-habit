@@ -3,13 +3,14 @@ package permission
 import (
 	"context"
 	"fmt"
-	"mazic/server/internal/mods/rbac/action"
-	"mazic/server/internal/mods/rbac/resource"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/schema"
-	"mazic/server/pkg/utils"
 	"net/url"
 	"strings"
+
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/action"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/resource"
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/schema"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/pocketbase/pocketbase/models"
 

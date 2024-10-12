@@ -1,8 +1,8 @@
 package auth
 
 import (
-	middlewares "mazic/server/internal/middlewares"
-	"mazic/server/pkg/infrastructure"
+	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
 	"github.com/pocketbase/pocketbase/core"
 )

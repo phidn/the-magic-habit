@@ -1,16 +1,16 @@
 package mods
 
 import (
-	"mazic/server/internal/mods/global"
-	"mazic/server/internal/mods/habit/check_in"
-	"mazic/server/internal/mods/habit/habit"
-	"mazic/server/internal/mods/rbac/action"
-	"mazic/server/internal/mods/rbac/auth"
-	"mazic/server/internal/mods/rbac/permission"
-	"mazic/server/internal/mods/rbac/resource"
-	"mazic/server/internal/mods/rbac/role"
-	"mazic/server/internal/mods/rbac/role_permission"
-	"mazic/server/internal/mods/rbac/user"
+	"github.com/golangthang/mazic-habit/internal/mods/global"
+	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/internal/mods/habit/habit"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/action"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/auth"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/permission"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/resource"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/role"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/role_permission"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/user"
 
 	"go.uber.org/fx"
 )

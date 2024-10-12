@@ -1,8 +1,8 @@
 package user
 
 import (
-	"mazic/server/config"
-	"mazic/server/internal/mods/rbac/permission"
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/permission"
 
 	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/types"

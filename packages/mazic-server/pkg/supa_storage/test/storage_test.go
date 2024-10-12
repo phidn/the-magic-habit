@@ -2,8 +2,9 @@ package test
 
 import (
 	"fmt"
-	"mazic/server/pkg/supa_storage"
 	"testing"
+
+	"github.com/golangthang/mazic-habit/pkg/supa_storage"
 )
 
 func TestBucketListAll(t *testing.T) {

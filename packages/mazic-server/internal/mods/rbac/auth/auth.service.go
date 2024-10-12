@@ -3,13 +3,14 @@ package auth
 import (
 	"context"
 	"errors"
-	"mazic/server/config"
-	"mazic/server/internal/mods/rbac/permission"
-	"mazic/server/internal/mods/rbac/user"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/token"
-	"mazic/server/pkg/utils"
 	"time"
+
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/permission"
+	"github.com/golangthang/mazic-habit/internal/mods/rbac/user"
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/token"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pocketbase/dbx"

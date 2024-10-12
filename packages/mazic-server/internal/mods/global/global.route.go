@@ -1,9 +1,9 @@
 package global
 
 import (
-	middlewares "mazic/server/internal/middlewares"
-	"mazic/server/pkg/infrastructure"
-	"mazic/server/web"
+	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
+	"github.com/golangthang/mazic-habit/web"
 
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"

@@ -1,8 +1,8 @@
 package global
 
 import (
-	"mazic/server/pkg/resp"
-	"mazic/server/pkg/utils"
+	"github.com/golangthang/mazic-habit/pkg/resp"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/labstack/echo/v5"
 )

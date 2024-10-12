@@ -1,12 +1,13 @@
 package middlewares
 
 import (
-	"mazic/server/config"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/resp"
-	"mazic/server/pkg/token"
-	"mazic/server/pkg/utils"
 	"strings"
+
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/resp"
+	"github.com/golangthang/mazic-habit/pkg/token"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/pocketbase/dbx"
 	"github.com/pocketbase/pocketbase/apis"

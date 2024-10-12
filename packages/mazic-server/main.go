@@ -1,8 +1,8 @@
 package main
 
 import (
-	"mazic/server/config"
-	"mazic/server/internal/bootstrap"
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/internal/bootstrap"
 )
 
 func main() {

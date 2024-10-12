@@ -1,10 +1,11 @@
 package resp
 
 import (
-	"mazic/server/config"
-	"mazic/server/pkg/utils"
 	"net/http"
 	"strings"
+
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/labstack/echo/v5"
 )

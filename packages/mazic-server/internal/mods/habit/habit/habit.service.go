@@ -2,11 +2,12 @@ package habit
 
 import (
 	"context"
-	"mazic/server/internal/mods/habit/check_in"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/schema"
-	"mazic/server/pkg/utils"
 	"net/url"
+
+	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/schema"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	"github.com/pocketbase/pocketbase/models"
 

@@ -1,9 +1,9 @@
 package resource
 
 import (
-	"mazic/server/config"
-	middlewares "mazic/server/internal/middlewares"
-	"mazic/server/pkg/infrastructure"
+	"github.com/golangthang/mazic-habit/config"
+	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
 	"github.com/pocketbase/pocketbase/core"
 )

@@ -5,13 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/infrastructure"
-	"mazic/server/pkg/supa_storage"
-	"mazic/server/pkg/utils"
-	"mazic/server/pkg/valid_pointer"
 	"mime/multipart"
 	"net/http"
+
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
+	"github.com/golangthang/mazic-habit/pkg/supa_storage"
+	"github.com/golangthang/mazic-habit/pkg/utils"
+	"github.com/golangthang/mazic-habit/pkg/valid_pointer"
 
 	"github.com/pocketbase/dbx"
 )

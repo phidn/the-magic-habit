@@ -2,7 +2,8 @@ package check_in
 
 import (
 	"context"
-	"mazic/server/pkg/entry"
+
+	"github.com/golangthang/mazic-habit/pkg/entry"
 
 	"github.com/pocketbase/pocketbase/models"
 )

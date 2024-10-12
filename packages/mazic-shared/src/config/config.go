@@ -1,21 +1,20 @@
-package shared_config
+package config
 
 import (
 	"encoding/json"
 	"fmt"
-	permissions_schema "mazic/shared/src/config/permissions"
 	"os"
 	"path/filepath"
 	"reflect"
+
+	permissions_schema "github.com/golangthang/mazic-habit/shared/src/config/permissions"
 )
 
-type SharedConfig struct {
+type Config struct {
 	Permissions permissions_schema.Permissions
 }
 
-var Config SharedConfig
-
-func (config *SharedConfig) LoadConfig() error {
+func (config *Config) LoadConfig() error {
 	path, err := filepath.Abs(filepath.Join("../mazic-shared", "src", "config", "permissions", "permissions.json"))
 	if err != nil {
 		return fmt.Errorf("error getting absolute path: %w", err)
@@ -33,7 +32,7 @@ func (config *SharedConfig) LoadConfig() error {
 	return nil
 }
 
-func (config *SharedConfig) GetPermissionCode(resource, action string) string {
+func (config *Config) GetPermissionCode(resource, action string) string {
 	permissionsValue := reflect.ValueOf(config.Permissions)
 
 	resourceField := permissionsValue.FieldByName(resource)

@@ -1,13 +1,13 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
-	shared_config "mazic/shared/src"
 	"os"
 	"strconv"
 	"time"
+
+	shared "github.com/golangthang/mazic-habit/shared/src/config"
 
 	"github.com/joho/godotenv"
 )
@@ -16,7 +16,7 @@ type AppConfig struct {
 	Env           string
 	IsDevelopment bool
 
-	Shared shared_config.SharedConfig
+	Shared shared.Config
 
 	SupabaseUrl         string
 	SupabaseBucket      string
@@ -49,10 +49,9 @@ func (config *AppConfig) LoadConfig() error {
 	config.Env = appEnv
 	config.IsDevelopment = appEnv == "development"
 
-	if err := shared_config.Config.LoadConfig(); err != nil {
+	if err := config.Shared.LoadConfig(); err != nil {
 		log.Fatalf("Failed to load shared config: %v", err)
 	}
-	config.Shared = shared_config.Config
 
 	config.SupabaseUrl = getEnv("BCRYPT_COST", "")
 	config.SupabaseUrl = getEnv("SUPABASE_URL", "")
@@ -93,19 +92,4 @@ func getEnvAsInt(name string, defaultVal int) int {
 		return value
 	}
 	return defaultVal
-}
-
-func loadSharedConfig(path string) (map[string]interface{}, error) {
-	data, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("error reading permissions file: %w", err)
-	}
-
-	var result map[string]interface{}
-
-	if err := json.Unmarshal(data, &result); err != nil {
-		return nil, fmt.Errorf("error unmarshalling permissions: %w", err)
-	}
-
-	return result, nil
 }

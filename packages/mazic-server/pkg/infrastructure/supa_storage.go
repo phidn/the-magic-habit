@@ -2,8 +2,9 @@ package infrastructure
 
 import (
 	"fmt"
-	"mazic/server/config"
-	"mazic/server/pkg/supa_storage"
+
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/pkg/supa_storage"
 )
 
 type SupaStorage struct {

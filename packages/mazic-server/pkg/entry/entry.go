@@ -3,12 +3,13 @@ package entry
 import (
 	"context"
 	"math"
-	"mazic/server/config"
-	"mazic/server/pkg/infrastructure"
-	"mazic/server/pkg/schema"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
+	"github.com/golangthang/mazic-habit/pkg/schema"
 
 	"github.com/pocketbase/pocketbase/daos"
 	"github.com/pocketbase/pocketbase/models"

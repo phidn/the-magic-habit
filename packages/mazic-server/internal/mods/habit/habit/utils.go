@@ -1,8 +1,8 @@
 package habit
 
 import (
-	"mazic/server/internal/mods/habit/check_in"
-	"mazic/server/pkg/utils"
+	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 )
 
 func processCheckInList(habits []*Habit, checkInList []*check_in.CheckIn) error {

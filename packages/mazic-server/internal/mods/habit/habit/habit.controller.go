@@ -1,7 +1,7 @@
 package habit
 
 import (
-	"mazic/server/pkg/resp"
+	"github.com/golangthang/mazic-habit/pkg/resp"
 
 	"github.com/labstack/echo/v5"
 )

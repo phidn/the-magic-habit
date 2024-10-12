@@ -1,8 +1,8 @@
 package habit
 
 import (
-	"mazic/server/internal/mods/habit/check_in"
-	"mazic/server/pkg/utils"
+	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/pocketbase/pocketbase/models"

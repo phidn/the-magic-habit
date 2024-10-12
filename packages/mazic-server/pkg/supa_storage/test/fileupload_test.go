@@ -2,9 +2,10 @@ package test
 
 import (
 	"fmt"
-	"mazic/server/pkg/supa_storage"
 	"os"
 	"testing"
+
+	"github.com/golangthang/mazic-habit/pkg/supa_storage"
 )
 
 var (

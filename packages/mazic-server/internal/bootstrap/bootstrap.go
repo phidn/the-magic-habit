@@ -3,10 +3,11 @@ package bootstrap
 import (
 	"context"
 	"log"
-	middleware "mazic/server/internal/middlewares"
-	"mazic/server/internal/mods"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/infrastructure"
+
+	middleware "github.com/golangthang/mazic-habit/internal/middlewares"
+	"github.com/golangthang/mazic-habit/internal/mods"
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
 	"go.uber.org/fx"
 )

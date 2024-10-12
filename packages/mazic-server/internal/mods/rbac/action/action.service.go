@@ -2,9 +2,10 @@ package action
 
 import (
 	"context"
-	"mazic/server/pkg/entry"
-	"mazic/server/pkg/schema"
 	"net/url"
+
+	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/schema"
 
 	"github.com/pocketbase/pocketbase/models"
 

@@ -3,8 +3,9 @@ package role_permission
 import (
 	"context"
 	"fmt"
-	"mazic/server/pkg/entry"
 	"strings"
+
+	"github.com/golangthang/mazic-habit/pkg/entry"
 
 	"github.com/pocketbase/pocketbase/daos"
 )
