@@ -69,6 +69,11 @@ graph:
 	yarn nx graph
 	@echo "Graph generated."
 
+go-list:
+	@echo "Listing go packages..."
+	yarn nx list @nx-go/nx-go
+	@echo "Go packages listed."
+
 gen-lib:
 	@echo "Generating package..."
 	yarn nx generate @nx/js:library --name=$(name) --directory=packages/mazic-$(name) --importPath=@mazic-$(name) --projectNameAndRootFormat=as-provided --no-interactive
@@ -141,3 +146,25 @@ gen-schema:
 	@echo "Starting generate typescript..."
 	node scripts/generate-schema.js
 	@echo "Typescript generated."
+
+# ===== DOCKER ======== #
+
+build:
+	@echo "Building docker..."
+	docker build -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
+	@echo "Docker built."
+build-log:
+	@echo "Building docker..."
+	docker build --progress=plain -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
+	@echo "Docker built."
+build-no-cache:
+	@echo "Building docker..."
+	docker build --no-cache --progress=plain -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
+	@echo "Docker built."
+
+build-up: build
+	@echo "Running docker-compose..."
+	cd packages/mazic-docker && \
+	docker rm -f mazic-docker-mazic-server-1 && \
+	docker-compose up -d
+	@echo "Docker-compose running."

@@ -38,16 +38,20 @@ var Config AppConfig
 
 func (config *AppConfig) LoadConfig() error {
 	appEnv := os.Getenv("APP_ENV")
-	envFile := ".env"
-	if appEnv != "" {
-		envFile = fmt.Sprintf(".env.%s", appEnv)
-	}
-	if err := godotenv.Load(envFile); err != nil {
-		log.Fatalf("Error loading %s file: %v", envFile, err)
+	isDev := appEnv == "development"
+
+	if isDev {
+		envFile := ".env"
+		if appEnv != "" {
+			envFile = fmt.Sprintf(".env.%s", appEnv)
+		}
+		if err := godotenv.Load(envFile); err != nil {
+			log.Fatalf("Error loading %s file: %v", envFile, err)
+		}
 	}
 
 	config.Env = appEnv
-	config.IsDevelopment = appEnv == "development"
+	config.IsDevelopment = isDev
 
 	if err := config.Shared.LoadConfig(); err != nil {
 		log.Fatalf("Failed to load shared config: %v", err)

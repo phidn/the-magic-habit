@@ -47,4 +47,4 @@ __debug_*.exe
 # locals
 .local
 .locals
-packages/mazic-dumps/dev
+packages/mazic-docker/mz_data

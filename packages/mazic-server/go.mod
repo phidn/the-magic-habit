@@ -2,8 +2,6 @@ module github.com/golangthang/mazic-habit
 
 go 1.22
 
-replace github.com/golangthang/mazic-habit/shared => ../shared
-
 require (
 	github.com/fatih/color v1.17.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0

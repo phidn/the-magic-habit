@@ -1,0 +1,4 @@
+**/backups
+**/pb_data
+**/.env
+**/.env.*
