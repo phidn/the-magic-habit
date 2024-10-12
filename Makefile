@@ -151,8 +151,12 @@ gen-schema:
 
 build:
 	@echo "Building docker..."
-	docker build -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
+	docker build -f ./packages/mazic-docker/Dockerfile -t phidndev/dev:mazic_server_v0 .
 	@echo "Docker built."
+push:
+	@echo "Push docker image..."
+	docker push phidndev/dev:mazic_server_v0
+	@echo "Docker image pushed."
 build-log:
 	@echo "Building docker..."
 	docker build --progress=plain -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
