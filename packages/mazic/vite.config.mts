@@ -6,7 +6,6 @@ export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/mazic',
 
-  base: '/web',
   envPrefix: 'VITE',
 
   server: {

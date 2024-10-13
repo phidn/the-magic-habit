@@ -3,10 +3,7 @@ package global
 import (
 	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
-	"github.com/golangthang/mazic-habit/web"
 
-	"github.com/labstack/echo/v5"
-	"github.com/labstack/echo/v5/middleware"
 	"github.com/pocketbase/pocketbase/core"
 )
 
@@ -26,11 +23,11 @@ func NewGlobalRoute(app *infrastructure.Pocket, controller *GlobalController, au
 
 func (route *GlobalRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		e.Router.GET(
-			"/web/*",
-			echo.StaticDirectoryHandler(web.DistDirFS, false),
-			middleware.Gzip(),
-		)
+		// e.Router.GET(
+		// 	"/*",
+		// 	echo.StaticDirectoryHandler(web.DistDirFS, false),
+		// 	middleware.Gzip(),
+		// )
 
 		r := e.Router.Group("/mz/global")
 		r.Use(route.authMiddleware.IsAuthenticated)

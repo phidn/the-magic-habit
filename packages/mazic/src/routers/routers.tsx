@@ -40,6 +40,4 @@ const protectedRoutes = [
   ),
 }))
 
-export const routers = createBrowserRouter([...publicRoutes, ...protectedRoutes], {
-  basename: '/web',
-})
+export const routers = createBrowserRouter([...publicRoutes, ...protectedRoutes])

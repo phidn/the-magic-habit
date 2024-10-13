@@ -6,7 +6,9 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/web"
 	"github.com/pocketbase/pocketbase"
+	"github.com/pocketbase/pocketbase/apis"
 	"github.com/pocketbase/pocketbase/cmd"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
@@ -30,6 +32,19 @@ func NewPocket() *Pocket {
 		regular.Printf("├─ REST API: %s\n", color.CyanString(config.Config.AppDomain+"/api/"))
 		regular.Printf("├─ ADMIN UI: %s\n", color.CyanString(config.Config.AppDomain+"/_/"))
 		regular.Printf("├─ WEB UI: %s\n", color.CyanString(config.Config.AppDomain+"/web/"))
+		return nil
+	})
+
+	var indexFallback bool
+	app.RootCmd.PersistentFlags().BoolVar(
+		&indexFallback,
+		"indexFallback",
+		true,
+		"fallback the request to index.html on missing static path (eg. when pretty urls are used with SPA)",
+	)
+
+	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
+		e.Router.GET("/*", apis.StaticDirectoryHandler(web.DistDirFS, indexFallback))
 		return nil
 	})
 

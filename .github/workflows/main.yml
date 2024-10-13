@@ -29,7 +29,6 @@ jobs:
           tags: phidndev/dev:mazic_server_v0
           secrets: |
             "VITE_DEV=false"
-            "VITE_BASE=/web"
             "VITE_DOMAIN=${{ secrets.VITE_DOMAIN }}"
             "VITE_API_URL=${{ secrets.VITE_API_URL }}"
 

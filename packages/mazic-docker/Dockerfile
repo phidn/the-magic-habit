@@ -12,9 +12,6 @@ RUN yarn
 RUN --mount=type=secret,id=VITE_DEV \
       VITE_DEV="$(cat /run/secrets/VITE_DEV)" && \
       echo "VITE_DEV=\"${VITE_DEV}\"" >> /app/packages/mazic/.env.production
-RUN --mount=type=secret,id=VITE_BASE \
-      VITE_BASE="$(cat /run/secrets/VITE_BASE)" && \
-      echo "VITE_BASE=\"${VITE_BASE}\"" >> /app/packages/mazic/.env.production
 RUN --mount=type=secret,id=VITE_DOMAIN \
       VITE_DOMAIN="$(cat /run/secrets/VITE_DOMAIN)" && \
       echo "VITE_DOMAIN=\"${VITE_DOMAIN}\"" >> /app/packages/mazic/.env.production

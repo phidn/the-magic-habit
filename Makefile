@@ -82,8 +82,8 @@ web: switch-node-version
 	yarn nx run mazic:serve
 web-build: switch-node-version
 	@echo "Building web..."
-	# yarn nx run mazic:build --skip-nx-cache && \
-	yarn nx run mazic:build && \
+	yarn nx run mazic:build --skip-nx-cache && \
+	# yarn nx run mazic:build && \
 	rm -rf packages/mazic-server/web/dist && \
 	cp -rf dist/packages/mazic packages/mazic-server/web/dist
 	@echo "Web built."
