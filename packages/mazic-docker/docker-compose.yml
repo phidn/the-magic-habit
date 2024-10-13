@@ -5,8 +5,8 @@ services:
       - ./mz_data:/app/packages/mazic-server/mz_data
     ports:
       - "8090:8090"
-    # environment:
-    #   APP_ENV: ${APP_ENV}
+    environment:
+      APP_ENV: production
     #   APP_DOMAIN: ${APP_DOMAIN}
     #   JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
     #   JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}

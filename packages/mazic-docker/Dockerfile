@@ -41,7 +41,12 @@ COPY --from=web-builder /app/dist/packages/mazic/ /app/packages/mazic-server/web
 RUN ls -li /app/packages/mazic-server
 
 WORKDIR /app/packages/mazic-server
+RUN go build -o server .
 
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/packages/mazic-shared/ ./packages/mazic-shared/
+COPY --from=builder /app/packages/mazic-server/server ./packages/mazic-server/
 RUN --mount=type=secret,id=APP_ENV \
       APP_ENV="$(cat /run/secrets/APP_ENV)" && \
       echo "APP_ENV=\"${APP_ENV}\"" >> /app/packages/mazic-server/.env.production
@@ -72,13 +77,6 @@ RUN --mount=type=secret,id=SUPABASE_BUCKET \
 RUN --mount=type=secret,id=SUPABASE_SERVICE_ROLE \
       SUPABASE_SERVICE_ROLE="$(cat /run/secrets/SUPABASE_SERVICE_ROLE)" && \
       echo "SUPABASE_SERVICE_ROLE=\"${SUPABASE_SERVICE_ROLE}\"" >> /app/packages/mazic-server/.env.production
-
-RUN go build -o server .
-
-FROM alpine:latest
-WORKDIR /app
-COPY --from=builder /app/packages/mazic-server/server ./packages/mazic-server/
-COPY --from=builder /app/packages/mazic-shared/ ./packages/mazic-shared/
 
 EXPOSE 8090
 
