@@ -33,6 +33,28 @@ func (controller *AuthController) Login(c echo.Context) error {
 	return resp.NewApiSuccess(c, result, "")
 }
 
+func (controller *AuthController) Register(c echo.Context) error {
+	userReg := &UserRegister{}
+	if err := c.Bind(userReg); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if err := userReg.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
+
+	record, err := controller.AuthService.Register(c.Request().Context(), userReg)
+	if err != nil {
+		return resp.NewApplicationError(c, "Failed to create user.", err)
+	}
+
+	userReg.Id = record.Id
+	userReg.Password = ""
+	userReg.Created = record.Created
+	userReg.Updated = record.Updated
+
+	return resp.NewApiCreated(c, userReg, "The user has been created successfully.")
+}
+
 func (controller *AuthController) GetMe(c echo.Context) error {
 	userId := c.Get("state.user_id").(string)
 	if userId == "" {

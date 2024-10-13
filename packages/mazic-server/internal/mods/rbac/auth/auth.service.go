@@ -14,10 +14,12 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/pocketbase/dbx"
+	"github.com/pocketbase/pocketbase/models"
 )
 
 type AuthService interface {
 	Login(ctx context.Context, email, password string) (*Tokens, *user.User, error)
+	Register(ctx context.Context, user *UserRegister) (*models.Record, error)
 	GetMe(ctx context.Context, userId string) (*user.User, error)
 }
 
@@ -108,4 +110,22 @@ func (service *authService) GetMe(ctx context.Context, userId string) (*user.Use
 
 	user.Permissions = permissions
 	return user, nil
+}
+
+func (service *authService) Register(ctx context.Context, user *UserRegister) (*models.Record, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(UserRegister).TableName())
+	if err != nil {
+		return nil, err
+	}
+	if err := user.SetPasswordHash(); err != nil {
+		return nil, err
+	}
+
+	record := models.NewRecord(collection)
+	user.ParseRecord(record)
+
+	if err := service.Entry.Dao().Save(record); err != nil {
+		return nil, err
+	}
+	return record, nil
 }

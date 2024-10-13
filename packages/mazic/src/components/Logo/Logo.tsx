@@ -1,5 +1,7 @@
 import { MazicIcon } from '@mazic/ui'
 
+import { CONFIG } from '@mazic/config/config'
+
 interface LogoProps {
   hideText?: boolean
   hideIcon?: boolean
@@ -14,7 +16,7 @@ const Logo = (props: LogoProps) => {
           <MazicIcon className="mx-auto h-8 w-8 mr-1" />
         </div>
       )}
-      {!hideText && <span className="hidden font-bold sm:inline-block">mazic</span>}
+      {!hideText && <span className="hidden font-bold sm:inline-block">{CONFIG.appName}</span>}
     </div>
   )
 }

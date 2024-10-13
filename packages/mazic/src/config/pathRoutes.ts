@@ -6,4 +6,8 @@ export const pathRoutes = {
   user: userPaths,
   home: '/',
   checkIn: checkInPaths,
+  auth: {
+    login: '/login',
+    signUp: '/signup',
+  },
 } as const

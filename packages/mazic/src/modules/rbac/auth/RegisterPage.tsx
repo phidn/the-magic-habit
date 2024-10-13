@@ -2,7 +2,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
-import { z } from 'zod'
+import { toast } from 'sonner'
 
 import {
   AceDivide,
@@ -17,20 +17,18 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { authService } from '@mazic/services/authService'
-import { useStore } from '@mazic/store/useStore'
 import { ApiResponse } from '@mazic/types'
 import { AuthResponse } from '@mazic/types/response'
 
 import { BottomGradient } from './components/BottomGradient'
 import { LabelInputContainer } from './components/LabelInputContainer'
-import { loginSchema, TLogin } from './schemas'
+import { registerSchema, TRegister } from './schemas'
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate()
-  const setCurrentUser = useStore((store) => store.setCurrentUser)
 
-  const methods = useForm<TLogin>({
-    resolver: zodResolver(loginSchema),
+  const methods = useForm<TRegister>({
+    resolver: zodResolver(registerSchema),
   })
   const {
     register,
@@ -39,11 +37,11 @@ const LoginPage = () => {
     formState: { errors },
   } = methods
 
-  const loginMutation = useMutation({
-    mutationFn: (body: TLogin) => authService.login<ApiResponse<AuthResponse>>(body),
-    onSuccess: ({ data }) => {
-      setCurrentUser(data.data.user)
-      navigate('/')
+  const registerMutation = useMutation({
+    mutationFn: (body: TRegister) => authService.register<ApiResponse<AuthResponse>>(body),
+    onSuccess: () => {
+      toast.success('Your account has been created successfully')
+      navigate(pathRoutes.auth.login)
     },
     onError: () => {
       setError('root', {
@@ -54,7 +52,7 @@ const LoginPage = () => {
   })
 
   const onSubmit = handleSubmit(async (values) => {
-    await loginMutation.mutateAsync(values)
+    await registerMutation.mutateAsync(values)
   })
 
   return (
@@ -62,9 +60,9 @@ const LoginPage = () => {
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input">
         <Logo hideText />
         <AceDivide />
-        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">Welcome back</h2>
+        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">Sign Up</h2>
         <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          Glad to see you again. Again!
+          Enter your information to create an account
         </p>
         <FormProvider {...methods}>
           <form className="my-8" onSubmit={onSubmit} autoComplete="false">
@@ -74,13 +72,34 @@ const LoginPage = () => {
                 <AlertDescription>{errors.root.message}</AlertDescription>
               </Alert>
             )}
+            <div className="mazic-row">
+              <LabelInputContainer className="mb-4 mazic-col-6">
+                <Label htmlFor="first_name">
+                  First name <span className="text-destructive">{' *'}</span>
+                </Label>
+                <Input id="first_name" placeholder="John" {...register('first_name')} />
+                {errors.first_name && <FormMessage>{errors.first_name.message}</FormMessage>}
+              </LabelInputContainer>
+              <LabelInputContainer className="mb-4 mazic-col-6">
+                <Label htmlFor="last_name">
+                  Last name
+                  <span className="text-destructive">{' *'}</span>
+                </Label>
+                <Input id="last_name" placeholder="Doe" {...register('last_name')} />
+                {errors.last_name && <FormMessage>{errors.last_name.message}</FormMessage>}
+              </LabelInputContainer>
+            </div>
             <LabelInputContainer className="mb-4">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">
+                Email<span className="text-destructive">{' *'}</span>
+              </Label>
               <Input id="email" placeholder="email@mazic.com" type="email" {...register('email')} />
               {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
             </LabelInputContainer>
             <LabelInputContainer className="mb-4">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">
+                Password<span className="text-destructive">{' *'}</span>
+              </Label>
               <Input
                 id="password"
                 placeholder="••••••••"
@@ -94,15 +113,15 @@ const LoginPage = () => {
               className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
               type="submit"
             >
-              Login in &rarr;
+              Sign up
               <BottomGradient />
             </button>
           </form>
         </FormProvider>
         <div className="mt-4 text-center text-sm">
-          Don't have an account?{' '}
-          <Link to={pathRoutes.auth.signUp} className="underline">
-            Sign up
+          Already have an account?{' '}
+          <Link to={pathRoutes.auth.login} className="underline">
+            Login
           </Link>
         </div>
       </div>
@@ -110,4 +129,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default RegisterPage

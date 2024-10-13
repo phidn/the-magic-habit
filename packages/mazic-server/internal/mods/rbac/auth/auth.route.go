@@ -24,6 +24,7 @@ func NewAuthRoute(app *infrastructure.Pocket, authController *AuthController, au
 func (route *AuthRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		e.Router.POST("/mz/auth/login", route.authController.Login)
+		e.Router.POST("/mz/auth/register", route.authController.Register)
 		e.Router.GET("/mz/auth/me", route.authController.GetMe, route.authMiddleware.IsAuthenticated)
 		return nil
 	})

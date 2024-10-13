@@ -1,12 +1,13 @@
 import { AxiosResponse } from 'axios'
 
-import { LoginSchemaType } from '@mazic/modules/rbac/auth'
+import { TLogin, TRegister } from '@mazic/modules/rbac/auth'
 import { TUser } from '@mazic/modules/rbac/user/schemas/userSchema'
 import http from '@mazic/utils/http'
 import { getAccessTokenFromLS, getRefreshTokenFromLS } from '@mazic/utils/localStorage'
 
 export const authService = {
-  login: <T = any>(body: LoginSchemaType) => http.post<T>('/auth/login', body),
+  login: <T = any>(body: TLogin) => http.post<T>('/auth/login', body),
+  register: <T = any>(body: TRegister) => http.post<T>('/auth/register', body),
   logout: () => {
     const access_token = getAccessTokenFromLS()
     const refresh_token = getRefreshTokenFromLS()

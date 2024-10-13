@@ -11,3 +11,8 @@ const (
 	DefaultPageSize = 10
 	MaxPageSize     = 100
 )
+
+const (
+	SuperAdminRoleId = "vx2heikosx2j6mm"
+	UserRoleId       = "v4su8etidjy9ept"
+)
