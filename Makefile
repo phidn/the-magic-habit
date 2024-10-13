@@ -165,7 +165,7 @@ build-up: build
 
 docker-up:
 	@echo "Running docker-compose..."
-	docker rm -f mazic-habit-mazic-server-1 && \
+	docker rm -f mazic-habit-mazic-server && \
 	docker image rm -f phidndev/dev:mazic_server_v0 && \
 	cd packages/mazic-docker && \
 	docker-compose up -d

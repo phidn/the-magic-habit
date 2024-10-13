@@ -47,10 +47,12 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.PRIVATE_KEY }}
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_PRIVATE_KEY }}
           port: 22
           script: |
-            whoami
-            ls -al
+            cd /home/mazic_habit
+            docker remove -f mazic-server || true
+            docker image rm -f phidndev/dev:mazic_server_v0 || true
+            docker run -d --name mazic-server -v ./mz_data:/app/packages/mazic-server/mz_data -p 8090:8090 -e APP_ENV=production phidndev/dev:mazic_server_v0
