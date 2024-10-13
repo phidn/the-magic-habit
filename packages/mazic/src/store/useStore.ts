@@ -4,8 +4,6 @@ import { createJSONStorage, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { useShallow } from 'zustand/react/shallow'
 
-import { CONFIG } from '@mazic/config/config'
-
 import { loadingSlice, TLoadingSlice } from './slices/loadingSlice'
 import { modalSlice, TModalSlice } from './slices/modalSlice'
 import { rehydrateSlice, TRehydrateSlice } from './slices/rehydrateSlice'
@@ -25,7 +23,7 @@ export const useStore = create<Store>()(
     })),
     {
       version: 1,
-      name: CONFIG.appStorage.key,
+      name: 'app_storage',
       storage: createJSONStorage(() => localStorage),
       onRehydrateStorage: () => (state) => state && state.setHasHydrated(true),
       merge: (persistedState, currentState) => {

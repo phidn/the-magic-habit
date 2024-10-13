@@ -18,16 +18,7 @@ export const CONFIG = {
   },
   sortSeparator: ':',
   stringItemsSeparator: ',',
-  appStorage: {
-    key: 'app_storage',
-  },
 }
-
-export const PATH_ROUTE = {
-  dashboard: '/',
-  home: '/',
-  widget: '/widget/:api_key',
-} as const
 
 export const PATH_API = {
   logout: '/auth/logout',

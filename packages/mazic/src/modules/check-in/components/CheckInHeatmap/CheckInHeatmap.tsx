@@ -23,7 +23,8 @@ import {
 import { CopyLinkModal } from '@mazic/components'
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
-import { CONFIG, PATH_ROUTE } from '@mazic/config/config'
+import { CONFIG } from '@mazic/config/config'
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useColorMode } from '@mazic/hooks'
 import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
@@ -58,7 +59,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')
-  const isWidget = !!useMatch(PATH_ROUTE.widget)
+  const isWidget = !!useMatch(pathRoutes.checkIn.widget)
   const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
 
   return (
@@ -86,7 +87,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                         description: 'Anyone who has this link will be able to view this.',
                         body: (
                           <CopyLinkModal
-                            link={`${CONFIG.domain}${PATH_ROUTE.widget.replace(':api_key', habit?.api_key || '')}`}
+                            link={`${CONFIG.domain}${pathRoutes.checkIn.widget.replace(':api_key', habit?.api_key || '')}`}
                           />
                         ),
                       })

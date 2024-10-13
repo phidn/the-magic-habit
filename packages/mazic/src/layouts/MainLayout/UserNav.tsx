@@ -19,12 +19,13 @@ import {
   TooltipTrigger,
 } from '@mazic/ui'
 
+import { MENUS } from '@mazic/hooks'
 import { useLogout } from '@mazic/modules/rbac/auth'
 import { useStore } from '@mazic/store/useStore'
 
 export const UserNav = () => {
   const logout = useLogout()
-  const { user } = useStore((store) => store.currentUser)
+  const user = useStore((store) => store.currentUser.user)
 
   if (!user) return null
 
@@ -58,9 +59,15 @@ export const UserNav = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link to="/" className="flex items-center">
-              <LayoutGrid className="w-4 h-4 mr-3 text-muted-foreground" />
-              Dashboard
+            <Link to={MENUS.DASHBOARD.href} className="flex items-center gap-1">
+              {MENUS.DASHBOARD.icon()}
+              {MENUS.DASHBOARD.label}
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem className="hover:cursor-pointer" asChild>
+            <Link to={MENUS.PROFILE.href} className="flex items-center gap-1">
+              {MENUS.PROFILE.icon()}
+              {MENUS.PROFILE.label}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
