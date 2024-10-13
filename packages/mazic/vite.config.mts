@@ -7,7 +7,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/packages/mazic',
 
   base: '/web',
-  envPrefix: 'MZ',
+  envPrefix: 'VITE',
 
   server: {
     port: 4200,

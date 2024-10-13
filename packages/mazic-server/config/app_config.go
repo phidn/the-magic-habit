@@ -38,20 +38,10 @@ var Config AppConfig
 
 func (config *AppConfig) LoadConfig() error {
 	appEnv := os.Getenv("APP_ENV")
-	isDev := appEnv == "development"
-
-	if isDev {
-		envFile := ".env"
-		if appEnv != "" {
-			envFile = fmt.Sprintf(".env.%s", appEnv)
-		}
-		if err := godotenv.Load(envFile); err != nil {
-			log.Fatalf("Error loading %s file: %v", envFile, err)
-		}
-	}
+	loadAppEnv(appEnv)
 
 	config.Env = appEnv
-	config.IsDevelopment = isDev
+	config.IsDevelopment = appEnv == "development"
 
 	if err := config.Shared.LoadConfig(); err != nil {
 		log.Fatalf("Failed to load shared config: %v", err)
@@ -72,6 +62,16 @@ func (config *AppConfig) LoadConfig() error {
 	config.BcryptCost = getEnvAsInt("BCRYPT_COST", 10)
 
 	return nil
+}
+
+func loadAppEnv(appEnv string) {
+	envFile := ".env"
+	if appEnv != "" {
+		envFile = fmt.Sprintf(".env.%s", appEnv)
+	}
+	if err := godotenv.Load(envFile); err != nil {
+		log.Fatalf("Error loading %s file: %v", envFile, err)
+	}
 }
 
 func getEnv(key, defaultValue string) string {

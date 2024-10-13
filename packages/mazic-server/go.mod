@@ -2,11 +2,14 @@ module github.com/golangthang/mazic-habit
 
 go 1.22
 
+replace github.com/golangthang/mazic-habit/shared => ../mazic-shared
+
 require (
 	github.com/fatih/color v1.17.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/godruoyi/go-snowflake v0.0.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
+	github.com/golangthang/mazic-habit/shared v0.0.0-00010101000000-000000000000
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1

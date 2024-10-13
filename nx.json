@@ -42,8 +42,7 @@
       "options": {
         "targetName": "test"
       }
-    },
-    "@nx-go/nx-go"
+    }
   ],
   "generators": {
     "@nx/react": {

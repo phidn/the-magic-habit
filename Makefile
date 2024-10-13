@@ -69,19 +69,9 @@ graph:
 	yarn nx graph
 	@echo "Graph generated."
 
-go-list:
-	@echo "Listing go packages..."
-	yarn nx list @nx-go/nx-go
-	@echo "Go packages listed."
-
 gen-lib:
 	@echo "Generating package..."
 	yarn nx generate @nx/js:library --name=$(name) --directory=packages/mazic-$(name) --importPath=@mazic-$(name) --projectNameAndRootFormat=as-provided --no-interactive
-	@echo "Package generated."
-
-gen-package-go:
-	@echo "Generating package..."
-	yarn nx g @nx-go/nx-go:application ui
 	@echo "Package generated."
 
 
@@ -159,7 +149,7 @@ push:
 	@echo "Docker image pushed."
 build-log:
 	@echo "Building docker..."
-	docker build --progress=plain -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
+	docker build --progress=plain -f ./packages/mazic-docker/Dockerfile -t phidndev/dev:mazic_server_v0 .
 	@echo "Docker built."
 build-no-cache:
 	@echo "Building docker..."

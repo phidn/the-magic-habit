@@ -2392,7 +2392,6 @@ __metadata:
     "@babel/preset-react": "npm:^7.14.5"
     "@faker-js/faker": "npm:^8.4.1"
     "@hookform/resolvers": "npm:^3.3.4"
-    "@nx-go/nx-go": "npm:^3.2.0"
     "@nx-tools/nx-prisma": "npm:^6.2.0"
     "@nx/eslint": "npm:19.8.0"
     "@nx/eslint-plugin": "npm:19.8.0"
@@ -3012,16 +3011,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx-go/nx-go@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@nx-go/nx-go@npm:3.2.0"
-  dependencies:
-    "@nx/devkit": "npm:^17.0.0 || ^18.0.0 || ^19.0.0"
-    tslib: "npm:^2.3.0"
-  checksum: 10c0/71fa8d1633acc6a9b118c86096924841b57016d2de15cc64713210e41d7af7f30fc442f483bb890cac0aed4d8e808034146f5670acc4982d96689ee2e031394b
-  languageName: node
-  linkType: hard
-
 "@nx-tools/core@npm:6.0.1":
   version: 6.0.1
   resolution: "@nx-tools/core@npm:6.0.1"
@@ -3056,7 +3045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:19.8.0, @nx/devkit@npm:^17.0.0 || ^18.0.0 || ^19.0.0":
+"@nx/devkit@npm:19.8.0":
   version: 19.8.0
   resolution: "@nx/devkit@npm:19.8.0"
   dependencies:
