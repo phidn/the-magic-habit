@@ -15,6 +15,7 @@ import (
 type AppConfig struct {
 	Env           string
 	IsDevelopment bool
+	AppDomain     string
 
 	Shared shared.Config
 
@@ -42,6 +43,7 @@ func (config *AppConfig) LoadConfig() error {
 
 	config.Env = appEnv
 	config.IsDevelopment = appEnv == "development"
+	config.AppDomain = getEnv("APP_DOMAIN", "")
 
 	if err := config.Shared.LoadConfig(); err != nil {
 		log.Fatalf("Failed to load shared config: %v", err)

@@ -38,8 +38,6 @@ RUN cd packages/mazic-server && go mod download
 COPY ./packages/mazic-server/ /app/packages/mazic-server/
 COPY --from=web-builder /app/dist/packages/mazic/ /app/packages/mazic-server/web/dist/
 
-RUN ls -li /app/packages/mazic-server
-
 WORKDIR /app/packages/mazic-server
 RUN go build -o server .
 
@@ -77,6 +75,8 @@ RUN --mount=type=secret,id=SUPABASE_BUCKET \
 RUN --mount=type=secret,id=SUPABASE_SERVICE_ROLE \
       SUPABASE_SERVICE_ROLE="$(cat /run/secrets/SUPABASE_SERVICE_ROLE)" && \
       echo "SUPABASE_SERVICE_ROLE=\"${SUPABASE_SERVICE_ROLE}\"" >> /app/packages/mazic-server/.env.production
+
+RUN cat /app/packages/mazic-server/.env.production
 
 EXPOSE 8090
 

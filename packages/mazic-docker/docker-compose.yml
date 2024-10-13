@@ -1,3 +1,5 @@
+name: mazic-habit
+
 services:
   mazic-server:
     image: phidndev/dev:mazic_server_v0
@@ -7,12 +9,3 @@ services:
       - "8090:8090"
     environment:
       APP_ENV: production
-    #   APP_DOMAIN: ${APP_DOMAIN}
-    #   JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
-    #   JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
-    #   ACCESS_TOKEN_EXPIRED_IN: ${ACCESS_TOKEN_EXPIRED_IN}
-    #   REFRESH_TOKEN_EXPIRED_IN: ${REFRESH_TOKEN_EXPIRED_IN}
-    #   BCRYPT_COST: ${BCRYPT_COST}
-    #   SUPABASE_URL: ${SUPABASE_URL}
-    #   SUPABASE_BUCKET: ${SUPABASE_BUCKET}
-    #   SUPABASE_SERVICE_ROLE: ${SUPABASE_SERVICE_ROLE}
