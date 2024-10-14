@@ -15,4 +15,4 @@ export const authRoute = [
   },
 ]
 
-export { TLogin, TRegister } from './schemas'
+export { type TLogin, type TRegister } from './schemas'

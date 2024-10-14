@@ -8,7 +8,7 @@ const CheckInPage = () => {
   const { data, refetch, isPending } = useFindWidget(api_key as string)
 
   return (
-    <div className="p-2 lg:px-0 mx-auto w-full max-w-[1000px]">
+    <div className="p-2 lg:px-0 mx-auto w-full max-w-[1000px] min-h-screen flex items-center">
       <CheckInHeatmap isLoading={isPending} habit={data} refetch={refetch} />
     </div>
   )

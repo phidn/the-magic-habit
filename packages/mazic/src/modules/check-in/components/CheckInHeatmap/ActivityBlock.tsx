@@ -94,7 +94,7 @@ export const ActivityBlock = (props: Props) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <rect
-          // ref={ref}
+          ref={isToday && isWidget ? ref : undefined}
           {...svgProps}
           style={{
             ...svgProps.style,
