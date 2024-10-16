@@ -13,9 +13,10 @@ export function getDateToString(date: Date) {
 export function formatData(data: SVGProps['value'] = []) {
   const result: Record<string, HeatMapValue> = {}
   data.forEach((item) => {
-    if (item.date && isValidDate(new Date(item.date))) {
-      item.date = getDateToString(new Date(item.date))
-      result[item.date] = item
+    const _item = { ...item }
+    if (_item?.date && isValidDate(new Date(_item?.date))) {
+      _item.date = getDateToString(new Date(_item.date))
+      result[_item.date] = _item
     }
   })
   return result

@@ -31,7 +31,7 @@ func NewPocket() *Pocket {
 		regular := color.New()
 		regular.Printf("├─ REST API: %s\n", color.CyanString(config.Config.AppDomain+"/api/"))
 		regular.Printf("├─ ADMIN UI: %s\n", color.CyanString(config.Config.AppDomain+"/_/"))
-		regular.Printf("├─ WEB UI: %s\n", color.CyanString(config.Config.AppDomain+"/web/"))
+		regular.Printf("├─ WEB UI: %s\n", color.CyanString(config.Config.AppDomain+"/"))
 		return nil
 	})
 

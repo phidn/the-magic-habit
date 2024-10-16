@@ -42,7 +42,7 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
-    sourcemap: process.env.NODE_ENV === 'development',
+    sourcemap: true,
     rollupOptions: {
       onwarn(warning, defaultHandler) {
         if (warning.code === 'SOURCEMAP_ERROR') {
