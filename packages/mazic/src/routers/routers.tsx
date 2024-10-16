@@ -4,6 +4,7 @@ import { ProtectedLayout } from '@mazic/layouts/ProtectedLayout/ProtectedLayout'
 import { checkInRoute } from '@mazic/modules/check-in'
 import { dashboardRoute } from '@mazic/modules/dashboard'
 import { habitRoute } from '@mazic/modules/habit'
+import { homeRoute } from '@mazic/modules/home'
 import { actionRoute } from '@mazic/modules/rbac/action'
 import { authRoute } from '@mazic/modules/rbac/auth'
 import { permissionRoute } from '@mazic/modules/rbac/permission'
@@ -13,7 +14,7 @@ import { rolePermissionRoute } from '@mazic/modules/rbac/role-permission'
 import { userRoute } from '@mazic/modules/rbac/user'
 import { systemRoute } from '@mazic/modules/system'
 
-const publicRoutes = [...authRoute, ...checkInRoute]
+const publicRoutes = [...homeRoute, ...authRoute, ...checkInRoute]
 
 const protectedRoutes = [
   ...actionRoute,

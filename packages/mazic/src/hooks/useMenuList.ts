@@ -4,6 +4,7 @@ import { AtomIcon, DashboardIcon, EditUserIcon, GuardIcon } from '@mazic/ui'
 
 import { permissionsConfig } from '@mazic/shared'
 
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { habitPaths } from '@mazic/modules/habit'
 import { userPaths } from '@mazic/modules/rbac/user'
 import { useStore } from '@mazic/store/useStore'
@@ -11,7 +12,7 @@ import { Menu, MenuList, Submenu, TMenuItem, TMenus } from '@mazic/types/menu'
 
 export const MENUS: TMenus = {
   DASHBOARD: {
-    href: '/',
+    href: pathRoutes.dashboard,
     label: 'Dashboard',
     icon: DashboardIcon,
   },

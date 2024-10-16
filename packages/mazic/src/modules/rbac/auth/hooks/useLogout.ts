@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'
 import { deleteAllStorages } from '@mazic/utils/localStorage'
 
@@ -16,7 +17,7 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       deleteAllStorages()
-      navigate('/login')
+      navigate(pathRoutes.auth.login)
     },
   })
 }

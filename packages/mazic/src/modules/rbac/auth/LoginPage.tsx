@@ -42,7 +42,7 @@ const LoginPage = () => {
     mutationFn: (body: TLogin) => authService.login<ApiResponse<AuthResponse>>(body),
     onSuccess: ({ data }) => {
       setCurrentUser(data.data.user)
-      navigate('/')
+      navigate(pathRoutes.dashboard)
     },
     onError: () => {
       setError('root', {

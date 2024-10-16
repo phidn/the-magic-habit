@@ -1,6 +1,7 @@
 import { ReactNode, Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'
 
 import { MainLayout } from '../MainLayout'
@@ -16,7 +17,7 @@ export const ProtectedLayout = ({ children, permission }: Props) => {
 
   useEffect(() => {
     if (loaded && !user?.id) {
-      navigate('/login')
+      navigate(pathRoutes.auth.login)
       return
     }
     if (loaded) {

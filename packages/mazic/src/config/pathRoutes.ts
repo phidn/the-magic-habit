@@ -2,9 +2,9 @@ import { checkInPaths } from '@mazic/modules/check-in'
 import { userPaths } from '@mazic/modules/rbac/user'
 
 export const pathRoutes = {
-  dashboard: '/',
-  user: userPaths,
   home: '/',
+  dashboard: '/dashboard',
+  user: userPaths,
   checkIn: checkInPaths,
   auth: {
     login: '/login',

@@ -79,7 +79,7 @@ gen-lib:
 
 web: switch-node-version
 	@echo "Starting web..."
-	yarn nx run mazic:serve
+	yarn nx run mazic:serve --verbose
 web-build: switch-node-version
 	@echo "Building web..."
 	yarn nx run mazic:build --skip-nx-cache && \
