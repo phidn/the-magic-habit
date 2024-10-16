@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { GitHubLogoIcon } from '@radix-ui/react-icons'
 import { Menu } from 'lucide-react'
 
 import {
@@ -17,6 +16,7 @@ import {
 } from '@mazic/ui'
 
 import Logo from '@mazic/components/Logo/Logo'
+import { pathRoutes } from '@mazic/config/pathRoutes'
 
 import { LogoIcon } from './Icons'
 import { ModeToggle } from './mode-toggle'
@@ -79,9 +79,7 @@ export const Navbar = () => {
                     </a>
                   ))}
                   <ButtonLink
-                    rel="noreferrer noopener"
-                    href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-                    target="_blank"
+                    href={pathRoutes.home}
                     className={`w-[110px] border ${buttonVariants({
                       variant: 'secondary',
                     })}`}
@@ -112,9 +110,7 @@ export const Navbar = () => {
 
           <div className="hidden md:flex gap-2">
             <ButtonLink
-              rel="noreferrer noopener"
-              href="https://github.com/leoMirandaa/shadcn-landing-page.git"
-              target="_blank"
+              href={pathRoutes.auth.login}
               className={`w-[110px] border ${buttonVariants({
                 variant: 'secondary',
               })}`}

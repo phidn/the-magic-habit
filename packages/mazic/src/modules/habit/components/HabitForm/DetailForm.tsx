@@ -11,7 +11,7 @@ export const DetailForm = () => {
 
   return (
     <div className="mazic-row">
-      <FormItem label="Check-in type" required>
+      <FormItem label="Check-in type" required col={6}>
         <FormSelect
           field="check_in_type"
           placeholder="Select check-in type..."
@@ -24,17 +24,14 @@ export const DetailForm = () => {
           }}
         />
       </FormItem>
-      <FormItem label="Title" required>
-        <FormInput field="title" placeholder="Enter habit title..." />
-      </FormItem>
-      <FormItem label="Metric" required={metricRequired}>
-        <FormInput field="metric" placeholder="Enter habit metric..." disabled={!metricRequired} />
-      </FormItem>
-      <FormItem label="Color" required>
+      <FormItem label="Color" required col={6}>
         <FormColorPicker field="color" />
       </FormItem>
-      <FormItem label="Order" required>
-        <FormInput type="number" field="order" placeholder="Enter habit order..." />
+      <FormItem label="Title" required col={6}>
+        <FormInput field="title" placeholder="Enter habit title..." />
+      </FormItem>
+      <FormItem label="Metric (km, hour, minute,...)" required={metricRequired} col={6}>
+        <FormInput field="metric" placeholder="Enter habit metric..." disabled={!metricRequired} />
       </FormItem>
     </div>
   )
