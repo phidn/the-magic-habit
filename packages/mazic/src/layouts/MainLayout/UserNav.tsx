@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { LayoutGrid, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 
 import {
   Avatar,

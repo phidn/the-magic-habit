@@ -49,9 +49,6 @@ export const FormControl = (props: FormControlProps) => {
     values: initialValues,
   })
 
-  // console.log('values', methods.watch())
-  // console.log('errors', methods.formState.errors)
-
   const _formSections = formSections.map((section, idx) => {
     const validFunc = section.validFunc || isValidSection
     return {
@@ -96,7 +93,7 @@ export const FormControl = (props: FormControlProps) => {
         }
       }
     } catch (error) {
-      console.log('~ onSubmit error:', error)
+      // console.log('~ onSubmit error:', error)
     }
   })
 

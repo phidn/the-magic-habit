@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useMatch } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
@@ -53,7 +53,9 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
 
   const { title, activities, color } = habit || {}
-  const blocks = (activities || []).filter((x) => !deletedBlock.includes(x.id))
+  const blocks = useMemo(() => {
+    return (activities || []).filter((x) => !deletedBlock.includes(x.id))
+  }, [activities, deletedBlock])
 
   const { mode, colorMode: activeModeColor } = useColorMode(color)
   const bgColor = mode === 'dark' ? colors.slate[9].hex : colors.slate[1].hex

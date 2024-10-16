@@ -1,3 +1,5 @@
+/* eslint-disable unused-imports/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { Fragment, useMemo } from 'react'
 
 import { Rect, RectProps } from './Rect'

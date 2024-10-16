@@ -15,7 +15,7 @@
     "formatCode": "yarn formatCode:mazic && yarn formatCode:ui",
     "formatCode:mazic": "nx run mazic:formatCode",
     "formatCode:ui": "nx run ui:formatCode",
-    "lint": "yarn nx-clear && yarn lint:mazic",
+    "lint": "yarn lint:mazic",
     "lint:mazic": "nx run mazic:lint",
     "lintFix": "yarn lintFix:mazic && yarn lintFix:ui",
     "lintFix:mazic": "eslint --fix --ext .ts,.tsx ./packages/mazic",

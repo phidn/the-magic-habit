@@ -6,14 +6,7 @@ import {
 } from '@radix-ui/react-icons'
 import { Table } from '@tanstack/react-table'
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@mazic/ui'
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@mazic/ui'
 
 import { CONFIG } from '@mazic/config/config'
 

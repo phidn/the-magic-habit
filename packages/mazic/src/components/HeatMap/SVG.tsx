@@ -11,8 +11,7 @@ export type HeatMapValue = {
   date: string
   content?: string | string[] | React.ReactNode
   count: number
-}
-export type HeatMapExtended = {
+
   id: string
   column: number
   row: number
@@ -20,6 +19,15 @@ export type HeatMapExtended = {
   level: number
   journal: string
   is_done?: boolean
+}
+export type HeatMapExtended = {
+  // id: string
+  // column: number
+  // row: number
+  // index: number
+  // level: number
+  // journal: string
+  // is_done?: boolean
 }
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
@@ -95,7 +103,7 @@ export default function SVG(props: SVGProps) {
 
   useEffect(() => {
     setTopPad(monthLabels !== undefined ? defaultTopPad : 5)
-  }, [monthLabels])
+  }, [defaultTopPad, monthLabels])
 
   const initStartDate = useMemo(() => {
     if (isValidDate(startDate)) {

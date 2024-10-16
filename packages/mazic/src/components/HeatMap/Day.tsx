@@ -22,7 +22,6 @@ export const Day: FC<PropsWithChildren<DayProps>> = (props) => {
   const {
     transform,
     gridNum = 0,
-    startY = 0,
     panelColors = {},
     initStartDate,
     space = 2,
