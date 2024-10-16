@@ -105,9 +105,7 @@ export const HeroCards = () => {
             <span className="text-muted-foreground"> /month</span>
           </div>
 
-          <CardDescription>
-            Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.
-          </CardDescription>
+          <CardDescription>Everything in free, enjoy your life.</CardDescription>
         </CardHeader>
 
         <CardContent>

@@ -69,7 +69,7 @@ export const Pricing = () => {
         Access
       </h2>
       <h3 className="text-xl text-center text-muted-foreground pt-4 pb-8">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias reiciendis.
+        Choose the plan that suits you best.
       </h3>
       <div className="grid md:grid-cols-12 lg:grid-cols-12 gap-8">
         <div className="col-span-2"></div>
