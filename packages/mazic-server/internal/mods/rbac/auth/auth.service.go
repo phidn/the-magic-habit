@@ -3,7 +3,9 @@ package auth
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"time"
@@ -28,6 +30,7 @@ type AuthService interface {
 	GetMe(ctx context.Context, userId string) (*user.User, error)
 	VerifyCode(ctx context.Context, code string) (string, error)
 	ForgotPassword(ctx context.Context, email string) error
+	RefreshToken(ctx context.Context, refreshToken string) (*Tokens, error)
 }
 
 type authService struct {
@@ -57,6 +60,17 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 	}
 
 	now := time.Now()
+	fmt.Println("printData 1", string(func() []byte { b, _ := json.MarshalIndent(config.Config.AccessTokenExpiresIn, "", "  "); return b }()))
+	fmt.Println("printData 2", string(func() []byte { b, _ := json.MarshalIndent(config.Config.RefreshTokenExpiresIn, "", "  "); return b }()))
+
+	fmt.Println("printData exp 1", string(func() []byte {
+		b, _ := json.MarshalIndent(now.Add(config.Config.AccessTokenExpiresIn).Unix(), "", "  ")
+		return b
+	}()))
+	fmt.Println("printData exp 2", string(func() []byte {
+		b, _ := json.MarshalIndent(now.Add(config.Config.RefreshTokenExpiresIn).Unix(), "", "  ")
+		return b
+	}()))
 
 	accessToken, err := token.CreateToken(config.Config.AccessTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
@@ -79,7 +93,7 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 		"nbf":      now.Unix(),
 	})
 	if err != nil {
-		return nil, nil, errors.New("failed to create access token")
+		return nil, nil, errors.New("failed to create refresh token")
 	}
 
 	currentUser, err := service.GetMe(ctx, user.Id)
@@ -223,4 +237,54 @@ func (service *authService) ForgotPassword(ctx context.Context, email string) er
 	}
 
 	return nil
+}
+
+func (service *authService) RefreshToken(ctx context.Context, refreshToken string) (*Tokens, error) {
+	details, err := token.ValidateToken(refreshToken, config.Config.RefreshTokenPublicKey)
+	if err != nil || details["sub"] == nil || details["sub"] == "" {
+		return nil, errors.New("invalid or expired token")
+	}
+
+	userId := details["sub"].(string)
+
+	user := new(user.User)
+	err = service.Entry.Dao().DB().
+		NewQuery(`SELECT id, roles FROM sys_user WHERE id = {:id}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"id": userId}).
+		One(&user)
+	if err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+	accessToken, err := token.CreateToken(config.Config.AccessTokenPrivateKey, jwt.MapClaims{
+		"sub":      user.Id,
+		"token_id": utils.RandomString(),
+		"roles":    utils.ToInterfaceSlice(user.Roles),
+		"exp":      now.Add(config.Config.AccessTokenExpiresIn).Unix(),
+		"iat":      now.Unix(),
+		"nbf":      now.Unix(),
+	})
+	if err != nil {
+		return nil, errors.New("failed to create access token")
+	}
+
+	refreshToken, err = token.CreateToken(config.Config.RefreshTokenPrivateKey, jwt.MapClaims{
+		"sub":      user.Id,
+		"token_id": utils.RandomString(),
+		"roles":    utils.ToInterfaceSlice(user.Roles),
+		"exp":      now.Add(config.Config.RefreshTokenExpiresIn).Unix(),
+		"iat":      now.Unix(),
+		"nbf":      now.Unix(),
+	})
+	if err != nil {
+		return nil, errors.New("failed to create access token")
+	}
+
+	return &Tokens{
+		AccessToken:  accessToken,
+		RefreshToken: refreshToken,
+	}, nil
+
 }

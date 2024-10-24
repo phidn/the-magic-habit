@@ -28,6 +28,7 @@ func (route *AuthRoute) SetupRoutes() {
 		e.Router.POST("/mz/auth/register", route.authController.Register)
 		e.Router.POST("/mz/auth/verify-code", route.authController.VerifyCode)
 		e.Router.GET("/mz/auth/forgot-password", route.authController.ForgotPassword)
+		e.Router.POST("/mz/auth/refresh-token", route.authController.RefreshToken)
 		return nil
 	})
 }

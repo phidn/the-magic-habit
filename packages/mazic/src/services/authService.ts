@@ -14,6 +14,10 @@ export const authService = {
     return http.post<any>('/auth/logout', { access_token, refresh_token })
   },
   getMe: () => http.get<AxiosResponse<TUser>>('/auth/me'),
+  refreshToken: <T = any>() => {
+    const refresh_token = getRefreshTokenFromLS()
+    return http.post<T>('/auth/refresh-token', { refresh_token })
+  },
   resendEmail: (email: string) => http.post('/auth/resend-email', { email }),
   verifyCode: <T = any>(code: string) => http.post<AxiosResponse<T>>('/auth/verify-code', { code }),
 }

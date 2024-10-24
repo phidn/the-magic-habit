@@ -44,7 +44,7 @@ func (middleware *AuthMiddleware) IsAuthenticated(next echo.HandlerFunc) echo.Ha
 		accessToken := parts[1]
 		details, err := token.ValidateToken(accessToken, config.Config.AccessTokenPublicKey)
 		if err != nil || details["sub"] == nil || details["sub"] == "" {
-			return apis.NewUnauthorizedError("expired token", err)
+			return apis.NewUnauthorizedError("invalid or expired token", err)
 		}
 
 		c.Set("state.user_id", details["sub"])

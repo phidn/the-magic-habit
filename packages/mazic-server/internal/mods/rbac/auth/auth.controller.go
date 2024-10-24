@@ -123,6 +123,26 @@ func (controller *AuthController) GetMe(c echo.Context) error {
 	return resp.NewApiSuccess(c, result, "")
 }
 
+func (controller *AuthController) RefreshToken(c echo.Context) error {
+	bodyReq := &struct {
+		RefreshToken string `json:"refresh_token"`
+	}{}
+	if err := c.Bind(bodyReq); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	tokens, err := controller.AuthService.RefreshToken(c.Request().Context(), bodyReq.RefreshToken)
+	if err != nil {
+		return resp.NewUnauthorizedError(c, "Failed to get user.", err)
+	}
+
+	result := map[string]interface{}{
+		"access_token":  tokens.AccessToken,
+		"refresh_token": tokens.RefreshToken,
+	}
+
+	return resp.NewApiSuccess(c, result, "")
+}
+
 func (controller *AuthController) ForgotPassword(c echo.Context) error {
 	code := c.QueryParam("code")
 	if code == "" {

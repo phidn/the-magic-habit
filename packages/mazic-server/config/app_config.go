@@ -59,8 +59,8 @@ func (config *AppConfig) LoadConfig() error {
 	config.AccessTokenPublicKey = getEnv("JWT_PUBLIC_KEY", "")
 	config.RefreshTokenPrivateKey = getEnv("JWT_PRIVATE_KEY", "")
 	config.RefreshTokenPublicKey = getEnv("JWT_PUBLIC_KEY", "")
-	config.AccessTokenExpiresIn = getEnvAsDuration("ACCESS_TOKEN_EXPIRED_IN", "24h")    // 1 day
-	config.RefreshTokenExpiresIn = getEnvAsDuration("REFRESH_TOKEN_EXPIRED_IN", "168h") // 7 days
+	config.AccessTokenExpiresIn = getEnvAsDuration("ACCESS_TOKEN_EXPIRED_IN", "")   // 1 day
+	config.RefreshTokenExpiresIn = getEnvAsDuration("REFRESH_TOKEN_EXPIRED_IN", "") // 7 days
 
 	config.SmtpHost = getEnv("SMTP_HOST", "")
 	config.SmtpPort = getEnvAsInt("SMTP_PORT", 587)
