@@ -23,6 +23,7 @@ import (
 
 type AuthService interface {
 	Login(ctx context.Context, email, password string) (*Tokens, *user.User, error)
+	Register(ctx context.Context, user *UserRegister) (*Tokens, *user.User, error)
 	RegisterWithVerify(ctx context.Context, user *UserRegister) (*models.Record, error)
 	GetMe(ctx context.Context, userId string) (*user.User, error)
 	VerifyCode(ctx context.Context, code string) (string, error)
@@ -118,6 +119,25 @@ func (service *authService) GetMe(ctx context.Context, userId string) (*user.Use
 
 	user.Permissions = permissions
 	return user, nil
+}
+
+func (service *authService) Register(ctx context.Context, user *UserRegister) (*Tokens, *user.User, error) {
+	collection, err := service.Entry.FindCollectionByName(ctx, new(UserRegister).TableName())
+	if err != nil {
+		return nil, nil, err
+	}
+	if err := user.SetPasswordHash(); err != nil {
+		return nil, nil, err
+	}
+
+	record := models.NewRecord(collection)
+	user.ParseRecord(record)
+
+	if err = service.Entry.Dao().Save(record); err != nil {
+		return nil, nil, err
+	}
+
+	return service.Login(ctx, user.Email, user.Password)
 }
 
 func (service *authService) RegisterWithVerify(ctx context.Context, user *UserRegister) (*models.Record, error) {

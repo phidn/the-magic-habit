@@ -44,6 +44,32 @@ func (controller *AuthController) Register(c echo.Context) error {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
 
+	tokens, user, err := controller.AuthService.Register(c.Request().Context(), userReg)
+	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint") {
+			return resp.NewConflictError(c, "The email has been used.", err)
+		}
+		return resp.NewApplicationError(c, "Failed to create user.", err)
+	}
+
+	result := map[string]interface{}{
+		"access_token":  tokens.AccessToken,
+		"refresh_token": tokens.RefreshToken,
+		"user":          user,
+	}
+
+	return resp.NewApiSuccess(c, result, "")
+}
+
+func (controller *AuthController) RegisterWithVerify(c echo.Context) error {
+	userReg := &UserRegister{}
+	if err := c.Bind(userReg); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if err := userReg.Validate(); err != nil {
+		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
+	}
+
 	record, err := controller.AuthService.RegisterWithVerify(c.Request().Context(), userReg)
 	if err != nil {
 		if strings.Contains(err.Error(), "UNIQUE constraint") {

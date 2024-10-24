@@ -18,6 +18,7 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { authService } from '@mazic/services/authService'
+import { useStore } from '@mazic/store/useStore'
 import { ApiResponse } from '@mazic/types'
 import { AuthResponse } from '@mazic/types/response'
 
@@ -26,6 +27,7 @@ import { registerSchema, TRegister } from './schemas'
 
 const RegisterPage = () => {
   const navigate = useNavigate()
+  const setCurrentUser = useStore((store) => store.setCurrentUser)
 
   const methods = useForm<TRegister>({
     resolver: zodResolver(registerSchema),
@@ -39,13 +41,10 @@ const RegisterPage = () => {
 
   const registerMutation = useMutation({
     mutationFn: (body: TRegister) => authService.register<ApiResponse<AuthResponse>>(body),
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       toast.success('Your account has been created successfully')
-      navigate(pathRoutes.auth.verifyEmail, {
-        state: {
-          email: methods.getValues('email'),
-        },
-      })
+      setCurrentUser(data.data.user)
+      navigate(pathRoutes.dashboard)
     },
     onError: (error) => {
       setError('root', {
