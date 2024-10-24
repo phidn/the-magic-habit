@@ -18,16 +18,5 @@
       "mode": "debug",
       "program": "${workspaceFolder}/packages/mazic-prisma-go/main.go"
     },
-    {
-      "name": "MAZIC-POCKETBASE",
-      "type": "go",
-      "request": "launch",
-      "mode": "debug",
-      "program": "${workspaceFolder}/packages/mazic-pocketbase/examples/base",
-      "buildFlags": "-tags=pq",
-      "args": ["serve", "--dev"],
-      "envFile": "${workspaceFolder}/packages/mazic-pocketbase/.env",
-      "debugAdapter": "dlv-dap"
-    }
   ]
 }

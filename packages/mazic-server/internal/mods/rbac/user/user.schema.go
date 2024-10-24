@@ -17,14 +17,15 @@ var _ models.Model = (*User)(nil)
 type User struct {
 	models.BaseModel
 
-	FirstName    string `db:"first_name" json:"first_name"`
-	LastName     string `db:"last_name" json:"last_name"`
-	Email        string `db:"email" json:"email"`
-	Password     string `db:"-" json:"password"`
-	PasswordHash string `db:"password_hash" json:"-"`
-	Avatar       string `db:"avatar" json:"avatar"`
-	Bio          string `db:"bio" json:"bio"`
-	Verified     bool   `db:"verified" json:"verified"`
+	FirstName        string `db:"first_name" json:"first_name"`
+	LastName         string `db:"last_name" json:"last_name"`
+	Email            string `db:"email" json:"email"`
+	Password         string `db:"-" json:"password"`
+	PasswordHash     string `db:"password_hash" json:"-"`
+	Avatar           string `db:"avatar" json:"avatar"`
+	Bio              string `db:"bio" json:"bio"`
+	Verified         bool   `db:"verified" json:"verified"`
+	VerificationCode string `db:"verification_code" json:"verification_code"`
 
 	Roles       types.JsonArray[any]    `db:"roles" json:"roles"`
 	Permissions []permission.Permission `db:"-" json:"permissions"`

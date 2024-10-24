@@ -8,6 +8,7 @@ import {
   AceDivide,
   Alert,
   AlertDescription,
+  Button,
   ExclamationTriangleIcon,
   FormMessage,
   Input,
@@ -20,7 +21,6 @@ import { authService } from '@mazic/services/authService'
 import { ApiResponse } from '@mazic/types'
 import { AuthResponse } from '@mazic/types/response'
 
-import { BottomGradient } from './components/BottomGradient'
 import { LabelInputContainer } from './components/LabelInputContainer'
 import { registerSchema, TRegister } from './schemas'
 
@@ -41,12 +41,17 @@ const RegisterPage = () => {
     mutationFn: (body: TRegister) => authService.register<ApiResponse<AuthResponse>>(body),
     onSuccess: () => {
       toast.success('Your account has been created successfully')
-      navigate(pathRoutes.auth.login)
+      navigate(pathRoutes.auth.verifyEmail, {
+        state: {
+          email: methods.getValues('email'),
+        },
+      })
     },
-    onError: () => {
+    onError: (error) => {
       setError('root', {
         type: 'manual',
-        message: "That email/username and password combination didn't work. Try again.",
+        message:
+          error.name === 'ConflictError' ? 'Email already exists' : 'Failed to create account',
       })
     },
   })
@@ -109,13 +114,9 @@ const RegisterPage = () => {
               />
               {errors.password && <FormMessage>{errors.password.message}</FormMessage>}
             </LabelInputContainer>
-            <button
-              className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
-              type="submit"
-            >
+            <Button className="w-full mt-4" type="submit">
               Sign up
-              <BottomGradient />
-            </button>
+            </Button>
           </form>
         </FormProvider>
         <div className="mt-4 text-center text-sm">

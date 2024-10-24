@@ -1,7 +1,6 @@
 import { lazy } from 'react'
 
-import { permissionsConfig } from '@mazic/shared'
-
+import { PERMISSIONS } from '@mazic/config/permissions'
 import { TRoutes } from '@mazic/types'
 
 export const habitPaths = {
@@ -14,22 +13,22 @@ export const habitPaths = {
 export const habitRoute: TRoutes = [
   {
     path: habitPaths.list,
-    permission: permissionsConfig.habit.view,
+    permission: PERMISSIONS.habit.view,
     Component: lazy(() => import('./pages/HabitListPage')),
   },
   {
     path: habitPaths.view,
-    permission: permissionsConfig.habit.view,
+    permission: PERMISSIONS.habit.view,
     Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
     path: habitPaths.edit,
-    permission: permissionsConfig.habit.update,
+    permission: PERMISSIONS.habit.update,
     Component: lazy(() => import('./pages/HabitUpdatePage')),
   },
   {
     path: habitPaths.create,
-    permission: permissionsConfig.habit.create,
+    permission: PERMISSIONS.habit.create,
     Component: lazy(() => import('./pages/HabitCreatePage')),
   },
 ]

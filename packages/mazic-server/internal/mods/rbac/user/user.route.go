@@ -1,7 +1,6 @@
 package user
 
 import (
-	"github.com/golangthang/mazic-habit/config"
 	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
@@ -29,9 +28,7 @@ func (route *UserRoute) SetupRoutes() {
 		r.Use(route.authMiddleware.IsAuthenticated)
 		r.PUT("/profile", route.controller.UpdateProfile)
 
-		allActionsCode := config.Config.Shared.Permissions.Administration.AllActions
-		r.Use(route.authMiddleware.HasPermissions(allActionsCode))
-
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
 		r.GET("", route.controller.Find)
 		r.GET("/:id", route.controller.GetById)
 		r.POST("", route.controller.Create)

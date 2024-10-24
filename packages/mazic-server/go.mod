@@ -2,20 +2,19 @@ module github.com/golangthang/mazic-habit
 
 go 1.22
 
-replace github.com/golangthang/mazic-habit/shared => ../mazic-shared
-
 require (
+	github.com/domodwyer/mailyak/v3 v3.6.2
 	github.com/fatih/color v1.17.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/godruoyi/go-snowflake v0.0.2
 	github.com/golang-jwt/jwt/v4 v4.5.0
-	github.com/golangthang/mazic-habit/shared v0.0.0-00010101000000-000000000000
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v5 v5.0.0-20230722203903-ec5b858dab61
 	github.com/pocketbase/dbx v1.10.1
 	github.com/pocketbase/pocketbase v0.22.21
 	go.uber.org/fx v1.22.2
 	golang.org/x/crypto v0.26.0
+	golang.org/x/net v0.28.0
 )
 
 require (
@@ -41,7 +40,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.30.5 // indirect
 	github.com/aws/smithy-go v1.20.4 // indirect
 	github.com/disintegration/imaging v1.6.2 // indirect
-	github.com/domodwyer/mailyak/v3 v3.6.2 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.5 // indirect
 	github.com/ganigeorgiev/fexpr v0.4.1 // indirect
@@ -70,7 +68,6 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	gocloud.dev v0.39.0 // indirect
 	golang.org/x/image v0.19.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
 	golang.org/x/oauth2 v0.22.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.24.0 // indirect

@@ -4,6 +4,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 	"github.com/go-ozzo/ozzo-validation/v4/is"
 	"github.com/golangthang/mazic-habit/config"
+	"github.com/golangthang/mazic-habit/pkg/utils"
 	"github.com/pocketbase/pocketbase/models"
 	"github.com/pocketbase/pocketbase/tools/types"
 	"golang.org/x/crypto/bcrypt"
@@ -24,12 +25,13 @@ var _ models.Model = (*UserRegister)(nil)
 type UserRegister struct {
 	models.BaseModel
 
-	FirstName    string               `db:"first_name" json:"first_name"`
-	LastName     string               `db:"last_name" json:"last_name"`
-	Email        string               `db:"email" json:"email"`
-	Password     string               `db:"-" json:"password"`
-	PasswordHash string               `db:"password_hash" json:"-"`
-	Roles        types.JsonArray[any] `db:"roles" json:"roles"`
+	FirstName        string               `db:"first_name" json:"first_name"`
+	LastName         string               `db:"last_name" json:"last_name"`
+	Email            string               `db:"email" json:"email"`
+	Password         string               `db:"-" json:"password"`
+	PasswordHash     string               `db:"password_hash" json:"-"`
+	VerificationCode string               `db:"verification_code" json:"verification_code"`
+	Roles            types.JsonArray[any] `db:"roles" json:"roles"`
 }
 
 func (m *UserRegister) TableName() string {
@@ -62,7 +64,8 @@ func (user *UserRegister) ParseRecord(record *models.Record) error {
 	record.Set("last_name", user.LastName)
 	record.Set("email", user.Email)
 	record.Set("password_hash", user.PasswordHash)
-	record.Set("verified", true)
+	record.Set("verified", false)
+	record.Set("verification_code", utils.RandomString())
 
 	userRole := []string{config.UserRoleId}
 	record.Set("roles", userRole)

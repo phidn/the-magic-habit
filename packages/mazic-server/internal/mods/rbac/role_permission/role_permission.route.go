@@ -1,7 +1,6 @@
 package role_permission
 
 import (
-	"github.com/golangthang/mazic-habit/config"
 	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
@@ -27,8 +26,7 @@ func (route *RolePermissionRoute) SetupRoutes() {
 		r := e.Router.Group("/mz/roles-permissions")
 		r.Use(route.authMiddleware.IsAuthenticated)
 
-		allActionsCode := config.Config.Shared.Permissions.Administration.AllActions
-		r.Use(route.authMiddleware.HasPermissions(allActionsCode))
+		r.Use(route.authMiddleware.HasPermissions("administration.all_actions"))
 
 		r.GET("", route.controller.Find)
 		r.PUT("", route.controller.Update)

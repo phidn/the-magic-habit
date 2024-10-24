@@ -5,7 +5,6 @@ COPY ./package.json ./yarn.lock ./.yarnrc.yml ./tsconfig.base.json ./nx.json ./.
 COPY ./.yarn/ /app/.yarn/
 COPY ./packages/mazic /app/packages/mazic
 COPY ./packages/mazic-ui /app/packages/mazic-ui
-COPY ./packages/mazic-shared /app/packages/mazic-shared
 
 RUN yarn
 
@@ -27,9 +26,7 @@ FROM golang:1.22-alpine AS builder
 WORKDIR /app
 COPY packages/mazic-server/go.mod ./packages/mazic-server/
 COPY packages/mazic-server/go.sum ./packages/mazic-server/
-COPY packages/mazic-shared/ ./packages/mazic-shared/
 
-RUN cd packages/mazic-shared && go mod download
 RUN cd packages/mazic-server && go mod download
 
 COPY ./packages/mazic-server/ /app/packages/mazic-server/
@@ -40,7 +37,6 @@ RUN go build -o server .
 
 FROM alpine:latest
 WORKDIR /app
-COPY --from=builder /app/packages/mazic-shared/ ./packages/mazic-shared/
 COPY --from=builder /app/packages/mazic-server/server ./packages/mazic-server/
 RUN --mount=type=secret,id=APP_ENV \
       APP_ENV="$(cat /run/secrets/APP_ENV)" && \

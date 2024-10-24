@@ -1,7 +1,6 @@
 import { lazy } from 'react'
 
-import { permissionsConfig } from '@mazic/shared'
-
+import { PERMISSIONS } from '@mazic/config/permissions'
 import { TRoutes } from '@mazic/types'
 
 export const userPaths = {
@@ -15,27 +14,27 @@ export const userPaths = {
 export const userRoute: TRoutes = [
   {
     path: userPaths.list,
-    permission: permissionsConfig.administration.all_actions,
+    permission: PERMISSIONS.administration.all_actions,
     Component: lazy(() => import('./pages/UserListPage')),
   },
   {
     path: userPaths.view,
-    permission: permissionsConfig.administration.all_actions,
+    permission: PERMISSIONS.administration.all_actions,
     Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
     path: userPaths.edit,
-    permission: permissionsConfig.administration.all_actions,
+    permission: PERMISSIONS.administration.all_actions,
     Component: lazy(() => import('./pages/UserUpdatePage')),
   },
   {
     path: userPaths.create,
-    permission: permissionsConfig.administration.all_actions,
+    permission: PERMISSIONS.administration.all_actions,
     Component: lazy(() => import('./pages/UserCreatePage')),
   },
   {
     path: userPaths.profile,
-    permission: permissionsConfig.profile.save,
+    permission: PERMISSIONS.profile.save,
     Component: lazy(() => import('./pages/UserProfilePage')),
   },
 ]

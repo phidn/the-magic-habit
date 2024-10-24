@@ -1,7 +1,6 @@
 package habit
 
 import (
-	"github.com/golangthang/mazic-habit/config"
 	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
@@ -28,13 +27,12 @@ func (route *HabitRoute) SetupRoutes() {
 		r.GET("/widget/:api_key", route.controller.FindWidget)
 
 		r.Use(route.authMiddleware.IsAuthenticated)
-		habitCodes := config.Config.Shared.Permissions.Habit
 
-		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions(habitCodes.View))
-		r.GET("/:id", route.controller.FindOne, route.authMiddleware.HasPermissions(habitCodes.View))
-		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions(habitCodes.Create))
-		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions(habitCodes.Update))
-		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions(habitCodes.Delete))
+		r.GET("", route.controller.Find, route.authMiddleware.HasPermissions("habit.view"))
+		r.GET("/:id", route.controller.FindOne, route.authMiddleware.HasPermissions("habit.view"))
+		r.POST("", route.controller.Create, route.authMiddleware.HasPermissions("habit.create"))
+		r.PUT("/:id", route.controller.Update, route.authMiddleware.HasPermissions("habit.update"))
+		r.DELETE("/:id", route.controller.Delete, route.authMiddleware.HasPermissions("habit.delete"))
 
 		return nil
 	})

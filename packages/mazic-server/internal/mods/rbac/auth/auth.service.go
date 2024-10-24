@@ -1,14 +1,18 @@
 package auth
 
 import (
+	"bytes"
 	"context"
 	"errors"
+	"html/template"
+	"log"
 	"time"
 
 	"github.com/golangthang/mazic-habit/config"
 	"github.com/golangthang/mazic-habit/internal/mods/rbac/permission"
 	"github.com/golangthang/mazic-habit/internal/mods/rbac/user"
 	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 	"github.com/golangthang/mazic-habit/pkg/token"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 
@@ -19,17 +23,21 @@ import (
 
 type AuthService interface {
 	Login(ctx context.Context, email, password string) (*Tokens, *user.User, error)
-	Register(ctx context.Context, user *UserRegister) (*models.Record, error)
+	RegisterWithVerify(ctx context.Context, user *UserRegister) (*models.Record, error)
 	GetMe(ctx context.Context, userId string) (*user.User, error)
+	VerifyCode(ctx context.Context, code string) (string, error)
+	ForgotPassword(ctx context.Context, email string) error
 }
 
 type authService struct {
-	Entry entry.Entry
+	Entry  entry.Entry
+	Mailer *infrastructure.Mailer
 }
 
-func NewAuthService(entry entry.Entry) AuthService {
+func NewAuthService(entry entry.Entry, mailer *infrastructure.Mailer) AuthService {
 	return &authService{
-		Entry: entry,
+		Entry:  entry,
+		Mailer: mailer,
 	}
 }
 
@@ -112,7 +120,7 @@ func (service *authService) GetMe(ctx context.Context, userId string) (*user.Use
 	return user, nil
 }
 
-func (service *authService) Register(ctx context.Context, user *UserRegister) (*models.Record, error) {
+func (service *authService) RegisterWithVerify(ctx context.Context, user *UserRegister) (*models.Record, error) {
 	collection, err := service.Entry.FindCollectionByName(ctx, new(UserRegister).TableName())
 	if err != nil {
 		return nil, err
@@ -124,8 +132,75 @@ func (service *authService) Register(ctx context.Context, user *UserRegister) (*
 	record := models.NewRecord(collection)
 	user.ParseRecord(record)
 
-	if err := service.Entry.Dao().Save(record); err != nil {
+	if err = service.Entry.Dao().Save(record); err != nil {
 		return nil, err
 	}
+
+	go func() {
+		tmpl, err := template.ParseFiles("internal/mods/rbac/auth/verify_email.html")
+		if err != nil {
+			log.Printf("Failed to parse email template: %v", err)
+		}
+		data := struct {
+			AppName   string
+			ActionUrl string
+		}{
+			AppName:   "The Magic Habit",
+			ActionUrl: config.Config.AppDomain + "/verify?code=" + record.GetString("verification_code"),
+		}
+		var body bytes.Buffer
+		if err := tmpl.Execute(&body, data); err != nil {
+			log.Printf("Failed to execute email template: %v", err)
+		}
+
+		err = service.Mailer.SendMail("Welcome to The Magic Habit", body.String(), user.Email)
+		if err != nil {
+			log.Printf("Failed to send verification email to %s: %v", user.Email, err)
+		} else {
+			log.Printf("Verification email sent to %s", user.Email)
+		}
+	}()
+
 	return record, nil
+}
+
+func (service *authService) VerifyCode(ctx context.Context, verification_code string) (string, error) {
+	user := new(user.User)
+	err := service.Entry.Dao().DB().
+		NewQuery(`SELECT id, email, verification_code, verified FROM sys_user WHERE verification_code = {:verification_code}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"verification_code": verification_code}).
+		One(&user)
+	if err != nil {
+		return "", errors.New("Invalid verification code.")
+	}
+
+	if user.Verified {
+		return "", errors.New("Email has been verified.")
+	}
+
+	_, err = service.Entry.Dao().DB().
+		NewQuery(`UPDATE sys_user SET verified = TRUE, verification_code = "" WHERE id = {:id}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"id": user.Id}).
+		Execute()
+	if err != nil {
+		return "", err
+	}
+
+	return user.Email, nil
+}
+
+func (service *authService) ForgotPassword(ctx context.Context, email string) error {
+	user := new(user.User)
+	err := service.Entry.Dao().DB().
+		NewQuery(`SELECT id, email, verification_code, verified FROM sys_user WHERE verification_code = {:verification_code}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"email": email}).
+		One(&user)
+	if err != nil {
+		return errors.New("Email not found.")
+	}
+
+	return nil
 }

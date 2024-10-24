@@ -1,7 +1,6 @@
 package check_in
 
 import (
-	"github.com/golangthang/mazic-habit/config"
 	middlewares "github.com/golangthang/mazic-habit/internal/middlewares"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 
@@ -27,10 +26,9 @@ func (route *CheckInRoute) SetupRoutes() {
 		r := e.Router.Group("/mz/check-in")
 
 		r.Use(route.authMiddleware.IsAuthenticated)
-		checkInCodes := config.Config.Shared.Permissions.HabitCheckIn
 
-		r.POST("", route.controller.CheckIn, route.authMiddleware.HasPermissions(checkInCodes.Save))
-		r.DELETE("/:id", route.controller.DeleteCheckIn, route.authMiddleware.HasPermissions(checkInCodes.Delete))
+		r.POST("", route.controller.CheckIn, route.authMiddleware.HasPermissions("habit_check_in.save"))
+		r.DELETE("/:id", route.controller.DeleteCheckIn, route.authMiddleware.HasPermissions("habit_check_in.delete"))
 
 		return nil
 	})

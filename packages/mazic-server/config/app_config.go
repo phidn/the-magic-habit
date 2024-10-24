@@ -7,8 +7,6 @@ import (
 	"strconv"
 	"time"
 
-	shared "github.com/golangthang/mazic-habit/shared/src/config"
-
 	"github.com/joho/godotenv"
 )
 
@@ -16,8 +14,7 @@ type AppConfig struct {
 	Env           string
 	IsDevelopment bool
 	AppDomain     string
-
-	Shared shared.Config
+	BcryptCost    int
 
 	SupabaseUrl         string
 	SupabaseBucket      string
@@ -32,7 +29,14 @@ type AppConfig struct {
 	AccessTokenExpiresIn   time.Duration
 	RefreshTokenExpiresIn  time.Duration
 
-	BcryptCost int
+	SmtpHost       string
+	SmtpPort       int
+	SmtpUsername   string
+	SmtpPassword   string
+	SmtpTls        bool
+	SmtpLocalName  string
+	SmtpSenderName string
+	SmtpSenderAddr string
 }
 
 var Config AppConfig
@@ -44,10 +48,7 @@ func (config *AppConfig) LoadConfig() error {
 	config.Env = appEnv
 	config.IsDevelopment = appEnv == "development"
 	config.AppDomain = getEnv("APP_DOMAIN", "")
-
-	if err := config.Shared.LoadConfig(); err != nil {
-		log.Fatalf("Failed to load shared config: %v", err)
-	}
+	config.BcryptCost = getEnvAsInt("BCRYPT_COST", 10)
 
 	config.SupabaseUrl = getEnv("BCRYPT_COST", "")
 	config.SupabaseUrl = getEnv("SUPABASE_URL", "")
@@ -61,7 +62,14 @@ func (config *AppConfig) LoadConfig() error {
 	config.AccessTokenExpiresIn = getEnvAsDuration("ACCESS_TOKEN_EXPIRED_IN", "24h")    // 1 day
 	config.RefreshTokenExpiresIn = getEnvAsDuration("REFRESH_TOKEN_EXPIRED_IN", "168h") // 7 days
 
-	config.BcryptCost = getEnvAsInt("BCRYPT_COST", 10)
+	config.SmtpHost = getEnv("SMTP_HOST", "")
+	config.SmtpPort = getEnvAsInt("SMTP_PORT", 587)
+	config.SmtpUsername = getEnv("SMTP_USERNAME", "")
+	config.SmtpPassword = getEnv("SMTP_PASSWORD", "")
+	config.SmtpTls = getEnvAsBool("SMTP_TLS", false)
+	config.SmtpLocalName = getEnv("SMTP_LOCAL_NAME", "")
+	config.SmtpSenderName = getEnv("SMTP_SENDER_NAME", "")
+	config.SmtpSenderAddr = getEnv("SMTP_SENDER_ADDR", "")
 
 	return nil
 }
@@ -95,6 +103,14 @@ func getEnvAsDuration(name string, defaultVal string) time.Duration {
 func getEnvAsInt(name string, defaultVal int) int {
 	valueStr := getEnv(name, "")
 	if value, err := strconv.Atoi(valueStr); err == nil {
+		return value
+	}
+	return defaultVal
+}
+
+func getEnvAsBool(name string, defaultVal bool) bool {
+	valueStr := getEnv(name, "")
+	if value, err := strconv.ParseBool(valueStr); err == nil {
 		return value
 	}
 	return defaultVal

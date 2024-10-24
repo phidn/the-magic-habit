@@ -170,3 +170,16 @@ docker-up:
 	cd packages/mazic-docker && \
 	docker-compose up -d
 	@echo "Docker-compose running."
+
+# ===== MOBILE ======== #
+
+emulator:
+	@echo "Starting emulator..."
+	cd C:/Users/phidn/AppData/Local/Android/Sdk/emulator && ./emulator.exe -avd Pixel_7_API_35
+	@echo "Emulator started."
+
+mobile:
+	@echo "Starting mobile..."
+	cd packages/mazic-mobile && \
+	yarn android
+	@echo "Mobile started."

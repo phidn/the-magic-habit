@@ -2,9 +2,8 @@ import { To, useLocation } from 'react-router-dom'
 
 import { AtomIcon, DashboardIcon, EditUserIcon, GuardIcon } from '@mazic/ui'
 
-import { permissionsConfig } from '@mazic/shared'
-
 import { pathRoutes } from '@mazic/config/pathRoutes'
+import { PERMISSIONS } from '@mazic/config/permissions'
 import { habitPaths } from '@mazic/modules/habit'
 import { userPaths } from '@mazic/modules/rbac/user'
 import { useStore } from '@mazic/store/useStore'
@@ -86,15 +85,15 @@ export const useMenuList = (): MenuList => {
       {
         groupLabel: '',
         menus: [
-          getMenuItem(MENUS.DASHBOARD, permissionMap.has(permissionsConfig.dashboard.view)),
-          getMenuItem(MENUS.HABIT_CREATE, permissionMap.has(permissionsConfig.habit.create)),
-          getMenuItem(MENUS.PROFILE, permissionMap.has(permissionsConfig.profile.save)),
+          getMenuItem(MENUS.DASHBOARD, permissionMap.has(PERMISSIONS.dashboard.view)),
+          getMenuItem(MENUS.HABIT_CREATE, permissionMap.has(PERMISSIONS.habit.create)),
+          getMenuItem(MENUS.PROFILE, permissionMap.has(PERMISSIONS.profile.save)),
         ],
       },
       {
         groupLabel: '',
         menus: [getMenuWithSubmenus(MENUS.SYSTEM)],
-        isAccess: permissionMap.has(permissionsConfig.administration.all_actions),
+        isAccess: permissionMap.has(PERMISSIONS.administration.all_actions),
       },
     ],
   }

@@ -16,7 +16,6 @@
     "baseUrl": ".",
     "paths": {
       "@mazic/*": ["packages/mazic/src/*"],
-      "@mazic/shared": ["packages/mazic-shared/src/index.ts"],
       "@mazic/ui": ["packages/mazic-ui/src/index.ts"]
     }
   },

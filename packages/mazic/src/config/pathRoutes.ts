@@ -9,5 +9,7 @@ export const pathRoutes = {
   auth: {
     login: '/login',
     signUp: '/signup',
+    verifyEmail: '/verify-email',
+    verifyCode: '/verify',
   },
 } as const

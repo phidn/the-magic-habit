@@ -5,15 +5,15 @@ import (
 	"math/big"
 	"strconv"
 
+	mathRand "math/rand"
+
 	"github.com/godruoyi/go-snowflake"
 )
 
 const (
-	// DefaultIdLength is the default length of the generated model id.
-	DefaultIdLength = 15
-
-	// DefaultIdAlphabet is the default characters set used for generating the model id.
-	DefaultIdAlphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
+	DefaultIdLength       = 15
+	DefaultIdAlphabet     = "abcdefghijklmnopqrstuvwxyz0123456789"
+	DefaultRandomAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 )
 
 func RandomSnowflakeId() string {
@@ -38,4 +38,19 @@ func RandomStringWithAlphabet(length int, alphabet string) string {
 
 func RandomString() string {
 	return RandomStringWithAlphabet(DefaultIdLength, DefaultIdAlphabet)
+}
+
+func PseudorandomString(length int) string {
+	return PseudorandomStringWithAlphabet(length, DefaultRandomAlphabet)
+}
+
+func PseudorandomStringWithAlphabet(length int, alphabet string) string {
+	b := make([]byte, length)
+	max := len(alphabet)
+
+	for i := range b {
+		b[i] = alphabet[mathRand.Intn(max)]
+	}
+
+	return string(b)
 }

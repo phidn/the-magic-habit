@@ -14,4 +14,6 @@ export const authService = {
     return http.post<any>('/auth/logout', { access_token, refresh_token })
   },
   getMe: () => http.get<AxiosResponse<TUser>>('/auth/me'),
+  resendEmail: (email: string) => http.post('/auth/resend-email', { email }),
+  verifyCode: <T = any>(code: string) => http.post<AxiosResponse<T>>('/auth/verify-code', { code }),
 }

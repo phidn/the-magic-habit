@@ -43,6 +43,11 @@ func NewForbiddenError(c echo.Context, message string, err any) error {
 	return NewApiError(c, http.StatusForbidden, "ForbiddenError", message, err)
 }
 
+func NewConflictError(c echo.Context, message string, err any) error {
+	message = utils.If(message == "", "Conflict.", message)
+	return NewApiError(c, http.StatusConflict, "ConflictError", message, err)
+}
+
 func NewUnauthorizedError(c echo.Context, message string, err any) error {
 	message = utils.If(message == "", "Unauthorized", message)
 	return NewApiError(c, http.StatusUnauthorized, "UnauthorizedError", message, err)

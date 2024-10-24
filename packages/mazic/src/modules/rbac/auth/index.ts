@@ -13,6 +13,14 @@ export const authRoute = [
     path: pathRoutes.auth.signUp,
     Component: lazy(() => import('./RegisterPage')),
   },
+  {
+    path: pathRoutes.auth.verifyEmail,
+    Component: lazy(() => import('./VerifyEmailPage')),
+  },
+  {
+    path: pathRoutes.auth.verifyCode,
+    Component: lazy(() => import('./VerifyCodePage')),
+  },
 ]
 
 export { type TLogin, type TRegister } from './schemas'

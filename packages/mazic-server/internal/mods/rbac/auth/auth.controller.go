@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"strings"
+
 	"github.com/golangthang/mazic-habit/pkg/resp"
 
 	"github.com/labstack/echo/v5"
@@ -42,8 +44,11 @@ func (controller *AuthController) Register(c echo.Context) error {
 		return resp.NewBadRequestError(c, "Failed to validate request data.", err)
 	}
 
-	record, err := controller.AuthService.Register(c.Request().Context(), userReg)
+	record, err := controller.AuthService.RegisterWithVerify(c.Request().Context(), userReg)
 	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint") {
+			return resp.NewConflictError(c, "The email has been used.", err)
+		}
 		return resp.NewApplicationError(c, "Failed to create user.", err)
 	}
 
@@ -51,8 +56,33 @@ func (controller *AuthController) Register(c echo.Context) error {
 	userReg.Password = ""
 	userReg.Created = record.Created
 	userReg.Updated = record.Updated
+	userReg.Roles = nil
 
 	return resp.NewApiCreated(c, userReg, "The user has been created successfully.")
+}
+
+func (controller *AuthController) VerifyCode(c echo.Context) error {
+	bodyReq := &struct {
+		Code string `json:"code"`
+	}{}
+	if err := c.Bind(bodyReq); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if bodyReq.Code == "" {
+		return resp.NewBadRequestError(c, "Invalid verification code.", nil)
+	}
+	email, err := controller.AuthService.VerifyCode(c.Request().Context(), bodyReq.Code)
+	if err != nil {
+		return resp.NewBadRequestError(c, "", err)
+	}
+
+	result := struct {
+		Email string `json:"email"`
+	}{
+		Email: email,
+	}
+
+	return resp.NewApiSuccess(c, result, "The email has been verified successfully.")
 }
 
 func (controller *AuthController) GetMe(c echo.Context) error {
@@ -65,4 +95,17 @@ func (controller *AuthController) GetMe(c echo.Context) error {
 		return resp.NewUnauthorizedError(c, "Failed to get user.", err)
 	}
 	return resp.NewApiSuccess(c, result, "")
+}
+
+func (controller *AuthController) ForgotPassword(c echo.Context) error {
+	code := c.QueryParam("code")
+	if code == "" {
+		return resp.NewBadRequestError(c, "Invalid verification code.", nil)
+	}
+	err := controller.AuthService.ForgotPassword(c.Request().Context(), code)
+	if err != nil {
+		return resp.NewBadRequestError(c, "", err)
+	}
+
+	return resp.NewApiSuccess(c, nil, "The email has been verified successfully.")
 }

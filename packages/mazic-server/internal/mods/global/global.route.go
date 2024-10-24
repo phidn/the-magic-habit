@@ -23,12 +23,6 @@ func NewGlobalRoute(app *infrastructure.Pocket, controller *GlobalController, au
 
 func (route *GlobalRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		// e.Router.GET(
-		// 	"/*",
-		// 	echo.StaticDirectoryHandler(web.DistDirFS, false),
-		// 	middleware.Gzip(),
-		// )
-
 		r := e.Router.Group("/mz/global")
 		r.Use(route.authMiddleware.IsAuthenticated)
 
