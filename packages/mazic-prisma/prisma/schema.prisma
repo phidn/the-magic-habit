@@ -156,15 +156,17 @@ model sys_role_permission {
 }
 
 model sys_user {
-  id            String              @id @default("'r'||lower(hex(randomblob(7)))")
-  email         String              @unique(map: "idx_3q5O1p3") @default("")
-  password_hash String              @default("")
-  first_name    String              @default("")
-  last_name     String              @default("")
-  avatar        String              @default("")
-  verified      Boolean             @default(false)
-  roles         Unsupported("json") @default(dbgenerated("'[]'"))
-  bio           String              @default("")
-  created       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
-  updated       String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  id                String              @id @default("'r'||lower(hex(randomblob(7)))")
+  email             String              @unique(map: "idx_3q5O1p3") @default("")
+  password_hash     String              @default("")
+  first_name        String              @default("")
+  last_name         String              @default("")
+  avatar            String              @default("")
+  verified          Boolean             @default(false)
+  roles             Unsupported("json") @default(dbgenerated("'[]'"))
+  created           String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  updated           String              @default("strftime('%Y-%m-%d %H:%M:%fZ')")
+  bio               String              @default("")
+  verification_code String              @default("")
+  forgot_code       String              @default("")
 }
