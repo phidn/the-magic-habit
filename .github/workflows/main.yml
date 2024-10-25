@@ -34,14 +34,25 @@ jobs:
 
             "APP_ENV=production"
             "APP_DOMAIN=${{ secrets.APP_DOMAIN }}"
+            "APP_NAME=${{ secrets.APP_NAME }}"
+
             "JWT_PRIVATE_KEY=${{ secrets.JWT_PRIVATE_KEY }}"
             "JWT_PUBLIC_KEY=${{ secrets.JWT_PUBLIC_KEY }}"
             "ACCESS_TOKEN_EXPIRED_IN=168h"
             "REFRESH_TOKEN_EXPIRED_IN=720h"
             "BCRYPT_COST=10"
+
             "SUPABASE_URL=${{ secrets.SUPABASE_URL }}"
             "SUPABASE_BUCKET=${{ secrets.SUPABASE_BUCKET }}"
             "SUPABASE_SERVICE_ROLE=${{ secrets.SUPABASE_SERVICE_ROLE }}"
+
+            "SMTP_HOST=${{ secrets.SMTP_HOST }}"
+            "SMTP_PORT=${{ secrets.SMTP_PORT }}"
+            "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}"
+            "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}"
+            "SMTP_TLS=${{ secrets.SMTP_TLS }}"
+            "SMTP_SENDER_NAME=${{ secrets.SMTP_SENDER_NAME }}"
+            "SMTP_SENDER_ADDR=${{ secrets.SMTP_SENDER_ADDR }}"
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.3
