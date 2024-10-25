@@ -22,19 +22,21 @@ func processCheckInList(habits []*Habit, checkInList []*check_in.CheckIn) error 
 
 	for _, habit := range habits {
 		if items, ok := checkInMap[habit.Id]; ok {
-			processCheckInItem(items, allAvgValue)
+			values := utils.ExtractFieldToSlice(items, "Value")
+			maxValue := utils.Max(values)
+			avgValue := utils.Avg(values)
+
+			processCheckInItem(items, allAvgValue, maxValue, avgValue)
 			habit.CheckInItems = items
+			habit.Meta.Avg = avgValue
+			habit.Meta.Max = maxValue
 		}
 	}
 
 	return nil
 }
 
-func processCheckInItem(checkItems []*check_in.CheckIn, totalAvg float64) error {
-	values := utils.ExtractFieldToSlice(checkItems, "Value")
-	maxValue := utils.Max(values)
-	avgValue := utils.Avg(values)
-
+func processCheckInItem(checkItems []*check_in.CheckIn, totalAvg, maxValue, avgValue float64) error {
 	for _, checkIn := range checkItems {
 		if checkIn.Value > 0 {
 			if checkIn.Value > 0 && checkIn.Value < maxValue/4 {

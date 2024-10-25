@@ -10,6 +10,12 @@ import (
 
 var _ models.Model = (*Habit)(nil)
 
+type HabitMeta struct {
+	Avg    float64 `json:"avg,omitempty"`
+	Max    float64 `json:"max,omitempty"`
+	Streak float64 `json:"streak,omitempty"`
+}
+
 type Habit struct {
 	models.BaseModel
 
@@ -25,6 +31,7 @@ type Habit struct {
 	ApiKey      string `db:"api_key" json:"api_key"`
 
 	CheckInItems []*check_in.CheckIn `json:"check_in_items"`
+	Meta         HabitMeta           `json:"meta"`
 }
 
 func (habit *Habit) TableName() string {

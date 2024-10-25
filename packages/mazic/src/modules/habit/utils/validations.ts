@@ -43,6 +43,10 @@ export type THabit = z.infer<typeof habitSchema> & {
   api_key: string
   check_in_items: TCheckIn[]
   activities: (HeatMapValue & HeatMapExtended)[]
+  meta: {
+    avg: number
+    max: number
+  }
 }
 
 export type THabitCreate = THabit

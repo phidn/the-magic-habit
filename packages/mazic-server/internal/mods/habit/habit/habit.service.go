@@ -108,12 +108,17 @@ func (service *habitService) FindWidget(ctx context.Context, apiKey string, quer
 		return nil, err
 	}
 
-	err = processCheckInItem(*checkInList, 0)
+	values := utils.ExtractFieldToSlice(*checkInList, "Value")
+	maxValue := utils.Max(values)
+	avgValue := utils.Avg(values)
+	err = processCheckInItem(*checkInList, 0, maxValue, avgValue)
 	if err != nil {
 		return nil, err
 	}
 
 	habit.CheckInItems = *checkInList
+	habit.Meta.Avg = avgValue
+	habit.Meta.Max = maxValue
 
 	return habit, nil
 }

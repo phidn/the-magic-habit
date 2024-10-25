@@ -130,7 +130,7 @@ export default function SVG(props: SVGProps) {
       : (monthLabels !== undefined ? topPad + rectSize + space : topPad) + rectSize * 8 + 6
 
   return (
-    <>
+    <div>
       <svg ref={svgRef} style={{ ..._style, ...style }} {...other}>
         <LabelsWeek weekLabels={weekLabels} rectSize={rectSize} space={space} topPad={topPad} />
         <LabelsMonth
@@ -175,6 +175,6 @@ export default function SVG(props: SVGProps) {
           />
         )}
       </svg>
-    </>
+    </div>
   )
 }

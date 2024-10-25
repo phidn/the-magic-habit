@@ -16,6 +16,9 @@ import {
   DropdownMenuTrigger,
   EditIcon,
   EllipsisVerticalIcon,
+  ScrollArea,
+  ScrollBar,
+  SeedlingIcon,
   TooltipProvider,
   TrashIcon,
 } from '@mazic/ui'
@@ -28,6 +31,7 @@ import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useColorMode } from '@mazic/hooks'
 import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
+import { pluralize } from '@mazic/utils/pluralize'
 
 import { checkInType } from '../../utils/utils'
 
@@ -63,6 +67,10 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const startDate = endDate.subtract(1, 'year')
   const isWidget = !!useMatch(pathRoutes.checkIn.widget)
   const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
+
+  if (!habit) {
+    return null
+  }
 
   return (
     <div className={cn('w-full', className)}>
@@ -125,47 +133,62 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
             </div>
           )}
         </CardHeader>
-        <CardContent isLoading={isLoading} className="flex justify-center">
+        <CardContent isLoading={isLoading} className="flex justify-center relative">
           <TooltipProvider delayDuration={300}>
-            <HeatMap
-              width={900}
-              startDate={startDate.toDate()}
-              endDate={endDate.toDate()}
-              value={blocks}
-              legendCellSize={15}
-              rectSize={15}
-              weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-              panelColors={
-                isNumberCheckIn
-                  ? {
-                      0: bgColor,
-                      1: colors[habit.color][2].hex,
-                      2: colors[habit.color][3].hex,
-                      3: colors[habit.color][4].hex,
-                      4: activeModeColor,
-                    }
-                  : {
-                      0: bgColor,
-                      4: colors[habit.color][3].hex,
-                    }
-              }
-              rectRender={(props, data) => {
-                return (
-                  <ActivityBlock
-                    svgProps={props}
-                    data={data}
-                    habit={habit}
-                    color={activeModeColor}
-                    rx={3}
-                    isNumberCheckIn={isNumberCheckIn}
-                    isWidget={isWidget}
-                    onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
-                    refetch={refetch}
-                  />
-                )
-              }}
-              rectProps={{ rx: 3 }}
-            />
+            <ScrollArea className="h-auto pb-5">
+              <HeatMap
+                width={900}
+                startDate={startDate.toDate()}
+                endDate={endDate.toDate()}
+                value={blocks}
+                legendCellSize={15}
+                rectSize={15}
+                weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
+                panelColors={
+                  isNumberCheckIn
+                    ? {
+                        0: bgColor,
+                        1: colors[habit.color][2].hex,
+                        2: colors[habit.color][3].hex,
+                        3: colors[habit.color][4].hex,
+                        4: activeModeColor,
+                      }
+                    : {
+                        0: bgColor,
+                        4: colors[habit.color][3].hex,
+                      }
+                }
+                rectRender={(props, data) => {
+                  return (
+                    <ActivityBlock
+                      svgProps={props}
+                      data={data}
+                      habit={habit}
+                      color={activeModeColor}
+                      rx={3}
+                      isNumberCheckIn={isNumberCheckIn}
+                      isWidget={isWidget}
+                      onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
+                      refetch={refetch}
+                    />
+                  )
+                }}
+                rectProps={{ rx: 3 }}
+              />
+              <ScrollBar orientation="horizontal" />
+              <div className="absolute top-[150px] left-0 pl-6">
+                <div className="flex items-center gap-2">
+                  <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
+                  <p className="text-sm text-secondary-foreground font-bold">
+                    Daily average:{' '}
+                    <span className="font-semibold" style={{ color: activeModeColor }}>
+                      {(habit?.meta?.avg || 0).toFixed(2)}{' '}
+                      {pluralize(habit.metric, habit?.meta?.avg)}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </ScrollArea>
           </TooltipProvider>
         </CardContent>
       </Card>
