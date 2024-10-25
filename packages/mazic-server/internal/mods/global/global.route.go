@@ -23,11 +23,13 @@ func NewGlobalRoute(app *infrastructure.Pocket, controller *GlobalController, au
 
 func (route *GlobalRoute) SetupRoutes() {
 	route.app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		r := e.Router.Group("/mz/global")
-		r.Use(route.authMiddleware.IsAuthenticated)
+		r := e.Router.Group("/mz")
+		r.GET("/files/uploads/:file_name", route.controller.GetFile)
 
-		r.GET("/options", route.controller.ListOptions)
-		r.POST("/upload", route.controller.Upload)
+		r.Use(route.authMiddleware.IsAuthenticated)
+		r.GET("/global/options", route.controller.ListOptions)
+		r.POST("/files/upload", route.controller.Upload)
+		r.POST("/files/upload-s3", route.controller.UploadS3)
 		return nil
 	})
 }

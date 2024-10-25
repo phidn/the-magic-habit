@@ -15,8 +15,8 @@ export const AppLayout = () => {
     state.setCurrentUser,
   ])
 
-  const publicRoutes = Object.values(pathRoutes.auth)
-  const isPublicRoute = publicRoutes.some((route) => window.location.pathname.includes(route))
+  const authRoutes = Object.values(pathRoutes.auth)
+  const isAuthRoute = authRoutes.some((route) => window.location.pathname.includes(route))
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -33,11 +33,11 @@ export const AppLayout = () => {
         setCurrentUser(undefined)
       }
     }
-    if (!isPublicRoute) {
+    if (!isAuthRoute) {
       getCurrentUser()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPublicRoute])
+  }, [isAuthRoute])
 
   useEffect(() => {
     if (CONFIG.isDevelopment) {

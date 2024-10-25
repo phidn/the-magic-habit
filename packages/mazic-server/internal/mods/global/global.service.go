@@ -8,11 +8,14 @@ import (
 	"mime/multipart"
 	"net/http"
 
+	"github.com/gabriel-vasile/mimetype"
+	"github.com/golangthang/mazic-habit/config"
 	"github.com/golangthang/mazic-habit/pkg/entry"
 	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 	"github.com/golangthang/mazic-habit/pkg/supa_storage"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 	"github.com/golangthang/mazic-habit/pkg/valid_pointer"
+	"gocloud.dev/blob"
 
 	"github.com/pocketbase/dbx"
 )
@@ -20,17 +23,20 @@ import (
 type GlobalService interface {
 	ListOptions(ctx context.Context, resource ResourceOption) ([]Option, error)
 	Upload(file *multipart.FileHeader) (string, error)
+	UploadS3(file *multipart.FileHeader) (string, error)
 }
 
 type globalService struct {
 	Entry   entry.Entry
 	Storage *infrastructure.SupaStorage
+	S3      *infrastructure.S3Storage
 }
 
-func NewGlobalService(entry entry.Entry, storage *infrastructure.SupaStorage) GlobalService {
+func NewGlobalService(entry entry.Entry, storage *infrastructure.SupaStorage, s3 *infrastructure.S3Storage) GlobalService {
 	return &globalService{
 		Entry:   entry,
 		Storage: storage,
+		S3:      s3,
 	}
 }
 
@@ -113,4 +119,49 @@ func (service *globalService) Upload(file *multipart.FileHeader) (string, error)
 	}
 	publicFile := service.Storage.GetPublicUrl(service.Storage.Bucket, filePath)
 	return publicFile.SignedURL, nil
+}
+
+func (service *globalService) UploadS3(fh *multipart.FileHeader) (string, error) {
+	f, err := fh.Open()
+	if err != nil {
+		return "", err
+	}
+	defer f.Close()
+
+	mt, err := mimetype.DetectReader(f)
+	if err != nil {
+		return "", err
+	}
+
+	isAllowed := validateMimeType(mt.String(), "image/*")
+	if !isAllowed {
+		return "", errors.New("file type not allowed")
+	}
+
+	// rewind
+	f.Seek(0, io.SeekStart)
+	originalName := fh.Filename
+	if len(originalName) > 255 {
+		originalName = originalName[:255]
+	}
+	opts := &blob.WriterOptions{
+		ContentType: mt.String(),
+		Metadata: map[string]string{
+			"original-filename": originalName,
+		},
+	}
+
+	fileKey := fmt.Sprintf("uploads/%s-%s", utils.RandomString(), fh.Filename)
+
+	w, err := service.S3.NewWriter(service.S3.GetContext(), fileKey, opts)
+	if err != nil {
+		return "", err
+	}
+	defer w.Close()
+
+	if _, err := w.ReadFrom(f); err != nil {
+		return "", err
+	}
+
+	return config.Config.AppDomain + "/mz/files/" + fileKey, nil
 }

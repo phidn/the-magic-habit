@@ -38,6 +38,12 @@ type AppConfig struct {
 	SmtpLocalName  string
 	SmtpSenderName string
 	SmtpSenderAddr string
+
+	S3Bucket    string
+	S3Region    string
+	S3Endpoint  string
+	S3AccessKey string
+	S3SecretKey string
 }
 
 var Config AppConfig
@@ -56,6 +62,12 @@ func (config *AppConfig) LoadConfig() error {
 	config.SupabaseUrl = getEnv("SUPABASE_URL", "")
 	config.SupabaseBucket = getEnv("SUPABASE_BUCKET", "")
 	config.SupabaseServiceRole = getEnv("SUPABASE_SERVICE_ROLE", "")
+
+	config.S3Bucket = getEnv("S3_BUCKET", "")
+	config.S3Region = getEnv("S3_REGION", "")
+	config.S3Endpoint = getEnv("S3_ENDPOINT", "")
+	config.S3AccessKey = getEnv("S3_ACCESS", "")
+	config.S3SecretKey = getEnv("S3_SECRET", "")
 
 	config.AccessTokenPrivateKey = getEnv("JWT_PRIVATE_KEY", "")
 	config.AccessTokenPublicKey = getEnv("JWT_PUBLIC_KEY", "")

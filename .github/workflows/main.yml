@@ -54,6 +54,12 @@ jobs:
             "SMTP_SENDER_NAME=${{ secrets.SMTP_SENDER_NAME }}"
             "SMTP_SENDER_ADDR=${{ secrets.SMTP_SENDER_ADDR }}"
 
+            "S3_ACCESS=${{ secrets.S3_ACCESS }}"
+            "S3_SECRET=${{ secrets.S3_SECRET }}"
+            "S3_BUCKET=${{ secrets.S3_BUCKET }}"
+            "S3_REGION=${{ secrets.S3_REGION }}"
+            "S3_ENDPOINT=${{ secrets.S3_ENDPOINT }}"
+
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.0.3
         with:

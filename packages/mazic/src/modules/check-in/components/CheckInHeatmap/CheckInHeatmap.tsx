@@ -36,7 +36,7 @@ import { ActivityBlock } from './ActivityBlock'
 dayjs.extend(advancedFormat)
 
 interface Props {
-  habit: THabit | undefined
+  habit: THabit
   isLoading?: boolean
   className?: string
   onDelete?: (id: string) => void
@@ -99,7 +99,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                     Widget Link
                   </DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">
-                    <Link className="flex items-center" to={`/habit/edit/${habit?.id}`}>
+                    <Link className="flex items-center w-full" to={`/habit/edit/${habit?.id}`}>
                       <EditIcon className="mr-1" /> Edit
                     </Link>
                   </DropdownMenuItem>
@@ -146,7 +146,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                     }
                   : {
                       0: bgColor,
-                      4: activeModeColor,
+                      4: colors[habit.color][3].hex,
                     }
               }
               rectRender={(props, data) => {

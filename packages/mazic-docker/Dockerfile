@@ -97,6 +97,22 @@ RUN --mount=type=secret,id=SMTP_SENDER_ADDR \
       SMTP_SENDER_ADDR="$(cat /run/secrets/SMTP_SENDER_ADDR)" && \
       echo "SMTP_SENDER_ADDR=\"${SMTP_SENDER_ADDR}\"" >> /app/packages/mazic-server/.env.production
 
+RUN --mount=type=secret,id=S3_ACCESS \
+      S3_ACCESS="$(cat /run/secrets/S3_ACCESS)" && \
+      echo "S3_ACCESS=\"${S3_ACCESS}\"" >> /app/packages/mazic-server/.env.production
+RUN --mount=type=secret,id=S3_SECRET \
+      S3_SECRET="$(cat /run/secrets/S3_SECRET)" && \
+      echo "S3_SECRET=\"${S3_SECRET}\"" >> /app/packages/mazic-server/.env.production
+RUN --mount=type=secret,id=S3_BUCKET \
+      S3_BUCKET="$(cat /run/secrets/S3_BUCKET)" && \
+      echo "S3_BUCKET=\"${S3_BUCKET}\"" >> /app/packages/mazic-server/.env.production
+RUN --mount=type=secret,id=S3_REGION \
+      S3_REGION="$(cat /run/secrets/S3_REGION)" && \
+      echo "S3_REGION=\"${S3_REGION}\"" >> /app/packages/mazic-server/.env.production
+RUN --mount=type=secret,id=S3_ENDPOINT \
+      S3_ENDPOINT="$(cat /run/secrets/S3_ENDPOINT)" && \
+      echo "S3_ENDPOINT=\"${S3_ENDPOINT}\"" >> /app/packages/mazic-server/.env.production
+
 RUN cat /app/packages/mazic-server/.env.production
 
 EXPOSE 8090

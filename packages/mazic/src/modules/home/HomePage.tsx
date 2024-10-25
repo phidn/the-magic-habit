@@ -1,36 +1,35 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { LoadingTop } from '@mazic/components'
+import { useStore } from '@mazic/store/useStore'
+
 import { About } from './components/About'
-import { Cta } from './components/Cta'
-import { FAQ } from './components/FAQ'
-import { Features } from './components/Features'
-import { Footer } from './components/Footer'
 import { Hero } from './components/Hero'
-import { HowItWorks } from './components/HowItWorks'
 import { Navbar } from './components/Navbar'
-import { Newsletter } from './components/Newsletter'
 import { Pricing } from './components/Pricing'
 import { ScrollToTop } from './components/ScrollToTop'
-import { Services } from './components/Services'
-// import { Sponsors } from './components/Sponsors'
-import { Team } from './components/Team'
-import { Testimonials } from './components/Testimonials'
 
 const HomePage = () => {
+  const navigate = useNavigate()
+  const isLogged = useStore((store) => store.currentUser.user)
+
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/dashboard')
+    }
+  }, [navigate, isLogged])
+
+  if (isLogged === undefined) {
+    return <LoadingTop />
+  }
+
   return (
     <div>
       <Navbar />
       <Hero />
-      {/* <Sponsors /> */}
       <About />
-      {/* <HowItWorks /> */}
-      {/* <Features /> */}
-      {/* <Services /> */}
-      {/* <Cta /> */}
-      {/* <Testimonials /> */}
-      {/* <Team /> */}
       <Pricing />
-      {/* <Newsletter /> */}
-      {/* <FAQ /> */}
-      {/* <Footer /> */}
       <ScrollToTop />
     </div>
   )

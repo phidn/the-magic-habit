@@ -11,6 +11,16 @@ func Contains[T comparable](slice []T, element T) bool {
 	return false
 }
 
+func ExistInSlice[T comparable](item T, list []T) bool {
+	for _, v := range list {
+		if v == item {
+			return true
+		}
+	}
+
+	return false
+}
+
 func SliceEqual[T comparable](slice1 []T, slice2 []T) bool {
 	if len(slice1) != len(slice2) {
 		return false

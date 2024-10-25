@@ -18,7 +18,7 @@ func Run() {
 		infrastructure.Modules,
 		entry.Module,
 		middleware.Modules,
-		fx.NopLogger,
+		// fx.NopLogger,
 	)
 	if err := app.Start(context.Background()); err != nil {
 		log.Fatal(err)

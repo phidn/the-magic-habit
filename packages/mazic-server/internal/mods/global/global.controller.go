@@ -1,6 +1,7 @@
 package global
 
 import (
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 	"github.com/golangthang/mazic-habit/pkg/resp"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 
@@ -9,11 +10,13 @@ import (
 
 type GlobalController struct {
 	GlobalService GlobalService
+	S3            *infrastructure.S3Storage
 }
 
-func NewGlobalController(globalService GlobalService) *GlobalController {
+func NewGlobalController(globalService GlobalService, s3 *infrastructure.S3Storage) *GlobalController {
 	return &GlobalController{
 		GlobalService: globalService,
+		S3:            s3,
 	}
 }
 
@@ -51,4 +54,22 @@ func (controller *GlobalController) Upload(c echo.Context) error {
 	}
 
 	return resp.NewApiSuccess(c, link, "")
+}
+
+func (controller *GlobalController) UploadS3(c echo.Context) error {
+	file, err := c.FormFile("file")
+	if err != nil {
+		return resp.NewApplicationError(c, "", err)
+	}
+	link, err := controller.GlobalService.UploadS3(file)
+	if err != nil {
+		return resp.NewApplicationError(c, "", err)
+	}
+
+	return resp.NewApiSuccess(c, link, "")
+}
+
+func (controller *GlobalController) GetFile(c echo.Context) error {
+	fileName := c.PathParam("file_name")
+	return controller.S3.Serve(c.Response(), c.Request(), "uploads/"+fileName, fileName)
 }

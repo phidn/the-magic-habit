@@ -24,7 +24,6 @@ func NewPocket() *Pocket {
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: isGoRun,
 	})
-
 	app.RootCmd.AddCommand(cmd.NewServeCommand(app, false))
 
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {

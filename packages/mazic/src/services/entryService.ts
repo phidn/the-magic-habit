@@ -9,7 +9,7 @@ export const entryService = {
     return http.get<T>(`/global/options?resource=${resource}${query ? `&${query}` : ''}`)
   },
   uploadFile: <T = any>(formData: FormData) =>
-    http.post<T>('/global/upload', formData, {
+    http.post<T>('/files/upload-s3', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     }),
 }
