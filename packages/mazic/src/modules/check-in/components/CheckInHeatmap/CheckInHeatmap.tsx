@@ -29,6 +29,7 @@ import { colors } from '@mazic/config/baseColors'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useColorMode } from '@mazic/hooks'
+import { useWindowSize } from '@mazic/hooks/useWindowSize'
 import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -54,6 +55,9 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
     state.showModalDelete,
     state.showModal,
   ])
+  const windowSize = useWindowSize()
+  const isSmallScreen = windowSize?.width && windowSize?.width < 900
+
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
 
   const { title, activities, color } = habit || {}
@@ -176,18 +180,20 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                 rectProps={{ rx: 3 }}
               />
               <ScrollBar orientation="horizontal" />
-              <div className="absolute top-[150px] left-0 pl-6">
-                <div className="flex items-center gap-2">
-                  <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
-                  <p className="text-sm text-secondary-foreground font-bold">
-                    Daily average:{' '}
-                    <span className="font-semibold" style={{ color: activeModeColor }}>
-                      {(habit?.meta?.avg || 0).toFixed(2)}{' '}
-                      {pluralize(habit.metric, habit?.meta?.avg)}
-                    </span>
-                  </p>
+              {isNumberCheckIn && (
+                <div className={cn('absolute top-[150px] left-0', !isSmallScreen && 'pl-6')}>
+                  <div className="flex items-center gap-2">
+                    <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
+                    <p className="text-sm text-secondary-foreground font-bold">
+                      Daily average:{' '}
+                      <span className="font-semibold" style={{ color: activeModeColor }}>
+                        {(habit?.meta?.avg || 0).toFixed(2)}{' '}
+                        {pluralize(habit.metric, habit?.meta?.avg)}
+                      </span>
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </ScrollArea>
           </TooltipProvider>
         </CardContent>
