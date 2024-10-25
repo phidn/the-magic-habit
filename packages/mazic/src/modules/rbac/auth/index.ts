@@ -21,6 +21,14 @@ export const authRoute = [
     path: pathRoutes.auth.verifyCode,
     Component: lazy(() => import('./VerifyCodePage')),
   },
+  {
+    path: pathRoutes.auth.forgotPassword,
+    Component: lazy(() => import('./ForgotPasswordPage')),
+  },
+  {
+    path: pathRoutes.auth.resetPassword,
+    Component: lazy(() => import('./ResetPasswordPage')),
+  },
 ]
 
 export { type TLogin, type TRegister } from './schemas'

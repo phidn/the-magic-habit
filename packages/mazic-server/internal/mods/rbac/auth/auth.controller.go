@@ -19,11 +19,14 @@ func NewAuthController(authService AuthService) *AuthController {
 }
 
 func (controller *AuthController) Login(c echo.Context) error {
-	loginReq := new(LoginForm)
-	if err := c.Bind(&loginReq); err != nil {
+	bodyReq := &struct {
+		Password string `json:"password"`
+		Email    string `json:"email"`
+	}{}
+	if err := c.Bind(&bodyReq); err != nil {
 		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
-	tokens, user, err := controller.AuthService.Login(c.Request().Context(), loginReq.Email, loginReq.Password)
+	tokens, user, err := controller.AuthService.Login(c.Request().Context(), bodyReq.Email, bodyReq.Password)
 	if err != nil {
 		return resp.NewUnauthorizedError(c, "Invalid email or password.", err)
 	}
@@ -144,14 +147,59 @@ func (controller *AuthController) RefreshToken(c echo.Context) error {
 }
 
 func (controller *AuthController) ForgotPassword(c echo.Context) error {
-	code := c.QueryParam("code")
-	if code == "" {
-		return resp.NewBadRequestError(c, "Invalid verification code.", nil)
+	bodyReq := &struct {
+		Email string `json:"email"`
+	}{}
+	if err := c.Bind(bodyReq); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
 	}
-	err := controller.AuthService.ForgotPassword(c.Request().Context(), code)
+	err := controller.AuthService.ForgotPassword(c.Request().Context(), bodyReq.Email)
 	if err != nil {
 		return resp.NewBadRequestError(c, "", err)
 	}
 
 	return resp.NewApiSuccess(c, nil, "The email has been verified successfully.")
+}
+
+func (controller *AuthController) VerifyForgotCode(c echo.Context) error {
+	bodyReq := &struct {
+		Code string `json:"code"`
+	}{}
+	if err := c.Bind(bodyReq); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if bodyReq.Code == "" {
+		return resp.NewBadRequestError(c, "Invalid forgot code.", nil)
+	}
+	email, err := controller.AuthService.VerifyForgotCode(c.Request().Context(), bodyReq.Code)
+	if err != nil {
+		return resp.NewBadRequestError(c, "", err)
+	}
+
+	result := struct {
+		Email string `json:"email"`
+	}{
+		Email: email,
+	}
+
+	return resp.NewApiSuccess(c, result, "")
+}
+
+func (controller *AuthController) ResetPassword(c echo.Context) error {
+	bodyReq := &struct {
+		Code     string `json:"code"`
+		Password string `json:"password"`
+	}{}
+	if err := c.Bind(bodyReq); err != nil {
+		return resp.NewBadRequestError(c, "Failed to read request data.", err)
+	}
+	if bodyReq.Code == "" {
+		return resp.NewBadRequestError(c, "Invalid forgot code.", nil)
+	}
+	err := controller.AuthService.ResetPassword(c.Request().Context(), bodyReq.Code, bodyReq.Password)
+	if err != nil {
+		return resp.NewBadRequestError(c, "", err)
+	}
+
+	return resp.NewApiSuccess(c, "", "")
 }

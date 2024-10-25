@@ -11,5 +11,7 @@ export const pathRoutes = {
     signUp: '/signup',
     verifyEmail: '/verify-email',
     verifyCode: '/verify',
+    forgotPassword: '/forgot-password',
+    resetPassword: '/reset-password',
   },
 } as const

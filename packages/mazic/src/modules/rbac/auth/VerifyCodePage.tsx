@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import { Terminal } from 'lucide-react'
 import { toast } from 'sonner'
@@ -11,6 +11,7 @@ import { pathRoutes } from '@mazic/config/pathRoutes'
 import { authService } from '@mazic/services/authService'
 
 const VerifyCodePage = () => {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const code = searchParams.get('code')
 
@@ -25,7 +26,8 @@ const VerifyCodePage = () => {
       setEmail(data.data.email)
     },
     onError: () => {
-      setIsVerified(false)
+      toast.error('Invalid verification code.')
+      navigate(pathRoutes.auth.login)
     },
   })
 

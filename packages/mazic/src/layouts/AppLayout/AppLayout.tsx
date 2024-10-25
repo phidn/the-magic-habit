@@ -4,6 +4,7 @@ import { Toaster } from 'sonner'
 
 import { ModalCommon } from '@mazic/components'
 import { CONFIG } from '@mazic/config/config'
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { routers } from '@mazic/routers/routers'
 import { authService } from '@mazic/services/authService'
 import { useStoreShallow } from '@mazic/store/useStore'
@@ -13,6 +14,9 @@ export const AppLayout = () => {
     state.theme.mode,
     state.setCurrentUser,
   ])
+
+  const publicRoutes = Object.values(pathRoutes.auth)
+  const isPublicRoute = publicRoutes.some((route) => window.location.pathname.includes(route))
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -29,9 +33,11 @@ export const AppLayout = () => {
         setCurrentUser(undefined)
       }
     }
-    getCurrentUser()
+    if (!isPublicRoute) {
+      getCurrentUser()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [isPublicRoute])
 
   useEffect(() => {
     if (CONFIG.isDevelopment) {

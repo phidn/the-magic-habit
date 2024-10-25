@@ -3,9 +3,7 @@ package auth
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
 	"html/template"
 	"log"
 	"time"
@@ -31,6 +29,8 @@ type AuthService interface {
 	VerifyCode(ctx context.Context, code string) (string, error)
 	ForgotPassword(ctx context.Context, email string) error
 	RefreshToken(ctx context.Context, refreshToken string) (*Tokens, error)
+	VerifyForgotCode(ctx context.Context, forgot_code string) (string, error)
+	ResetPassword(ctx context.Context, code, password string) error
 }
 
 type authService struct {
@@ -60,17 +60,6 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 	}
 
 	now := time.Now()
-	fmt.Println("printData 1", string(func() []byte { b, _ := json.MarshalIndent(config.Config.AccessTokenExpiresIn, "", "  "); return b }()))
-	fmt.Println("printData 2", string(func() []byte { b, _ := json.MarshalIndent(config.Config.RefreshTokenExpiresIn, "", "  "); return b }()))
-
-	fmt.Println("printData exp 1", string(func() []byte {
-		b, _ := json.MarshalIndent(now.Add(config.Config.AccessTokenExpiresIn).Unix(), "", "  ")
-		return b
-	}()))
-	fmt.Println("printData exp 2", string(func() []byte {
-		b, _ := json.MarshalIndent(now.Add(config.Config.RefreshTokenExpiresIn).Unix(), "", "  ")
-		return b
-	}()))
 
 	accessToken, err := token.CreateToken(config.Config.AccessTokenPrivateKey, jwt.MapClaims{
 		"sub":      user.Id,
@@ -179,7 +168,7 @@ func (service *authService) RegisterWithVerify(ctx context.Context, user *UserRe
 			AppName   string
 			ActionUrl string
 		}{
-			AppName:   "The Magic Habit",
+			AppName:   config.Config.AppName,
 			ActionUrl: config.Config.AppDomain + "/verify?code=" + record.GetString("verification_code"),
 		}
 		var body bytes.Buffer
@@ -187,7 +176,7 @@ func (service *authService) RegisterWithVerify(ctx context.Context, user *UserRe
 			log.Printf("Failed to execute email template: %v", err)
 		}
 
-		err = service.Mailer.SendMail("Welcome to The Magic Habit", body.String(), user.Email)
+		err = service.Mailer.SendMail("Welcome to "+config.Config.AppName, body.String(), user.Email)
 		if err != nil {
 			log.Printf("Failed to send verification email to %s: %v", user.Email, err)
 		} else {
@@ -228,13 +217,51 @@ func (service *authService) VerifyCode(ctx context.Context, verification_code st
 func (service *authService) ForgotPassword(ctx context.Context, email string) error {
 	user := new(user.User)
 	err := service.Entry.Dao().DB().
-		NewQuery(`SELECT id, email, verification_code, verified FROM sys_user WHERE verification_code = {:verification_code}`).
+		NewQuery(`SELECT id, email, verified FROM sys_user WHERE email = {:email}`).
 		WithContext(ctx).
 		Bind(dbx.Params{"email": email}).
 		One(&user)
 	if err != nil {
 		return errors.New("Email not found.")
 	}
+
+	forgotCode := utils.RandomString()
+	_, err = service.Entry.Dao().DB().
+		NewQuery(`UPDATE sys_user SET verified = TRUE, forgot_code = {:forgot_code} WHERE email = {:email}`).
+		WithContext(ctx).
+		Bind(dbx.Params{
+			"email":       email,
+			"forgot_code": forgotCode,
+		}).
+		Execute()
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		tmpl, err := template.ParseFiles("internal/mods/rbac/auth/forgot_password.html")
+		if err != nil {
+			log.Printf("Failed to parse email template: %v", err)
+		}
+		data := struct {
+			AppName   string
+			ActionUrl string
+		}{
+			AppName:   config.Config.AppName,
+			ActionUrl: config.Config.AppDomain + "/reset-password?code=" + forgotCode,
+		}
+		var body bytes.Buffer
+		if err := tmpl.Execute(&body, data); err != nil {
+			log.Printf("Failed to execute email template: %v", err)
+		}
+
+		err = service.Mailer.SendMail("Reset your "+config.Config.AppName+" password", body.String(), user.Email)
+		if err != nil {
+			log.Printf("Failed to send reset password email to %s: %v", user.Email, err)
+		} else {
+			log.Printf("Reset password email sent to %s", user.Email)
+		}
+	}()
 
 	return nil
 }
@@ -287,4 +314,47 @@ func (service *authService) RefreshToken(ctx context.Context, refreshToken strin
 		RefreshToken: refreshToken,
 	}, nil
 
+}
+
+func (service *authService) VerifyForgotCode(ctx context.Context, forgot_code string) (string, error) {
+	user := new(user.User)
+	err := service.Entry.Dao().DB().
+		NewQuery(`SELECT id, email, forgot_code, verified FROM sys_user WHERE forgot_code = {:forgot_code}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"forgot_code": forgot_code}).
+		One(&user)
+	if err != nil {
+		return "", errors.New("Invalid forgot code.")
+	}
+
+	return user.Email, nil
+}
+
+func (service *authService) ResetPassword(ctx context.Context, forgot_code, password string) error {
+	user := new(user.User)
+	err := service.Entry.Dao().DB().
+		NewQuery(`SELECT id, email, forgot_code, verified FROM sys_user WHERE forgot_code = {:forgot_code}`).
+		WithContext(ctx).
+		Bind(dbx.Params{"forgot_code": forgot_code}).
+		One(&user)
+	if err != nil {
+		return errors.New("Invalid forgot code.")
+	}
+
+	user.Password = password
+	user.SetPasswordHash()
+
+	_, err = service.Entry.Dao().DB().
+		NewQuery(`UPDATE sys_user SET forgot_code = "", password_hash = {:password_hash} WHERE forgot_code = {:forgot_code}`).
+		WithContext(ctx).
+		Bind(dbx.Params{
+			"forgot_code":   forgot_code,
+			"password_hash": user.PasswordHash,
+		}).
+		Execute()
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

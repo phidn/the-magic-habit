@@ -1,6 +1,7 @@
 import { AxiosResponse } from 'axios'
 
 import { TLogin, TRegister } from '@mazic/modules/rbac/auth'
+import { TResetPassword } from '@mazic/modules/rbac/auth/schemas'
 import { TUser } from '@mazic/modules/rbac/user/schemas/userSchema'
 import http from '@mazic/utils/http'
 import { getAccessTokenFromLS, getRefreshTokenFromLS } from '@mazic/utils/localStorage'
@@ -19,5 +20,12 @@ export const authService = {
     return http.post<T>('/auth/refresh-token', { refresh_token })
   },
   resendEmail: (email: string) => http.post('/auth/resend-email', { email }),
+  forgotPassword: (email: string) => http.post('/auth/forgot-password', { email }),
+  resetPassword: ({ password, code }: TResetPassword) => {
+    return http.post('/auth/reset-password', { password, code })
+  },
   verifyCode: <T = any>(code: string) => http.post<AxiosResponse<T>>('/auth/verify-code', { code }),
+  verifyForgotCode: <T = any>(code: string) => {
+    return http.post<AxiosResponse<T>>('/auth/verify-forgot-code', { code })
+  },
 }

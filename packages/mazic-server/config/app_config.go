@@ -14,6 +14,7 @@ type AppConfig struct {
 	Env           string
 	IsDevelopment bool
 	AppDomain     string
+	AppName       string
 	BcryptCost    int
 
 	SupabaseUrl         string
@@ -48,6 +49,7 @@ func (config *AppConfig) LoadConfig() error {
 	config.Env = appEnv
 	config.IsDevelopment = appEnv == "development"
 	config.AppDomain = getEnv("APP_DOMAIN", "")
+	config.AppName = getEnv("APP_NAME", "The Magic Habit")
 	config.BcryptCost = getEnvAsInt("BCRYPT_COST", 10)
 
 	config.SupabaseUrl = getEnv("BCRYPT_COST", "")

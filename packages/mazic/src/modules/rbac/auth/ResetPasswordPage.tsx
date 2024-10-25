@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
 
 import {
   AceDivide,
@@ -17,19 +19,18 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { authService } from '@mazic/services/authService'
-import { useStore } from '@mazic/store/useStore'
-import { ApiResponse } from '@mazic/types'
-import { AuthResponse } from '@mazic/types/response'
 
 import { LabelInputContainer } from './components/LabelInputContainer'
-import { loginSchema, TLogin } from './schemas'
+import { resetPasswordSchema, TResetPassword } from './schemas'
 
-const LoginPage = () => {
+const ResetPasswordPage = () => {
   const navigate = useNavigate()
-  const setCurrentUser = useStore((store) => store.setCurrentUser)
 
-  const methods = useForm<TLogin>({
-    resolver: zodResolver(loginSchema),
+  const [searchParams] = useSearchParams()
+  const code = searchParams.get('code') || ''
+
+  const methods = useForm<TResetPassword>({
+    resolver: zodResolver(resetPasswordSchema),
   })
   const {
     register,
@@ -38,22 +39,40 @@ const LoginPage = () => {
     formState: { errors },
   } = methods
 
-  const loginMutation = useMutation({
-    mutationFn: (body: TLogin) => authService.login<ApiResponse<AuthResponse>>(body),
-    onSuccess: ({ data }) => {
-      setCurrentUser(data.data.user)
-      navigate(pathRoutes.dashboard)
+  const verifyCodeMutation = useMutation({
+    mutationFn: (_code: string) => authService.verifyForgotCode<{ email: string }>(_code),
+    onSuccess: () => {
+      methods.setValue('code', code)
+    },
+    onError: () => {
+      toast.error('Invalid verification code.')
+      navigate(pathRoutes.auth.login)
+    },
+  })
+
+  useEffect(() => {
+    if (code) {
+      verifyCodeMutation.mutate(code)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code])
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: (payload: TResetPassword) => authService.resetPassword(payload),
+    onSuccess: () => {
+      toast.success('Password has been reset.')
+      navigate(pathRoutes.auth.login)
     },
     onError: () => {
       setError('root', {
         type: 'manual',
-        message: "That email/username and password combination didn't work. Try again.",
+        message: 'Something went wrong. Please try again.',
       })
     },
   })
 
   const onSubmit = handleSubmit(async (values) => {
-    await loginMutation.mutateAsync(values)
+    await resetPasswordMutation.mutateAsync(values)
   })
 
   return (
@@ -61,9 +80,11 @@ const LoginPage = () => {
       <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input">
         <Logo hideText />
         <AceDivide />
-        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">Welcome back</h2>
+        <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
+          Reset your password
+        </h2>
         <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          Glad to see you again. Again!
+          Strong passwords include numbers, letters, and punctuation marks. Enter your new password
         </p>
         <FormProvider {...methods}>
           <form className="my-8" onSubmit={onSubmit} autoComplete="false">
@@ -74,20 +95,6 @@ const LoginPage = () => {
               </Alert>
             )}
             <LabelInputContainer className="mb-4">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" placeholder="email@mazic.com" type="email" {...register('email')} />
-              {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
-            </LabelInputContainer>
-            <LabelInputContainer className="mb-4">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  to={pathRoutes.auth.forgotPassword}
-                  className="ml-auto inline-block text-sm underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
               <Input
                 id="password"
                 placeholder="••••••••"
@@ -98,14 +105,14 @@ const LoginPage = () => {
               {errors.password && <FormMessage>{errors.password.message}</FormMessage>}
             </LabelInputContainer>
             <Button className="w-full mt-4" type="submit">
-              Login in &rarr;
+              Reset Password
             </Button>
           </form>
         </FormProvider>
         <div className="mt-4 text-center text-sm">
-          Don't have an account?{' '}
-          <Link to={pathRoutes.auth.signUp} className="underline">
-            Sign up
+          Already have an account{' '}
+          <Link to={pathRoutes.auth.login} className="underline">
+            Sign in
           </Link>
         </div>
       </div>
@@ -113,4 +120,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage
+export default ResetPasswordPage
