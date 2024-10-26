@@ -2,10 +2,11 @@ import * as React from 'react'
 import { cva, VariantProps } from 'class-variance-authority'
 import { CheckIcon, ChevronDown, WandSparkles, XCircle, XIcon } from 'lucide-react'
 
+import { cn } from '@/utils/cn'
+
+import { Badge } from './badge'
+import { Button } from './button'
 import {
-  Badge,
-  Button,
-  cn,
   Command,
   CommandEmpty,
   CommandGroup,
@@ -13,11 +14,9 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Separator,
-} from '@mazic/ui'
+} from './command'
+import { Popover, PopoverContent, PopoverTrigger } from './popover'
+import { Separator } from './separator'
 
 /**
  * Variants for the multi-select component to handle different styles.

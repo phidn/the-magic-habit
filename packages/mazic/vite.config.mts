@@ -27,7 +27,7 @@ export default defineConfig({
     react({
       include: '**/*.tsx',
     }),
-    // circleDependency(),
+    circleDependency(),
   ],
 
   css: {

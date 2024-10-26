@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@mazic/ui'
 
-import { CheckBoxLabel, FormControlProps } from '@mazic/components/FormControl'
+import { CheckBoxLabel } from './CheckboxLabel'
+import { FormControlProps } from './FormControl'
 
 interface FormOutlineProps {
   formTitle: string
