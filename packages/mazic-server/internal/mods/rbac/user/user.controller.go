@@ -92,7 +92,7 @@ func (controller *UserController) UpdateProfile(c echo.Context) error {
 
 	userId := c.Get("state.user_id").(string)
 
-	record, err := controller.UserService.Update(c.Request().Context(), userId, user)
+	record, err := controller.UserService.UpdateProfile(c.Request().Context(), userId, user)
 	if err != nil {
 		return resp.NewApplicationError(c, "Failed to update user.", err)
 	}

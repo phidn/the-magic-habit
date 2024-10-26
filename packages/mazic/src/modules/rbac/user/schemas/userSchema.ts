@@ -23,7 +23,21 @@ export const userSchema = z.object({
 })
 
 export type TUserCreate = z.infer<typeof userSchema>
+
+export type TUserSetting = {
+  habit_cols: number
+  habit_orders: string
+}
+
 export type TUser = TUserCreate & {
   id: string
   permissions: TPermission[]
+  setting: TUserSetting
+}
+
+export type TUserProfile = TUserCreate & {
+  id: string
+  permissions: TPermission[]
+  habit_cols: number
+  habit_orders: string
 }

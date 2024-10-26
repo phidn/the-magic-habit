@@ -97,31 +97,45 @@ func (service *authService) Login(ctx context.Context, email, password string) (
 }
 
 func (service *authService) GetMe(ctx context.Context, userId string) (*user.User, error) {
-	user := new(user.User)
+	userData := new(user.User)
 	err := service.Entry.Dao().DB().
 		NewQuery(`SELECT id, first_name, last_name, email, avatar, bio, roles FROM sys_user WHERE id = {:id}`).
 		WithContext(ctx).
 		Bind(dbx.Params{"id": userId}).
-		One(&user)
+		One(&userData)
 	if err != nil {
 		return nil, err
 	}
 
-	var permissions []permission.Permission
+	permissions := &[]permission.Permission{}
 	err = service.Entry.Dao().DB().
 		Select("p.id", "p.name", "p.code").
 		From("sys_role_permission rp").
 		LeftJoin("sys_permission p", dbx.NewExp("rp.permission_id = p.id")).
-		Where(dbx.In("role_id", user.Roles...)).
+		Where(dbx.In("role_id", userData.Roles...)).
 		AndWhere(dbx.NewExp("p.code IS NOT NULL")).
-		All(&permissions)
+		All(permissions)
 
 	if err != nil {
 		return nil, err
 	}
 
-	user.Permissions = permissions
-	return user, nil
+	userSetting := &user.UserSetting{}
+
+	err = service.Entry.Dao().DB().
+		Select("id", "habit_cols", "habit_orders").
+		From(userSetting.TableName()).
+		AndWhere(dbx.HashExp{"user_id": userId}).
+		Limit(1).
+		One(userSetting)
+
+	if err != nil {
+		return nil, err
+	}
+
+	userData.Permissions = *permissions
+	userData.Setting = *userSetting
+	return userData, nil
 }
 
 func (service *authService) Register(ctx context.Context, user *UserRegister) (*Tokens, *user.User, error) {

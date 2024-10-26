@@ -20,7 +20,7 @@ export const MENUS: TMenus = {
   },
   PROFILE: {
     href: pathRoutes.user.profile,
-    label: 'Profile',
+    label: 'User Settings',
     icon: EditUserIcon,
   },
   SYSTEM: {

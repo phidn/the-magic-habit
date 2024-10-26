@@ -14,6 +14,15 @@ import (
 
 var _ models.Model = (*User)(nil)
 
+type UserSetting struct {
+	HabitCols   int    `json:"habit_cols"`
+	HabitOrders string `json:"habit_orders"`
+}
+
+func (m *UserSetting) TableName() string {
+	return "sys_user_setting"
+}
+
 type User struct {
 	models.BaseModel
 
@@ -29,6 +38,7 @@ type User struct {
 
 	Roles       types.JsonArray[any]    `db:"roles" json:"roles"`
 	Permissions []permission.Permission `db:"-" json:"permissions"`
+	Setting     UserSetting             `db:"-" json:"setting"`
 }
 
 func (m *User) TableName() string {

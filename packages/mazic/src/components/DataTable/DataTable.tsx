@@ -11,13 +11,19 @@ interface DataTableProps<TData> {
   enableConfigView?: boolean
   shouldExpandAllRows?: boolean
   isLoading?: boolean
+  isHideHeader?: boolean
   filterRender?: (table: TTable<TData>) => React.ReactNode
   actionRender?: (table: TTable<TData>) => React.ReactNode
   getSubRows?: (row: TData) => TData[]
 }
 
 export const DataTable = <TData,>(props: DataTableProps<TData>) => {
-  const { table, enablePagination = true, shouldExpandAllRows = false } = props
+  const {
+    table,
+    enablePagination = true,
+    shouldExpandAllRows = false,
+    isHideHeader = false,
+  } = props
 
   useEffect(() => {
     if (shouldExpandAllRows) {
@@ -29,21 +35,23 @@ export const DataTable = <TData,>(props: DataTableProps<TData>) => {
     <div className="space-y-4">
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} colSpan={header.colSpan}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
+          {!isHideHeader && (
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id} colSpan={header.colSpan}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+          )}
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

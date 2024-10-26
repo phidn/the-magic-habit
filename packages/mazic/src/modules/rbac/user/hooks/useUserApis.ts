@@ -4,7 +4,7 @@ import { toast } from 'sonner'
 import { IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
-import { TUser, TUserCreate } from '../schemas/userSchema'
+import { TUser, TUserCreate, TUserProfile } from '../schemas/userSchema'
 import { userService } from '../services/userService'
 
 const QUERY_KEY = 'users' as const
@@ -43,7 +43,16 @@ export const useUpdateUser = (userId: string) => {
 
 export const useUpdateProfile = () => {
   return useMutation({
-    mutationFn: async (payload: TUser) => userService.updateProfile(payload),
+    mutationFn: async (user: TUserProfile) => {
+      const userProfile: TUser = {
+        ...user,
+        setting: {
+          habit_cols: user.habit_cols,
+          habit_orders: user.habit_orders,
+        },
+      }
+      return userService.updateProfile(userProfile)
+    },
     onSuccess: () => toast.success('Successfully updated user'),
   })
 }

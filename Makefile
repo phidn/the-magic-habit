@@ -110,7 +110,7 @@ server:
 	@echo "Starting server..."
 	export APP_ENV=development && \
 	cd packages/mazic-server && \
-	wgo run -xdir pb_data -xdir web --verbose main.go serve
+	wgo run -xdir pb_data -xdir web -xdir migrations --verbose main.go serve
 	@echo "Successfully started server..."
 
 server-start:

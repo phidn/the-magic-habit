@@ -128,6 +128,9 @@ func Max(list []interface{}) float64 {
 
 func Avg(list []interface{}) float64 {
 	_list := ConvertToFloat64Slice(list)
+	if len(_list) == 0 {
+		return 0
+	}
 	sum := Reduce(_list, func(acc float64, v float64) float64 {
 		return acc + float64(v)
 	}, 0.0)

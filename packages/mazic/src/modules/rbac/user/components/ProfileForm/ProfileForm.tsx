@@ -1,16 +1,27 @@
 import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
+import { THabit } from '@mazic/types/modules'
 
-import { detailFields } from '../../schemas/profileSchema'
+import { dashboardSettingsFields, detailFields } from '../../schemas/profileSchema'
 
+import { DashboardSettings } from './DashboardSettings'
 import { ProfileDetail } from './ProfileDetail'
 
-export const ProfileForm = (props: IFormProps) => {
+interface IProps extends IFormProps {
+  habitData: THabit[]
+}
+
+export const ProfileForm = (props: IProps) => {
   const formSections = [
     {
       title: 'User Details',
       elementRender: () => <ProfileDetail />,
       fields: detailFields,
+    },
+    {
+      title: 'Dashboard Settings',
+      elementRender: () => <DashboardSettings habitData={props.habitData} />,
+      fields: dashboardSettingsFields,
     },
   ]
 
