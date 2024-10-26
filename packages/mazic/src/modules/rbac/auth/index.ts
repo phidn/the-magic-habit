@@ -7,28 +7,30 @@ export { useLogout } from './hooks/useLogout'
 export const authRoute = [
   {
     path: pathRoutes.auth.login,
-    Component: lazy(() => import('./LoginPage')),
+    Component: lazy(() => import('./pages/LoginPage')),
   },
   {
     path: pathRoutes.auth.signUp,
-    Component: lazy(() => import('./RegisterPage')),
+    Component: lazy(() => import('./pages/RegisterPage')),
   },
   {
     path: pathRoutes.auth.verifyEmail,
-    Component: lazy(() => import('./VerifyEmailPage')),
+    Component: lazy(() => import('./pages/VerifyEmailPage')),
   },
   {
     path: pathRoutes.auth.verifyCode,
-    Component: lazy(() => import('./VerifyCodePage')),
+    Component: lazy(() => import('./pages/VerifyCodePage')),
   },
   {
     path: pathRoutes.auth.forgotPassword,
-    Component: lazy(() => import('./ForgotPasswordPage')),
+    Component: lazy(() => import('./pages/ForgotPasswordPage')),
   },
   {
     path: pathRoutes.auth.resetPassword,
-    Component: lazy(() => import('./ResetPasswordPage')),
+    Component: lazy(() => import('./pages/ResetPasswordPage')),
   },
 ]
 
 export { type TLogin, type TRegister } from './schemas'
+
+export { authService } from './services/authService'

@@ -8,7 +8,8 @@ import { AceDivide, ButtonLink, Spinner } from '@mazic/ui'
 
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
-import { authService } from '@mazic/services/authService'
+
+import { authService } from '../services/authService'
 
 const VerifyCodePage = () => {
   const navigate = useNavigate()

@@ -25,3 +25,7 @@ export const roleRoute: TRoutes = [
     Component: lazy(() => import('./pages/RoleCreatePage')),
   },
 ]
+
+export { roleService } from './services/roleService'
+
+export { type TRole } from './schemas/roleSchema'

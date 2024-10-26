@@ -16,13 +16,13 @@ import {
 
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
-import { authService } from '@mazic/services/authService'
 import { useStore } from '@mazic/store/useStore'
 import { ApiResponse } from '@mazic/types'
 import { AuthResponse } from '@mazic/types/response'
 
-import { LabelInputContainer } from './components/LabelInputContainer'
-import { loginSchema, TLogin } from './schemas'
+import { LabelInputContainer } from '../components/LabelInputContainer'
+import { loginSchema, TLogin } from '../schemas'
+import { authService } from '../services/authService'
 
 const LoginPage = () => {
   const navigate = useNavigate()

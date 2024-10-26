@@ -5,8 +5,8 @@ import { Toaster } from 'sonner'
 import { ModalCommon } from '@mazic/components'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
+import { authService } from '@mazic/modules/rbac/auth'
 import { routers } from '@mazic/routers/routers'
-import { authService } from '@mazic/services/authService'
 import { useStoreShallow } from '@mazic/store/useStore'
 
 export const AppLayout = () => {

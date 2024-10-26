@@ -8,7 +8,8 @@ import { AceDivide, Button, ButtonLink } from '@mazic/ui'
 
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
-import { authService } from '@mazic/services/authService'
+
+import { authService } from '../services/authService'
 
 const VerifyEmailPage = () => {
   const email = useLocation()?.state?.email

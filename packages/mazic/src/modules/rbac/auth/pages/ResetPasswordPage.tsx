@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
@@ -16,14 +17,19 @@ import {
 
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
-import { authService } from '@mazic/services/authService'
 
-import { LabelInputContainer } from './components/LabelInputContainer'
-import { forgotPasswordSchema, TForgotPassword } from './schemas'
+import { LabelInputContainer } from '../components/LabelInputContainer'
+import { resetPasswordSchema, TResetPassword } from '../schemas'
+import { authService } from '../services/authService'
 
-const ForgotPasswordPage = () => {
-  const methods = useForm<TForgotPassword>({
-    resolver: zodResolver(forgotPasswordSchema),
+const ResetPasswordPage = () => {
+  const navigate = useNavigate()
+
+  const [searchParams] = useSearchParams()
+  const code = searchParams.get('code') || ''
+
+  const methods = useForm<TResetPassword>({
+    resolver: zodResolver(resetPasswordSchema),
   })
   const {
     register,
@@ -32,10 +38,29 @@ const ForgotPasswordPage = () => {
     formState: { errors },
   } = methods
 
-  const forgotPasswordMutation = useMutation({
-    mutationFn: (_email: string) => authService.forgotPassword(_email),
+  const verifyCodeMutation = useMutation({
+    mutationFn: (_code: string) => authService.verifyForgotCode<{ email: string }>(_code),
     onSuccess: () => {
-      toast.success('Email has been sent.')
+      methods.setValue('code', code)
+    },
+    onError: () => {
+      toast.error('Invalid verification code.')
+      navigate(pathRoutes.auth.login)
+    },
+  })
+
+  useEffect(() => {
+    if (code) {
+      verifyCodeMutation.mutate(code)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [code])
+
+  const resetPasswordMutation = useMutation({
+    mutationFn: (payload: TResetPassword) => authService.resetPassword(payload),
+    onSuccess: () => {
+      toast.success('Password has been reset.')
+      navigate(pathRoutes.auth.login)
     },
     onError: () => {
       setError('root', {
@@ -46,7 +71,7 @@ const ForgotPasswordPage = () => {
   })
 
   const onSubmit = handleSubmit(async (values) => {
-    await forgotPasswordMutation.mutateAsync(values.email)
+    await resetPasswordMutation.mutateAsync(values)
   })
 
   return (
@@ -55,10 +80,10 @@ const ForgotPasswordPage = () => {
         <Logo hideText />
         <AceDivide />
         <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
-          Forgot your password?
+          Reset your password
         </h2>
         <p className="text-neutral-600 text-sm max-w-sm mt-2 dark:text-neutral-300">
-          No worries, we got you. Enter your email and we will send you a link to reset your
+          Strong passwords include numbers, letters, and punctuation marks. Enter your new password
         </p>
         <FormProvider {...methods}>
           <form className="my-8" onSubmit={onSubmit} autoComplete="false">
@@ -69,11 +94,17 @@ const ForgotPasswordPage = () => {
               </Alert>
             )}
             <LabelInputContainer className="mb-4">
-              <Input id="email" placeholder="email@mazic.com" type="email" {...register('email')} />
-              {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
+              <Input
+                id="password"
+                placeholder="••••••••"
+                type="password"
+                autoComplete="new-password"
+                {...register('password')}
+              />
+              {errors.password && <FormMessage>{errors.password.message}</FormMessage>}
             </LabelInputContainer>
             <Button className="w-full mt-4" type="submit">
-              Send Reset Link
+              Reset Password
             </Button>
           </form>
         </FormProvider>
@@ -88,4 +119,4 @@ const ForgotPasswordPage = () => {
   )
 }
 
-export default ForgotPasswordPage
+export default ResetPasswordPage

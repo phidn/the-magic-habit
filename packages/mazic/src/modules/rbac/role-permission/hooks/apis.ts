@@ -3,8 +3,7 @@ import map from 'lodash/map'
 import snakeCase from 'lodash/snakeCase'
 import { toast } from 'sonner'
 
-import { TRole } from '@mazic/schemas/roleSchema'
-import { roleService } from '@mazic/services/roleService'
+import { roleService, TRole } from '@mazic/modules/rbac/role'
 import { ApiResponse } from '@mazic/types/index'
 
 import { rolePermissionService } from '../services/rolePermissionService'
