@@ -88,6 +88,16 @@ web-build: switch-node-version
 	cp -rf dist/packages/mazic packages/mazic-server/web/dist
 	@echo "Web built."
 
+web-lint: switch-node-version
+	@echo "Checking web..."
+	yarn nx run mazic:lint
+	@echo "Web checked."
+web-ts: switch-node-version
+	@echo "Checking web typescript..."
+	yarn tsc -b ./packages/mazic/tsconfig.app.json && \
+	rm -rf packages/mazic/tsconfig.app.tsbuildinfo && \
+	@echo "Web typescript checked."
+
 # ===== SERVER ======== #
 
 swagger:
@@ -100,7 +110,7 @@ server:
 	@echo "Starting server..."
 	export APP_ENV=development && \
 	cd packages/mazic-server && \
-	wgo run -xdir pb_data --verbose main.go serve
+	wgo run -xdir pb_data -xdir web --verbose main.go serve
 	@echo "Successfully started server..."
 
 server-start:

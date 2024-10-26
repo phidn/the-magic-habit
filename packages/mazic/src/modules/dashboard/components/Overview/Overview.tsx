@@ -19,8 +19,8 @@ import {
 
 import { baseColorMap, ColorName } from '@mazic/config/baseColors'
 import { checkInType } from '@mazic/modules/check-in'
-import { THabit } from '@mazic/modules/habit'
 import { useStore } from '@mazic/store/useStore'
+import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { getRangeDates, TChartRange } from '../../utils'

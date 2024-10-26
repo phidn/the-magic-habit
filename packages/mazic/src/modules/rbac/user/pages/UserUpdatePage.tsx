@@ -1,14 +1,14 @@
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
 import { UserForm } from '../components/UserForm'
-import { useUserApis } from '../hooks/useUserApis'
+import { useUpdateUser, useUserDetail } from '../hooks/useUserApis'
 import { userSchema } from '../schemas/userSchema'
 
 const UserUpdatePage = () => {
   const pageDetails = usePageDetails()
-  const mutation = useUserApis.update(pageDetails.id)
+  const mutation = useUpdateUser(pageDetails.id)
 
-  const { data } = useUserApis.detail(pageDetails.id)
+  const { data } = useUserDetail(pageDetails.id)
   const _schema = userSchema.omit({ password: true, id: true })
 
   return (

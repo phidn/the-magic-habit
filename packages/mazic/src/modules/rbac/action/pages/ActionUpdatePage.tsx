@@ -1,13 +1,13 @@
 import { usePageDetails } from '@mazic/hooks'
 
 import { ActionForm } from '../components/ActionForm'
-import { useActionApis } from '../hooks/useActionApis'
+import { useActionDetail, useUpdateAction } from '../hooks/useActionApis'
 import { actionSchema } from '../schemas/actionSchema'
 
 const ActionUpdatePage = () => {
   const pageDetails = usePageDetails()
-  const { data } = useActionApis.detail(pageDetails.id)
-  const mutation = useActionApis.update(pageDetails.id)
+  const { data } = useActionDetail(pageDetails.id)
+  const mutation = useUpdateAction(pageDetails.id)
 
   return (
     <ActionForm

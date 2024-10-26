@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { ApiResponse, IParams } from '@mazic/types/index'
+import { IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
 import { TPermission, TPermissionCreate } from '../schemas/permissionSchema'
@@ -9,17 +9,17 @@ import { permissionService } from '../services/permissionService'
 
 const QUERY_KEY = 'permissions' as const
 
-const usePermissionList = (params: IParams) => {
+export const usePermissionList = (params: IParams) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => permissionService.query<ApiResponse<TPermission[]>>(params),
+    queryFn: () => permissionService.query(params),
     queryKey: [QUERY_KEY, 'permissions_list', params],
   })
   return { ...data?.data, ...rest }
 }
 
-const usePermissionByResource = (params: IParams) => {
+export const usePermissionByResource = (params: IParams) => {
   const { data } = useQuery({
-    queryFn: () => permissionService.query<ApiResponse<TPermission[]>>(params),
+    queryFn: () => permissionService.query(params),
     queryKey: [QUERY_KEY, 'permissions_list', params],
     enabled: !!params.resource_id,
   })
@@ -30,9 +30,9 @@ const usePermissionByResource = (params: IParams) => {
   }
 }
 
-const usePermissionDetail = (permissionId: string) => {
+export const usePermissionDetail = (permissionId: string) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => permissionService.get<ApiResponse<TPermission>>(permissionId),
+    queryFn: () => permissionService.get(permissionId),
     queryKey: [QUERY_KEY, permissionId, 'permissions_detail'],
     enabled: !!permissionId,
   })
@@ -40,21 +40,21 @@ const usePermissionDetail = (permissionId: string) => {
   return { ...data?.data, ...rest }
 }
 
-const useUpdatePermission = (permissionId: string) => {
+export const useUpdatePermission = (permissionId: string) => {
   return useMutation({
     mutationFn: (payload: TPermission) => permissionService.update(permissionId, payload),
     onSuccess: () => toast.success('Successfully updated permission'),
   })
 }
 
-const useCreatePermission = () => {
+export const useCreatePermission = () => {
   return useMutation({
     mutationFn: (payload: TPermissionCreate) => permissionService.create(payload),
     onSuccess: () => toast.success('Successfully created permission'),
   })
 }
 
-const useDeletePermission = () => {
+export const useDeletePermission = () => {
   return useMutation({
     mutationFn: (permissionId: string) => permissionService.delete(permissionId),
     onSuccess: () => toast.success('Successfully deleted permission'),
@@ -64,7 +64,7 @@ const useDeletePermission = () => {
   })
 }
 
-const useBulkDeletePermission = () => {
+export const useBulkDeletePermission = () => {
   return useMutation({
     mutationFn: (ids: string[]) => permissionService.bulkDelete(ids),
     onSuccess: () => toast.success('Successfully deleted permissions'),
@@ -74,20 +74,9 @@ const useBulkDeletePermission = () => {
   })
 }
 
-const useSeedPermission = () => {
+export const useSeedPermission = () => {
   return useMutation({
     mutationFn: () => permissionService.seed(),
     onSuccess: () => toast.success('Successfully seeded permission'),
   })
-}
-
-export const usePermissionApis = {
-  list: usePermissionList,
-  listByResource: usePermissionByResource,
-  detail: usePermissionDetail,
-  create: useCreatePermission,
-  update: useUpdatePermission,
-  delete: useDeletePermission,
-  bulkDelete: useBulkDeletePermission,
-  seed: useSeedPermission,
 }

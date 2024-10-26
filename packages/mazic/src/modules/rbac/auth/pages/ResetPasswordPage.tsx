@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -39,7 +39,7 @@ const ResetPasswordPage = () => {
   } = methods
 
   const verifyCodeMutation = useMutation({
-    mutationFn: (_code: string) => authService.verifyForgotCode<{ email: string }>(_code),
+    mutationFn: (_code: string) => authService.verifyForgotCode(_code),
     onSuccess: () => {
       methods.setValue('code', code)
     },

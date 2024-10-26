@@ -14,6 +14,7 @@ const FormColorPicker = ({ field }: FormColorPickerProps) => {
   const options: IOption[] = baseColors.map((theme) => {
     return {
       value: theme?.name,
+      label: '',
       renderLabel: () => (
         <div className="flex items-center">
           <div

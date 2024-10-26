@@ -1,13 +1,13 @@
 import { usePageDetails } from '@mazic/hooks/usePageDetails'
 
 import { ResourceForm } from '../components/ResourceForm'
-import { useResourceApis } from '../hooks/useResourceApis'
+import { useResourceDetail, useUpdateResource } from '../hooks/useResourceApis'
 import { resourceSchema } from '../schemas/resourceSchema'
 
 const ResourceUpdatePage = () => {
   const pageDetails = usePageDetails()
-  const { data } = useResourceApis.detail(pageDetails.id)
-  const mutation = useResourceApis.update(pageDetails.id)
+  const { data } = useResourceDetail(pageDetails.id)
+  const mutation = useUpdateResource(pageDetails.id)
 
   return (
     <ResourceForm

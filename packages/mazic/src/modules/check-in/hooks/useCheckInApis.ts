@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { getActivities, THabit } from '@mazic/modules/habit'
-import { ApiResponse } from '@mazic/types'
+import { useAppContext } from '@mazic/hooks'
 
 import { checkInService } from '../services/checkInService'
 import { THabitCheckIn } from '../utils/validations'
@@ -24,14 +23,15 @@ export const useDeleteCheckIn = () => {
 }
 
 export const useFindWidget = (apiKey: string) => {
+  const { utils } = useAppContext()
   const { data, ...rest } = useQuery({
-    queryFn: () => checkInService.findWidget<ApiResponse<THabit>>(apiKey),
+    queryFn: () => checkInService.findWidget(apiKey),
     queryKey: [QUERY_KEY, 'listHabits', apiKey],
   })
 
   const _data = data?.data?.data
   if (_data) {
-    _data.activities = getActivities(data?.data?.data?.check_in_items)
+    _data.activities = utils.getActivities(data?.data?.data?.check_in_items)
   }
   return { ...data?.data, data: _data, ...rest }
 }

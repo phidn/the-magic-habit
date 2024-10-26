@@ -18,7 +18,6 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
-import { LogoIcon } from './Icons'
 import { ModeToggle } from './mode-toggle'
 
 interface RouteProps {

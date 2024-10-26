@@ -11,10 +11,10 @@ import { ITableColsProps } from '@mazic/types/index'
 
 import { TAction } from '../schemas/actionSchema'
 
-import { useActionApis } from './useActionApis'
+import { useDeleteAction } from './useActionApis'
 
 export const useActionColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TAction>[] => {
-  const mutationDelete = useActionApis.delete()
+  const mutationDelete = useDeleteAction()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

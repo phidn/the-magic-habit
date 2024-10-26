@@ -1,13 +1,13 @@
 import { usePageDetails } from '@mazic/hooks'
 
 import { PermissionForm } from '../components/PermissionForm'
-import { usePermissionApis } from '../hooks/usePermissionApis'
+import { usePermissionDetail, useUpdatePermission } from '../hooks/usePermissionApis'
 import { permissionSchema } from '../schemas/permissionSchema'
 
 const PermissionUpdatePage = () => {
   const pageDetails = usePageDetails()
-  const { data } = usePermissionApis.detail(pageDetails.id)
-  const mutation = usePermissionApis.update(pageDetails.id)
+  const { data } = usePermissionDetail(pageDetails.id)
+  const mutation = useUpdatePermission(pageDetails.id)
 
   return (
     <PermissionForm

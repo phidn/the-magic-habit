@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { ActionForm } from '../components/ActionForm'
-import { useActionApis } from '../hooks/useActionApis'
+import { useCreateAction } from '../hooks/useActionApis'
 import { actionSchema } from '../schemas/actionSchema'
 
 const ActionCreatePage = () => {
-  const mutation = useActionApis.create()
+  const mutation = useCreateAction()
 
   return (
     <ActionForm

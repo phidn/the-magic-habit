@@ -13,4 +13,7 @@ export const roleSchema = z.object({
 })
 
 export type TRoleCreate = z.infer<typeof roleSchema>
-export type TRole = TRoleCreate & { id: string }
+export type TRole = TRoleCreate & {
+  id: string
+  role_key: string
+}

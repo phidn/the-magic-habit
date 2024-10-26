@@ -11,12 +11,12 @@ import { ITableColsProps } from '@mazic/types/index'
 
 import { TPermission } from '../schemas/permissionSchema'
 
-import { usePermissionApis } from './usePermissionApis'
+import { useDeletePermission } from './usePermissionApis'
 
 export const usePermissionColumns = ({
   refreshTable,
 }: ITableColsProps): ColumnDef<TPermission>[] => {
-  const mutationDelete = usePermissionApis.delete()
+  const mutationDelete = useDeletePermission()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

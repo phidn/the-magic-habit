@@ -3,7 +3,7 @@ import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 
 import { ExpandingColumn } from '@mazic/components/Columns/ExpandingColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
-import { TRole } from '@mazic/schemas/roleSchema'
+import { TRole } from '@mazic/types/modules'
 
 import { FormCheckbox } from '../components/RolePermissionForm/FormCheckbox'
 import { TMatrix } from '../types'

@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { PermissionForm } from '../components/PermissionForm'
-import { usePermissionApis } from '../hooks/usePermissionApis'
+import { useCreatePermission } from '../hooks/usePermissionApis'
 import { permissionSchema } from '../schemas/permissionSchema'
 
 const PermissionCreatePage = () => {
-  const mutation = usePermissionApis.create()
+  const mutation = useCreatePermission()
 
   return (
     <PermissionForm

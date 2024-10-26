@@ -20,7 +20,7 @@ const VerifyCodePage = () => {
   const [email, setEmail] = useState('')
 
   const verifyCodeMutation = useMutation({
-    mutationFn: (_code: string) => authService.verifyCode<{ email: string }>(_code),
+    mutationFn: (_code: string) => authService.verifyCode(_code),
     onSuccess: ({ data }) => {
       toast.success('Email has been verified.')
       setIsVerified(true)

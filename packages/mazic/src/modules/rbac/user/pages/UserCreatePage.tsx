@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { UserForm } from '../components/UserForm'
-import { useUserApis } from '../hooks/useUserApis'
+import { useCreateUser } from '../hooks/useUserApis'
 import { userSchema } from '../schemas/userSchema'
 
 const UserCreatePage = () => {
-  const mutation = useUserApis.create()
+  const mutation = useCreateUser()
 
   return (
     <UserForm

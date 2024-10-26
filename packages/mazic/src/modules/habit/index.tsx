@@ -1,14 +1,10 @@
 import { lazy } from 'react'
 
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { PERMISSIONS } from '@mazic/config/permissions'
 import { TRoutes } from '@mazic/types'
 
-export const habitPaths = {
-  list: '/habit',
-  view: '/habit/view/:id',
-  edit: '/habit/edit/:id',
-  create: '/habit/create',
-}
+const { habit: habitPaths } = pathRoutes
 
 export const habitRoute: TRoutes = [
   {
@@ -32,8 +28,3 @@ export const habitRoute: TRoutes = [
     Component: lazy(() => import('./pages/HabitCreatePage')),
   },
 ]
-
-export { type THabit, type TCheckIn } from './utils/validations'
-export { getActivities } from './utils/utils'
-
-export { useListHabit, useDeleteHabit } from './hooks/apis'

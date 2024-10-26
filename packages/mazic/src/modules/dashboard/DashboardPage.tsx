@@ -2,16 +2,17 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { NoData } from '@mazic/components'
+import { pathRoutes } from '@mazic/config/pathRoutes'
+import { useAppContext } from '@mazic/hooks'
 import { CheckInHeatmap } from '@mazic/modules/check-in'
-import { habitPaths, useListHabit } from '@mazic/modules/habit'
 
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
 const DashboardPage = () => {
   const navigate = useNavigate()
-
-  const { data, isPending, refetch } = useListHabit({ pageSize: -1, entry_expand: true })
+  const { hooks } = useAppContext()
+  const { data, isPending, refetch } = hooks.useListHabit({ pageSize: -1, entry_expand: true })
 
   const [deleted, setDeleted] = useState<string[]>([])
   const onDelete = (id: string) => setDeleted([...deleted, id])
@@ -24,7 +25,7 @@ const DashboardPage = () => {
         description="Create your first habit and start tracking your progress."
         action={{
           label: 'Create Habit',
-          onClick: () => navigate(habitPaths.create),
+          onClick: () => navigate(pathRoutes.habit.create),
         }}
       />
     )

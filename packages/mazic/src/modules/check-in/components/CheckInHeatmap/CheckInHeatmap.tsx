@@ -28,10 +28,10 @@ import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
-import { useColorMode } from '@mazic/hooks'
+import { useAppContext, useColorMode } from '@mazic/hooks'
 import { useWindowSize } from '@mazic/hooks/useWindowSize'
-import { THabit, useDeleteHabit } from '@mazic/modules/habit'
 import { useStoreShallow } from '@mazic/store/useStore'
+import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { checkInType } from '../../utils/utils'
@@ -49,7 +49,8 @@ interface Props {
 }
 
 export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete }: Props) => {
-  const mutationDelete = useDeleteHabit()
+  const { hooks } = useAppContext()
+  const mutationDelete = hooks.useDeleteHabit()
   const [hideModal, showModalDelete, showModal] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

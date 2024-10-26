@@ -1,10 +1,20 @@
-import { IParams } from '@mazic/types/index'
+import { IAxiosResponse, IParams } from '@mazic/types/index'
 import http from '@mazic/utils/http'
 
-export const roleService = {
-  query: <T = any>(params: IParams) => http.get<T>('/roles', { params }),
-  get: <T = any>(id: string) => http.get<T>('/roles/' + id),
-  create: <T = any>(payload: any) => http.post<T>('/roles', payload),
-  update: <T = any>(id: string, payload: any) => http.put<T>('/roles/' + id, payload),
-  delete: <T = any>(id: string) => http.delete<T>('/roles/' + id),
+import { TRole, TRoleCreate } from '../schemas/roleSchema'
+
+interface IRoleService {
+  query: (params: IParams) => Promise<IAxiosResponse<TRole[]>>
+  get: (id: string) => Promise<IAxiosResponse<TRole>>
+  create: (payload: TRoleCreate) => Promise<any>
+  update: (id: string, payload: TRole) => Promise<any>
+  delete: (id: string) => Promise<any>
+}
+
+export const roleService: IRoleService = {
+  query: (params) => http.get('/roles', { params }),
+  get: (id) => http.get('/roles/' + id),
+  create: (payload) => http.post('/roles', payload),
+  update: (id, payload) => http.put('/roles/' + id, payload),
+  delete: (id) => http.delete('/roles/' + id),
 }

@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 
 import { CheckInHeatmap } from './components/CheckInHeatmap/CheckInHeatmap'
-import { useFindWidget } from './hooks/apis'
+import { useFindWidget } from './hooks/useCheckInApis'
 
 const CheckInPage = () => {
   const { api_key } = useParams()
@@ -9,7 +9,7 @@ const CheckInPage = () => {
 
   return (
     <div className="p-2 lg:px-0 mx-auto w-full max-w-[1000px] min-h-screen flex items-center">
-      <CheckInHeatmap isLoading={isPending} habit={data} refetch={refetch} />
+      {data && <CheckInHeatmap isLoading={isPending} habit={data} refetch={refetch} />}
     </div>
   )
 }

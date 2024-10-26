@@ -13,9 +13,9 @@ export type HeatMapValue = {
   count: number
 
   id: string
-  column: number
-  row: number
-  index: number
+  column?: number
+  row?: number
+  index?: number
   level: number
   journal: string
   is_done?: boolean

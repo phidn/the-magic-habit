@@ -4,7 +4,6 @@ import { Input } from '@mazic/ui'
 export const Newsletter = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    console.log('Subscribed!')
   }
 
   return (

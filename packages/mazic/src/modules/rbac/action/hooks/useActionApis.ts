@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { ApiResponse, IPaginationApi } from '@mazic/types/index'
+import { IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
 import { TAction, TActionCreate } from '../schemas/actionSchema'
@@ -9,17 +9,21 @@ import { actionService } from '../services/actionService'
 
 const QUERY_KEY = 'actions' as const
 
-const useActionList = (pagination: IPaginationApi) => {
-  const { data, ...rest } = useQuery({
-    queryFn: () => actionService.query<ApiResponse<TAction[]>>(pagination),
+export const useActionList = (pagination: IParams) => {
+  const { data, refetch } = useQuery({
+    queryFn: () => actionService.query(pagination),
     queryKey: [QUERY_KEY, 'actions_list', pagination],
   })
-  return { ...data?.data, ...rest }
+  return {
+    data: data?.data.data || [],
+    meta: data?.data.meta,
+    refetch,
+  }
 }
 
-const useActionDetail = (actionId: string) => {
+export const useActionDetail = (actionId: string) => {
   const { data, ...rest } = useQuery({
-    queryFn: () => actionService.get<ApiResponse<TAction>>(actionId),
+    queryFn: () => actionService.get(actionId),
     queryKey: [QUERY_KEY, actionId, 'actions_detail'],
     enabled: !!actionId,
   })
@@ -27,28 +31,28 @@ const useActionDetail = (actionId: string) => {
   return { ...data?.data, ...rest }
 }
 
-const useUpdateAction = (actionId: string) => {
+export const useUpdateAction = (actionId: string) => {
   return useMutation({
     mutationFn: (payload: TAction) => actionService.update(actionId, payload),
     onSuccess: () => toast.success('Successfully updated action'),
   })
 }
 
-const useCreateAction = () => {
+export const useCreateAction = () => {
   return useMutation({
     mutationFn: (payload: TActionCreate) => actionService.create(payload),
     onSuccess: () => toast.success('Successfully created action'),
   })
 }
 
-const useUpsertAction = (actionId: string) => {
+export const useUpsertAction = (actionId: string) => {
   const updateAction = useUpdateAction(actionId)
   const createAction = useCreateAction()
 
   return actionId ? updateAction : createAction
 }
 
-const useDeleteAction = () => {
+export const useDeleteAction = () => {
   return useMutation({
     mutationFn: (actionId: string) => actionService.delete(actionId),
     onSuccess: () => toast.success('Successfully deleted action'),
@@ -56,13 +60,4 @@ const useDeleteAction = () => {
       toast.error(error?.error?.message || 'Failed to delete action')
     },
   })
-}
-
-export const useActionApis = {
-  list: useActionList,
-  detail: useActionDetail,
-  create: useCreateAction,
-  update: useUpdateAction,
-  upsert: useUpsertAction,
-  delete: useDeleteAction,
 }

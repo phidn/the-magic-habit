@@ -17,8 +17,6 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'
-import { ApiResponse } from '@mazic/types'
-import { AuthResponse } from '@mazic/types/response'
 
 import { LabelInputContainer } from '../components/LabelInputContainer'
 import { loginSchema, TLogin } from '../schemas'
@@ -39,7 +37,7 @@ const LoginPage = () => {
   } = methods
 
   const loginMutation = useMutation({
-    mutationFn: (body: TLogin) => authService.login<ApiResponse<AuthResponse>>(body),
+    mutationFn: (body: TLogin) => authService.login(body),
     onSuccess: ({ data }) => {
       setCurrentUser(data.data.user)
       navigate(pathRoutes.dashboard)

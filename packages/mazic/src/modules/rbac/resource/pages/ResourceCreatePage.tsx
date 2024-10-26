@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { ResourceForm } from '../components/ResourceForm'
-import { useResourceApis } from '../hooks/useResourceApis'
+import { useCreateResource } from '../hooks/useResourceApis'
 import { resourceSchema } from '../schemas/resourceSchema'
 
 const ResourceCreatePage = () => {
-  const mutation = useResourceApis.create()
+  const mutation = useCreateResource()
   return (
     <ResourceForm
       initialValues={getDefaultsBySchema(resourceSchema)}

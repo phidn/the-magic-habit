@@ -1,31 +1,40 @@
-import { AxiosResponse } from 'axios'
-
 import { TLogin, TRegister } from '@mazic/modules/rbac/auth'
 import { TResetPassword } from '@mazic/modules/rbac/auth/schemas'
 import { TUser } from '@mazic/modules/rbac/user/schemas/userSchema'
+import { IAxiosResponse } from '@mazic/types'
+import { AuthResponse } from '@mazic/types/response'
 import http from '@mazic/utils/http'
 import { getAccessTokenFromLS, getRefreshTokenFromLS } from '@mazic/utils/localStorage'
 
-export const authService = {
-  login: <T = any>(body: TLogin) => http.post<T>('/auth/login', body),
-  register: <T = any>(body: TRegister) => http.post<T>('/auth/register', body),
+interface IAuthService {
+  login: (body: TLogin) => Promise<IAxiosResponse<AuthResponse>>
+  register: (body: TRegister) => Promise<IAxiosResponse<AuthResponse>>
+  logout: () => Promise<IAxiosResponse<any>>
+  getMe: () => Promise<IAxiosResponse<TUser>>
+  refreshToken: () => Promise<IAxiosResponse<any>>
+  resendEmail: (email: string) => Promise<IAxiosResponse<any>>
+  forgotPassword: (email: string) => Promise<IAxiosResponse<any>>
+  resetPassword: (payload: TResetPassword) => Promise<IAxiosResponse<any>>
+  verifyCode: (code: string) => Promise<IAxiosResponse<{ email: string }>>
+  verifyForgotCode: (code: string) => Promise<IAxiosResponse<{ email: string }>>
+}
+
+export const authService: IAuthService = {
+  login: (body) => http.post('/auth/login', body),
+  register: (body) => http.post('/auth/register', body),
   logout: () => {
     const access_token = getAccessTokenFromLS()
     const refresh_token = getRefreshTokenFromLS()
-    return http.post<any>('/auth/logout', { access_token, refresh_token })
+    return http.post('/auth/logout', { access_token, refresh_token })
   },
-  getMe: () => http.get<AxiosResponse<TUser>>('/auth/me'),
-  refreshToken: <T = any>() => {
+  getMe: () => http.get('/auth/me'),
+  refreshToken: () => {
     const refresh_token = getRefreshTokenFromLS()
-    return http.post<T>('/auth/refresh-token', { refresh_token })
+    return http.post('/auth/refresh-token', { refresh_token })
   },
-  resendEmail: (email: string) => http.post('/auth/resend-email', { email }),
-  forgotPassword: (email: string) => http.post('/auth/forgot-password', { email }),
-  resetPassword: ({ password, code }: TResetPassword) => {
-    return http.post('/auth/reset-password', { password, code })
-  },
-  verifyCode: <T = any>(code: string) => http.post<AxiosResponse<T>>('/auth/verify-code', { code }),
-  verifyForgotCode: <T = any>(code: string) => {
-    return http.post<AxiosResponse<T>>('/auth/verify-forgot-code', { code })
-  },
+  resendEmail: (email) => http.post('/auth/resend-email', { email }),
+  forgotPassword: (email) => http.post('/auth/forgot-password', { email }),
+  resetPassword: ({ password, code }) => http.post('/auth/reset-password', { password, code }),
+  verifyCode: (code) => http.post('/auth/verify-code', { code }),
+  verifyForgotCode: (code) => http.post('/auth/verify-forgot-code', { code }),
 }

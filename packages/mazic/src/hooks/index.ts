@@ -1,5 +1,5 @@
 // This file is generated automatically.
-export * from './useApis'
+export * from './useAppContext'
 export * from './useColorMode'
 export * from './useColumnCommon'
 export * from './useCopy'

@@ -1,12 +1,20 @@
-import { IParams } from '@mazic/types/index'
+import { IAxiosResponse, IParams } from '@mazic/types/index'
 import http from '@mazic/utils/http'
 
 import { TResource, TResourceCreate } from '../schemas/resourceSchema'
 
-export const resourceService = {
-  query: <T = any>(params: IParams) => http.get<T>('/resources', { params }),
-  get: <T = any>(id: string) => http.get<T>('/resources/' + id),
-  create: <T = any>(payload: TResourceCreate) => http.post<T>('/resources', payload),
-  update: <T = any>(id: string, payload: TResource) => http.put<T>('/resources/' + id, payload),
-  delete: <T = any>(id: string) => http.delete<T>('/resources/' + id),
+interface IResourceService {
+  query: (params: IParams) => Promise<IAxiosResponse<TResource[]>>
+  get: (id: string) => Promise<IAxiosResponse<TResource>>
+  create: (payload: TResourceCreate) => Promise<any>
+  update: (id: string, payload: TResource) => Promise<any>
+  delete: (id: string) => Promise<any>
+}
+
+export const resourceService: IResourceService = {
+  query: (params: IParams) => http.get('/resources', { params }),
+  get: (id: string) => http.get('/resources/' + id),
+  create: (payload: TResourceCreate) => http.post('/resources', payload),
+  update: (id: string, payload: TResource) => http.put('/resources/' + id, payload),
+  delete: (id: string) => http.delete('/resources/' + id),
 }

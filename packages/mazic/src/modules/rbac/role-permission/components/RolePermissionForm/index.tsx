@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual'
 import { Button } from '@mazic/ui'
 
 import { DataTableClient } from '@mazic/components/DataTable'
-import { TRole } from '@mazic/schemas/roleSchema'
+import { TRole } from '@mazic/types/modules'
 
 import { useRolesPermissionsColumns } from '../../hooks/columns'
 import { TMatrix, TRolePermissionExtended } from '../../types'

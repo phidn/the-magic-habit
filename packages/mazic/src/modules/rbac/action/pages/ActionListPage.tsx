@@ -4,18 +4,18 @@ import { useDataTable, useFilter } from '@mazic/hooks'
 import { commonFilterSchema as filterSchema } from '@mazic/schemas/filterSchema'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
-import { useActionApis } from '../hooks/useActionApis'
+import { useActionList } from '../hooks/useActionApis'
 import { useActionColumns } from '../hooks/useActionColumns'
 
 const ActionListPage = () => {
   const filterFields: DataTableFilterField[] = [FILTER_COMMON.status]
   const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
-  const { data, meta, refetch } = useActionApis.list(params)
+  const { data, meta, refetch } = useActionList(params)
   const columns = useActionColumns({ refreshTable: refetch })
 
   const { table } = useDataTable({
-    data: data || [],
+    data,
     columns: columns,
     pageCount: meta?.pagination.pageCount,
     filterFields,

@@ -32,7 +32,7 @@ export const commonParamsSchema = {
 export const useDataTable = <TData extends { id: string }, TValue>(
   props: IUseDataTableProps<TData, TValue>
 ) => {
-  const { data, columns, pageCount, params = {} } = props
+  const { data = [], columns, pageCount, params = {} } = props
   const navigate = useNavigate()
 
   const [rowSelection, setRowSelection] = useState({})

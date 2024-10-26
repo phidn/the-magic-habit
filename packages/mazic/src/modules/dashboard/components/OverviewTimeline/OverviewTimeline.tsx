@@ -14,7 +14,7 @@ import {
   TimelineTitle,
 } from '@mazic/ui'
 
-import { THabit } from '@mazic/modules/habit'
+import { THabit } from '@mazic/types/modules'
 
 interface Props {
   habits: THabit[]

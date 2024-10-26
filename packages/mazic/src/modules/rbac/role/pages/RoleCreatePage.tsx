@@ -1,11 +1,11 @@
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { RoleForm } from '../components/RoleForm'
-import { useRoleApis } from '../hooks/useRoleApis'
+import { useCreateRole } from '../hooks/useRoleApis'
 import { roleSchema } from '../schemas/roleSchema'
 
 const RoleCreatePage = () => {
-  const mutation = useRoleApis.create()
+  const mutation = useCreateRole()
 
   return (
     <RoleForm

@@ -1,14 +1,24 @@
-import { IParams } from '@mazic/types/index'
+import { IAxiosResponse, IParams } from '@mazic/types/index'
 import http from '@mazic/utils/http'
 
 import { TPermission, TPermissionCreate } from '../schemas/permissionSchema'
 
-export const permissionService = {
-  query: <T = any>(params: IParams) => http.get<T>('/permissions', { params }),
-  get: <T = any>(id: string) => http.get<T>('/permissions/' + id),
-  create: <T = any>(payload: TPermissionCreate) => http.post<T>('/permissions', payload),
-  update: <T = any>(id: string, payload: TPermission) => http.put<T>('/permissions/' + id, payload),
-  delete: <T = any>(id: string) => http.delete<T>('/permissions/' + id),
-  bulkDelete: <T = any>(ids: string[]) => http.post<T>('/permissions/delete', ids),
-  seed: <T = any>() => http.post<T>('/permissions/seed'),
+interface IPermissionService {
+  query: (params: IParams) => Promise<IAxiosResponse<TPermission[]>>
+  get: (id: string) => Promise<IAxiosResponse<TPermission>>
+  create: (payload: TPermissionCreate) => Promise<any>
+  update: (id: string, payload: TPermission) => Promise<any>
+  delete: (id: string) => Promise<any>
+  bulkDelete: (ids: string[]) => Promise<any>
+  seed: () => Promise<any>
+}
+
+export const permissionService: IPermissionService = {
+  query: (params: IParams) => http.get('/permissions', { params }),
+  get: (id: string) => http.get('/permissions/' + id),
+  create: (payload: TPermissionCreate) => http.post('/permissions', payload),
+  update: (id: string, payload: TPermission) => http.put('/permissions/' + id, payload),
+  delete: (id: string) => http.delete('/permissions/' + id),
+  bulkDelete: (ids: string[]) => http.post('/permissions/delete', ids),
+  seed: () => http.post('/permissions/seed'),
 }

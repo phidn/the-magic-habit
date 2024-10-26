@@ -18,8 +18,6 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'
-import { ApiResponse } from '@mazic/types'
-import { AuthResponse } from '@mazic/types/response'
 
 import { LabelInputContainer } from '../components/LabelInputContainer'
 import { registerSchema, TRegister } from '../schemas'
@@ -40,7 +38,7 @@ const RegisterPage = () => {
   } = methods
 
   const registerMutation = useMutation({
-    mutationFn: (body: TRegister) => authService.register<ApiResponse<AuthResponse>>(body),
+    mutationFn: (body: TRegister) => authService.register(body),
     onSuccess: ({ data }) => {
       toast.success('Your account has been created successfully')
       setCurrentUser(data.data.user)

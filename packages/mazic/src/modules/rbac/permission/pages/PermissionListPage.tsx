@@ -1,4 +1,4 @@
-import { Button, TrashIcon } from '@mazic/ui'
+import { ButtonLoading, TrashIcon } from '@mazic/ui'
 
 import { DataTable, Toolbar } from '@mazic/components'
 import { ToolbarFloating } from '@mazic/components/ToolbarFloating/ToolbarFloating'
@@ -7,7 +7,11 @@ import { RESOURCES, useDataTable, useFilter, useGetOptions } from '@mazic/hooks'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
-import { usePermissionApis } from '../hooks/usePermissionApis'
+import {
+  useBulkDeletePermission,
+  usePermissionList,
+  useSeedPermission,
+} from '../hooks/usePermissionApis'
 import { usePermissionColumns } from '../hooks/usePermissionColumns'
 import { filterSchema } from '../schemas/permissionSchema'
 
@@ -25,7 +29,7 @@ const PermissionListPage = () => {
   ]
   const { filterList, params, search, isFiltered, onReset } = useFilter(filterSchema, filterFields)
 
-  const { data, meta, refetch } = usePermissionApis.list(params)
+  const { data, meta, refetch } = usePermissionList(params)
   const columns = usePermissionColumns({ refreshTable: refetch })
 
   const { table } = useDataTable({
@@ -37,8 +41,8 @@ const PermissionListPage = () => {
     params,
   })
 
-  const seedPermission = usePermissionApis.seed()
-  const bulkDelete = usePermissionApis.bulkDelete()
+  const seedPermission = useSeedPermission()
+  const bulkDelete = useBulkDeletePermission()
 
   const [hideModal, showModalBulkDelete] = useStoreShallow((state) => [
     state.hideModal,
@@ -54,7 +58,7 @@ const PermissionListPage = () => {
         search={search}
         filterFields={filterList}
         renderActions={() => (
-          <Button
+          <ButtonLoading
             variant="outline"
             className="h-8 px-2 lg:px-3 mr-2"
             isLoading={seedPermission.isPending}
@@ -65,7 +69,7 @@ const PermissionListPage = () => {
             }
           >
             Seed
-          </Button>
+          </ButtonLoading>
         )}
       />
       <DataTable table={table} />

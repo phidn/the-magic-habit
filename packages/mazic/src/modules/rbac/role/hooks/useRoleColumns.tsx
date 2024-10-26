@@ -11,10 +11,10 @@ import { ITableColsProps } from '@mazic/types/index'
 
 import { TRole } from '../schemas/roleSchema'
 
-import { useRoleApis } from './useRoleApis'
+import { useDeleteRole } from './useRoleApis'
 
 export const useRoleColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TRole>[] => {
-  const mutationDelete = useRoleApis.delete()
+  const mutationDelete = useDeleteRole()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

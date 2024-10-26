@@ -5,6 +5,7 @@ import { Toaster } from 'sonner'
 import { ModalCommon } from '@mazic/components'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
+import { AppContextProvider } from '@mazic/hooks/useAppContext'
 import { authService } from '@mazic/modules/rbac/auth'
 import { routers } from '@mazic/routers/routers'
 import { useStoreShallow } from '@mazic/store/useStore'
@@ -52,12 +53,14 @@ export const AppLayout = () => {
   }, [])
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <Toaster richColors visibleToasts={1} className="mb-16" />
-      <RouterProvider router={routers} />
-      <BrowserRouter>
-        <ModalCommon />
-      </BrowserRouter>
-    </Suspense>
+    <AppContextProvider>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Toaster richColors visibleToasts={1} className="mb-16" />
+        <RouterProvider router={routers} />
+        <BrowserRouter>
+          <ModalCommon />
+        </BrowserRouter>
+      </Suspense>
+    </AppContextProvider>
   )
 }

@@ -1,15 +1,10 @@
 import { lazy } from 'react'
 
+import { pathRoutes } from '@mazic/config/pathRoutes'
 import { PERMISSIONS } from '@mazic/config/permissions'
 import { TRoutes } from '@mazic/types'
 
-export const userPaths = {
-  list: '/user',
-  view: '/user/view/:id',
-  edit: '/user/edit/:id',
-  create: '/user/new',
-  profile: '/profile',
-}
+const { user: userPaths } = pathRoutes
 
 export const userRoute: TRoutes = [
   {

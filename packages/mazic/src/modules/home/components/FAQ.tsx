@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@mazic/ui'
 
 interface FAQProps {

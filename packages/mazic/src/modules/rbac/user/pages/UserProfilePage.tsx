@@ -1,10 +1,10 @@
 import { ProfileForm } from '../components/ProfileForm/ProfileForm'
-import { useUserApis } from '../hooks/useUserApis'
+import { useProfile, useUpdateProfile } from '../hooks/useUserApis'
 import { profileSchema } from '../schemas/profileSchema'
 
 const UserProfilePage = () => {
-  const mutation = useUserApis.updateProfile()
-  const { data } = useUserApis.profile()
+  const mutation = useUpdateProfile()
+  const { data } = useProfile()
 
   return (
     <ProfileForm

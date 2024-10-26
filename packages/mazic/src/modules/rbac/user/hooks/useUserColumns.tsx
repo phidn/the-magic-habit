@@ -12,11 +12,11 @@ import { ITableColsProps } from '@mazic/types/index'
 
 import { TUser } from '../schemas/userSchema'
 
-import { useUserApis } from './useUserApis'
+import { useDeleteUser } from './useUserApis'
 
 export const useUserColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TUser>[] => {
   const { t } = useTranslation()
-  const mutationDelete = useUserApis.delete()
+  const mutationDelete = useDeleteUser()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

@@ -62,6 +62,10 @@ export interface ApiResponse<T> {
   }
 }
 
+export interface IAxiosResponse<T> {
+  data: ApiResponse<T>
+}
+
 export interface IFormProps {
   title?: string | React.ReactNode
   initialValues?: any

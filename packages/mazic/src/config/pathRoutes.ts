@@ -1,13 +1,22 @@
-import { checkInPaths } from '@mazic/modules/check-in'
-import { habitPaths } from '@mazic/modules/habit'
-import { userPaths } from '@mazic/modules/rbac/user'
-
 export const pathRoutes = {
   home: '/',
   dashboard: '/dashboard',
-  user: userPaths,
-  checkIn: checkInPaths,
-  habit: habitPaths,
+  user: {
+    list: '/user',
+    view: '/user/view/:id',
+    edit: '/user/edit/:id',
+    create: '/user/new',
+    profile: '/profile',
+  },
+  checkIn: {
+    widget: '/widget/:api_key',
+  },
+  habit: {
+    list: '/habit',
+    view: '/habit/view/:id',
+    edit: '/habit/edit/:id',
+    create: '/habit/create',
+  },
   auth: {
     login: '/login',
     signUp: '/signup',

@@ -11,10 +11,10 @@ import { ITableColsProps } from '@mazic/types/index'
 
 import { TResource } from '../schemas/resourceSchema'
 
-import { useResourceApis } from './useResourceApis'
+import { useDeleteResource } from './useResourceApis'
 
 export const useResourceColumns = ({ refreshTable }: ITableColsProps): ColumnDef<TResource>[] => {
-  const mutationDelete = useResourceApis.delete()
+  const mutationDelete = useDeleteResource()
   const [hideModal, showModalDelete] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,

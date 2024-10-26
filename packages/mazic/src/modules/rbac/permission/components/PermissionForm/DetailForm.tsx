@@ -4,7 +4,7 @@ import { FormInput, FormItem, FormSelect } from '@mazic/components/FormControl'
 import { RESOURCES, useGetOptions, usePageDetails } from '@mazic/hooks'
 import { optionSelected } from '@mazic/utils/form'
 
-import { usePermissionApis } from '../../hooks/usePermissionApis'
+import { usePermissionByResource } from '../../hooks/usePermissionApis'
 
 export const DetailForm = () => {
   const methods = useFormContext()
@@ -12,7 +12,7 @@ export const DetailForm = () => {
 
   const { options: resourceOptions } = useGetOptions(RESOURCES.RESOURCE)
   const { options: actionOptions } = useGetOptions(RESOURCES.ACTION)
-  const { actions: existActions } = usePermissionApis.listByResource({
+  const { actions: existActions } = usePermissionByResource({
     pageSize: -1,
     resource_id: methods.getValues('resource_id'),
   })
