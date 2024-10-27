@@ -20,5 +20,5 @@ export const PublicLayout = ({ children }: Props) => {
     }
   }, [navigate, user, loaded])
 
-  return user?.id ? <Suspense fallback={<LoadingTop />}>{children}</Suspense> : null
+  return !user?.id ? <Suspense fallback={<LoadingTop />}>{children}</Suspense> : null
 }
