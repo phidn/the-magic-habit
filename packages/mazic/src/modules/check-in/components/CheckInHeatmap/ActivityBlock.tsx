@@ -22,7 +22,7 @@ interface Props {
   habit: THabit | undefined
   rx: number
   isNumberCheckIn: boolean
-  isWidget: boolean
+  scrollToToday: boolean
   refetch: () => void
   onDelete?: (id: string) => void
 }
@@ -32,7 +32,8 @@ export const ActivityBlock = (props: Props) => {
   const checkIn = useCheckIn()
   const deleteCheckIn = useDeleteCheckIn()
 
-  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, isWidget, onDelete } = props
+  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, scrollToToday, onDelete } =
+    props
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
@@ -46,13 +47,13 @@ export const ActivityBlock = (props: Props) => {
   const ref = useRef<SVGRectElement>(null)
 
   useEffect(() => {
-    if (isToday && isWidget) {
+    if (isToday && scrollToToday) {
       ref.current?.scrollIntoView({
         behavior: 'smooth',
         inline: 'center',
       })
     }
-  }, [isToday, isWidget])
+  }, [isToday, scrollToToday])
 
   const handleCheckIn = () => {
     showModal({
@@ -93,7 +94,7 @@ export const ActivityBlock = (props: Props) => {
     <Tooltip>
       <TooltipTrigger asChild>
         <rect
-          ref={isToday && isWidget ? ref : undefined}
+          ref={isToday && scrollToToday ? ref : undefined}
           {...svgProps}
           style={{
             ...svgProps.style,

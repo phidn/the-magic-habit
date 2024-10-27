@@ -29,6 +29,7 @@ import { colors } from '@mazic/config/baseColors'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'
+import useRect from '@mazic/hooks/useRect'
 import { useWindowSize } from '@mazic/hooks/useWindowSize'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
@@ -56,8 +57,9 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
     state.showModalDelete,
     state.showModal,
   ])
-  const windowSize = useWindowSize()
-  const isSmallScreen = windowSize?.width && windowSize?.width < 900
+
+  const [ref, rect] = useRect<HTMLDivElement>()
+  const isSmallScreen = !!(rect?.width && rect.width < 900)
 
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
 
@@ -78,7 +80,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   }
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full', className)} ref={ref}>
       <Card>
         <CardHeader
           isLoading={isLoading}
@@ -172,7 +174,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                       color={activeModeColor}
                       rx={3}
                       isNumberCheckIn={isNumberCheckIn}
-                      isWidget={isWidget}
+                      scrollToToday={isSmallScreen}
                       onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
                       refetch={refetch}
                     />

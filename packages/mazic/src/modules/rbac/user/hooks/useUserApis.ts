@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { useStore } from '@mazic/store/useStore'
 import { IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
@@ -42,6 +43,7 @@ export const useUpdateUser = (userId: string) => {
 }
 
 export const useUpdateProfile = () => {
+  const setCurrentUser = useStore((state) => state.setCurrentUser)
   return useMutation({
     mutationFn: async (user: TUserProfile) => {
       const userProfile: TUser = {
@@ -51,6 +53,7 @@ export const useUpdateProfile = () => {
           habit_orders: user.habit_orders,
         },
       }
+      setCurrentUser(userProfile)
       return userService.updateProfile(userProfile)
     },
     onSuccess: () => toast.success('Successfully updated user'),

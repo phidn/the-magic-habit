@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { cn } from '@mazic/ui'
 
 import { NoData } from '@mazic/components'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext } from '@mazic/hooks'
 import { CheckInHeatmap } from '@mazic/modules/check-in'
+import { useStore } from '@mazic/store/useStore'
+import { THabit } from '@mazic/types/modules'
 
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
@@ -12,11 +16,26 @@ import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline
 const DashboardPage = () => {
   const navigate = useNavigate()
   const { hooks } = useAppContext()
+
+  const user = useStore((state) => state.currentUser.user)
+  const [listHabits, setListHabits] = useState<THabit[]>([])
+
   const { data, isPending, refetch } = hooks.useListHabit({ pageSize: -1, entry_expand: true })
 
   const [deleted, setDeleted] = useState<string[]>([])
   const onDelete = (id: string) => setDeleted([...deleted, id])
-  const listHabits = data.filter((x) => !deleted.includes(x.id))
+
+  useEffect(() => {
+    let _listHabits = data.filter((x) => !deleted.includes(x.id))
+    const settingOrders = (user?.setting?.habit_orders || '').split('|')
+    if (settingOrders.length) {
+      _listHabits = _listHabits.sort(
+        (a, b) => settingOrders.indexOf(a.id) - settingOrders.indexOf(b.id)
+      )
+    }
+    setListHabits(_listHabits)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify({ data, deleted, user })])
 
   if (!listHabits?.length) {
     return (
@@ -31,6 +50,8 @@ const DashboardPage = () => {
     )
   }
 
+  const settingCols = user?.setting?.habit_cols || 1
+
   return (
     <div>
       <div className="mazic-row">
@@ -41,7 +62,15 @@ const DashboardPage = () => {
           <OverviewTimeline habits={listHabits} isLoading={isPending} />
         </div>
       </div>
-      <div className="mazic-row mt-2">
+      <div
+        className={cn(
+          'w-full grid gap-2',
+          settingCols === 1 && 'grid-cols-1',
+          settingCols === 2 && 'grid-cols-2',
+          settingCols === 3 && 'grid-cols-3',
+          settingCols === 4 && 'grid-cols-4'
+        )}
+      >
         {listHabits.map((habit, idx) => {
           return (
             <CheckInHeatmap

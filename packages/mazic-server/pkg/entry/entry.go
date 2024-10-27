@@ -2,6 +2,8 @@ package entry
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"math"
 	"net/url"
 	"strconv"
@@ -13,6 +15,7 @@ import (
 
 	"github.com/pocketbase/pocketbase/daos"
 	"github.com/pocketbase/pocketbase/models"
+	"github.com/pocketbase/pocketbase/tools/inflector"
 
 	"github.com/pocketbase/dbx"
 )
@@ -22,7 +25,8 @@ type Entry interface {
 	ModelQuery(ctx context.Context, m models.Model) *dbx.SelectQuery
 	Find(ctx context.Context, slices any, expressions []dbx.Expression, queryParams url.Values) (*schema.ListItems, error)
 	FindCollectionByName(ctx context.Context, name string) (*models.Collection, error)
-	FindRecordById(ctx context.Context, name string, id string) (*models.Record, error)
+	FindRecordById(ctx context.Context, colName, idValue string) (*models.Record, error)
+	FindFirstRecordByData(ctx context.Context, colName, key, value string) (*models.Record, error)
 }
 
 type entry struct {
@@ -116,17 +120,37 @@ func (entry *entry) FindCollectionByName(ctx context.Context, name string) (*mod
 	return model, nil
 }
 
-func (entry *entry) FindRecordById(ctx context.Context, name string, id string) (*models.Record, error) {
-	collection, err := entry.FindCollectionByName(ctx, name)
+func (entry *entry) FindRecordById(ctx context.Context, colName, idValue string) (*models.Record, error) {
+	collection, err := entry.FindCollectionByName(ctx, colName)
 	if err != nil {
 		return nil, err
 	}
 	query := entry.Dao().RecordQuery(collection).
 		WithContext(ctx).
-		AndWhere(dbx.HashExp{collection.Name + ".id": id})
+		AndWhere(dbx.HashExp{collection.Name + ".id": idValue})
 
 	record := &models.Record{}
 	if err := query.Limit(1).One(record); err != nil {
+		return nil, err
+	}
+
+	return record, nil
+}
+
+func (entry *entry) FindFirstRecordByData(ctx context.Context, colName, key, value string) (*models.Record, error) {
+	collection, err := entry.FindCollectionByName(ctx, colName)
+	if err != nil {
+		return nil, err
+	}
+	query := entry.Dao().RecordQuery(collection).
+		WithContext(ctx).
+		AndWhere(dbx.HashExp{inflector.Columnify(key): value})
+
+	record := &models.Record{}
+	if err := query.Limit(1).One(record); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return models.NewRecord(collection), nil
+		}
 		return nil, err
 	}
 

@@ -1,8 +1,4 @@
 {
-  "crm.closeReason.CLOSE_LOST": "Close lost",
-  "crm.closeReason.CLOSE_WON": "Close won",
-  "crm.closeReason.text": "Close reason",
-  "crm.closeReason.type": "Close type",
   "system.actions": "Actions",
   "system.createdAt": "Created at",
   "system.status": "Status",

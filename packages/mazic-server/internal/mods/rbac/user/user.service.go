@@ -117,10 +117,11 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 		return nil, err
 	}
 
-	recordSetting, err := service.Entry.Dao().FindFirstRecordByData(new(UserSetting).TableName(), "user_id", id)
+	recordSetting, err := service.Entry.FindFirstRecordByData(ctx, new(UserSetting).TableName(), "user_id", id)
 	if err != nil {
 		return nil, err
 	}
+	recordSetting.Set("user_id", id)
 	recordSetting.Set("habit_cols", user.Setting.HabitCols)
 	recordSetting.Set("habit_orders", user.Setting.HabitOrders)
 	if err := service.Entry.Dao().Save(recordSetting); err != nil {
