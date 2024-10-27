@@ -129,12 +129,10 @@ func (service *authService) GetMe(ctx context.Context, userId string) (*user.Use
 		Limit(1).
 		One(userSetting)
 
-	if err != nil {
-		return nil, err
+	if err == nil {
+		userData.Setting = *userSetting
 	}
-
 	userData.Permissions = *permissions
-	userData.Setting = *userSetting
 	return userData, nil
 }
 

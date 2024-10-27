@@ -12,6 +12,8 @@ import (
 	"github.com/pocketbase/pocketbase/cmd"
 	"github.com/pocketbase/pocketbase/core"
 	"github.com/pocketbase/pocketbase/plugins/migratecmd"
+
+	_ "github.com/golangthang/mazic-habit/migrations"
 )
 
 type Pocket struct {
@@ -24,8 +26,24 @@ func NewPocket() *Pocket {
 	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
 		Automigrate: isGoRun,
 	})
-	app.RootCmd.AddCommand(cmd.NewServeCommand(app, false))
 
+	var migrationsDir string
+	app.RootCmd.PersistentFlags().StringVar(
+		&migrationsDir,
+		"migrationsDir",
+		"",
+		"the directory with the user defined migrations",
+	)
+	var automigrate bool
+	app.RootCmd.PersistentFlags().BoolVar(
+		&automigrate,
+		"automigrate",
+		true,
+		"enable/disable auto migrations",
+	)
+
+	// Hide default banner
+	app.RootCmd.AddCommand(cmd.NewServeCommand(app, false))
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
 		regular := color.New()
 		regular.Printf("├─ REST API: %s\n", color.CyanString(config.Config.AppDomain+"/api/"))

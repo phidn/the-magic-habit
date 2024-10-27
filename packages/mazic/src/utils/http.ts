@@ -66,6 +66,11 @@ class Http {
     const _error = error?.response?.data || error?.response || error || {}
     switch (error.response.status) {
       case HTTP_CODE.Unauthorized:
+        if (error.config.url?.includes(PATH_API.refreshToken)) {
+          clearLS()
+          // window.location.href = pathRoutes.auth.login
+          return Promise.reject(_error)
+        }
         return this.tryRefreshToken(error)
       default:
         return Promise.reject(_error)
