@@ -2,7 +2,7 @@ import { Suspense, useEffect } from 'react'
 import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
-import { ModalCommon } from '@mazic/components'
+import { LoadingTop, ModalCommon } from '@mazic/components'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { AppContextProvider } from '@mazic/hooks/useAppContext'
@@ -11,13 +11,13 @@ import { routers } from '@mazic/routers/routers'
 import { useStoreShallow } from '@mazic/store/useStore'
 
 export const AppLayout = () => {
-  const [theme, setCurrentUser] = useStoreShallow((state) => [
+  const [theme, setCurrentUser, { user, loaded }] = useStoreShallow((state) => [
     state.theme.mode,
     state.setCurrentUser,
+    state.currentUser,
   ])
-
   const authRoutes = Object.values(pathRoutes.auth)
-  const isAuthRoute = authRoutes.some((route) => window.location.pathname.includes(route))
+  const isPublicRoute = authRoutes.some((route) => window.location.pathname.includes(route))
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -34,11 +34,11 @@ export const AppLayout = () => {
         setCurrentUser(undefined)
       }
     }
-    if (!isAuthRoute) {
+    if (!isPublicRoute && !loaded) {
       getCurrentUser()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthRoute])
+  }, [isPublicRoute, loaded, user])
 
   useEffect(() => {
     if (CONFIG.isDevelopment) {
@@ -54,7 +54,7 @@ export const AppLayout = () => {
 
   return (
     <AppContextProvider>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LoadingTop />}>
         <Toaster richColors visibleToasts={1} className="mb-16" />
         <RouterProvider router={routers} />
         <BrowserRouter>

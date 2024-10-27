@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 
 import { ProtectedLayout } from '@mazic/layouts/ProtectedLayout/ProtectedLayout'
+import { PublicLayout } from '@mazic/layouts/PublicLayout/PublicLayout'
 import { checkInRoute } from '@mazic/modules/check-in'
 import { dashboardRoute } from '@mazic/modules/dashboard'
 import { habitRoute } from '@mazic/modules/habit'
@@ -14,7 +15,18 @@ import { rolePermissionRoute } from '@mazic/modules/rbac/role-permission'
 import { userRoute } from '@mazic/modules/rbac/user'
 import { systemRoute } from '@mazic/modules/system'
 
-const publicRoutes = [...homeRoute, ...authRoute, ...checkInRoute]
+const publicRoutes = [
+  ...homeRoute,
+  ...checkInRoute,
+  ...authRoute.map((route) => ({
+    path: route.path,
+    element: (
+      <PublicLayout>
+        <route.Component />
+      </PublicLayout>
+    ),
+  })),
+]
 
 const protectedRoutes = [
   ...actionRoute,

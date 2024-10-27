@@ -138,9 +138,9 @@ shadcn:
 	@echo "Shadcn generated."
 
 gen-index:
-	@echo "Starting generate design system..."
+	@echo "Starting generate all index files..."
 	node scripts/generate-index.js
-	@echo "Icons generated."
+	@echo "Index files generated."
 
 gen-schema:
 	@echo "Starting generate typescript..."

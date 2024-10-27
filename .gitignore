@@ -48,3 +48,4 @@ __debug_*.exe
 .local
 .locals
 packages/mazic-docker/mz_data
+packages/mazic/tsconfig.app.tsbuildinfo

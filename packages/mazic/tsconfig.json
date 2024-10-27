@@ -10,6 +10,7 @@
     "composite": true,
     "declaration": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "paths": {
       "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
       "@mazic/*": ["packages/mazic/src/*"]

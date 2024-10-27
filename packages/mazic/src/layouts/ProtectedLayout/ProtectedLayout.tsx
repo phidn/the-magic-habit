@@ -1,6 +1,7 @@
 import { ReactNode, Suspense, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { LoadingTop } from '@mazic/components'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'
 
@@ -35,7 +36,7 @@ export const ProtectedLayout = ({ children, permission }: Props) => {
 
   return user?.id ? (
     <MainLayout>
-      <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+      <Suspense fallback={<LoadingTop />}>{children}</Suspense>
     </MainLayout>
   ) : null
 }
