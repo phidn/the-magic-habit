@@ -20,13 +20,6 @@ export const CONFIG = {
   stringItemsSeparator: ',',
 }
 
-export const PATH_API = {
-  logout: '/auth/logout',
-  login: '/auth/login',
-  register: '/auth/register',
-  refreshToken: '/auth/refresh-token',
-} as const
-
 export enum HTTP_CODE {
   Continue = 100,
   SwitchingProtocols = 101,

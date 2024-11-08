@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import { CONFIG, HTTP_CODE, PATH_API } from '@mazic/config/config'
+import { CONFIG, HTTP_CODE } from '@mazic/config/config'
 import { AuthResponse } from '@mazic/types/response'
 
 import { clearLS, getTokens, setTokensToLS } from './localStorage'
@@ -11,6 +11,13 @@ const AXIOS_OPTIONS = {
   headers: {
     'Content-Type': 'application/json',
   },
+}
+
+const PATH_API = {
+  logout: '/auth/logout',
+  login: '/auth/login',
+  register: '/auth/register',
+  refreshToken: '/auth/refresh-token',
 }
 
 const UNAUTHORIZED_PATHS = [PATH_API.login, PATH_API.refreshToken, PATH_API.register]
@@ -64,6 +71,9 @@ class Http {
 
   private handleError = (error: any) => {
     const _error = error?.response?.data || error?.response || error || {}
+    if (UNAUTHORIZED_PATHS.includes(error.config.url)) {
+      return Promise.reject(_error)
+    }
     switch (error.response.status) {
       case HTTP_CODE.Unauthorized:
         if (error.config.url?.includes(PATH_API.refreshToken)) {
