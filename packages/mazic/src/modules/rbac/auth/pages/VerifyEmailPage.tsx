@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Terminal } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { AceDivide, Button, ButtonLink } from '@mazic/ui'
+import { AceDivide, ButtonLink, ButtonLoading } from '@mazic/ui'
 
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
@@ -62,13 +62,14 @@ const VerifyEmailPage = () => {
           <ButtonLink href={pathRoutes.auth.login} variant="outline" className="w-full">
             Sign in
           </ButtonLink>
-          <Button
+          <ButtonLoading
             className="w-full"
             onClick={() => resendEmailMutation.mutate()}
             disabled={isSending}
+            isLoading={resendEmailMutation.isPending}
           >
             {isSending ? `Resend email (${countdown}s)` : 'Resend email'}
-          </Button>
+          </ButtonLoading>
         </div>
       </div>
     </div>

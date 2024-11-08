@@ -8,7 +8,7 @@ import {
   AceDivide,
   Alert,
   AlertDescription,
-  Button,
+  ButtonLoading,
   ExclamationTriangleIcon,
   FormMessage,
   Input,
@@ -72,9 +72,13 @@ const ForgotPasswordPage = () => {
               <Input id="email" placeholder="email@mazic.com" type="email" {...register('email')} />
               {errors.email && <FormMessage>{errors.email.message}</FormMessage>}
             </LabelInputContainer>
-            <Button className="w-full mt-4" type="submit">
+            <ButtonLoading
+              className="w-full mt-4"
+              type="submit"
+              isLoading={forgotPasswordMutation.isPending}
+            >
               Send Reset Link
-            </Button>
+            </ButtonLoading>
           </form>
         </FormProvider>
         <div className="mt-4 text-center text-sm">

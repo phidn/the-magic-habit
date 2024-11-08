@@ -9,7 +9,7 @@ import {
   AceDivide,
   Alert,
   AlertDescription,
-  Button,
+  ButtonLoading,
   ExclamationTriangleIcon,
   FormMessage,
   Input,
@@ -103,9 +103,13 @@ const ResetPasswordPage = () => {
               />
               {errors.password && <FormMessage>{errors.password.message}</FormMessage>}
             </LabelInputContainer>
-            <Button className="w-full mt-4" type="submit">
+            <ButtonLoading
+              className="w-full mt-4"
+              type="submit"
+              isLoading={verifyCodeMutation.isPending}
+            >
               Reset Password
-            </Button>
+            </ButtonLoading>
           </form>
         </FormProvider>
         <div className="mt-4 text-center text-sm">
