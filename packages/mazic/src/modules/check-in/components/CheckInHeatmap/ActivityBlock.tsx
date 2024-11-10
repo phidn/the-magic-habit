@@ -2,8 +2,6 @@ import { SVGProps, useEffect, useRef } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
-import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic/ui'
-
 import { HeatMapValue } from '@mazic/components/HeatMap'
 import { TModal } from '@mazic/store/slices/modalSlice'
 import { THabit } from '@mazic/types/modules'
@@ -110,27 +108,20 @@ export const ActivityBlock = (props: Props) => {
   }
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <rect
-          ref={isToday && scrollToToday ? ref : undefined}
-          {...svgProps}
-          style={{
-            ...svgProps.style,
-            ...(isToday && {
-              outline: `1px solid ${color}`,
-              outlineOffset: '-1px',
-              borderRadius: rx,
-            }),
-          }}
-          onClick={handleCheckIn}
-        />
-      </TooltipTrigger>
-      <TooltipPortal>
-        <TooltipContent align="end" side="right">
-          {renderTooltip()}
-        </TooltipContent>
-      </TooltipPortal>
-    </Tooltip>
+    <rect
+      ref={isToday && scrollToToday ? ref : undefined}
+      {...svgProps}
+      style={{
+        ...svgProps.style,
+        ...(isToday && {
+          outline: `1px solid ${color}`,
+          outlineOffset: '-1px',
+          borderRadius: rx,
+        }),
+      }}
+      onClick={handleCheckIn}
+      data-tooltip-id={`my-tooltip-${habit?.id}`}
+      data-tooltip-content={renderTooltip()}
+    />
   )
 }

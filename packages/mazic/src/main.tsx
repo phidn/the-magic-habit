@@ -8,6 +8,7 @@ import { AppLayout } from './layouts/AppLayout/AppLayout'
 import './styles/mazic.scss'
 import './styles/tailwind.css'
 import './styles/theme.css'
+import 'react-tooltip/dist/react-tooltip.css'
 
 const queryClient = new QueryClient({
   defaultOptions: {
