@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
+import { HeatMapValue } from '@mazic/components/HeatMap'
 import { ColorName } from '@mazic/config/baseColors'
 import { checkInType } from '@mazic/modules/check-in'
 
@@ -8,7 +8,7 @@ export const habitSchema = z
   .object({
     id: z.string().optional(),
     title: z.string().min(1, 'Title is required'),
-    check_in_type: z.string().min(1, 'Check-in type is required').default(checkInType.NUMBER),
+    check_in_type: z.string().min(1, 'Check-in type is required').default(checkInType.INPUT_NUMBER),
     metric: z.string().optional().nullable(),
     week_start: z.string().optional().default('MONDAY'),
     color: z.string().min(1, 'Color is required').default('blue'),
@@ -16,7 +16,7 @@ export const habitSchema = z
     is_private: z.boolean().optional().default(true),
   })
   .superRefine((data, ctx) => {
-    if (data.check_in_type === checkInType.NUMBER && !data.metric) {
+    if (data.check_in_type === checkInType.INPUT_NUMBER && !data.metric) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'Metric is required for number check-in',
@@ -42,7 +42,7 @@ export type THabit = z.infer<typeof habitSchema> & {
   color: ColorName
   api_key: string
   check_in_items: TCheckIn[]
-  activities: (HeatMapValue & HeatMapExtended)[]
+  activities: HeatMapValue[]
   meta: {
     avg: number
     max: number

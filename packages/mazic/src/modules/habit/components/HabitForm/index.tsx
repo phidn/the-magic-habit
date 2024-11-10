@@ -8,10 +8,13 @@ import { DetailForm } from './DetailForm'
 
 export const HabitForm = (props: IFormProps) => {
   const validateHabitDetails = (values: THabit) => {
-    if (values.check_in_type === checkInType.NUMBER) {
+    if (values.check_in_type === checkInType.INPUT_NUMBER) {
       return !!(values.title && values.metric)
     }
-    if (values.check_in_type === checkInType.CHECKBOX) {
+    if (
+      values.check_in_type === checkInType.DONE_NOTE ||
+      values.check_in_type === checkInType.DONE
+    ) {
       return !!values.title
     }
     return true

@@ -20,15 +20,6 @@ export type HeatMapValue = {
   journal: string
   is_done?: boolean
 }
-export type HeatMapExtended = {
-  // id: string
-  // column: number
-  // row: number
-  // index: number
-  // level: number
-  // journal: string
-  // is_done?: boolean
-}
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   startDate?: Date
@@ -39,13 +30,12 @@ export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   rectProps?: RectProps
   legendRender?: LegendProps['legendRender']
   rectRender?: (
-    data: React.SVGProps<SVGRectElement>,
-    valueItem: HeatMapValue & HeatMapExtended
+    svgProps: React.SVGProps<SVGRectElement>,
+    value: HeatMapValue
   ) => React.ReactElement | void
   value?: Array<HeatMapValue>
   weekLabels?: string[] | false
   monthLabels?: string[] | false
-  /** position of month labels @default `top` */
   monthPlacement?: 'top' | 'bottom'
   panelColors?: Record<number, string>
 }

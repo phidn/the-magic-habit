@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useMatch } from 'react-router-dom'
+import { Tooltip } from 'react-tooltip'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
@@ -19,7 +20,6 @@ import {
   ScrollArea,
   ScrollBar,
   SeedlingIcon,
-  TooltipProvider,
   TrashIcon,
 } from '@mazic/ui'
 
@@ -30,7 +30,6 @@ import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'
 import useRect from '@mazic/hooks/useRect'
-import { useWindowSize } from '@mazic/hooks/useWindowSize'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -64,6 +63,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
 
   const { title, activities, color } = habit || {}
+
   const blocks = useMemo(() => {
     return (activities || []).filter((x) => !deletedBlock.includes(x.id))
   }, [activities, deletedBlock])
@@ -73,7 +73,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')
   const isWidget = !!useMatch(pathRoutes.checkIn.widget)
-  const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
+  const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
 
   if (!habit) {
     return null
@@ -88,7 +88,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
         >
           <CardTitle>{title}</CardTitle>
           {!isWidget && (
-            <div className="ml-auto flex w-full space-x-2 justify-end">
+            <div className="ml-auto flex space-x-2 justify-end">
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <EllipsisVerticalIcon />
@@ -141,64 +141,64 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
           )}
         </CardHeader>
         <CardContent isLoading={isLoading} className="flex justify-center relative">
-          <TooltipProvider delayDuration={300}>
-            <ScrollArea className="h-auto pb-5">
-              <HeatMap
-                width={900}
-                startDate={startDate.toDate()}
-                endDate={endDate.toDate()}
-                value={blocks}
-                legendCellSize={15}
-                rectSize={15}
-                weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-                panelColors={
-                  isNumberCheckIn
-                    ? {
-                        0: bgColor,
-                        1: colors[habit.color][2].hex,
-                        2: colors[habit.color][3].hex,
-                        3: colors[habit.color][4].hex,
-                        4: activeModeColor,
-                      }
-                    : {
-                        0: bgColor,
-                        4: colors[habit.color][3].hex,
-                      }
-                }
-                rectRender={(props, data) => {
-                  return (
-                    <ActivityBlock
-                      svgProps={props}
-                      data={data}
-                      habit={habit}
-                      color={activeModeColor}
-                      rx={3}
-                      isNumberCheckIn={isNumberCheckIn}
-                      scrollToToday={isSmallScreen}
-                      onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
-                      refetch={refetch}
-                    />
-                  )
-                }}
-                rectProps={{ rx: 3 }}
-              />
-              <ScrollBar orientation="horizontal" />
-              {isNumberCheckIn && (
-                <div className={cn('absolute top-[150px] left-0', !isSmallScreen && 'pl-6')}>
-                  <div className="flex items-center gap-2">
-                    <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
-                    <p className="text-sm text-secondary-foreground font-bold">
-                      Daily average:{' '}
-                      <span className="font-semibold" style={{ color: activeModeColor }}>
-                        {(habit?.meta?.avg || 0).toFixed(2)}{' '}
-                        {pluralize(habit.metric, habit?.meta?.avg)}
-                      </span>
-                    </p>
-                  </div>
+          <ScrollArea className="h-auto pb-5">
+            <HeatMap
+              width={900}
+              startDate={startDate.toDate()}
+              endDate={endDate.toDate()}
+              value={blocks}
+              legendCellSize={15}
+              rectSize={15}
+              weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
+              panelColors={
+                isNumberCheckIn
+                  ? {
+                      0: bgColor,
+                      1: colors[habit.color][2].hex,
+                      2: colors[habit.color][3].hex,
+                      3: colors[habit.color][4].hex,
+                      4: activeModeColor,
+                    }
+                  : {
+                      0: bgColor,
+                      4: colors[habit.color][3].hex,
+                    }
+              }
+              rectRender={(svgProps, data) => {
+                return (
+                  <ActivityBlock
+                    svgProps={svgProps}
+                    data={data}
+                    habit={habit}
+                    color={activeModeColor}
+                    rx={3}
+                    scrollToToday={isSmallScreen}
+                    onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
+                    refetch={refetch}
+                    hideModal={hideModal}
+                    showModal={showModal}
+                  />
+                )
+              }}
+              rectProps={{ rx: 3 }}
+            />
+            <Tooltip id={`my-tooltip-${habit.id}`} variant={mode === 'dark' ? 'dark' : 'light'} />
+            <ScrollBar orientation="horizontal" />
+            {isNumberCheckIn && (
+              <div className={cn('absolute top-[150px] left-0', !isSmallScreen && 'pl-6')}>
+                <div className="flex items-center gap-2">
+                  <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
+                  <p className="text-sm text-secondary-foreground font-bold">
+                    Daily average:{' '}
+                    <span className="font-semibold" style={{ color: activeModeColor }}>
+                      {(habit?.meta?.avg || 0).toFixed(2)}{' '}
+                      {pluralize(habit.metric, habit?.meta?.avg)}
+                    </span>
+                  </p>
                 </div>
-              )}
-            </ScrollArea>
-          </TooltipProvider>
+              </div>
+            )}
+          </ScrollArea>
         </CardContent>
       </Card>
     </div>

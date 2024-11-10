@@ -123,7 +123,7 @@ export function Overview({ habits, range, isLoading }: Props) {
                           }
                         />
                         {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                        {habitMap.get(name as string)?.check_in_type === checkInType.NUMBER && (
+                        {habitMap.get(name as string)?.check_in_type === checkInType.INPUT_NUMBER && (
                           <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
                             {_value}
                             <span className="ml-1 font-normal text-muted-foreground">
@@ -131,7 +131,7 @@ export function Overview({ habits, range, isLoading }: Props) {
                             </span>
                           </div>
                         )}
-                        {habitMap.get(name as string)?.check_in_type !== checkInType.NUMBER &&
+                        {habitMap.get(name as string)?.check_in_type !== checkInType.INPUT_NUMBER &&
                           Number(value) > 0 && (
                             <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
                               <CheckIcon />
