@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { Link, useMatch } from 'react-router-dom'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
@@ -24,13 +24,12 @@ import {
 } from '@mazic/ui'
 
 import { CopyLinkModal } from '@mazic/components'
-import HeatMap from '@mazic/components/HeatMap'
+import HeatMap, { HeatMapValue } from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'
 import useRect from '@mazic/hooks/useRect'
-import { useWindowSize } from '@mazic/hooks/useWindowSize'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -64,6 +63,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const [deletedBlock, setDeletedBlock] = useState<string[]>([])
 
   const { title, activities, color } = habit || {}
+
   const blocks = useMemo(() => {
     return (activities || []).filter((x) => !deletedBlock.includes(x.id))
   }, [activities, deletedBlock])
@@ -73,7 +73,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const endDate = dayjs().endOf('month').add(1, 'month')
   const startDate = endDate.subtract(1, 'year')
   const isWidget = !!useMatch(pathRoutes.checkIn.widget)
-  const isNumberCheckIn = habit?.check_in_type === checkInType.NUMBER
+  const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
 
   if (!habit) {
     return null
@@ -88,7 +88,7 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
         >
           <CardTitle>{title}</CardTitle>
           {!isWidget && (
-            <div className="ml-auto flex w-full space-x-2 justify-end">
+            <div className="ml-auto flex space-x-2 justify-end">
               <DropdownMenu modal={false}>
                 <DropdownMenuTrigger className="focus:outline-none">
                   <EllipsisVerticalIcon />
@@ -165,18 +165,20 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                         4: colors[habit.color][3].hex,
                       }
                 }
-                rectRender={(props, data) => {
+                rectRender={(svgProps, data) => {
+                  console.log('>>> rectRender', data.date, svgProps)
                   return (
                     <ActivityBlock
-                      svgProps={props}
+                      svgProps={svgProps}
                       data={data}
                       habit={habit}
                       color={activeModeColor}
                       rx={3}
-                      isNumberCheckIn={isNumberCheckIn}
                       scrollToToday={isSmallScreen}
                       onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
                       refetch={refetch}
+                      hideModal={hideModal}
+                      showModal={showModal}
                     />
                   )
                 }}

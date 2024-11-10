@@ -3,7 +3,6 @@ import { BrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'sonner'
 
 import { LoadingTop, ModalCommon } from '@mazic/components'
-import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { AppContextProvider } from '@mazic/hooks/useAppContext'
 import { authService } from '@mazic/modules/rbac/auth'
@@ -39,18 +38,6 @@ export const AppLayout = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPublicRoute, loaded, user])
-
-  useEffect(() => {
-    if (CONFIG.isDevelopment) {
-      const script = document.createElement('script')
-      script.src = 'https://cdn.jsdelivr.net/npm/react-render-tracker'
-      script.async = true
-      document.body.appendChild(script)
-      return () => {
-        document.body.removeChild(script)
-      }
-    }
-  }, [])
 
   return (
     <AppContextProvider>

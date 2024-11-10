@@ -56,13 +56,19 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 	return nil
 }
 
+const (
+	INPUT_NUMBER = "INPUT_NUMBER"
+	DONE_NOTE    = "DONE_NOTE"
+	DONE         = "DONE"
+)
+
 func (habit *Habit) Validate() error {
 	return validation.ValidateStruct(habit,
 		validation.Field(&habit.Title, validation.Required),
-		validation.Field(&habit.Metric, validation.When(habit.CheckInType == "NUMBER", validation.Required).Else(validation.Empty)),
+		validation.Field(&habit.Metric, validation.When(habit.CheckInType == INPUT_NUMBER, validation.Required).Else(validation.Empty)),
 		validation.Field(&habit.WeekStart, validation.In("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")),
 		validation.Field(&habit.Color, validation.Required),
-		validation.Field(&habit.CheckInType, validation.In("NUMBER", "CHECKBOX")),
+		validation.Field(&habit.CheckInType, validation.In(INPUT_NUMBER, DONE_NOTE, DONE)),
 		validation.Field(&habit.UserId, validation.Required),
 	)
 }

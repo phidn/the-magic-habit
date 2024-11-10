@@ -25,10 +25,16 @@ switch-node-version:
 
 # ===== UTILS ======== #
 
-kill-port:
-	yarn kill-port 4200
-	yarn kill-port 5005
-	yarn kill-port 8090
+kill:
+	- yarn kill-port 4200
+	- yarn kill-port 5005
+	- yarn kill-port 8090
+	- taskkill /f /im node.exe
+	- taskkill /f /im java.exe
+	- taskkill /f /im adb.exe
+	- taskkill /f /im clang++.exe
+	- taskkill /f /im ninja.exe
+	- taskkill /f /im watchman.exe
 
 cd-pb:
 	cd packages/mazic-pocketbase && bash -c "exec bash"
@@ -191,5 +197,5 @@ emulator:
 mobile:
 	@echo "Starting mobile..."
 	cd packages/mazic-mobile && \
-	yarn android
+	make start
 	@echo "Mobile started."

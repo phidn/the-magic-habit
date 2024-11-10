@@ -4,12 +4,13 @@ import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { Tooltip, TooltipContent, TooltipPortal, TooltipTrigger } from '@mazic/ui'
 
-import { HeatMapExtended, HeatMapValue } from '@mazic/components/HeatMap'
-import { useStoreShallow } from '@mazic/store/useStore'
+import { HeatMapValue } from '@mazic/components/HeatMap'
+import { TModal } from '@mazic/store/slices/modalSlice'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { useCheckIn, useDeleteCheckIn } from '../../hooks/useCheckInApis'
+import { checkInType } from '../../utils/utils'
 import { THabitCheckIn } from '../../utils/validations'
 import { FormCheckIn } from '../FormCheckIn/FormCheckIn'
 
@@ -17,34 +18,40 @@ dayjs.extend(advancedFormat)
 
 interface Props {
   svgProps: SVGProps<SVGRectElement>
-  data: HeatMapValue & HeatMapExtended
+  data: HeatMapValue
   color: string
   habit: THabit | undefined
   rx: number
-  isNumberCheckIn: boolean
-  scrollToToday: boolean
+  scrollToToday?: boolean
   refetch: () => void
   onDelete?: (id: string) => void
+  hideModal: () => void
+  showModal: (modal: Partial<TModal>) => void
 }
 
 export const ActivityBlock = (props: Props) => {
-  const [showModal, hideModal] = useStoreShallow((state) => [state.showModal, state.hideModal])
   const checkIn = useCheckIn()
   const deleteCheckIn = useDeleteCheckIn()
 
-  const { svgProps, data, habit, color, rx, refetch, isNumberCheckIn, scrollToToday, onDelete } =
-    props
+  const {
+    svgProps,
+    data,
+    habit,
+    color,
+    rx,
+    refetch,
+    scrollToToday,
+    onDelete,
+    hideModal,
+    showModal,
+  } = props
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
-  const _count = data.count || 0
-  const metricLabel = _count === 0 ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
-  const tooltipContent = isNumberCheckIn
-    ? `${metricLabel} on ${dateFormat}.`
-    : `Checked-in on ${dateFormat}.`
 
   const isToday = activityDate.isSame(dayjs(), 'day')
   const ref = useRef<SVGRectElement>(null)
+  const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
 
   useEffect(() => {
     if (isToday && scrollToToday) {
@@ -90,6 +97,18 @@ export const ActivityBlock = (props: Props) => {
     })
   }
 
+  const _count = data.count || 0
+
+  const renderTooltip = () => {
+    if (habit?.check_in_type === checkInType.INPUT_NUMBER) {
+      const _label = !_count ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
+      return `${_label} on ${dateFormat}.`
+    } else {
+      const _label = !_count ? 'No activity' : 'Completed successfully'
+      return `${_label} on ${dateFormat}.`
+    }
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -109,7 +128,7 @@ export const ActivityBlock = (props: Props) => {
       </TooltipTrigger>
       <TooltipPortal>
         <TooltipContent align="end" side="right">
-          {tooltipContent}
+          {renderTooltip()}
         </TooltipContent>
       </TooltipPortal>
     </Tooltip>

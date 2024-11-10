@@ -2,7 +2,7 @@ import { TButtonVariant } from '@mazic/ui'
 
 import { ImmerStateCreator } from '@mazic/types/index'
 
-type TModal = {
+export type TModal = {
   open: boolean
   title: string
   description?: string

@@ -7,7 +7,7 @@ import { checkInOpts, checkInType } from '@mazic/modules/check-in'
 
 export const DetailForm = () => {
   const methods = useFormContext()
-  const metricRequired = methods.watch('check_in_type') === checkInType.NUMBER
+  const metricRequired = methods.watch('check_in_type') === checkInType.INPUT_NUMBER
 
   return (
     <div className="mazic-row">
