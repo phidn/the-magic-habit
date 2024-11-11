@@ -80,7 +80,7 @@ export const modalSlice: ImmerStateCreator<TModalSlice> = (set) => ({
     }),
   hideModal: () =>
     set((state) => {
-      state.modal = initModal
+      state.modal.open = false
     }),
   showModalLoading: () =>
     set((state) => {

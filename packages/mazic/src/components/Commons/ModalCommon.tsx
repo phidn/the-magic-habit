@@ -15,10 +15,8 @@ import { useStoreShallow } from '@mazic/store/useStore'
 export const ModalCommon = () => {
   const [modal, hideModal] = useStoreShallow((state) => [state.modal, state.hideModal])
 
-  if (!modal.open) return null
-
-  return (
-    <Modal open={modal.open} onOpenChange={hideModal}>
+  return modal.open ? (
+    <Modal modal={false} open={modal.open} onOpenChange={() => hideModal()}>
       <ModalContent onOpenAutoFocus={(e) => e.preventDefault()}>
         <ModalHeader>
           <ModalTitle>{modal.title}</ModalTitle>
@@ -28,7 +26,7 @@ export const ModalCommon = () => {
         {modal.showFooter && (
           <ModalFooter>
             <ModalClose asChild>
-              <Button variant="outline" onClick={hideModal}>
+              <Button variant="outline" onClick={() => hideModal()}>
                 Close
               </Button>
             </ModalClose>
@@ -45,5 +43,5 @@ export const ModalCommon = () => {
         )}
       </ModalContent>
     </Modal>
-  )
+  ) : null
 }

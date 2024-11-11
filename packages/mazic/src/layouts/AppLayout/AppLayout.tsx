@@ -10,10 +10,11 @@ import { routers } from '@mazic/routers/routers'
 import { useStoreShallow } from '@mazic/store/useStore'
 
 export const AppLayout = () => {
-  const [theme, setCurrentUser, { user, loaded }] = useStoreShallow((state) => [
+  const [theme, setCurrentUser, { user, loaded }, isOpenModal] = useStoreShallow((state) => [
     state.theme.mode,
     state.setCurrentUser,
     state.currentUser,
+    state.modal.open,
   ])
   const authRoutes = Object.values(pathRoutes.auth)
   const isPublicRoute = authRoutes.some((route) => window.location.pathname.includes(route))
