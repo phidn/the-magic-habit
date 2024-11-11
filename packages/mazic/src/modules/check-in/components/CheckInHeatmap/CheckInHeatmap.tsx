@@ -75,6 +75,19 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
   const isWidget = !!useMatch(pathRoutes.checkIn.widget)
   const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
 
+  const panelColors = isNumberCheckIn
+    ? {
+        0: bgColor,
+        1: colors[habit.color][2].hex,
+        2: colors[habit.color][3].hex,
+        3: colors[habit.color][4].hex,
+        4: activeModeColor,
+      }
+    : {
+        0: bgColor,
+        4: colors[habit.color][3].hex,
+      }
+
   if (!habit) {
     return null
   }
@@ -150,33 +163,19 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
               legendCellSize={15}
               rectSize={15}
               weekLabels={['', 'Mon', '', 'Wed', '', 'Fri', '']}
-              panelColors={
-                isNumberCheckIn
-                  ? {
-                      0: bgColor,
-                      1: colors[habit.color][2].hex,
-                      2: colors[habit.color][3].hex,
-                      3: colors[habit.color][4].hex,
-                      4: activeModeColor,
-                    }
-                  : {
-                      0: bgColor,
-                      4: colors[habit.color][3].hex,
-                    }
-              }
+              panelColors={panelColors as Record<number, string>}
               rectRender={(svgProps, data) => {
                 return (
                   <ActivityBlock
                     svgProps={svgProps}
                     data={data}
                     habit={habit}
+                    panelColors={panelColors as Record<number, string>}
                     color={activeModeColor}
                     rx={3}
                     scrollToToday={isSmallScreen}
                     onDelete={(id) => setDeletedBlock((prev) => [...prev, id])}
                     refetch={refetch}
-                    hideModal={hideModal}
-                    showModal={showModal}
                   />
                 )
               }}

@@ -1,9 +1,9 @@
-import { SVGProps, useEffect, useRef } from 'react'
+import { SVGProps, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import { HeatMapValue } from '@mazic/components/HeatMap'
-import { TModal } from '@mazic/store/slices/modalSlice'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
 
@@ -21,28 +21,19 @@ interface Props {
   habit: THabit | undefined
   rx: number
   scrollToToday?: boolean
+  panelColors?: Record<number, string>
   refetch: () => void
   onDelete?: (id: string) => void
-  hideModal: () => void
-  showModal: (modal: Partial<TModal>) => void
 }
 
 export const ActivityBlock = (props: Props) => {
   const checkIn = useCheckIn()
   const deleteCheckIn = useDeleteCheckIn()
 
-  const {
-    svgProps,
-    data,
-    habit,
-    color,
-    rx,
-    refetch,
-    scrollToToday,
-    onDelete,
-    hideModal,
-    showModal,
-  } = props
+  const [hideModal, showModal] = useStoreShallow((state) => [state.hideModal, state.showModal])
+
+  const { svgProps, data, habit, color, panelColors, rx, refetch, scrollToToday, onDelete } = props
+  const [isActivityDone, setIsActivityDone] = useState<boolean>(!!data.is_done)
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
   const dateFormat = activityDate.format('MMM Do')
@@ -50,6 +41,7 @@ export const ActivityBlock = (props: Props) => {
   const isToday = activityDate.isSame(dayjs(), 'day')
   const ref = useRef<SVGRectElement>(null)
   const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
+  const isMarkDone = habit?.check_in_type === checkInType.DONE
 
   useEffect(() => {
     if (isToday && scrollToToday) {
@@ -61,39 +53,55 @@ export const ActivityBlock = (props: Props) => {
     }
   }, [isToday, scrollToToday])
 
-  const handleCheckIn = () => {
-    showModal({
-      open: true,
-      showFooter: false,
-      title: `${habit?.title || ''} Check-In`,
-      body: habit && (
-        <FormCheckIn
-          habit={habit}
-          isNumberCheckIn={isNumberCheckIn}
-          checkInEntry={{
-            id: data.id,
-            habit_id: habit.id as string,
-            date: activityDate.toDate(),
-            journal: data.journal,
-            value: isNumberCheckIn ? data.count : undefined,
-            is_done: isNumberCheckIn ? undefined : true,
-          }}
-          onSubmitForm={async (data: THabitCheckIn) => {
-            await checkIn.mutateAsync(data)
-            hideModal()
-            refetch()
-          }}
-          onDeleteForm={() => {
-            deleteCheckIn.mutate(data.id as string, {
-              onSuccess: () => {
-                hideModal()
-                onDelete?.(data.id as string)
-              },
-            })
-          }}
-        />
-      ),
-    })
+  const handleCheckIn = async () => {
+    if (isMarkDone) {
+      const isDone = !isActivityDone
+      await checkIn.mutateAsync({
+        id: data.id,
+        habit_id: habit.id as string,
+        date: activityDate.toDate(),
+        journal: '',
+        value: undefined,
+        is_done: isDone,
+      })
+      setIsActivityDone(isDone)
+    }
+    if (!isMarkDone) {
+      showModal({
+        open: true,
+        showFooter: false,
+        title: `${habit?.title || ''} Check-In`,
+        body: habit && (
+          <FormCheckIn
+            habit={habit}
+            checkInEntry={{
+              id: data.id,
+              habit_id: habit.id as string,
+              date: activityDate.toDate(),
+              journal: data.journal,
+              value: isNumberCheckIn ? data.count : undefined,
+              is_done: isNumberCheckIn ? undefined : true,
+            }}
+            onSubmitForm={async (data: THabitCheckIn) => {
+              await checkIn.mutateAsync(data, {
+                onSuccess: () => {
+                  hideModal()
+                  refetch()
+                },
+              })
+            }}
+            onDeleteForm={() => {
+              deleteCheckIn.mutate(data.id as string, {
+                onSuccess: () => {
+                  hideModal()
+                  onDelete?.(data.id as string)
+                },
+              })
+            }}
+          />
+        ),
+      })
+    }
   }
 
   const _count = data.count || 0
@@ -118,6 +126,9 @@ export const ActivityBlock = (props: Props) => {
           outline: `1px solid ${color}`,
           outlineOffset: '-1px',
           borderRadius: rx,
+        }),
+        ...(isMarkDone && {
+          fill: isActivityDone ? panelColors?.[4] : panelColors?.[0],
         }),
       }}
       onClick={handleCheckIn}

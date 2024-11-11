@@ -31,7 +31,7 @@ func (c *CheckIn) Validate() error {
 	return validation.ValidateStruct(c,
 		validation.Field(&c.Date, validation.Required),
 		validation.Field(&c.Value, validation.When(c.IsDone == nil, validation.Required).Else(validation.Empty)),
-		validation.Field(&c.IsDone, validation.When(c.Value == 0, validation.Required)),
+		validation.Field(&c.IsDone, validation.When(c.Value == 0, validation.NotNil)),
 		validation.Field(&c.HabitId, validation.Required),
 	)
 }

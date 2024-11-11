@@ -36,13 +36,13 @@ kill:
 	- taskkill /f /im ninja.exe
 	- taskkill /f /im watchman.exe
 
-cd-pb:
-	cd packages/mazic-pocketbase && bash -c "exec bash"
+
 cd-server:
 	cd packages/mazic-server && bash -c "exec bash"
 cd-prisma:
 	cd packages/mazic-prisma && bash -c "exec bash"
-
+cd-mobile:
+	cd packages/mazic-mobile && bash -c "exec bash"
 
 clear:
 	make clear-nx && \

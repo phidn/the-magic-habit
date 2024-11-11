@@ -8,6 +8,7 @@ import { Button, Card, CardContent, cn } from '@mazic/ui'
 import { FormDatePicker, FormInput, FormItem, FormTextarea } from '@mazic/components'
 import { THabit } from '@mazic/types/modules'
 
+import { checkInType } from '../../utils/utils'
 import { checkInSchema, THabitCheckIn } from '../../utils/validations'
 
 interface Props {
@@ -15,16 +16,16 @@ interface Props {
   checkInEntry: THabitCheckIn
   onSubmitForm: (data: THabitCheckIn) => Promise<void>
   onDeleteForm: (id: string) => void
-  isNumberCheckIn: boolean
 }
 
 export const FormCheckIn = (props: Props) => {
-  const { habit, checkInEntry, onSubmitForm, onDeleteForm, isNumberCheckIn } = props
+  const { habit, checkInEntry, onSubmitForm, onDeleteForm } = props
   const methods = useForm<THabitCheckIn>({
     resolver: zodResolver(checkInSchema),
     values: checkInEntry,
   })
 
+  const isNumberCheckIn = habit.check_in_type === checkInType.INPUT_NUMBER
   const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
   const isNewEntry = !checkInEntry.id
@@ -39,11 +40,14 @@ export const FormCheckIn = (props: Props) => {
                 <FormItem label="Date" required col={12}>
                   <FormDatePicker field="date" disabled />
                 </FormItem>
-                {isNumberCheckIn && (
-                  <FormItem label={capitalize(habit.metric || '')} required col={12}>
-                    <FormInput type="number" field="value" placeholder="Enter value.." />
-                  </FormItem>
-                )}
+                <FormItem
+                  label={capitalize(habit.metric || '')}
+                  required
+                  col={12}
+                  hidden={!isNumberCheckIn}
+                >
+                  <FormInput type="number" field="value" placeholder="Enter value.." />
+                </FormItem>
                 <FormItem label="Journal" col={12}>
                   <FormTextarea
                     field="journal"

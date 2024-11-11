@@ -1,6 +1,8 @@
 import { useLocation } from 'react-router-dom'
 
+import { LoadingTop } from '@mazic/components'
 import { findMenuByHref } from '@mazic/hooks'
+import { useStore } from '@mazic/store/useStore'
 
 import { SheetMenu } from './SheetMenu'
 import { ThemeToggle } from './ThemeToggle'
@@ -9,6 +11,7 @@ import { UserNav } from './UserNav'
 export const Navbar = () => {
   const location = useLocation()
   const menu = findMenuByHref(location.pathname)
+  const isLoading = useStore((store) => store.loadingTop.isOpen)
 
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
@@ -22,6 +25,7 @@ export const Navbar = () => {
           <UserNav />
         </div>
       </div>
+      {isLoading && <LoadingTop />}
     </header>
   )
 }
