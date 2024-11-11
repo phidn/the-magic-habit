@@ -54,8 +54,9 @@ export const ActivityBlock = (props: Props) => {
   useEffect(() => {
     if (isToday && scrollToToday) {
       ref.current?.scrollIntoView({
-        behavior: 'smooth',
+        block: 'nearest',
         inline: 'center',
+        behavior: 'smooth',
       })
     }
   }, [isToday, scrollToToday])
