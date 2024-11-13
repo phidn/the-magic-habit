@@ -6,7 +6,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.1",
+    "@gorhom/bottom-sheet": "^5",
     "@material/material-color-utilities": "^0.2.0",
     "@react-native-async-storage/async-storage": "^2.0.0",
     "@react-native-community/datetimepicker": "^8.0.0",
@@ -45,7 +45,6 @@
     "react-native-tab-view": "^3.5.2",
     "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.2.0",
-    "zod": "^3.23.8",
     "zustand": "^4.3.1"
   },
   "devDependencies": {

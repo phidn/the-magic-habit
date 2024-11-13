@@ -74,5 +74,7 @@
   "User.email": "Email",
   "User.firstName": "First name",
   "User.lastName": "Last name",
-  "User.password": "Password"
+  "User.password": "Password",
+
+  "Habit.edit.title": "Edit habit"
 }

@@ -43,6 +43,7 @@ cd-prisma:
 	cd packages/mazic-prisma && bash -c "exec bash"
 cd-mobile:
 	cd packages/mazic-mobile && bash -c "exec bash"
+cd-m: cd-mobile
 
 clear:
 	make clear-nx && \

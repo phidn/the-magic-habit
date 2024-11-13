@@ -9,6 +9,7 @@ module.exports = {
         groups: [
           // Packages `react` related packages come first.
           ['^react', '^@?\\w'],
+          ['^@mazic/shared(/.*|$)'],
           // Internal packages.
           ['^(@|components)(/.*|$)'],
           ['^(@|~)(/.*|$)'],

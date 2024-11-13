@@ -10,8 +10,6 @@
     "yarn": ">=4.5.0"
   },
   "scripts": {
-    "dev:web": "nx serve mazic",
-    "dev:server": "nx serve mazic-api",
     "formatCode": "yarn formatCode:mazic && yarn formatCode:ui",
     "formatCode:mazic": "nx run mazic:formatCode",
     "formatCode:ui": "nx run ui:formatCode",

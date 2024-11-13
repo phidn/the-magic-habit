@@ -1,0 +1,8 @@
+{
+  "name": "shared",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/mazic-shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {}
+}

@@ -5,7 +5,4 @@ module.exports = {
   trailingComma: 'all',
   semi: false,
   endOfLine: 'auto',
-
-  // "trailingComma": "es5",
-  // "arrowParens": "always",
 }

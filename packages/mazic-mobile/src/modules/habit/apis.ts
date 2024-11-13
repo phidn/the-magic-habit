@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 
+import { THabit } from '@mazic/shared'
+
 import { useStore } from '@/store/useStore'
 import { ApiResponse, IParams } from '@/types/types'
 import http from '@/utils/http'
 
-import { normalizeHabitData, THabit } from './utils'
+import { normalizeHabitData } from './utils'
 
 const QUERY_KEY = 'habits' as const
 

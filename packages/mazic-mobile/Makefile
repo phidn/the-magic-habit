@@ -33,6 +33,9 @@ kill:
 	- taskkill /f /im watchman.exe
 	- cd ./android && ./gradlew --stop
 
+clear-babel:
+	rm -rf node_modules/.cache/babel-loader/*
+
 clear:
 	- cd ./android && ./gradlew clean
 
@@ -69,11 +72,14 @@ gen-bootsplash:
 		--html=public/index.html
 
 #### Dev ####
-start: switch-node-version adb-reverse
-	yarn react-native start
+envs:
+	export APP_ENV=production
 
-start-rc: switch-node-version adb-reverse
-	yarn react-native start --reset-cache
+start: switch-node-version adb-reverse clear-babel
+	APP_ENV=production yarn react-native start
+
+start-rc: switch-node-version adb-reverse clear-babel
+	APP_ENV=production yarn react-native start --reset-cache
 
 adb-reverse:
 	adb reverse tcp:8081 tcp:8081 && \

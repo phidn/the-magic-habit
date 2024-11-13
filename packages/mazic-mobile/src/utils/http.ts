@@ -21,7 +21,7 @@ const PATH_API = {
   refreshToken: '/auth/refresh-token',
 } as const
 
-const UNAUTHORIZED_PATHS = [PATH_API.login, PATH_API.refreshToken, PATH_API.register]
+const PUBLIC_APIS = [PATH_API.login, PATH_API.refreshToken, PATH_API.register]
 
 class Http {
   instance: AxiosInstance = axios.create(AXIOS_OPTIONS)
@@ -45,7 +45,7 @@ class Http {
         if (
           this.accessToken &&
           config.headers &&
-          UNAUTHORIZED_PATHS.every((path) => !config.url?.includes(path))
+          PUBLIC_APIS.every((path) => !config.url?.includes(path))
         ) {
           config.headers.authorization = `Bearer ${this.accessToken}`
           return config
@@ -83,7 +83,7 @@ class Http {
         if (!error.config.url?.includes(PATH_API.login)) {
           return this.tryRefreshToken(error)
         }
-        break;
+        break
       }
       default:
         return Promise.reject(_error)

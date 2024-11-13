@@ -13,6 +13,7 @@ export type RootStackNavigator = {
     bellId: string
     bellVolume: number
   }
+  HabitEditScreen: undefined
 }
 
 export type TNavigationRoot = NativeStackNavigationProp<RootStackNavigator>

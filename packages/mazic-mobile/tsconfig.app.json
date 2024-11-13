@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "exclude": [],
+  "include": [
+    "../mazic-shared/src/index.ts",
+    "../mazic-shared/src/**/*.ts",
+    "../mazic-shared/src/**/*.tsx"
+  ]
+}

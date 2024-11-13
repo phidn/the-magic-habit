@@ -1,20 +1,23 @@
-module.exports = {
-  presets: ['module:@react-native/babel-preset'],
-  plugins: [
-    [
-      'module-resolver',
-      {
-        root: ['.'],
-        extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
-        alias: {'@': './src'},
-      },
+module.exports = function (api) {
+  api.cache(false)
+  return {
+    presets: ['module:@react-native/babel-preset'],
+    plugins: [
+      [
+        'module-resolver',
+        {
+          root: ['.'],
+          extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
+          alias: { '@': './src' },
+        },
+      ],
+      'react-native-reanimated/plugin',
+      'module:react-native-dotenv',
     ],
-    'react-native-reanimated/plugin',
-    'module:react-native-dotenv',
-  ],
-  env: {
-    production: {
-      plugins: ['react-native-paper/babel'],
+    env: {
+      production: {
+        plugins: ['react-native-paper/babel'],
+      },
     },
-  },
+  }
 }

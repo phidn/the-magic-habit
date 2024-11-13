@@ -3,7 +3,7 @@ import { MD3Colors, NavigationTheme } from 'react-native-paper/lib/typescript/ty
 import { argbFromHex, themeFromSourceColor } from '@material/material-color-utilities'
 import {
   DarkTheme as NavigationDarkTheme,
-  DefaultTheme as NavigationLightTheme,
+  DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native'
 import color from 'color'
 
@@ -84,9 +84,12 @@ export const combineTheme = (source: string, isDarkMode: boolean): TCombinedThem
 
   const md3Theme = isDarkMode ? MD3DarkTheme : MD3LightTheme
 
-  const navTheme = isDarkMode
-    ? adaptNavigationTheme({ reactNavigationDark: NavigationDarkTheme }).DarkTheme
-    : adaptNavigationTheme({ reactNavigationLight: NavigationLightTheme }).LightTheme
+  const { LightTheme, DarkTheme } = adaptNavigationTheme({
+    reactNavigationLight: NavigationDefaultTheme,
+    reactNavigationDark: NavigationDarkTheme,
+  })
+
+  const navTheme = isDarkMode ? DarkTheme : LightTheme
 
   const customCardColor = color(selectedSchemaColors.surface)
     .mix(color(selectedSchemaColors.primary), 0.08)
