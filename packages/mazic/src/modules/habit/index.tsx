@@ -29,4 +29,4 @@ export const habitRoute: TRoutes = [
   },
 ]
 
-export { habitSchema, TCheckIn, THabit } from './utils/validations'
+export { habitSchema, type TCheckIn, type THabit } from './utils/validations'
