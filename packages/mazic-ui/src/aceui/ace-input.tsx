@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
 
-import { cn } from '@/utils/cn'
+import { cn } from '@ui/utils'
 
 export type AceInputProps = React.InputHTMLAttributes<HTMLInputElement>
 

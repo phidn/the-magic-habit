@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "paths": {
       "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
-      "@/utils/*": ["packages/mazic-ui/src/utils/*"],
+      "@ui/utils": ["packages/mazic-ui/src/utils"],
     }
   },
   "files": [],

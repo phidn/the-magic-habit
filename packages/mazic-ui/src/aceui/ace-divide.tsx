@@ -1,4 +1,4 @@
-import { cn } from '@/utils/cn'
+import { cn } from '@ui/utils'
 
 interface DivideProps {
   className?: string

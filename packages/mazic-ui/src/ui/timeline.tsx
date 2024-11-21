@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { cn } from '@/utils/cn'
+import { cn } from '@ui/utils'
 
 const Timeline = React.forwardRef<HTMLOListElement, React.HTMLAttributes<HTMLOListElement>>(
   ({ className, ...props }, ref) => (

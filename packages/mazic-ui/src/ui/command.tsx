@@ -5,7 +5,7 @@ import { DialogProps } from '@radix-ui/react-dialog'
 import { Command as CommandPrimitive } from 'cmdk'
 import { Search } from 'lucide-react'
 
-import { cn } from '@/utils/cn'
+import { cn } from '@ui/utils'
 
 import { Dialog, DialogContent } from './dialog'
 
