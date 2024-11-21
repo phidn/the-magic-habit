@@ -3,12 +3,12 @@ import { Button, Card, IconButton, Menu } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
 
+import { THabit } from '@mazic/shared'
+
 import { HeatMap } from '@/components/HeatMap/HeatMap'
 import { screens } from '@/config/config'
 import { themeSpacing } from '@/config/theme'
 import { TNavigationRoot } from '@/types/navigation'
-
-import { THabit } from '../utils'
 
 interface IProps {
   habit: THabit
@@ -39,10 +39,19 @@ export const HabitCard = ({ habit }: IProps) => {
             >
               <Menu.Item
                 leadingIcon="square-edit-outline"
-                onPress={() => navigation.navigate(screens.HabitEditScreen)}
+                onPress={() => {
+                  setMenuVisible(false)
+                  navigation.navigate(screens.HabitEditScreen)
+                }}
                 title="Edit"
               />
-              <Menu.Item leadingIcon="delete" onPress={() => {}} title="Delete" />
+              <Menu.Item
+                leadingIcon="delete"
+                onPress={() => {
+                  setMenuVisible(false)
+                }}
+                title="Delete"
+              />
             </Menu>
           )
         }}

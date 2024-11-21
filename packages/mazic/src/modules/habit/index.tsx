@@ -28,5 +28,3 @@ export const habitRoute: TRoutes = [
     Component: lazy(() => import('./pages/HabitCreatePage')),
   },
 ]
-
-export { habitSchema, type TCheckIn, type THabit } from './utils/validations'

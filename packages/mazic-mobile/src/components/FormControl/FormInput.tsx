@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { StyleSheet, Text, View } from 'react-native'
-import { TextInput, TextInputProps, useTheme } from 'react-native-paper'
+import { HelperText, TextInput, TextInputProps } from 'react-native-paper'
 
 interface InputProps extends TextInputProps {
   field: string
   label: string
-  icon: string
+  icon?: string
   onIconPress?: () => void
   validation?: any
 }
@@ -19,8 +18,6 @@ export const FormInput: React.FC<InputProps> = ({
   validation,
   ...props
 }) => {
-  const theme = useTheme()
-
   const methods = useFormContext()
   const { error } = methods.getFieldState(field, methods.formState)
   useEffect(() => {
@@ -33,44 +30,17 @@ export const FormInput: React.FC<InputProps> = ({
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          label={label}
-          value={methods.watch(field) || ''}
-          onChangeText={onChangeText}
-          right={<TextInput.Icon icon={icon} onPress={() => onIconPress?.()} />}
-          {...props}
-        />
-      </View>
-      {error && (
-        <View style={styles.errorContainer}>
-          <Text style={[styles.errorText, { color: theme.colors.error }]}>{error.message}</Text>
-        </View>
-      )}
-    </View>
+    <>
+      <TextInput
+        label={label}
+        value={methods.watch(field) || ''}
+        onChangeText={onChangeText}
+        right={icon && <TextInput.Icon icon={icon} onPress={() => onIconPress?.()} />}
+        style={{ marginVertical: 4 }}
+        mode="outlined"
+        {...props}
+      />
+      {error && <HelperText type="error">{error.message}</HelperText>}
+    </>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-  },
-  inputContainer: {
-    width: '100%',
-    paddingTop: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  input: {
-    flex: 1,
-    paddingTop: 0,
-  },
-  errorContainer: {
-    marginVertical: 5,
-  },
-  errorText: {
-    fontSize: 13,
-  },
-})

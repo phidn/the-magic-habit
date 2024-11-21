@@ -7,11 +7,11 @@ import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
 import { checkInMap } from '@mazic/modules/check-in'
+import { THabit } from '@mazic/shared'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 
 import { useDeleteHabit } from '../hooks/apis'
-import { THabit } from '../utils/validations'
 
 export const useHabitColumns = ({ refreshTable }: ITableColsProps): ColumnDef<THabit>[] => {
   const mutationDelete = useDeleteHabit()

@@ -1,3 +1,4 @@
+import { ZodEffects, ZodObject } from 'zod'
 import { StateCreator } from 'zustand'
 
 export type ImmerStateCreator<T> = StateCreator<T, [['zustand/immer', never], never], [], T>
@@ -62,3 +63,24 @@ export type AuthResponse = {
 }
 
 // #endregion: API Response
+
+
+export interface IOption {
+  label: string
+  renderLabel?: () => React.ReactNode
+  value: any
+  code?: string
+  renderIcon?: () => React.ReactNode
+  enableCount?: boolean
+  disabled?: boolean
+  [key: string]: any
+}
+
+export interface IFormProps {
+  title?: string | React.ReactNode
+  initialValues?: any
+  data?: any
+  schema?: ZodObject<any> | ZodEffects<any, any>
+  onSubmitForm: (values: any) => any
+  isPendingSubmit?: boolean
+}

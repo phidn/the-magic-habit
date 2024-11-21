@@ -101,8 +101,7 @@ web-lint: switch-node-version
 	@echo "Web checked."
 web-ts: switch-node-version
 	@echo "Checking web typescript..."
-	yarn tsc -b ./packages/mazic/tsconfig.app.json && \
-	rm -rf packages/mazic/tsconfig.app.tsbuildinfo && \
+	yarn tsc -b ./packages/mazic/tsconfig.app.json
 	@echo "Web typescript checked."
 
 # ===== SERVER ======== #

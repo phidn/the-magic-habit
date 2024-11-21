@@ -8,7 +8,7 @@ export { useCheckIn, useDeleteCheckIn } from './hooks/useCheckInApis'
 export { FormCheckIn } from './components/FormCheckIn/FormCheckIn'
 export { CheckInHeatmap } from './components/CheckInHeatmap/CheckInHeatmap'
 
-export { checkInType, checkInMap, checkInOpts } from './utils/utils'
+export { checkInMap, checkInOpts } from './utils/utils'
 
 const { checkIn: checkInPaths } = pathRoutes
 

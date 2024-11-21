@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { THabit, THabitCreate } from '@mazic/shared'
 import { useStore } from '@mazic/store/useStore'
 import { ApiResponse, IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
 import { habitService } from '../services/habitService'
 import { normalizeHabitData } from '../utils/utils'
-import { THabit, THabitCreate } from '../utils/validations'
 
 const QUERY_KEY = 'habits' as const
 

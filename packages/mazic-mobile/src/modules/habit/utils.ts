@@ -2,6 +2,8 @@ import dayjs from 'dayjs'
 
 import { HeatMapValue, TCheckIn, THabit } from '@mazic/shared'
 
+import { IOption } from '@/types/types'
+
 export const normalizeHabitData = (data: THabit[]): THabit[] => {
   return data.map((item) => ({
     ...item,
@@ -32,3 +34,17 @@ export const getActivities = (data?: TCheckIn[]): HeatMapValue[] => {
 
   return result
 }
+
+export enum checkInType {
+  INPUT_NUMBER = 'INPUT_NUMBER',
+  DONE_NOTE = 'DONE_NOTE',
+  DONE = 'DONE',
+}
+
+export const checkInOpts: IOption[] = [
+  { value: checkInType.INPUT_NUMBER, label: 'Input Number', icon: '' },
+  { value: checkInType.DONE_NOTE, label: 'Done with Note', icon: '' },
+  { value: checkInType.DONE, label: 'Mark Done', icon: '' },
+]
+
+export const checkInMap = new Map(checkInOpts.map((opt) => [opt.value, opt]))

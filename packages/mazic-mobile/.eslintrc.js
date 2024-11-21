@@ -25,5 +25,6 @@ module.exports = {
     curly: 'off',
     'react-native/no-inline-styles': 'off',
     'react/no-unstable-nested-components': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 }

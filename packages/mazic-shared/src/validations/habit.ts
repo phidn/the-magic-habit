@@ -1,8 +1,9 @@
 import { z } from 'zod'
 
-import { HeatMapValue } from '@mazic/components/HeatMap'
 import { ColorName } from '@mazic/config/baseColors'
-import { checkInType } from '@mazic/modules/check-in'
+
+import { checkInType } from '../config'
+import { HeatMapValue } from '../types'
 
 export const habitSchema = z
   .object({

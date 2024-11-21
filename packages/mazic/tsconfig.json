@@ -13,6 +13,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
+      "@mazic/shared": ["packages/mazic-shared/src/index.ts"],
       "@mazic/*": ["packages/mazic/src/*"]
     }
   },

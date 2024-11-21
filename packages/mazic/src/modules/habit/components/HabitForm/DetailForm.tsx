@@ -3,7 +3,8 @@ import { useFormContext } from 'react-hook-form'
 import { FormItem, FormSelect } from '@mazic/components/FormControl'
 import { FormColorPicker } from '@mazic/components/FormControl/FormColorPicker'
 import { FormInput } from '@mazic/components/FormControl/FormInput'
-import { checkInOpts, checkInType } from '@mazic/modules/check-in'
+import { checkInOpts } from '@mazic/modules/check-in'
+import { checkInType } from '@mazic/shared'
 
 export const DetailForm = () => {
   const methods = useFormContext()

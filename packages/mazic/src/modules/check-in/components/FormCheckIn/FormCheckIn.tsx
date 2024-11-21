@@ -4,11 +4,9 @@ import capitalize from 'lodash/capitalize'
 import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent, cn } from '@mazic/ui'
-
+import { checkInType, THabit } from '@mazic/shared'
 import { FormDatePicker, FormInput, FormItem, FormTextarea } from '@mazic/components'
-import { THabit } from '@mazic/types/modules'
 
-import { checkInType } from '../../utils/utils'
 import { checkInSchema, THabitCheckIn } from '../../utils/validations'
 
 interface Props {

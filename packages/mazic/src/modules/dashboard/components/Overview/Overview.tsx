@@ -18,7 +18,7 @@ import {
 } from '@mazic/ui'
 
 import { baseColorMap, ColorName } from '@mazic/config/baseColors'
-import { checkInType } from '@mazic/modules/check-in'
+import { checkInType } from '@mazic/shared'
 import { useStore } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'

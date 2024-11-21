@@ -1,8 +1,7 @@
 import dayjs from 'dayjs'
 
+import { TCheckIn, THabit } from '@mazic/shared'
 import { HeatMapValue } from '@mazic/components/HeatMap'
-
-import { TCheckIn, THabit } from './validations'
 
 export const normalizeHabitData = (data: THabit[]): THabit[] => {
   return data.map((item) => ({

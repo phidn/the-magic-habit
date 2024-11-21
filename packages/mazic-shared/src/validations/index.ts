@@ -1,1 +1,1 @@
-export { habitSchema } from '@mazic/modules/habit'
+export * from './habit'

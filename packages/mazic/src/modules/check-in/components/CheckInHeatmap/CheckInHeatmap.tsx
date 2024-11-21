@@ -30,11 +30,9 @@ import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'
 import useRect from '@mazic/hooks/useRect'
+import { checkInType, THabit } from '@mazic/shared'
 import { useStoreShallow } from '@mazic/store/useStore'
-import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
-
-import { checkInType } from '../../utils/utils'
 
 import { ActivityBlock } from './ActivityBlock'
 

@@ -1,12 +1,7 @@
 import { CheckboxIcon, NumberIcon } from '@mazic/ui'
 
+import { checkInType } from '@mazic/shared'
 import { IOption } from '@mazic/types/form'
-
-export enum checkInType {
-  INPUT_NUMBER = 'INPUT_NUMBER',
-  DONE_NOTE = 'DONE_NOTE',
-  DONE = 'DONE',
-}
 
 export const checkInOpts: IOption[] = [
   { value: checkInType.INPUT_NUMBER, label: 'Input Number', icon: NumberIcon },

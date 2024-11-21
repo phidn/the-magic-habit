@@ -1,8 +1,8 @@
+import { habitSchema } from '@mazic/shared'
 import { getDefaultsBySchema } from '@mazic/utils/form'
 
 import { HabitForm } from '../components/HabitForm'
 import { useCreateHabit } from '../hooks/apis'
-import { habitSchema } from '../utils/validations'
 
 const HabitCreatePage = () => {
   const mutation = useCreateHabit()
