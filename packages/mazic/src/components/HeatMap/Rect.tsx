@@ -1,7 +1,9 @@
 import { CSSProperties } from 'react'
 import React from 'react'
 
-import { HeatMapValue, SVGProps } from './SVG'
+import { HeatMapValue } from '@mazic/shared'
+
+import { SVGProps } from './SVG'
 
 export const rectStyle: CSSProperties = {
   display: 'block',

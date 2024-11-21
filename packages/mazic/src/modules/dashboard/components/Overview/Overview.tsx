@@ -16,10 +16,9 @@ import {
   ChartTooltipContent,
   CheckIcon,
 } from '@mazic/ui'
-import { checkInType } from '@mazic/shared'
-import { baseColorMap, ColorName } from '@mazic/config/baseColors'
+import { checkInType, THabit } from '@mazic/shared'
+import { baseColorMap, ColorName } from '@mazic/shared'
 import { useStore } from '@mazic/store/useStore'
-import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { getRangeDates, TChartRange } from '../../utils'

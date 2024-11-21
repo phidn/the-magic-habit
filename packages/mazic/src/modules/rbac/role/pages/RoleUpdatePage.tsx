@@ -1,8 +1,8 @@
+import { roleSchema } from '@mazic/shared'
 import { usePageDetails } from '@mazic/hooks'
 
 import { RoleForm } from '../components/RoleForm'
 import { useRoleDetail, useUpdateRole } from '../hooks/useRoleApis'
-import { roleSchema } from '../schemas/roleSchema'
 
 const RoleUpdatePage = () => {
   const pageDetails = usePageDetails()

@@ -1,7 +1,7 @@
 import groupBy from 'lodash/groupBy'
 import map from 'lodash/map'
 
-import { TRole } from '@mazic/types/modules'
+import { TRole } from '@mazic/shared'
 
 import { TMatrix, TRolePermissionExtended } from '../types'
 

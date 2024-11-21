@@ -1,4 +1,4 @@
-import { baseColorMap, ColorName } from '@mazic/config/baseColors'
+import { baseColorMap, ColorName } from '@mazic/shared'
 import { useStore } from '@mazic/store/useStore'
 
 export const useColorMode = (color: string | undefined) => {

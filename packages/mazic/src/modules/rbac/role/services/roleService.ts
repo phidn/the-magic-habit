@@ -1,7 +1,6 @@
+import { TRole, TRoleCreate } from '@mazic/shared'
 import { IAxiosResponse, IParams } from '@mazic/types/index'
 import http from '@mazic/utils/http'
-
-import { TRole, TRoleCreate } from '../schemas/roleSchema'
 
 interface IRoleService {
   query: (params: IParams) => Promise<IAxiosResponse<TRole[]>>

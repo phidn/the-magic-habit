@@ -1,9 +1,6 @@
 import { z } from 'zod'
 
-import { ColorName } from '@mazic/config/baseColors'
-
 import { checkInType } from '../config'
-import { HeatMapValue } from '../types'
 
 export const habitSchema = z
   .object({
@@ -25,29 +22,3 @@ export const habitSchema = z
       })
     }
   })
-
-export type TCheckIn = {
-  id: string
-  date: string
-  value: number
-  journal: string
-  habit_id: string
-  level: number
-  count: number
-  bar_value: number
-  is_done?: boolean
-}
-
-export type THabit = z.infer<typeof habitSchema> & {
-  id: string
-  color: ColorName
-  api_key: string
-  check_in_items: TCheckIn[]
-  activities: HeatMapValue[]
-  meta: {
-    avg: number
-    max: number
-  }
-}
-
-export type THabitCreate = THabit

@@ -1,6 +1,6 @@
+import { THabit } from '@mazic/shared'
 import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
-import { THabit } from '@mazic/types/modules'
 
 import { dashboardSettingsFields, detailFields } from '../../schemas/profileSchema'
 

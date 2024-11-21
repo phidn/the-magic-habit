@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, cn, Skeleton } from '@mazic/ui'
+import { THabit } from '@mazic/shared'
 import SortableList, { SortableItem } from '@mazic/components/EasySort'
 import { FormInput, FormItem } from '@mazic/components/FormControl'
-import { THabit } from '@mazic/types/modules'
 import { arrayMove } from '@mazic/utils/utils'
 
 interface IProps {
@@ -14,7 +14,6 @@ interface IProps {
 export const DashboardSettings = ({ habitData }: IProps) => {
   const methods = useFormContext()
   const habitCols = methods.watch('habit_cols')
-  // const habitOrders = methods.watch('habit_orders')
 
   const [items, setItems] = useState<THabit[]>([])
 

@@ -2,13 +2,12 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { Checkbox } from '@mazic/ui'
+import { TRole } from '@mazic/shared'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
-
-import { TRole } from '../schemas/roleSchema'
 
 import { useDeleteRole } from './useRoleApis'
 

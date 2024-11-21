@@ -1,4 +1,4 @@
-import { baseColors } from '@mazic/config/baseColors'
+import { baseColors } from '@mazic/shared'
 import { useStore } from '@mazic/store/useStore'
 import { IOption } from '@mazic/types/form'
 

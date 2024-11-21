@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { TRole, TRoleCreate } from '@mazic/shared'
 import { IParams } from '@mazic/types/index'
 import { ErrorResponse } from '@mazic/types/response'
 
-import { TRole, TRoleCreate } from '../schemas/roleSchema'
 import { roleService } from '../services/roleService'
 
 const QUERY_KEY = 'roles' as const

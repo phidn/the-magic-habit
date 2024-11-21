@@ -3,8 +3,8 @@ import { FormProvider, useForm } from 'react-hook-form'
 import isEqual from 'lodash/isEqual'
 
 import { Button } from '@mazic/ui'
+import { TRole } from '@mazic/shared'
 import { DataTableClient } from '@mazic/components/DataTable'
-import { TRole } from '@mazic/types/modules'
 
 import { useRolesPermissionsColumns } from '../../hooks/columns'
 import { TMatrix, TRolePermissionExtended } from '../../types'

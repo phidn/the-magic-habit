@@ -25,7 +25,7 @@ import {
 import { checkInType, THabit } from '@mazic/shared'
 import { CopyLinkModal } from '@mazic/components'
 import HeatMap from '@mazic/components/HeatMap'
-import { colors } from '@mazic/config/baseColors'
+import { colors } from '@mazic/shared'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'

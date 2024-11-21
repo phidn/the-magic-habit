@@ -3,9 +3,9 @@ import map from 'lodash/map'
 import snakeCase from 'lodash/snakeCase'
 import { toast } from 'sonner'
 
+import { TRole } from '@mazic/shared'
 import { useAppContext } from '@mazic/hooks/useAppContext'
 import { ApiResponse } from '@mazic/types/index'
-import { TRole } from '@mazic/types/modules'
 
 import { rolePermissionService } from '../services/rolePermissionService'
 import { TRolePermission, TRolePermissionExtended, TRolePermissionReq } from '../types'

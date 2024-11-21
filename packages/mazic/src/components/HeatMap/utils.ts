@@ -1,4 +1,6 @@
-import { HeatMapValue, SVGProps } from './SVG'
+import { HeatMapValue } from '@mazic/shared'
+
+import { SVGProps } from './SVG'
 
 export const oneDayTime = 24 * 60 * 60 * 1000
 

@@ -1,5 +1,5 @@
+import { THabit } from '@mazic/shared'
 import { IAxiosResponse } from '@mazic/types'
-import { THabit } from '@mazic/types/modules'
 import http from '@mazic/utils/http'
 
 import { THabitCheckIn } from '../utils/validations'

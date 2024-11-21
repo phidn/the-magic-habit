@@ -2,8 +2,6 @@ import { FormsCommon } from '@mazic/components/Commons/FormsCommon'
 import { FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 
-import { detailFields } from '../../schemas/roleSchema'
-
 import { DetailForm } from './DetailForm'
 
 export const RoleForm = (props: IFormProps) => {
@@ -11,7 +9,7 @@ export const RoleForm = (props: IFormProps) => {
     {
       title: 'Role Details',
       elementRender: () => <DetailForm />,
-      fields: detailFields,
+      fields: ['name', 'description'],
     },
     {
       title: 'Role Status',

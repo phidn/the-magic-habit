@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { cn } from '@mazic/ui'
+import { THabit } from '@mazic/shared'
 import { NoData } from '@mazic/components'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext } from '@mazic/hooks'
 import { CheckInHeatmap } from '@mazic/modules/check-in'
 import { useStore } from '@mazic/store/useStore'
-import { THabit } from '@mazic/types/modules'
 
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
