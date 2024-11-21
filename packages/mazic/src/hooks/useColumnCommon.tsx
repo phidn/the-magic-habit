@@ -3,7 +3,6 @@ import { Column } from '@tanstack/react-table'
 import dayjs from 'dayjs'
 
 import { Badge } from '@mazic/ui'
-
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 
 interface ColumnCommon {

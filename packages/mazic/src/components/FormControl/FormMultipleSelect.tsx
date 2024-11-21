@@ -2,7 +2,6 @@ import { Fragment, useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { FormMessage, MultiSelect } from '@mazic/ui'
-
 import { IOption } from '@mazic/types/form'
 
 interface FormMultipleSelectProps {

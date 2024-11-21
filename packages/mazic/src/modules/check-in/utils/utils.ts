@@ -1,5 +1,4 @@
 import { CheckboxIcon, NumberIcon } from '@mazic/ui'
-
 import { checkInType } from '@mazic/shared'
 import { IOption } from '@mazic/types/form'
 

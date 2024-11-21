@@ -16,7 +16,6 @@ import {
   PopoverTrigger,
   Separator,
 } from '@mazic/ui'
-
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
 export const FacetedFilter = (props: Omit<DataTableFilterField, 'filterKey'>) => {

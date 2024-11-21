@@ -1,5 +1,4 @@
 import { MazicIcon } from '@mazic/ui'
-
 import { CONFIG } from '@mazic/config/config'
 
 interface LogoProps {

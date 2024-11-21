@@ -20,7 +20,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@mazic/ui'
-
 import { MenuLink } from '@mazic/components/Commons'
 
 type Submenu = {

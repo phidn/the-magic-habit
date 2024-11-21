@@ -2,12 +2,11 @@ import { useMemo } from 'react'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { Checkbox } from '@mazic/ui'
-
+import { THabit } from '@mazic/shared'
 import { ActionColumn } from '@mazic/components/Columns/ActionColumn'
 import { DataTableColumnHeader } from '@mazic/components/DataTable/DataTableColumnHeader'
 import { useColumnCommon } from '@mazic/hooks/useColumnCommon'
 import { checkInMap } from '@mazic/modules/check-in'
-import { THabit } from '@mazic/shared'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { ITableColsProps } from '@mazic/types/index'
 

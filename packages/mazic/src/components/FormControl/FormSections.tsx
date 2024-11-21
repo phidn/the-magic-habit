@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle, cn } from '@mazic/ui'
-
 import { IFormSection } from '@mazic/types/form'
 
 interface FormSectionsProps {

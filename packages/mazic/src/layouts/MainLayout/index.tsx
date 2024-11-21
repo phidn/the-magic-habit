@@ -1,5 +1,4 @@
 import { cn } from '@mazic/ui'
-
 import { useStore } from '@mazic/store/useStore'
 
 import { Footer } from './Footer'

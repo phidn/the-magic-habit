@@ -1,7 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 
 import { Button } from '@mazic/ui'
-
 import { useStoreShallow } from '@mazic/store/useStore'
 
 export const ThemeToggle = () => {

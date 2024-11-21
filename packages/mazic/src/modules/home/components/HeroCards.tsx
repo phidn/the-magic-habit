@@ -5,7 +5,6 @@ import { Avatar, AvatarFallback, AvatarImage, ButtonLink } from '@mazic/ui'
 import { Badge } from '@mazic/ui'
 import { buttonVariants } from '@mazic/ui'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@mazic/ui'
-
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
 import { LightBulbIcon } from './Icons'

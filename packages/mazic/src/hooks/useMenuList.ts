@@ -1,7 +1,6 @@
 import { To, useLocation } from 'react-router-dom'
 
 import { AtomIcon, DashboardIcon, EditUserIcon, GuardIcon } from '@mazic/ui'
-
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { PERMISSIONS } from '@mazic/config/permissions'
 import { useStore } from '@mazic/store/useStore'

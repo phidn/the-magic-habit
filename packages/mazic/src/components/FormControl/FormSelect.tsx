@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@mazic/ui'
-
 import { IOption } from '@mazic/types/form'
 
 interface FormSelectProps {

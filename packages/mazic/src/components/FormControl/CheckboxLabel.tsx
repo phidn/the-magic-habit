@@ -1,5 +1,4 @@
 import { Checkbox } from '@mazic/ui'
-
 import { scrollTo } from '@mazic/utils/utils'
 
 interface CheckBoxLabelProps {

@@ -9,16 +9,6 @@
     "npm": "please-use-yarn",
     "yarn": ">=4.5.0"
   },
-  "scripts": {
-    "formatCode": "yarn formatCode:mazic && yarn formatCode:ui",
-    "formatCode:mazic": "nx run mazic:formatCode",
-    "formatCode:ui": "nx run ui:formatCode",
-    "lint": "yarn lint:mazic",
-    "lint:mazic": "nx run mazic:lint",
-    "lintFix": "yarn lintFix:mazic && yarn lintFix:ui",
-    "lintFix:mazic": "eslint --fix --ext .ts,.tsx ./packages/mazic",
-    "lintFix:ui": "eslint --fix --ext .ts,.tsx ./packages/mazic-ui"
-  },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "5.19.0",

@@ -3,7 +3,6 @@ import { Cross2Icon } from '@radix-ui/react-icons'
 import { Table as TTable } from '@tanstack/react-table'
 
 import { Button, ButtonLink, PlusIcon } from '@mazic/ui'
-
 import { DataTableFilterField } from '@mazic/types/dataTable'
 
 import { DataTableViewOptions } from '../DataTable/DataTableViewOptions'

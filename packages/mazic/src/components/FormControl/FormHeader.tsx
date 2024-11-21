@@ -4,7 +4,6 @@ import isEqual from 'lodash/isEqual'
 import { ChevronLeft } from 'lucide-react'
 
 import { Button, ButtonLoading, cn } from '@mazic/ui'
-
 import { PageDetails } from '@mazic/hooks/usePageDetails'
 
 interface FormHeaderProps {

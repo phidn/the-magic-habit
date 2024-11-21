@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, cn, Skeleton } from '@mazic/ui'
-
 import SortableList, { SortableItem } from '@mazic/components/EasySort'
 import { FormInput, FormItem } from '@mazic/components/FormControl'
 import { THabit } from '@mazic/types/modules'

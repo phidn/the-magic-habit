@@ -1,10 +1,3 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-
-import { LoadingTop } from '@mazic/components'
-import { pathRoutes } from '@mazic/config/pathRoutes'
-import { useStore } from '@mazic/store/useStore'
-
 import { About } from './components/About'
 import { Hero } from './components/Hero'
 import { Navbar } from './components/Navbar'

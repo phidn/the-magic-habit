@@ -1,5 +1,4 @@
 import { ButtonLink } from '@mazic/ui'
-
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
 import { HeroCards } from './HeroCards'

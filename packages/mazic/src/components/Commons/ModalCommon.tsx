@@ -9,7 +9,6 @@ import {
   ModalHeader,
   ModalTitle,
 } from '@mazic/ui'
-
 import { useStoreShallow } from '@mazic/store/useStore'
 
 export const ModalCommon = () => {

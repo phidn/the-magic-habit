@@ -7,7 +7,6 @@ import {
   CardTitle,
   CoffeeIcon,
 } from '@mazic/ui'
-
 import { BuyMeModal } from '@mazic/components/Modals/BuyMeModal'
 import { CONFIG } from '@mazic/config/config'
 import { useStoreShallow } from '@mazic/store/useStore'

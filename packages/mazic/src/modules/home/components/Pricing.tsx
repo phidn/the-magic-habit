@@ -4,7 +4,6 @@ import { Check } from 'lucide-react'
 import { Badge } from '@mazic/ui'
 import { Button } from '@mazic/ui'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@mazic/ui'
-
 import { BuyMeModal } from '@mazic/components/Modals/BuyMeModal'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'

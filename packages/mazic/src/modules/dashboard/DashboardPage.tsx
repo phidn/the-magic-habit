@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { cn } from '@mazic/ui'
-
 import { NoData } from '@mazic/components'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext } from '@mazic/hooks'

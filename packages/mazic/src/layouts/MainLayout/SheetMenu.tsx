@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { MenuIcon } from 'lucide-react'
 
 import { Button, MazicIcon, Sheet, SheetContent, SheetHeader, SheetTrigger } from '@mazic/ui'
-
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
 import { Menu } from './Menu'

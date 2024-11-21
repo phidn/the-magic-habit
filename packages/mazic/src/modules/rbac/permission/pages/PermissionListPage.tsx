@@ -1,5 +1,4 @@
 import { ButtonLoading, TrashIcon } from '@mazic/ui'
-
 import { DataTable, Toolbar } from '@mazic/components'
 import { ToolbarFloating } from '@mazic/components/ToolbarFloating/ToolbarFloating'
 import { FILTER_COMMON } from '@mazic/config/dataTable'

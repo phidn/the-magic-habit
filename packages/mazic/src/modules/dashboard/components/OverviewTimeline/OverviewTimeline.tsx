@@ -13,7 +13,6 @@ import {
   TimelineTime,
   TimelineTitle,
 } from '@mazic/ui'
-
 import { THabit } from '@mazic/shared'
 
 interface Props {

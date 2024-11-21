@@ -87,6 +87,7 @@ gen-lib:
 web: switch-node-version
 	@echo "Starting web..."
 	yarn nx run mazic:serve --verbose
+
 web-build: switch-node-version
 	@echo "Building web..."
 	yarn nx run mazic:build --skip-nx-cache && \
@@ -99,10 +100,21 @@ web-lint: switch-node-version
 	@echo "Checking web..."
 	yarn nx run mazic:lint
 	@echo "Web checked."
+
+web-lint-fix: switch-node-version
+	@echo "Checking web..."
+	yarn nx run mazic:lint --fix
+	@echo "Web checked."
+
 web-ts: switch-node-version
 	@echo "Checking web typescript..."
 	yarn tsc -b ./packages/mazic/tsconfig.app.json
 	@echo "Web typescript checked."
+
+web-format: switch-node-version
+	@echo "Formatting web..."
+	yarn nx run mazic:format
+	@echo "Web formatted."
 
 # ===== SERVER ======== #
 

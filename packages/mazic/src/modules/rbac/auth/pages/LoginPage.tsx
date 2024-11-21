@@ -13,7 +13,6 @@ import {
   Input,
   Label,
 } from '@mazic/ui'
-
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useStore } from '@mazic/store/useStore'

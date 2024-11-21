@@ -9,8 +9,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@mazic/ui'
-
-// import { NAV_ITEMS } from '@mazic/config/navItems'
 import { NavItem } from '@mazic/types'
 
 export const BreadcrumbCommon = () => {

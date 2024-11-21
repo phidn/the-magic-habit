@@ -13,7 +13,6 @@ import {
   FormMessage,
   Input,
 } from '@mazic/ui'
-
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 

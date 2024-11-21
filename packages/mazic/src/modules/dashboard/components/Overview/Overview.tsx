@@ -16,9 +16,8 @@ import {
   ChartTooltipContent,
   CheckIcon,
 } from '@mazic/ui'
-
-import { baseColorMap, ColorName } from '@mazic/config/baseColors'
 import { checkInType } from '@mazic/shared'
+import { baseColorMap, ColorName } from '@mazic/config/baseColors'
 import { useStore } from '@mazic/store/useStore'
 import { THabit } from '@mazic/types/modules'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -123,7 +122,8 @@ export function Overview({ habits, range, isLoading }: Props) {
                           }
                         />
                         {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                        {habitMap.get(name as string)?.check_in_type === checkInType.INPUT_NUMBER && (
+                        {habitMap.get(name as string)?.check_in_type ===
+                          checkInType.INPUT_NUMBER && (
                           <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
                             {_value}
                             <span className="ml-1 font-normal text-muted-foreground">

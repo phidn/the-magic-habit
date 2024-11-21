@@ -7,7 +7,6 @@ import {
 import { Table } from '@tanstack/react-table'
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@mazic/ui'
-
 import { CONFIG } from '@mazic/config/config'
 
 interface DataTablePaginationProps<TData> {

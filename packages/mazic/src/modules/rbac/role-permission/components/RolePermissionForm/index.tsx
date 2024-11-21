@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import isEqual from 'lodash/isEqual'
 
 import { Button } from '@mazic/ui'
-
 import { DataTableClient } from '@mazic/components/DataTable'
 import { TRole } from '@mazic/types/modules'
 

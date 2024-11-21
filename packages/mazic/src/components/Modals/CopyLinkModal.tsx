@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 
 import { Button, CopyIcon, Input, Label } from '@mazic/ui'
-
 import { useCopy } from '@mazic/hooks'
 
 interface Props {

@@ -1,5 +1,5 @@
-import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { checkInType, THabit } from '@mazic/shared'
+import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 
 import { DetailForm } from './DetailForm'

@@ -18,7 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@mazic/ui'
-
 import { MENUS } from '@mazic/hooks'
 import { useLogout } from '@mazic/modules/rbac/auth'
 import { useStore } from '@mazic/store/useStore'

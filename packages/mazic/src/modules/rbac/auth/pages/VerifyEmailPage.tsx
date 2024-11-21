@@ -5,7 +5,6 @@ import { Terminal } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { AceDivide, ButtonLink, ButtonLoading } from '@mazic/ui'
-
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 

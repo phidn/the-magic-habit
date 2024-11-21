@@ -22,7 +22,7 @@ import {
   SeedlingIcon,
   TrashIcon,
 } from '@mazic/ui'
-
+import { checkInType, THabit } from '@mazic/shared'
 import { CopyLinkModal } from '@mazic/components'
 import HeatMap from '@mazic/components/HeatMap'
 import { colors } from '@mazic/config/baseColors'
@@ -30,7 +30,6 @@ import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext, useColorMode } from '@mazic/hooks'
 import useRect from '@mazic/hooks/useRect'
-import { checkInType, THabit } from '@mazic/shared'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
 
