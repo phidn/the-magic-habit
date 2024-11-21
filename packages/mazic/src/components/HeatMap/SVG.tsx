@@ -1,25 +1,13 @@
 import React, { CSSProperties, useEffect, useMemo, useState } from 'react'
 
+import { HeatMapValue } from '@mazic/shared'
+
 import { Day } from './Day'
 import { LabelsMonth } from './LabelsMonth'
 import { LabelsWeek } from './LabelsWeek'
 import Legend, { LegendProps } from './Legend'
 import { RectProps } from './Rect'
 import { isValidDate, oneDayTime } from './utils'
-
-export type HeatMapValue = {
-  date: string
-  content?: string | string[] | React.ReactNode
-  count: number
-
-  id: string
-  column?: number
-  row?: number
-  index?: number
-  level: number
-  journal: string
-  is_done?: boolean
-}
 
 export interface SVGProps extends React.SVGProps<SVGSVGElement> {
   startDate?: Date
