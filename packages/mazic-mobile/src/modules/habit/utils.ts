@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 
-import { HeatMapValue, TCheckIn, THabit } from '@mazic/shared'
+import { checkInType, HeatMapValue, TCheckIn, THabit } from '@mazic/shared'
 
 import { IOption } from '@/types/types'
 
@@ -33,12 +33,6 @@ export const getActivities = (data?: TCheckIn[]): HeatMapValue[] => {
   }
 
   return result
-}
-
-export enum checkInType {
-  INPUT_NUMBER = 'INPUT_NUMBER',
-  DONE_NOTE = 'DONE_NOTE',
-  DONE = 'DONE',
 }
 
 export const checkInOpts: IOption[] = [
