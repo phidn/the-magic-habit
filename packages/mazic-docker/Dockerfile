@@ -1,10 +1,11 @@
 FROM node:20-alpine AS web-builder
 WORKDIR /app
 
-COPY ./package.json ./yarn.lock ./.yarnrc.yml ./tsconfig.base.json ./nx.json ./.eslintrc.json /app/
-COPY ./.yarn/ /app/.yarn/
-COPY ./packages/mazic /app/packages/mazic
-COPY ./packages/mazic-ui /app/packages/mazic-ui
+COPY package.json yarn.lock .yarnrc.yml tsconfig.json tsconfig.base.json nx.json .eslintrc.json /app/
+COPY .yarn/ /app/.yarn/
+COPY packages/mazic /app/packages/mazic
+COPY packages/mazic-ui /app/packages/mazic-ui
+COPY packages/mazic-shared /app/packages/mazic-shared
 
 RUN yarn
 
@@ -20,7 +21,7 @@ RUN --mount=type=secret,id=VITE_API_URL \
 
 
 RUN cat /app/packages/mazic/.env.production
-RUN yarn nx run mazic:build
+RUN yarn nx run mazic:build --verbose
 
 FROM golang:1.22-alpine AS builder
 WORKDIR /app

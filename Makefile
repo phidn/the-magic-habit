@@ -167,31 +167,31 @@ gen-schema:
 
 # ===== DOCKER ======== #
 
-build:
+docker-build:
 	@echo "Building docker..."
-	docker build -f ./packages/mazic-docker/Dockerfile -t phidndev/dev:mazic_server_v0 .
+	docker build -f ./packages/mazic-docker/Dockerfile.local -t phidndev/dev:mazic_server_v0 .
 	@echo "Docker built."
-push:
+docker-push:
 	@echo "Push docker image..."
 	docker push phidndev/dev:mazic_server_v0
 	@echo "Docker image pushed."
-build-log:
+docker-build-log:
 	@echo "Building docker..."
 	docker build --progress=plain -f ./packages/mazic-docker/Dockerfile -t phidndev/dev:mazic_server_v0 .
 	@echo "Docker built."
-build-no-cache:
+docker-build-no-cache:
 	@echo "Building docker..."
 	docker build --no-cache --progress=plain -f ./packages/mazic-docker/Dockerfile -t mazic/server:latest .
 	@echo "Docker built."
 
-build-up: build
+docker-build-up: build
 	@echo "Running docker-compose..."
 	cd packages/mazic-docker && \
 	docker rm -f mazic-docker-mazic-server-1 && \
 	docker-compose up -d
 	@echo "Docker-compose running."
 
-docker-up:
+docker-docker-up:
 	@echo "Running docker-compose..."
 	docker rm -f mazic-habit-mazic-server && \
 	docker image rm -f phidndev/dev:mazic_server_v0 && \

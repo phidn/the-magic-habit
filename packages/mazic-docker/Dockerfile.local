@@ -1,0 +1,37 @@
+FROM node:20-alpine AS web-builder
+WORKDIR /app
+
+COPY package.json yarn.lock .yarnrc.yml tsconfig.json tsconfig.base.json nx.json .eslintrc.json /app/
+COPY .yarn/ /app/.yarn/
+COPY packages/mazic /app/packages/mazic
+COPY packages/mazic-ui /app/packages/mazic-ui
+COPY packages/mazic-shared /app/packages/mazic-shared
+
+RUN yarn
+
+RUN cat /app/packages/mazic/.env.production
+RUN yarn nx run mazic:build --verbose
+
+# FROM golang:1.22-alpine AS builder
+# WORKDIR /app
+# COPY packages/mazic-server/go.mod ./packages/mazic-server/
+# COPY packages/mazic-server/go.sum ./packages/mazic-server/
+
+# RUN cd packages/mazic-server && go mod download
+
+# COPY ./packages/mazic-server/ /app/packages/mazic-server/
+# COPY --from=web-builder /app/dist/packages/mazic/ /app/packages/mazic-server/web/dist/
+
+# WORKDIR /app/packages/mazic-server
+# RUN go build -o server .
+
+# FROM alpine:latest
+# WORKDIR /app
+# COPY --from=builder /app/packages/mazic-server/server ./packages/mazic-server/
+
+# RUN cat /app/packages/mazic-server/.env.production
+
+# EXPOSE 8090
+
+# WORKDIR /app/packages/mazic-server
+# CMD ["./server", "serve", "--http=0.0.0.0:8090", "--dir=./mz_data"]
