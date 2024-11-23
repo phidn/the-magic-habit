@@ -1,3 +1,5 @@
+const { withNxMetro } = require('@nx/react-native')
+
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config')
 
 const defaultConfig = getDefaultConfig(__dirname)
@@ -19,4 +21,4 @@ const config = {
   },
 }
 
-module.exports = mergeConfig(defaultConfig, config)
+module.exports = withNxMetro(mergeConfig(defaultConfig, config))

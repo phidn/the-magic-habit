@@ -211,3 +211,9 @@ mobile:
 	cd packages/mazic-mobile && \
 	make start
 	@echo "Mobile started."
+
+mobile-rc:
+	@echo "Starting mobile..."
+	cd packages/mazic-mobile && \
+	make start-rc
+	@echo "Mobile started."
