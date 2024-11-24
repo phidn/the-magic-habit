@@ -1,8 +1,9 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, View } from 'react-native'
 
 interface IProps {
-  style?: any
+  style?: StyleProp<ViewStyle>
   reverse?: boolean
   children: React.ReactNode
 }

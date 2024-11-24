@@ -64,7 +64,6 @@ export type AuthResponse = {
 
 // #endregion: API Response
 
-
 export interface IOption {
   label: string
   renderLabel?: () => React.ReactNode
@@ -77,10 +76,11 @@ export interface IOption {
 }
 
 export interface IFormProps {
-  title?: string | React.ReactNode
+  title?: string
   initialValues?: any
   data?: any
   schema?: ZodObject<any> | ZodEffects<any, any>
   onSubmitForm: (values: any) => any
   isPendingSubmit?: boolean
+  refreshData?: () => void
 }

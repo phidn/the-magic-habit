@@ -1,3 +1,4 @@
+import { FormCheckbox } from './FormCheckbox'
 import { FormContainer } from './FormContainer'
 import { FormInput } from './FormInput'
 import { FormSection } from './FormSection'
@@ -8,4 +9,5 @@ export const Form = {
   Section: FormSection,
   Container: FormContainer,
   Select: FormSelect,
+  Checkbox: FormCheckbox,
 }

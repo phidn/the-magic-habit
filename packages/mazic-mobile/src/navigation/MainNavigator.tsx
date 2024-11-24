@@ -17,7 +17,7 @@ const Stack = createNativeStackNavigator<RootStackNavigator>()
 interface IRoute {
   name: keyof RootStackNavigator
   component: React.ComponentType<any>
-  options: {
+  options?: {
     headerTitle?: string
     headerShown: boolean
     headerTitleAlign: 'center' | 'left' | undefined
@@ -59,7 +59,7 @@ const MainNavigator = () => {
       component: HabitUpdateScreen,
       options: {
         headerTitle: t(languageKeys['Habit.edit.title']),
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: 'center',
       },
     },

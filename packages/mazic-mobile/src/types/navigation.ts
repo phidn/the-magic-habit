@@ -1,5 +1,7 @@
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
+import { THabit } from '@mazic/shared'
+
 export type RootStackNavigator = {
   BottomTabNavigator: undefined
   LanguageSettingScreen: undefined
@@ -13,7 +15,10 @@ export type RootStackNavigator = {
     bellId: string
     bellVolume: number
   }
-  HabitUpdateScreen: undefined
+  HabitUpdateScreen: {
+    habit: THabit
+    refetch?: () => void
+  }
 }
 
 export type TNavigationRoot = NativeStackNavigationProp<RootStackNavigator>

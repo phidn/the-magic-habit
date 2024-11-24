@@ -29,8 +29,6 @@ export interface IUser {
   updatedAt: string
 }
 
-export type MutationApiResponse = UseMutationResult<AxiosResponse<any, any>, Error, any, unknown>
-
 export interface ITableColsProps {
   refreshTable?: () => void
 }

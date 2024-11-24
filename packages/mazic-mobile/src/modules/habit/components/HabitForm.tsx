@@ -5,7 +5,13 @@ import { checkInOpts } from '../utils'
 
 export const HabitForm = (props: IFormProps) => {
   return (
-    <Form.Container initialValues={{}}>
+    <Form.Container
+      title={props.title}
+      initialValues={props.initialValues}
+      schema={props.schema}
+      onSubmitForm={props.onSubmitForm}
+      refreshData={props.refreshData}
+    >
       <Form.Section title="Detail" icon="information-variant">
         <Form.Select field="check_in_type" options={checkInOpts} placeholder="Check-in type" />
         <Form.Input label="Color" field="color" />
@@ -13,7 +19,7 @@ export const HabitForm = (props: IFormProps) => {
         <Form.Input label="Metric (km/hour/min)" field="metric" />
       </Form.Section>
       <Form.Section title="Privacy" icon="security">
-        <Form.Input label="Private" field="is_private" />
+        <Form.Checkbox label="Private" field="is_private" />
       </Form.Section>
     </Form.Container>
   )

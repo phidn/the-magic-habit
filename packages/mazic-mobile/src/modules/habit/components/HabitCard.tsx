@@ -41,7 +41,7 @@ export const HabitCard = ({ habit }: IProps) => {
                 leadingIcon="square-edit-outline"
                 onPress={() => {
                   setMenuVisible(false)
-                  navigation.navigate(screens.HabitEditScreen)
+                  navigation.navigate(screens.HabitUpdateScreen, { habit })
                 }}
                 title="Edit"
               />

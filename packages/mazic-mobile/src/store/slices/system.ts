@@ -38,7 +38,7 @@ export const rehydrateStorageSlice: ImmerStateCreator<RehydrateStorageSlice> = (
 })
 
 export const navigationSlice: ImmerStateCreator<NavigationSlice> = (set) => ({
-  bottomActiveTab: 'PrepareTab',
+  bottomActiveTab: 'HabitList',
   setBottomActiveTab: (bottomActiveTab) => set({ bottomActiveTab }),
   statsTopInitTab: 'StatsTopTabs.chart',
   setStatsTopInitTab: (statsTopInitTab) => set({ statsTopInitTab }),

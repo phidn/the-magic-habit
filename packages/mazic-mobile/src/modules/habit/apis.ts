@@ -1,6 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import { THabit } from '@mazic/shared'
+import { THabit, THabitCreate } from '@mazic/shared'
 
 import { useStore } from '@/store/useStore'
 import { ApiResponse, IParams } from '@/types/types'
@@ -19,4 +19,28 @@ export const useListHabitApi = (params?: IParams) => {
 
   const dataList = normalizeHabitData(data?.data?.data || [])
   return { ...data?.data, data: dataList, ...rest }
+}
+
+export const useHabitDetail = (habitId: string) => {
+  const { data, ...rest } = useQuery({
+    queryFn: () => http.get<ApiResponse<THabit>>('/habits/' + habitId),
+    queryKey: [QUERY_KEY, habitId, 'habits_detail'],
+    enabled: !!habitId,
+  })
+
+  return { ...data?.data, ...rest }
+}
+
+export const useUpdateHabit = (habitId: string) => {
+  return useMutation({
+    mutationFn: (payload: THabit) => http.put<ApiResponse<THabit>>('/habits/' + habitId, payload),
+    // onSuccess: () => toast.success('Successfully updated habit'),
+  })
+}
+
+export const useCreateHabit = () => {
+  return useMutation({
+    mutationFn: (payload: THabitCreate) => http.put<ApiResponse<THabit>>('/habits', payload),
+    // onSuccess: () => toast.success('Successfully created habit'),
+  })
 }

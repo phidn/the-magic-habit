@@ -3,9 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z, ZodEffects, ZodObject } from 'zod'
 
+import { MutationApiResponse } from '@mazic/shared'
 import { usePageDetails } from '@mazic/hooks'
 import { useUploadFile } from '@mazic/hooks/useUploadFile'
-import { MutationApiResponse } from '@mazic/types'
 import { IFormSection } from '@mazic/types/form'
 import { isValidSection } from '@mazic/utils/form'
 
