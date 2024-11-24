@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { screens } from '@/config/config'
 import { LoginScreen, SignUpScreen } from '@/modules/auth'
-import { HabitEditScreen } from '@/modules/habit/screens/HabitEditScreen'
+import { HabitUpdateScreen } from '@/modules/habit/screens/HabitUpdateScreen'
 import { MeditateScreen } from '@/modules/mindfulness-timer'
 import { LanguageSettingScreen } from '@/modules/settings'
 import { RootStackNavigator } from '@/types/navigation'
@@ -55,8 +55,8 @@ const MainNavigator = () => {
       },
     },
     {
-      name: screens.HabitEditScreen,
-      component: HabitEditScreen,
+      name: screens.HabitUpdateScreen,
+      component: HabitUpdateScreen,
       options: {
         headerTitle: t(languageKeys['Habit.edit.title']),
         headerShown: true,
