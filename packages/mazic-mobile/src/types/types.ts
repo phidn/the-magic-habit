@@ -83,4 +83,5 @@ export interface IFormProps {
   onSubmitForm: (values: any) => any
   isPendingSubmit?: boolean
   refreshData?: () => void
+  isGoBack?: boolean
 }

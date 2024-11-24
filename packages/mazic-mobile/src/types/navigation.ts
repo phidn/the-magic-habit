@@ -17,8 +17,8 @@ export type RootStackNavigator = {
   }
   HabitUpdateScreen: {
     habit: THabit
-    refetch?: () => void
   }
+  HabitCreateScreen: undefined
 }
 
 export type TNavigationRoot = NativeStackNavigationProp<RootStackNavigator>

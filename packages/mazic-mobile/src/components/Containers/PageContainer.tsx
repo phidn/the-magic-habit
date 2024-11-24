@@ -1,6 +1,6 @@
 import React from 'react'
 import { ScrollView, StyleProp, View, ViewStyle } from 'react-native'
-import { ProgressBar, useTheme } from 'react-native-paper'
+import { Appbar, ProgressBar, useTheme } from 'react-native-paper'
 
 interface IProps {
   children: React.ReactNode
@@ -8,16 +8,34 @@ interface IProps {
   style?: StyleProp<ViewStyle>
   isScroll?: boolean
   isLoading?: boolean
+  appBarTitle?: string
+  renderAppbar?: () => React.ReactNode
+  appbar?: {
+    title: string
+    actions?: {
+      icon: string
+      onPress: () => void
+    }[]
+  }
 }
 
-const PageContainer = ({ containerStyle, style, isScroll, isLoading, children }: IProps) => {
+const PageContainer = (props: IProps) => {
+  const { containerStyle, style, isScroll, isLoading, children, renderAppbar, appbar } = props
   const { colors } = useTheme()
-
   const _containerStyle = [{ flex: 1 }, containerStyle]
 
   return (
     <>
-      <ProgressBar indeterminate visible={isLoading} />
+      {renderAppbar?.()}
+      {appbar?.title && (
+        <Appbar.Header elevated>
+          <Appbar.Content title={appbar?.title} titleStyle={{ fontSize: 17 }} />
+          {(appbar?.actions || []).map((action) => (
+            <Appbar.Action key={action.icon} icon={action.icon} onPress={action.onPress} />
+          ))}
+        </Appbar.Header>
+      )}
+      {isLoading && <ProgressBar indeterminate visible={isLoading} />}
       <View style={[{ flex: 1, backgroundColor: colors.background }, style]}>
         {!isScroll && <View style={_containerStyle}>{children}</View>}
         {isScroll && <ScrollView style={_containerStyle}>{children}</ScrollView>}

@@ -1,4 +1,4 @@
-import { getDefaultsBySchema } from '@mazic/utils/form'
+import { getDefaultsBySchema } from '@mazic/shared'
 
 import { UserForm } from '../components/UserForm'
 import { useCreateUser } from '../hooks/useUserApis'

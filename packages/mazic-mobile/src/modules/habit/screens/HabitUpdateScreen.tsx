@@ -22,7 +22,6 @@ export const HabitUpdateScreen = ({ route }: IProps) => {
       initialValues={data}
       schema={habitSchema}
       onSubmitForm={mutation.mutateAsync}
-      refreshData={route.params.refetch}
     />
   )
 }

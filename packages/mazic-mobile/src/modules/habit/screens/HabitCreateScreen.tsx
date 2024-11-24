@@ -1,19 +1,17 @@
 import { getDefaultsBySchema, habitSchema } from '@mazic/shared'
 
+import { useCreateHabit } from '../apis'
 import { HabitForm } from '../components/HabitForm'
-import { useCreateHabit } from '../hooks/apis'
 
-const HabitCreatePage = () => {
+export const HabitCreateScreen = () => {
   const mutation = useCreateHabit()
+
   return (
     <HabitForm
       title="Create Habit"
       initialValues={getDefaultsBySchema(habitSchema)}
       schema={habitSchema}
       onSubmitForm={mutation.mutateAsync}
-      isPendingSubmit={mutation.isPending}
     />
   )
 }
-
-export default HabitCreatePage

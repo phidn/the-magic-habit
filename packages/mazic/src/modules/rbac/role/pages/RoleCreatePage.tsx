@@ -1,5 +1,4 @@
-import { roleSchema } from '@mazic/shared'
-import { getDefaultsBySchema } from '@mazic/utils/form'
+import { getDefaultsBySchema, roleSchema } from '@mazic/shared'
 
 import { RoleForm } from '../components/RoleForm'
 import { useCreateRole } from '../hooks/useRoleApis'

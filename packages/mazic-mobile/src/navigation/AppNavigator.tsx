@@ -14,7 +14,6 @@ interface IProps {
 
 const AppNavigator = ({ theme }: IProps) => {
   const onReadyNavigation = () => {
-    // await new Promise((resolve) => setTimeout(resolve, 500))
     BootSplash.hide({ fade: true })
   }
 

@@ -1,4 +1,4 @@
-import { getDefaultsBySchema } from '@mazic/utils/form'
+import { getDefaultsBySchema } from '@mazic/shared'
 
 import { PermissionForm } from '../components/PermissionForm'
 import { useCreatePermission } from '../hooks/usePermissionApis'

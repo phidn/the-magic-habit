@@ -4,6 +4,7 @@ import { useTheme } from 'react-native-paper'
 import { createMaterialBottomTabNavigator } from 'react-native-paper/react-navigation'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationOptions } from '@react-navigation/native-stack'
 
 import { screens } from '@/config/config'
 import useHydration from '@/hooks/useHydration'
@@ -14,7 +15,12 @@ import { useStoreShallow } from '@/store/useStore'
 import { TNavigationRoot } from '@/types/navigation'
 import { languageKeys } from '@/utils/language'
 
-import StatsTopTabs from './StatsTopTabs'
+type BottomTabRoute = {
+  name: 'HabitList' | 'HabitCreate' | 'SettingsTab'
+  options?: Partial<NativeStackNavigationOptions>
+  component: React.ComponentType<any>
+  renderIcon: (props: { focused: boolean; color: string }) => React.ReactNode
+}
 
 const BottomTab = createMaterialBottomTabNavigator()
 
@@ -23,27 +29,38 @@ const BottomTabNavigator = () => {
   const { t, i18n } = useTranslation()
   const { colors } = useTheme()
 
-  const bottomTabRoutes = [
+  const bottomTabRoutes: BottomTabRoute[] = [
     {
       name: 'HabitList',
-      title: t(languageKeys['Navigation.BottomTab.HabitList']),
+      options: {
+        title: t(languageKeys['Navigation.BottomTab.HabitList']),
+        headerTitleAlign: 'left',
+        headerShown: false,
+      },
       component: HabitListScreen,
-      IconComponent: MaterialCommunityIcons,
-      icon: 'heart',
-    },
-    {
-      name: 'StatsTab',
-      title: t(languageKeys['Navigation.BottomTab.StatsTab']),
-      component: StatsTopTabs,
-      IconComponent: MaterialCommunityIcons,
-      icon: 'chart-box',
+      renderIcon: ({ focused, color }) => (
+        <MaterialCommunityIcons
+          color={color}
+          name={focused ? 'heart' : 'heart-outline'}
+          size={26}
+        />
+      ),
     },
     {
       name: 'SettingsTab',
-      title: t(languageKeys['Navigation.BottomTab.SettingsTab']),
+      options: {
+        title: t(languageKeys['Navigation.BottomTab.SettingsTab']),
+        headerTitleAlign: 'left',
+        headerShown: false,
+      },
       component: SettingsScreen,
-      IconComponent: MaterialCommunityIcons,
-      icon: 'account',
+      renderIcon: ({ focused, color }) => (
+        <MaterialCommunityIcons
+          color={color}
+          name={focused ? 'account' : 'account-outline'}
+          size={26}
+        />
+      ),
     },
   ]
 
@@ -58,7 +75,13 @@ const BottomTabNavigator = () => {
 
   useEffect(() => {
     if (bottomActiveTab) {
-      navigation.setOptions({ title: t(`Navigation.BottomTab.${bottomActiveTab}`) || '' })
+      const currentTab = bottomTabRoutes.find((route) => route.name === bottomActiveTab)
+      navigation.setOptions({
+        title: currentTab?.options?.title,
+        headerTitleAlign: currentTab?.options?.headerTitleAlign,
+        headerRight: currentTab?.options?.headerRight,
+        headerShown: currentTab?.options?.headerShown,
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [i18n.language, bottomActiveTab])
@@ -81,22 +104,16 @@ const BottomTabNavigator = () => {
         },
       })}
     >
-      {bottomTabRoutes.map((bottomTabRoute, idx) => (
+      {bottomTabRoutes.map((tab, idx) => (
         <BottomTab.Screen
-          key={`${bottomTabRoute.name || idx}`}
-          name={bottomTabRoute.name}
-          component={bottomTabRoute.component}
+          key={`${tab.name || idx}`}
+          name={tab.name}
+          component={tab.component}
           options={{
-            title: bottomTabRoute.title,
-            tabBarLabel: bottomTabRoute.title,
-            tabBarIcon: ({ focused, color }) => (
-              <bottomTabRoute.IconComponent
-                color={color}
-                name={focused ? bottomTabRoute.icon : `${bottomTabRoute.icon}-outline`}
-                size={26}
-              />
-            ),
-            tabBarBadge: bottomTabRoute.name === bottomActiveTab,
+            title: tab?.options?.title,
+            tabBarLabel: tab?.options?.title,
+            tabBarIcon: ({ focused, color }) => tab.renderIcon({ focused, color }),
+            tabBarBadge: tab.name === bottomActiveTab,
           }}
         />
       ))}

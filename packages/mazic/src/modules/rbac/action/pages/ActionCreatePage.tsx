@@ -1,4 +1,4 @@
-import { getDefaultsBySchema } from '@mazic/utils/form'
+import { getDefaultsBySchema } from '@mazic/shared'
 
 import { ActionForm } from '../components/ActionForm'
 import { useCreateAction } from '../hooks/useActionApis'

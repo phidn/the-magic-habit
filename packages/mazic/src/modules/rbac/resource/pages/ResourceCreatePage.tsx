@@ -1,4 +1,4 @@
-import { getDefaultsBySchema } from '@mazic/utils/form'
+import { getDefaultsBySchema } from '@mazic/shared'
 
 import { ResourceForm } from '../components/ResourceForm'
 import { useCreateResource } from '../hooks/useResourceApis'

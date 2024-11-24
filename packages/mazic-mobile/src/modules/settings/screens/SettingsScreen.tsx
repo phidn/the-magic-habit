@@ -70,6 +70,7 @@ export const SettingsScreen = () => {
     <PageContainer
       isScroll={true}
       style={{ paddingHorizontal: PAGE_PADDING_HORIZONTAL, marginTop: 20 }}
+      appbar={{ title: t(languageKeys['Navigation.BottomTab.SettingsTab']) }}
     >
       <UserSettingSection />
 

@@ -16,12 +16,19 @@ interface FormContainerProps {
   schema?: ZodObject<any> | ZodEffects<any>
   initialValues: any
   onSubmitForm: (values: any) => Promise<MutationApiResponse>
-  refreshData?: () => void
+  isGoBack?: boolean
 }
 
 export const FormContainer = (props: FormContainerProps) => {
   const navigation = useNavigation<TNavigationRoot>()
-  const { children, schema = z.object({}), initialValues, onSubmitForm, title, refreshData } = props
+  const {
+    children,
+    schema = z.object({}),
+    initialValues,
+    onSubmitForm,
+    title,
+    isGoBack = true,
+  } = props
   const [formValues, setFormValues] = useState(initialValues)
 
   const methods = useForm<z.infer<typeof schema>>({
@@ -33,7 +40,6 @@ export const FormContainer = (props: FormContainerProps) => {
   const onSave = () => {
     methods.handleSubmit(onSubmitForm)()
     setFormValues(values)
-    refreshData?.()
   }
 
   const isFormDirty = !isEqual(formValues, values)
@@ -41,9 +47,9 @@ export const FormContainer = (props: FormContainerProps) => {
   return (
     <FormProvider {...methods}>
       <Appbar.Header elevated>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
-        <Appbar.Content title={title || ''} />
-        <Appbar.Action mode="contained" icon="check" disabled={!isFormDirty} onPress={onSave} />
+        {isGoBack && <Appbar.BackAction onPress={() => navigation.goBack()} />}
+        <Appbar.Content title={title || ''} titleStyle={{ fontSize: 17 }} />
+        <Appbar.Action icon="check" disabled={!isFormDirty} onPress={onSave} />
       </Appbar.Header>
       <ProgressBar indeterminate visible={methods.formState.isSubmitting} />
       <List.Section>{children}</List.Section>

@@ -47,6 +47,7 @@
   "Navigation.BottomTab.AdminTab": "Admin",
   "Navigation.BottomTab.PrepareTab": "Mindful check-in",
   "Navigation.BottomTab.HabitList": "The magic habit",
+  "Navigation.BottomTab.HabitCreate": "Create habit",
   "Navigation.BottomTab.SettingsTab": "Settings",
   "Navigation.BottomTab.StatsTab": "Statistics",
 
@@ -76,5 +77,6 @@
   "User.lastName": "Last name",
   "User.password": "Password",
 
-  "Habit.edit.title": "Edit habit"
+  "Habit.edit.title": "Edit habit",
+  "Habit.create.title": "Create habit"
 }
