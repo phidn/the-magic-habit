@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider, Text } from 'react-native-paper'
+import { Toaster } from 'sonner-native'
 
 import useHydration from '@/hooks/useHydration'
 import AppNavigator from '@/navigation/AppNavigator'
@@ -45,7 +47,10 @@ export const AppLayout = () => {
   return (
     <Suspense fallback={<Text>Loading...</Text>}>
       <PaperProvider theme={theme}>
-        <AppNavigator theme={theme} />
+        <GestureHandlerRootView>
+          <AppNavigator theme={theme} />
+          <Toaster position="bottom-center" />
+        </GestureHandlerRootView>
       </PaperProvider>
     </Suspense>
   )

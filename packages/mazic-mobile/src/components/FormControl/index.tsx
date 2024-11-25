@@ -1,4 +1,5 @@
 import { FormCheckbox } from './FormCheckbox'
+import { FormColorPicker } from './FormColorPicker'
 import { FormContainer } from './FormContainer'
 import { FormInput } from './FormInput'
 import { FormSection } from './FormSection'
@@ -10,4 +11,5 @@ export const Form = {
   Container: FormContainer,
   Select: FormSelect,
   Checkbox: FormCheckbox,
+  ColorPicker: FormColorPicker,
 }

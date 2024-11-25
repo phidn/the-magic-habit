@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { screens } from '@/config/config'
 import { LoginScreen, SignUpScreen } from '@/modules/auth'
-import { HabitCreateScreen, HabitUpdateScreen } from '@/modules/habit'
+import { HabitCreateScreen, HabitListScreen, HabitUpdateScreen } from '@/modules/habit'
 import { MeditateScreen } from '@/modules/mindfulness-timer'
 import { LanguageSettingScreen } from '@/modules/settings'
 import { RootStackNavigator } from '@/types/navigation'
@@ -19,8 +19,8 @@ interface IRoute {
   component: React.ComponentType<any>
   options?: {
     headerTitle?: string
+    headerTitleAlign?: 'center' | 'left' | undefined
     headerShown: boolean
-    headerTitleAlign: 'center' | 'left' | undefined
   }
 }
 
@@ -70,6 +70,13 @@ const MainNavigator = () => {
         headerTitle: t(languageKeys['Habit.create.title']),
         headerShown: false,
         headerTitleAlign: 'center',
+      },
+    },
+    {
+      name: screens.HabitListScreen,
+      component: HabitListScreen,
+      options: {
+        headerShown: false,
       },
     },
   ]

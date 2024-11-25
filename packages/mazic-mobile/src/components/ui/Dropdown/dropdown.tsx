@@ -31,7 +31,7 @@ function Dropdown(props: DropdownProps, ref: React.Ref<DropdownRef>) {
     CustomDropdownInput = DropdownInput,
     CustomMenuHeader = DropdownHeader,
   } = props
-  const selectedLabel = options.find((option) => option.value === value)?.label
+  const selectedLabel = options.find((option) => option.value === value)
   const { enable, setEnable, toggleMenu, onLayout, menuStyle, scrollViewStyle, dropdownLayout } =
     useDropdown(maxMenuHeight)
   const rightIcon = enable ? menuUpIcon : menuDownIcon

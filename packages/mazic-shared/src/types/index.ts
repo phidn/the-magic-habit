@@ -19,3 +19,13 @@ export * from './habit'
 export * from './role'
 
 export type MutationApiResponse = UseMutationResult<AxiosResponse<any, any>, Error, any, unknown>
+
+export interface ErrorResponse {
+  success: boolean
+  error?: {
+    name: string
+    code: number
+    message: string
+    details?: any
+  }
+}

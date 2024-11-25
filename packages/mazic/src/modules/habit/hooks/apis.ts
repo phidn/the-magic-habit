@@ -25,6 +25,9 @@ export const useUpdateHabit = (habitId: string) => {
   return useMutation({
     mutationFn: (payload: THabit) => habitService.update(habitId, payload),
     onSuccess: () => toast.success('Successfully updated habit'),
+    onError: (error: ErrorResponse) => {
+      toast.error(error?.error?.message || 'Failed to update habit')
+    },
   })
 }
 
@@ -32,6 +35,9 @@ export const useCreateHabit = () => {
   return useMutation({
     mutationFn: (payload: THabitCreate) => habitService.create(payload),
     onSuccess: () => toast.success('Successfully created habit'),
+    onError: (error: ErrorResponse) => {
+      toast.error(error?.error?.message || 'Failed to create habit')
+    },
   })
 }
 

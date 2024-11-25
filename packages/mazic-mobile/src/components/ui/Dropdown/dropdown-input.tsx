@@ -9,12 +9,13 @@ function DropdownInput(props: DropdownInputProps) {
     <TextInput
       placeholder={placeholder}
       label={label}
-      value={selectedLabel}
+      value={selectedLabel?.label}
       right={rightIcon}
       mode={mode}
       editable={false}
       disabled={disabled}
       error={error}
+      left={selectedLabel?.inputIcon}
     />
   )
 }

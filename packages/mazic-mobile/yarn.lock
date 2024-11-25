@@ -2185,6 +2185,7 @@ __metadata:
     react-native-vector-icons: "npm:^10.2.0"
     react-test-renderer: "npm:18.3.1"
     reactotron-react-native: "npm:^5.1.9"
+    sonner-native: "npm:^0.16.1"
     typescript: "npm:5.0.4"
     zod: "npm:3.23.8"
     zustand: "npm:^4.3.1"
@@ -10973,6 +10974,25 @@ __metadata:
     ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
   checksum: 10c0/d54a52bf9325165770b674a67241143a3d8b4e4c8884560c4e0e078aace2a728dffc7f70150660f51b85797c4e1a3b82f9b7aa25e0a0ceae1a243365da5c51a7
+  languageName: node
+  linkType: hard
+
+"sonner-native@npm:^0.16.1":
+  version: 0.16.1
+  resolution: "sonner-native@npm:0.16.1"
+  peerDependencies:
+    nativewind: "*"
+    react: "*"
+    react-native: "*"
+    react-native-gesture-handler: ">=2.16.1"
+    react-native-reanimated: ">=3.10.1"
+    react-native-safe-area-context: ">=4.10.5"
+    react-native-screens: ">=3.31.1"
+    react-native-svg: ">=15.6.0"
+  peerDependenciesMeta:
+    nativewind:
+      optional: true
+  checksum: 10c0/4419d65083de3cb9a044bacce237a474794142fbc4428adc50ec0b77a9bda880b0f70842bc793b1e099cdec4a853321614e2189f3e0f658a597f45bf01bcd573
   languageName: node
   linkType: hard
 

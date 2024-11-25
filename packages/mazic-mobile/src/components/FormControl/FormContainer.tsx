@@ -38,8 +38,11 @@ export const FormContainer = (props: FormContainerProps) => {
   const values = methods.watch()
 
   const onSave = () => {
-    methods.handleSubmit(onSubmitForm)()
-    setFormValues(values)
+    methods
+      .handleSubmit(onSubmitForm)()
+      .then(() => {
+        setFormValues(values)
+      })
   }
 
   const isFormDirty = !isEqual(formValues, values)

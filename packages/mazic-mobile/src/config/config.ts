@@ -48,4 +48,5 @@ export const screens: TScreen = {
   ForgotPassword: 'ForgotPassword',
   HabitUpdateScreen: 'HabitUpdateScreen',
   HabitCreateScreen: 'HabitCreateScreen',
+  HabitListScreen: 'HabitListScreen',
 }

@@ -10,14 +10,14 @@ interface InputProps extends TextInputProps {
   validation?: any
 }
 
-export const FormInput: React.FC<InputProps> = ({
+export const FormInput = ({
   label,
   icon,
   onIconPress,
   field,
   validation,
   ...props
-}) => {
+}: InputProps) => {
   const methods = useFormContext()
   const { error } = methods.getFieldState(field, methods.formState)
   useEffect(() => {

@@ -19,6 +19,7 @@ export type RootStackNavigator = {
     habit: THabit
   }
   HabitCreateScreen: undefined
+  HabitListScreen: undefined
 }
 
 export type TNavigationRoot = NativeStackNavigationProp<RootStackNavigator>

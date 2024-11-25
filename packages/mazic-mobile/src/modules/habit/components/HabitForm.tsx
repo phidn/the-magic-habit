@@ -14,7 +14,7 @@ export const HabitForm = (props: IFormProps) => {
     >
       <Form.Section title="Detail" icon="information-variant">
         <Form.Select field="check_in_type" options={checkInOpts} placeholder="Check-in type" />
-        <Form.Input label="Color" field="color" />
+        <Form.ColorPicker label="Color" field="color" containerStyle={{ marginTop: 8 }} />
         <Form.Input label="Title" field="title" />
         <Form.Input label="Metric (km/hour/min)" field="metric" />
       </Form.Section>

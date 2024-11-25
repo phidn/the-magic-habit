@@ -72,6 +72,8 @@ export interface IOption {
   renderIcon?: () => React.ReactNode
   enableCount?: boolean
   disabled?: boolean
+  dropdownIcon?: React.JSX.Element
+  inputIcon?: React.JSX.Element
   [key: string]: any
 }
 

@@ -1,21 +1,23 @@
-import { ForwardRefExoticComponent } from 'react'
+import React, { ForwardRefExoticComponent } from 'react'
 import { DimensionValue, PressableProps, View, ViewStyle } from 'react-native'
 import { TextInputProps } from 'react-native-paper'
 import { TextInputLabelProp } from 'react-native-paper/lib/typescript/components/TextInput/types'
+
+import { IOption } from '@/types/types'
+
+export interface Option extends IOption {
+  label: string
+  value: string
+}
 
 export type DropdownInputProps = {
   placeholder?: string
   label?: TextInputLabelProp
   rightIcon: JSX.Element
-  selectedLabel?: string
+  selectedLabel?: Option
   mode?: 'flat' | 'outlined'
   disabled?: boolean
   error?: boolean
-}
-
-export type Option = {
-  label: string
-  value: string
 }
 
 export type DropdownProps = {

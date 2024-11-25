@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { toast } from 'sonner-native'
 
-import { THabit, THabitCreate } from '@mazic/shared'
+import { ErrorResponse, THabit, THabitCreate } from '@mazic/shared'
 
 import { useStore } from '@/store/useStore'
 import { ApiResponse, IParams } from '@/types/types'
@@ -34,13 +35,19 @@ export const useHabitDetail = (habitId: string) => {
 export const useUpdateHabit = (habitId: string) => {
   return useMutation({
     mutationFn: (payload: THabit) => http.put<ApiResponse<THabit>>('/habits/' + habitId, payload),
-    // onSuccess: () => toast.success('Successfully updated habit'),
+    onSuccess: () => toast.success('Successfully updated habit'),
+    onError: (error: ErrorResponse) => {
+      toast.error(error?.error?.message || 'Failed to update habit')
+    },
   })
 }
 
 export const useCreateHabit = () => {
   return useMutation({
-    mutationFn: (payload: THabitCreate) => http.put<ApiResponse<THabit>>('/habits', payload),
-    // onSuccess: () => toast.success('Successfully created habit'),
+    mutationFn: (payload: THabitCreate) => http.post<ApiResponse<THabit>>('/habits', payload),
+    onSuccess: () => toast.success('Successfully created habit'),
+    onError: (error: ErrorResponse) => {
+      toast.error(error?.error?.message || 'Failed to create habit')
+    },
   })
 }
