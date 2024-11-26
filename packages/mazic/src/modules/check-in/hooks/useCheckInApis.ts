@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
+import { THabitCheckIn } from '@mazic/shared'
 import { useAppContext } from '@mazic/hooks'
 
 import { checkInService } from '../services/checkInService'
-import { THabitCheckIn } from '../utils/validations'
 
 const QUERY_KEY = 'check_in' as const
 

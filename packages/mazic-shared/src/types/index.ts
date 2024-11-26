@@ -15,9 +15,6 @@ export type HeatMapValue = {
   is_done?: boolean
 }
 
-export * from './habit'
-export * from './role'
-
 export type MutationApiResponse = UseMutationResult<AxiosResponse<any, any>, Error, any, unknown>
 
 export interface ErrorResponse {
@@ -29,3 +26,7 @@ export interface ErrorResponse {
     details?: any
   }
 }
+
+export * from './habit'
+export * from './role'
+export * from './checkIn'

@@ -2,7 +2,6 @@ import { lazy } from 'react'
 
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
-export { checkInSchema, type THabitCheckIn } from './utils/validations'
 export { useCheckIn, useDeleteCheckIn } from './hooks/useCheckInApis'
 
 export { FormCheckIn } from './components/FormCheckIn/FormCheckIn'

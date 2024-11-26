@@ -66,14 +66,14 @@ export type AuthResponse = {
 
 export interface IOption {
   label: string
-  renderLabel?: () => React.ReactNode
   value: any
   code?: string
-  renderIcon?: () => React.ReactNode
   enableCount?: boolean
   disabled?: boolean
   dropdownIcon?: React.JSX.Element
   inputIcon?: React.JSX.Element
+  renderLabel?: () => React.ReactNode
+  renderIcon?: () => React.ReactNode
   [key: string]: any
 }
 
@@ -82,8 +82,9 @@ export interface IFormProps {
   initialValues?: any
   data?: any
   schema?: ZodObject<any> | ZodEffects<any, any>
-  onSubmitForm: (values: any) => any
   isPendingSubmit?: boolean
+
+  onSubmitForm: (values: any) => any
   refreshData?: () => void
-  isGoBack?: boolean
+  onGoBack?: () => void
 }

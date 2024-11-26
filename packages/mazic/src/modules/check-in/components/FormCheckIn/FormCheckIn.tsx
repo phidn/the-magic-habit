@@ -4,10 +4,8 @@ import capitalize from 'lodash/capitalize'
 import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent, cn } from '@mazic/ui'
-import { checkInType, THabit } from '@mazic/shared'
+import { checkInSchema, checkInType, THabit, THabitCheckIn } from '@mazic/shared'
 import { FormDatePicker, FormInput, FormItem, FormTextarea } from '@mazic/components'
-
-import { checkInSchema, THabitCheckIn } from '../../utils/validations'
 
 interface Props {
   habit: THabit
@@ -51,7 +49,7 @@ export const FormCheckIn = (props: Props) => {
                     field="journal"
                     rows={2}
                     style={{ minHeight: 'unset' }}
-                    placeholder="Enter journal.."
+                    placeholder="Enter journal..."
                   />
                 </FormItem>
               </CardContent>

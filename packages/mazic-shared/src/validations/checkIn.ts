@@ -20,5 +20,3 @@ export const checkInSchema = z
       })
     }
   })
-
-export type THabitCheckIn = z.infer<typeof checkInSchema>

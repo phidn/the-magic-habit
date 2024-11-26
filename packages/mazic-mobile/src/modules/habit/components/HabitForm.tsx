@@ -10,7 +10,7 @@ export const HabitForm = (props: IFormProps) => {
       initialValues={props.initialValues}
       schema={props.schema}
       onSubmitForm={props.onSubmitForm}
-      isGoBack={props.isGoBack}
+      onGoBack={props.onGoBack}
     >
       <Form.Section title="Detail" icon="information-variant">
         <Form.Select field="check_in_type" options={checkInOpts} placeholder="Check-in type" />

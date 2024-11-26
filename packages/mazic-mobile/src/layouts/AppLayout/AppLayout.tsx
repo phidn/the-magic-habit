@@ -1,6 +1,7 @@
 import React, { Suspense, useEffect } from 'react'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { PaperProvider, Text } from 'react-native-paper'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { Toaster } from 'sonner-native'
 
 import useHydration from '@/hooks/useHydration'
@@ -47,9 +48,11 @@ export const AppLayout = () => {
   return (
     <Suspense fallback={<Text>Loading...</Text>}>
       <PaperProvider theme={theme}>
-        <GestureHandlerRootView>
-          <AppNavigator theme={theme} />
-          <Toaster position="bottom-center" />
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <AppNavigator theme={theme} />
+            <Toaster position="bottom-center" />
+          </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </PaperProvider>
     </Suspense>

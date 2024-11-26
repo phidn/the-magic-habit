@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner-native'
 
-import { ErrorResponse, THabit, THabitCreate } from '@mazic/shared'
+import { ErrorResponse, THabit, THabitCheckIn, THabitCreate } from '@mazic/shared'
 
 import { useStore } from '@/store/useStore'
 import { ApiResponse, IParams } from '@/types/types'
@@ -49,5 +49,19 @@ export const useCreateHabit = () => {
     onError: (error: ErrorResponse) => {
       toast.error(error?.error?.message || 'Failed to create habit')
     },
+  })
+}
+
+export const useCheckIn = () => {
+  return useMutation({
+    mutationFn: (payload: THabitCheckIn) => http.post<ApiResponse<THabit>>('/check-in', payload),
+    onSuccess: () => toast.success('Successfully checked-in'),
+  })
+}
+
+export const useDeleteCheckIn = () => {
+  return useMutation({
+    mutationFn: (id: string) => http.delete<ApiResponse<THabit>>('/check-in/' + id),
+    onSuccess: () => toast.success('Successfully deleted check-in'),
   })
 }

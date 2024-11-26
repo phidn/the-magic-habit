@@ -1,33 +1,36 @@
 import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { StyleProp, ViewStyle } from 'react-native'
 import { Appbar, List, ProgressBar } from 'react-native-paper'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigation } from '@react-navigation/native'
 import isEqual from 'lodash/isEqual'
 import { z, ZodEffects, ZodObject } from 'zod'
 
 import { MutationApiResponse } from '@mazic/shared'
-
-import { TNavigationRoot } from '@/types/navigation'
 
 interface FormContainerProps {
   children: React.ReactNode
   title?: string
   schema?: ZodObject<any> | ZodEffects<any>
   initialValues: any
+  style?: StyleProp<ViewStyle>
+  elevated?: boolean
   onSubmitForm: (values: any) => Promise<MutationApiResponse>
-  isGoBack?: boolean
+  onDeleteForm?: () => void
+  onGoBack?: () => void
 }
 
 export const FormContainer = (props: FormContainerProps) => {
-  const navigation = useNavigation<TNavigationRoot>()
   const {
     children,
     schema = z.object({}),
     initialValues,
     onSubmitForm,
+    onDeleteForm,
     title,
-    isGoBack = true,
+    onGoBack,
+    style,
+    elevated = true,
   } = props
   const [formValues, setFormValues] = useState(initialValues)
 
@@ -49,13 +52,14 @@ export const FormContainer = (props: FormContainerProps) => {
 
   return (
     <FormProvider {...methods}>
-      <Appbar.Header elevated>
-        {isGoBack && <Appbar.BackAction onPress={() => navigation.goBack()} />}
+      <Appbar.Header elevated={elevated}>
+        {onGoBack && <Appbar.BackAction onPress={() => onGoBack?.()} />}
         <Appbar.Content title={title || ''} titleStyle={{ fontSize: 17 }} />
+        {onDeleteForm && <Appbar.Action icon="delete" onPress={onDeleteForm} />}
         <Appbar.Action icon="check" disabled={!isFormDirty} onPress={onSave} />
       </Appbar.Header>
       <ProgressBar indeterminate visible={methods.formState.isSubmitting} />
-      <List.Section>{children}</List.Section>
+      <List.Section style={style}>{children}</List.Section>
     </FormProvider>
   )
 }

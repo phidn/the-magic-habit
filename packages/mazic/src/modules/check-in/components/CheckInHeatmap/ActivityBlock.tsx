@@ -2,12 +2,11 @@ import { SVGProps, useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
-import { checkInType, HeatMapValue, THabit } from '@mazic/shared'
+import { checkInType, HeatMapValue, THabit, THabitCheckIn } from '@mazic/shared'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { useCheckIn, useDeleteCheckIn } from '../../hooks/useCheckInApis'
-import { THabitCheckIn } from '../../utils/validations'
 import { FormCheckIn } from '../FormCheckIn/FormCheckIn'
 
 dayjs.extend(advancedFormat)

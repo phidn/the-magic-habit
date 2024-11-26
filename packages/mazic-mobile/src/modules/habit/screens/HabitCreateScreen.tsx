@@ -14,7 +14,7 @@ export const HabitCreateScreen = () => {
 
   return (
     <HabitForm
-      isGoBack
+      onGoBack={() => navigation.goBack()}
       title="Create Habit"
       initialValues={getDefaultsBySchema(habitSchema)}
       schema={habitSchema}

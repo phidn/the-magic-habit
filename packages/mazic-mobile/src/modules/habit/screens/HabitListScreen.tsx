@@ -27,7 +27,7 @@ export const HabitListScreen = () => {
   return (
     <PageContainer
       isScroll
-      style={{ paddingVertical: themeSpacing.md }}
+      style={{ marginVertical: themeSpacing.sm }}
       isLoading={isPending || isRefetching}
       renderAppbar={() => {
         return (
@@ -42,7 +42,7 @@ export const HabitListScreen = () => {
       }}
     >
       {(data || []).map((habit) => (
-        <HabitCard key={habit.id} habit={habit} />
+        <HabitCard key={habit.id} habit={habit} refetch={refetch} />
       ))}
     </PageContainer>
   )
