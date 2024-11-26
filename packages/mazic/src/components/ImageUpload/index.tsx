@@ -141,7 +141,9 @@ export const ImageUpload = ({
 
   const removeSelectedImage = () => {
     onRemove?.()
+    // @ts-ignore
     acceptedFiles.length = 0
+    // @ts-ignore
     acceptedFiles.splice(0, acceptedFiles.length)
     if (inputRef.current) {
       inputRef.current.value = ''
