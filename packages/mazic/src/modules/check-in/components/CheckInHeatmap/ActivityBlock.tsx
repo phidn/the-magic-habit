@@ -31,6 +31,7 @@ export const ActivityBlock = (props: Props) => {
   const [hideModal, showModal] = useStoreShallow((state) => [state.hideModal, state.showModal])
 
   const { svgProps, data, habit, color, panelColors, rx, refetch, scrollToToday, onDelete } = props
+  const [activityData, setActivityData] = useState<HeatMapValue>(data)
   const [isActivityDone, setIsActivityDone] = useState<boolean>(!!data.is_done)
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
@@ -54,15 +55,19 @@ export const ActivityBlock = (props: Props) => {
   const handleCheckIn = async () => {
     if (isMarkDone) {
       const isDone = !isActivityDone
-      await checkIn.mutateAsync({
-        id: data.id,
+      const { data: _data } = await checkIn.mutateAsync({
+        id: activityData.id,
         habit_id: habit.id as string,
         date: activityDate.toDate(),
         journal: '',
         value: undefined,
         is_done: isDone,
       })
-      setIsActivityDone(isDone)
+      const _id = _data?.data?.id
+      if (_id) {
+        setIsActivityDone(isDone)
+        setActivityData((prev) => ({ ...prev, id: _id }))
+      }
     }
     if (!isMarkDone) {
       showModal({
