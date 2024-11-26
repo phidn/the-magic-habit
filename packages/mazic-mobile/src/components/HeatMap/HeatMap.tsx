@@ -37,6 +37,7 @@ export interface IHeatMapProps {
   monthLabelForIndex?: (index: number) => string
   showWeekdayLabels?: boolean
   isHeatMapLevel?: boolean
+  colorArray?: string[]
 }
 
 const MyScrollView = wrapScrollView(ScrollView)
@@ -55,12 +56,12 @@ export const HeatMap = (props: IHeatMapProps) => {
     monthLabelForIndex,
     showWeekdayLabels = true,
     isHeatMapLevel = false,
+    colorArray = COLOR_LEVELS,
   } = props
 
   const { t } = useTranslation()
   const { colors, dark } = useTheme()
 
-  const colorArray = COLOR_LEVELS
   const labelColor = colors.onSurface
   const bgColor = dark
     ? Color(colors.surfaceVariant).alpha(0.3).toString()

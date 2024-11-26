@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Card, IconButton, Menu } from 'react-native-paper'
+import { Button, Card, IconButton, Menu, useTheme } from 'react-native-paper'
 import { useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
 
-import { THabit } from '@mazic/shared'
+import { checkInType, colors, THabit } from '@mazic/shared'
 
 import { HeatMap } from '@/components/HeatMap/HeatMap'
 import { screens } from '@/config/config'
@@ -16,12 +16,25 @@ interface IProps {
 
 export const HabitCard = ({ habit }: IProps) => {
   const navigation = useNavigation<TNavigationRoot>()
+  const { dark } = useTheme()
 
   const [menuVisible, setMenuVisible] = useState(false)
 
   const endDate = dayjs().endOf('month').add(2, 'week')
   const startDate = endDate.subtract(1, 'year').endOf('week')
   const numDays = endDate.diff(startDate, 'days')
+  const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
+  const bgColor = dark ? colors.slate[9].hex : colors.slate[1].hex
+
+  const panelColors = isNumberCheckIn
+    ? [
+        bgColor,
+        colors[habit.color][2].hex,
+        colors[habit.color][3].hex,
+        colors[habit.color][4].hex,
+        colors[habit.color][5].hex,
+      ]
+    : [bgColor, colors[habit.color][3].hex]
 
   return (
     <Card key={habit.id} style={{ marginBottom: themeSpacing.md }}>
@@ -66,6 +79,7 @@ export const HabitCard = ({ habit }: IProps) => {
           endDate={new Date(endDate.toString())}
           numDays={numDays}
           values={habit.activities}
+          colorArray={panelColors}
         />
       </Card.Content>
       <Card.Actions style={{ padding: themeSpacing.md }}>
