@@ -58,6 +58,7 @@ export const useStore = create<StoreState>()(
       partialize: (state) => {
         return {
           isDarkMode: state.isDarkMode,
+          themeColor: state.themeColor,
         }
       },
     },

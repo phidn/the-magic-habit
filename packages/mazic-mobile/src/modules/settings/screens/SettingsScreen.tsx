@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Linking, StyleSheet } from 'react-native'
+import { Linking } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import { Card, List, Switch } from 'react-native-paper'
 import Entypo from 'react-native-vector-icons/Entypo'
@@ -12,6 +12,7 @@ import PageContainer from '@/components/Containers/PageContainer'
 import RowContainer from '@/components/Containers/RowContainer'
 import ColorPickerModal from '@/components/Modals/ColorPickerModal/ColorPickerModal'
 import { privacyPolicyLink, screens, termsAndConditionsLink } from '@/config/config'
+import { themeSpacing } from '@/config/theme'
 import { useStore } from '@/store/useStore'
 import { TNavigationRoot } from '@/types/navigation'
 import { availableLanguages, getLanguageName, languageKeys } from '@/utils/language'
@@ -32,7 +33,7 @@ export const SettingsScreen = () => {
   const toggleMode = useStore((state) => state.toggleMode)
   const language = availableLanguages.find((x) => x.code === i18n.resolvedLanguage)
 
-  const [isShowSoundDialog, setIsShowSoundDialog] = useState(false)
+  const [isShowPicker, setIsShowPicker] = useState(false)
 
   const feedbackHandler = async () => {
     const subject = `[${DeviceInfo.getApplicationName()}] ${t('Settings.moreSetting.feedback')}`
@@ -62,10 +63,6 @@ export const SettingsScreen = () => {
     RateHelper.rate(options, () => {})
   }
 
-  const togglePicker = () => {
-    setIsShowSoundDialog(!isShowSoundDialog)
-  }
-
   return (
     <PageContainer
       isScroll={true}
@@ -73,9 +70,8 @@ export const SettingsScreen = () => {
       appbar={{ title: t(languageKeys['Navigation.BottomTab.SettingsTab']) }}
     >
       <UserSettingSection />
-
       <CardTitle title={t(languageKeys['Settings.appearance'])} />
-      <Card style={[styles.card, { paddingBottom: 20 }]}>
+      <Card style={[{ marginBottom: themeSpacing.lg }, { paddingBottom: 20 }]}>
         <List.Item
           title={t(languageKeys['Settings.language'])}
           description={language?.name ? language.name : ''}
@@ -101,15 +97,14 @@ export const SettingsScreen = () => {
         />
         <RowContainer style={{ justifyContent: 'flex-start', marginLeft: 50 }}>
           <ListColor
-            togglePicker={togglePicker}
+            togglePicker={() => setIsShowPicker(true)}
             gap={85 + PAGE_PADDING_HORIZONTAL * 2}
             range={[0, 9]}
           />
         </RowContainer>
       </Card>
-
       <CardTitle title={t(languageKeys['Settings.support'])} />
-      <Card style={styles.card}>
+      <Card style={{ marginBottom: themeSpacing.md }}>
         <List.Item
           title={t(languageKeys['Settings.moreSetting.feedback'])}
           left={(props) => (
@@ -124,9 +119,8 @@ export const SettingsScreen = () => {
           onPress={rateApp}
         />
       </Card>
-
       <CardTitle title={t(languageKeys['Settings.moreSetting'])} />
-      <Card style={styles.card}>
+      <Card style={{ marginBottom: themeSpacing.md }}>
         <List.Item
           title={t(languageKeys['Settings.moreSetting.privacyPolicy'])}
           left={(props) => (
@@ -144,20 +138,7 @@ export const SettingsScreen = () => {
           onPress={() => Linking.openURL(termsAndConditionsLink)}
         />
       </Card>
-
-      <ColorPickerModal
-        isShowSoundDialog={isShowSoundDialog}
-        setIsShowSoundDialog={setIsShowSoundDialog}
-      />
+      {isShowPicker && <ColorPickerModal onClose={() => setIsShowPicker(false)} />}
     </PageContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  card: {
-    marginBottom: 20,
-  },
-})

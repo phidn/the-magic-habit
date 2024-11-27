@@ -3,26 +3,26 @@ import { useTranslation } from 'react-i18next'
 import { StyleSheet, View } from 'react-native'
 import { Button, Modal, Portal, useTheme } from 'react-native-paper'
 
-import { useStore } from '@/store/useStore'
+import { useStoreShallow } from '@/store/useStore'
 import { languageKeys } from '@/utils/language'
 
 import ColorPicker from './ColorPicker'
 
 interface IProps {
-  isShowSoundDialog: boolean
-  setIsShowSoundDialog: (isShow: boolean) => void
+  onClose: () => void
 }
 
-const ColorPickerModal = ({ isShowSoundDialog, setIsShowSoundDialog }: IProps) => {
+const ColorPickerModal = ({ onClose }: IProps) => {
   const { t } = useTranslation()
   const { colors } = useTheme()
 
   const [bg, setBg] = useState<string>('#000000')
-  const setThemeColor = useStore((state) => state.setThemeColor)
-  const setCustomColor = useStore((state) => state.setCustomColor)
+  const [setThemeColor, setCustomColor] = useStoreShallow((state) => [
+    state.setThemeColor,
+    state.setCustomColor,
+  ])
 
   const changeThemeColor = () => {
-    setIsShowSoundDialog(false)
     setThemeColor(bg)
     setCustomColor(bg)
   }
@@ -30,8 +30,8 @@ const ColorPickerModal = ({ isShowSoundDialog, setIsShowSoundDialog }: IProps) =
   return (
     <Portal>
       <Modal
-        visible={isShowSoundDialog}
-        onDismiss={() => setIsShowSoundDialog(!isShowSoundDialog)}
+        visible={true}
+        onDismiss={onClose}
         contentContainerStyle={{
           backgroundColor: colors.elevation.level3,
           padding: 20,
@@ -59,9 +59,7 @@ const ColorPickerModal = ({ isShowSoundDialog, setIsShowSoundDialog }: IProps) =
           />
         </View>
         <View style={styles.modalActions}>
-          <Button onPress={() => setIsShowSoundDialog(!isShowSoundDialog)}>
-            {t(languageKeys['common.cancel'])}
-          </Button>
+          <Button onPress={onClose}>{t(languageKeys['common.cancel'])}</Button>
           <Button onPress={changeThemeColor}>Ok</Button>
         </View>
       </Modal>

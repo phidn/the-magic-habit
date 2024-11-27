@@ -1,9 +1,11 @@
 {
   "common.appName": "Trở về Chánh niệm",
   "common.cancel": "Hủy",
+
   "notify.returnToApp": "Nhấp để quay lại ứng dụng",
   "notify.invitingBell": "Đang thỉnh chuông",
   "notify.inProgress": "Đang trong thời thiền",
+
   "Settings.appearance": "Hiển thị",
   "Settings.colorMode": "Chế độ màu",
   "Settings.colorMode.light": "Sáng",
@@ -18,12 +20,7 @@
   "Settings.support": "Hỗ trợ",
   "Settings.support.goPremium": "Phiên bản cao cấp, với tâm từ !!!",
   "Settings.support.goPremium.purchased": "Đã mua",
-  "GoPremium.banner": "Bạn có thể tùy chọn gói ủng hộ mà bạn cảm thấy phù hợp để giúp đỡ dự án cũng như không bị làm phiền bởi quảng cáo.",
-  "GoPremium.noMoreAds": "Không còn quảng cáo nữa",
-  "GoPremium.moreSounds": "Nhiều âm thanh hơn cho \"tiếng chuông chánh niệm\"",
-  "GoPremium.advancedStats": "Thống kê nâng cao giúp bạn dễ dàng theo dõi tiến trình thực hành",
-  "GoPremium.customStyling": "Tùy chỉnh giao diện của ứng dụng bằng mã màu yêu thích của bạn, ví dụ",
-  "GoPremium.developmentSupport": "Với sự hỗ trợ của bạn, chúng tôi có thể dành nhiều thời gian hơn để cải thiện ứng dụng",
+
   "Prepare.duration": "Thời gian",
   "Prepare.invite-bell": "Thỉnh chuông mỗi",
   "Prepare.sound": "Âm thanh",
@@ -31,14 +28,17 @@
   "Prepare.bell": "Chuông",
   "Prepare.defaultBell": "Mặc định",
   "Prepare.choose-a-bell": "Chọn tiếng chuông",
+
   "Statistics.CalendarTracker.meditation-log": "Thời chánh niệm",
   "Statistics.Chart.daily-meditation": "Trở về mỗi ngày",
+
   "Navigation.Screen.timer": "Thời gian chánh niệm",
   "Navigation.Screen.goPremium": "Phiên bản cap cấp",
   "Navigation.BottomTab.AdminTab": "Quản lý",
   "Navigation.BottomTab.PrepareTab": "Trở về Chánh niệm",
   "Navigation.BottomTab.SettingsTab": "Thiết lập",
   "Navigation.BottomTab.StatsTab": "Thống kê",
+
   "StatsTopTabs.CalendarTab": "Lịch theo dõi",
   "StatsTopTabs.ChartTab": "Biểu đồ",
   "StatsTopTabs.SessionTab": "Thời thiền",
@@ -49,5 +49,22 @@
   "StatsTopTabs.session.numberOfSessions": "Tổng thời thiền",
   "StatsTopTabs.session.avgDuration": "Trung bình mỗi thời",
   "StatsTopTabs.session.longestSession": "Thời dài nhất",
-  "StatsTopTabs.session.shortestSession": "Thời ngắn nhất"
+  "StatsTopTabs.session.shortestSession": "Thời ngắn nhất",
+
+  "Auth.Login.title": "Đăng nhập",
+  "Auth.Login.navigation.forgotPassword": "Quên mật khẩu?",
+  "Auth.Login.navigation.signUp": "Chưa có tài khoản? Đăng ký",
+  "Auth.Login.error.invalid": "Email hoặc mật khẩu không hợp lệ",
+
+  "Auth.SignUp.title": "Đăng ký",
+  "Auth.SignUp.navigation.login": "Đã có tài khoản? Đăng nhập",
+  "Auth.SignUpForm.email.emailTaken": "Email này đã được sử dụng",
+
+  "User.email": "Email",
+  "User.firstName": "Tên",
+  "User.lastName": "Họ",
+  "User.password": "Mật khẩu",
+
+  "Habit.edit.title": "Chỉnh sửa thói quen",
+  "Habit.create.title": "Tạo thói quen"
 }
