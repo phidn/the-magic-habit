@@ -4,7 +4,6 @@ import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import PageContainer from '@/components/Containers/PageContainer'
 import { CONFIG, screens } from '@/config/config'
-import { themeSpacing } from '@/config/theme'
 import { TNavigationRoot } from '@/types/navigation'
 
 import { useListHabitApi } from '../apis'
@@ -27,7 +26,6 @@ export const HabitListScreen = () => {
   return (
     <PageContainer
       isScroll
-      style={{ marginVertical: themeSpacing.sm }}
       isLoading={isPending || isRefetching}
       renderAppbar={() => {
         return (

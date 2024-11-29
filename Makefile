@@ -206,6 +206,11 @@ emulator:
 	cd C:/Users/phidn/AppData/Local/Android/Sdk/emulator && ./emulator.exe -avd Pixel_7_API_35
 	@echo "Emulator started."
 
+nx-mobile:
+	@echo "Starting mobile..."
+	yarn nx run-android mazic-mobile --verbose
+	@echo "Mobile started."
+
 mobile:
 	@echo "Starting mobile..."
 	cd packages/mazic-mobile && \
@@ -217,3 +222,9 @@ mobile-rc:
 	cd packages/mazic-mobile && \
 	make start-rc
 	@echo "Mobile started."
+
+adb-reverse:
+	adb reverse tcp:8081 tcp:8081 && \
+	adb reverse tcp:9090 tcp:9090
+
+adb-rv: adb-reverse

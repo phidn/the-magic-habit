@@ -5,14 +5,15 @@ import { i18nInstance } from './language'
 
 export const skipError = () => {
   if (__DEV__) {
-    const ignoreWarns = [
+    const ignoreMsg = [
       'A props object containing a "key" prop is being spread into JSX',
       'Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.',
+      'You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc',
     ]
 
     const warn = console.warn
     console.warn = (...arg) => {
-      for (const warning of ignoreWarns) {
+      for (const warning of ignoreMsg) {
         if (arg?.[0]?.includes?.(warning)) {
           return
         }
@@ -21,14 +22,14 @@ export const skipError = () => {
     }
     const error = console.error
     console.error = (...arg) => {
-      for (const warning of ignoreWarns) {
-        if (arg?.[0]?.includes?.(warning)) {
+      for (const err of ignoreMsg) {
+        if (arg?.[0]?.includes?.(err)) {
           return
         }
       }
       error(...arg)
     }
-    LogBox.ignoreLogs(ignoreWarns)
+    LogBox.ignoreLogs(ignoreMsg)
   }
 }
 

@@ -11,12 +11,13 @@ import useHydration from '@/hooks/useHydration'
 import useIsReady from '@/hooks/useIsReady'
 import { HabitListScreen } from '@/modules/habit'
 import { SettingsScreen } from '@/modules/settings'
+import { TimelineJournalScreen } from '@/modules/timeline-journal/TimelineJournalScreen'
 import { useStoreShallow } from '@/store/useStore'
 import { TNavigationRoot } from '@/types/navigation'
 import { languageKeys } from '@/utils/language'
 
 type BottomTabRoute = {
-  name: 'HabitList' | 'HabitCreate' | 'SettingsTab'
+  name: 'HabitList' | 'HabitCreate' | 'SettingsTab' | 'TimelineJournal'
   options?: Partial<NativeStackNavigationOptions>
   component: React.ComponentType<any>
   renderIcon: (props: { focused: boolean; color: string }) => React.ReactNode
@@ -42,6 +43,22 @@ const BottomTabNavigator = () => {
         <MaterialCommunityIcons
           color={color}
           name={focused ? 'heart' : 'heart-outline'}
+          size={26}
+        />
+      ),
+    },
+    {
+      name: 'TimelineJournal',
+      options: {
+        title: t(languageKeys['Navigation.BottomTab.TimelineJournal']),
+        headerTitleAlign: 'left',
+        headerShown: false,
+      },
+      component: TimelineJournalScreen,
+      renderIcon: ({ focused, color }) => (
+        <MaterialCommunityIcons
+          color={color}
+          name={focused ? 'timeline-text' : 'timeline-text-outline'}
           size={26}
         />
       ),

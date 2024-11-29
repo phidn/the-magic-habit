@@ -34,9 +34,15 @@ kill:
 	- cd ./android && ./gradlew --stop
 
 clear-babel:
-	rm -rf node_modules/.cache/babel-loader/*
+	- rm -rf node_modules/.cache/babel-loader/*
 
-clear:
+clear-build: clear-babel
+	- rm -rf ./android/app/build
+	- rm -rf ./android/app/.cxx
+	- rm -rf ./android/build
+	- rm -rf ./android/.gradle
+
+clear: clear-build
 	- cd ./android && ./gradlew clean
 
 emu:
