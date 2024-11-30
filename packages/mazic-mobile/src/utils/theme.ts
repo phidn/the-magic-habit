@@ -123,7 +123,7 @@ export const getThemeColors = () => {
 }
 
 export const rgbaToHex = (rgba: string): string => {
-  const regex = /rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([0-9\.]+)?\)/
+  const regex = /rgba?\((\d+),\s*(\d+),\s*(\d+),?\s*([0-9.]+)?\)/
   const result = regex.exec(rgba)
 
   if (!result) {

@@ -27,7 +27,7 @@ const PageContainer = (props: IProps) => {
   const _containerStyle = [{ flex: 1 }, containerStyle]
 
   const appActions = Array.isArray(appbar?.actions)
-    ? appbar?.actions
+    ? appbar?.actions || []
     : appbar?.actions?.onPress
     ? [appbar?.actions]
     : []

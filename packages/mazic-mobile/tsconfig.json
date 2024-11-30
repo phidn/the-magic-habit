@@ -4,7 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@mazic/shared": ["../mazic-shared/src/index.ts"],
+      "@mazic/shared": ["../mazic-shared/src/index.ts"]
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }

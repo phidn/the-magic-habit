@@ -30,7 +30,7 @@ class Http {
   private isRefreshing: boolean = false
 
   constructor() {
-    ;(async () => {
+    (async () => {
       const tokens = await getTokens()
       this.accessToken = tokens.accessToken
       this.refreshToken = tokens.refreshToken

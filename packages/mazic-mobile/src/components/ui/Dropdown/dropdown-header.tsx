@@ -1,6 +1,7 @@
-import { Appbar } from 'react-native-paper';
-import { DropdownHeaderProps } from './types';
 import { useMemo } from 'react';
+import { Appbar } from 'react-native-paper';
+
+import { DropdownHeaderProps } from './types';
 
 function DropdownHeader(props: DropdownHeaderProps) {
   const { label, resetMenu, toggleMenu, value } = props;
