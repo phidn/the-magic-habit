@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react'
-import { Appbar } from 'react-native-paper'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import PageContainer from '@/components/Containers/PageContainer'
@@ -27,16 +26,12 @@ export const HabitListScreen = () => {
     <PageContainer
       isScroll
       isLoading={isPending || isRefetching}
-      renderAppbar={() => {
-        return (
-          <Appbar.Header elevated>
-            <Appbar.Content title={CONFIG.appName} titleStyle={{ fontSize: 17 }} />
-            <Appbar.Action
-              icon="plus"
-              onPress={() => navigation.navigate(screens.HabitCreateScreen)}
-            />
-          </Appbar.Header>
-        )
+      appbar={{
+        title: CONFIG.appName,
+        actions: {
+          icon: 'plus',
+          onPress: () => navigation.navigate(screens.HabitCreateScreen),
+        },
       }}
     >
       {(data || []).map((habit) => (

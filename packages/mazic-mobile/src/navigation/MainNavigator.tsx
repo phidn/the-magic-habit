@@ -10,7 +10,7 @@ import { LanguageSettingScreen } from '@/modules/settings'
 import { RootStackNavigator } from '@/types/navigation'
 import { languageKeys } from '@/utils/language'
 
-import BottomTabNavigator from './BottomTabNavigator'
+import BottomNavigator from './BottomNavigator'
 
 const Stack = createNativeStackNavigator<RootStackNavigator>()
 
@@ -30,9 +30,9 @@ const MainNavigator = () => {
   const appRoutes: IRoute[] = [
     {
       name: screens.BottomTabNavigator,
-      component: BottomTabNavigator,
+      component: BottomNavigator,
       options: {
-        headerShown: true,
+        headerShown: false,
         headerTitleAlign: 'center',
       },
     },
@@ -103,7 +103,7 @@ const MainNavigator = () => {
   ]
 
   return (
-    <Stack.Navigator initialRouteName={screens.BottomTabNavigator}>
+    <Stack.Navigator initialRouteName={screens.BottomNavigator}>
       {appRoutes.map((route: IRoute) => (
         <Stack.Screen
           key={route.name}

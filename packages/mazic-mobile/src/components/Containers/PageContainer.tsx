@@ -2,6 +2,11 @@ import React from 'react'
 import { ScrollView, StyleProp, View, ViewStyle } from 'react-native'
 import { Appbar, ProgressBar, useTheme } from 'react-native-paper'
 
+type TAction = {
+  icon: string
+  onPress: () => void
+}
+
 interface IProps {
   children: React.ReactNode
   containerStyle?: StyleProp<ViewStyle>
@@ -12,10 +17,7 @@ interface IProps {
   renderAppbar?: () => React.ReactNode
   appbar?: {
     title: string
-    actions?: {
-      icon: string
-      onPress: () => void
-    }[]
+    actions?: TAction[] | TAction
   }
 }
 
@@ -24,13 +26,19 @@ const PageContainer = (props: IProps) => {
   const { colors } = useTheme()
   const _containerStyle = [{ flex: 1 }, containerStyle]
 
+  const appActions = Array.isArray(appbar?.actions)
+    ? appbar?.actions
+    : appbar?.actions?.onPress
+    ? [appbar?.actions]
+    : []
+
   return (
     <>
       {renderAppbar?.()}
       {appbar?.title && (
         <Appbar.Header elevated>
-          <Appbar.Content title={appbar?.title} titleStyle={{ fontSize: 17 }} />
-          {(appbar?.actions || []).map((action) => (
+          <Appbar.Content title={appbar?.title} titleStyle={{ fontWeight: 'bold' }} />
+          {appActions.map((action) => (
             <Appbar.Action key={action.icon} icon={action.icon} onPress={action.onPress} />
           ))}
         </Appbar.Header>

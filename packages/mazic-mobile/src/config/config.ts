@@ -41,6 +41,7 @@ export const soundKeys = [
 
 export const screens: TScreen = {
   BottomTabNavigator: 'BottomTabNavigator',
+  BottomNavigator: 'BottomNavigator',
   LanguageSettingScreen: 'LanguageSettingScreen',
   MeditateScreen: 'MeditateScreen',
   SignUpScreen: 'SignUpScreen',
@@ -49,4 +50,6 @@ export const screens: TScreen = {
   HabitUpdateScreen: 'HabitUpdateScreen',
   HabitCreateScreen: 'HabitCreateScreen',
   HabitListScreen: 'HabitListScreen',
+  SettingsScreen: 'SettingsScreen',
+  TimelineJournalScreen: 'TimelineJournalScreen',
 }

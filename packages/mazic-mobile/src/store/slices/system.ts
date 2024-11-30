@@ -17,8 +17,6 @@ export interface ThemeSlice {
 export interface NavigationSlice {
   bottomActiveTab: string
   setBottomActiveTab: (bottomActiveTab: string) => void
-  statsTopInitTab: string
-  setStatsTopInitTab: (statsTopInitTab: string) => void
 }
 
 export const themeSlice: ImmerStateCreator<ThemeSlice> = (set) => ({
@@ -38,8 +36,6 @@ export const rehydrateStorageSlice: ImmerStateCreator<RehydrateStorageSlice> = (
 })
 
 export const navigationSlice: ImmerStateCreator<NavigationSlice> = (set) => ({
-  bottomActiveTab: 'TimelineJournal',
+  bottomActiveTab: '',
   setBottomActiveTab: (bottomActiveTab) => set({ bottomActiveTab }),
-  statsTopInitTab: 'StatsTopTabs.chart',
-  setStatsTopInitTab: (statsTopInitTab) => set({ statsTopInitTab }),
 })

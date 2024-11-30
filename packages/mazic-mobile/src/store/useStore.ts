@@ -59,6 +59,7 @@ export const useStore = create<StoreState>()(
         return {
           isDarkMode: state.isDarkMode,
           themeColor: state.themeColor,
+          bottomActiveTab: state.bottomActiveTab,
         }
       },
     },

@@ -33,7 +33,7 @@ const ExpandableCalendarScreen = ({ items }: IProps) => {
   }, [])
 
   return (
-    <CalendarProvider date={nowDate} showTodayButton theme={_theme}>
+    <CalendarProvider showTodayButton={false} date={nowDate} theme={_theme}>
       <ExpandableCalendar theme={_theme} firstDay={1} markedDates={marked.current} />
       <AgendaList
         sections={items}

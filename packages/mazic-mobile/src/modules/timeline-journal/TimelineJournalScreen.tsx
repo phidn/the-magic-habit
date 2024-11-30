@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react'
-import { Appbar } from 'react-native-paper'
 import dayjs from 'dayjs'
 
 import { THabit } from '@mazic/shared'
@@ -11,12 +10,7 @@ import { useListHabitApi } from '../habit/apis'
 import ExpandableCalendarScreen from './ExpandableCalendarScreen'
 
 export const TimelineJournalScreen = () => {
-  const {
-    data,
-    // refetch,
-    isRefetching,
-    isFetching,
-  } = useListHabitApi({
+  const { data, isRefetching, isFetching } = useListHabitApi({
     pageSize: -1,
     entry_expand: true,
   })
@@ -66,16 +60,7 @@ export const TimelineJournalScreen = () => {
   }, [data])
 
   return (
-    <PageContainer
-      renderAppbar={() => {
-        return (
-          <Appbar.Header elevated>
-            <Appbar.Content title="Timeline Journal" titleStyle={{ fontSize: 17 }} />
-          </Appbar.Header>
-        )
-      }}
-      isLoading={isFetching || isRefetching}
-    >
+    <PageContainer appbar={{ title: 'Timeline Journal' }} isLoading={isFetching || isRefetching}>
       {agendaItems?.length && <ExpandableCalendarScreen items={agendaItems} />}
     </PageContainer>
   )
