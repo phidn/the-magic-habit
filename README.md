@@ -1,27 +1,29 @@
-# Mazic
-
-## Tech stack
-- Nx monorepo
-- React, shadcn/ui, Zustand, React Query, React Hook Form
-- Golang, Echo V5, ozzo-dbx, ozzo-validation, Postgres, Pocketbase, Prisma migrations
+# The Magic Habit
 
 ## Description
 
-This project demonstrates a CRM system built using Vertical Slice Architecture. Each vertical slice represents a distinct feature, such as customer management, sales tracking, or support ticketing, and includes all layers—UI, business logic, and data access—required for that feature
+The Magic Habit
+Make it for so e.z you can't say no
+Build your habits effortlessly with simple steps that make progress a natural part of your day.
+
+## Tech stack
+
+- Nx monorepo
+- Web: React, shadcn/ui, Zustand, React Query, React Hook Form
+- Server: Golang, Pocketbase, sqlite
+- Mobile: React Native, React Native Paper
 
 ![vertical_slice](.public/vertical_slice.png)
 
 ## Roadmap
-- [x] CRUD for entities
-- [x] RBAC
-- [x] i18n
-- [ ] CRM features
-- [ ] Eslint, Prettier, Husky, Lint-staged, Storybook, Testing, CI/CD
-- [ ] Multi-tenancy
-- [ ] Notifications
-- [ ] Audit logs
+
+- [x] Web & APis CI-CD
+- [x] Mobile
+- [ ] Mobile code push
+- [ ] Submit to app store
 
 ## Inspire & References
+
 - Icons: https://icon-sets.iconify.design/lucide/
-- Pocketbase: https://github.com/abdokhaire/postgresbase
+- Pocketbase: https://pocketbase.io/docs/
 - Shadcn colors: https://ui.shadcn.com/colors
