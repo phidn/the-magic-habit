@@ -9,6 +9,7 @@ export const skipError = () => {
       'A props object containing a "key" prop is being spread into JSX',
       'Support for defaultProps will be removed from function components in a future major release. Use JavaScript default parameters instead.',
       'You have a large list that is slow to update - make sure your renderItem function renders components that follow React performance best practices like PureComponent, shouldComponentUpdate, etc',
+      'Text strings must be rendered within',
     ]
 
     const warn = console.warn
