@@ -24,7 +24,7 @@ export const HabitCard = ({ habit, refetch }: IProps) => {
 
   const [menuVisible, setMenuVisible] = useState(false)
 
-  const endDate = dayjs().endOf('month').add(2, 'week')
+  const endDate = dayjs().endOf('week').add(2, 'week')
   const startDate = endDate.subtract(1, 'year').endOf('week')
   const numDays = endDate.diff(startDate, 'days')
 

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { FlatList } from 'react-native'
 import { useIsFocused, useNavigation } from '@react-navigation/native'
 
 import PageContainer from '@/components/Containers/PageContainer'
@@ -24,7 +25,6 @@ export const HabitListScreen = () => {
 
   return (
     <PageContainer
-      isScroll
       isLoading={isPending || isRefetching}
       appbar={{
         title: CONFIG.appName,
@@ -34,9 +34,11 @@ export const HabitListScreen = () => {
         },
       }}
     >
-      {(data || []).map((habit) => (
-        <HabitCard key={habit.id} habit={habit} refetch={refetch} />
-      ))}
+      <FlatList
+        data={data || []}
+        keyExtractor={(habit) => habit.id.toString()}
+        renderItem={({ item }) => <HabitCard habit={item} refetch={refetch} />}
+      />
     </PageContainer>
   )
 }

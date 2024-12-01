@@ -7,7 +7,7 @@ import PageContainer from '@/components/Containers/PageContainer'
 
 import { useListHabitApi } from '../habit/apis'
 
-import ExpandableCalendarScreen from './ExpandableCalendarScreen'
+import CalendarItems from './CalendarItems'
 
 export const TimelineJournalScreen = () => {
   const { data, isRefetching, isFetching } = useListHabitApi({
@@ -15,10 +15,10 @@ export const TimelineJournalScreen = () => {
     entry_expand: true,
   })
 
-  const agendaItems = useMemo(() => {
+  const calendarData = useMemo(() => {
     type Item = {
       [key: string]: {
-        habit: THabit
+        habit?: THabit
         journal: string
         day: string
       }[]
@@ -41,6 +41,15 @@ export const TimelineJournalScreen = () => {
         }
       })
     })
+    const nowDate = dayjs().format('YYYY-MM-DD')
+    if (!_items[nowDate]) {
+      _items[nowDate] = [
+        {
+          journal: 'No journal entry',
+          day: nowDate,
+        },
+      ]
+    }
 
     const result = []
     for (const key in _items) {
@@ -61,7 +70,7 @@ export const TimelineJournalScreen = () => {
 
   return (
     <PageContainer appbar={{ title: 'Timeline Journal' }} isLoading={isFetching || isRefetching}>
-      {agendaItems?.length && <ExpandableCalendarScreen items={agendaItems} />}
+      {calendarData?.length && <CalendarItems items={calendarData} />}
     </PageContainer>
   )
 }

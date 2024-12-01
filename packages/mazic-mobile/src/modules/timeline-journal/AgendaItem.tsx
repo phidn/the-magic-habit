@@ -21,9 +21,11 @@ const AgendaItem = (props: ItemProps) => {
   return (
     <TouchableOpacity style={styles.item}>
       <Text style={styles.itemTitleText}>{item.title}</Text>
-      <View style={styles.itemButtonContainer}>
-        <Chip>{item?.habitName}</Chip>
-      </View>
+      {item?.habitName && (
+        <View style={styles.itemButtonContainer}>
+          <Chip>{item?.habitName}</Chip>
+        </View>
+      )}
     </TouchableOpacity>
   )
 }

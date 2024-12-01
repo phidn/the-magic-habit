@@ -21,7 +21,7 @@ export interface NavigationSlice {
 
 export const themeSlice: ImmerStateCreator<ThemeSlice> = (set) => ({
   isDarkMode: false,
-  themeColor: 'purple',
+  themeColor: 'blue',
   customColor: '',
   toggleMode: () => {
     set((state) => ({ isDarkMode: !state.isDarkMode }))
