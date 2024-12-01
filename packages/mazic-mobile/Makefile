@@ -69,13 +69,16 @@ deps-fix:
 
 #### Generate ####
 gen-bootsplash:
-	yarn react-native generate-bootsplash ./src/assets/svgs/logo.svg \
+	yarn react-native generate-bootsplash ./src/assets/images/logo.png \
 		--platforms=android,ios,web \
 		--background=F5FCFF \
 		--logo-width=100 \
 		--assets-output=src/assets/bootsplash \
 		--flavor=main \
 		--html=public/index.html
+
+rename-app:
+	npx react-native-rename "Magic Habit - Daily Check-In" -b "com.magichabit"
 
 #### Dev ####
 envs:
@@ -92,3 +95,10 @@ adb-reverse:
 	adb reverse tcp:9090 tcp:9090
 
 adb-rv: adb-reverse
+
+#### Deploy ####
+
+android-export:
+	@echo "Exporting android..."
+	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && find output -type f | yarn bestzip index.android.bundle.zip ./* && cd .. && rm -rf android/output
+	@echo "Android exported."
