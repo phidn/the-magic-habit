@@ -83,7 +83,7 @@ export const MeditateScreen = ({ route, navigation }: IProps) => {
           type: 'mipmap',
         },
         color: colors.primary,
-        linkingURI: 'awesomeproject://',
+        linkingURI: 'magichabit://',
         parameters: {
           delay: 1000,
         },

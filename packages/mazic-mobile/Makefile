@@ -96,9 +96,39 @@ adb-reverse:
 
 adb-rv: adb-reverse
 
-#### Deploy ####
+#### Release ####
+
+# "scripts": {
+#   "export-android": "mkdir -p android/output && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && find output -type f | zip index.android.bundle.zip -@ && cd .. && rm -rf android/output",
+#   "export-ios": "mkdir -p ios/output && react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/output/main.jsbundle --assets-dest ios/output && cd ios && find output -type f | zip main.jsbundle.zip -@ && cd .. && rm -rf ios/output"
+# }
 
 android-export:
 	@echo "Exporting android..."
-	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && find output -type f | yarn bestzip index.android.bundle.zip ./* && cd .. && rm -rf android/output
+	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && yarn bestzip index.android.bundle.zip ./output/* && rm -rf ./output
 	@echo "Android exported."
+
+release:
+	yarn clean && yarn bundle && yarn release-build && yarn release-install
+release-build:
+	cd android && gradlew assembleRelease
+release-install:
+	adb install android/app/build/outputs/apk/release/app-release.apk
+
+prod:
+	yarn prod-code && yarn clean && yarn bundle && yarn prod-build && yarn prod-folder
+prod-code:
+	react-native-version --never-amend
+prod-build:
+	cd android && ./gradlew bundleRelease
+prod-folder:
+	cd android\\app\\build\\outputs\\bundle\\release && start .
+bundle:
+	npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle
+
+debug:
+	yarn clean && yarn bundle && yarn debug-build && yarn debug-install
+debug-build:
+	cd android && gradlew assembleDebug
+debug-install:
+	adb install android/app/build/outputs/apk/debug/app-debug.apk
