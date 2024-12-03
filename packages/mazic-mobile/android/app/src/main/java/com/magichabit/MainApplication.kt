@@ -1,4 +1,4 @@
-package com.awesomeproject
+package com.magichabit
 
 import android.app.Application
 import com.facebook.react.PackageList

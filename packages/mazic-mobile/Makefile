@@ -45,6 +45,8 @@ clear-build: clear-babel
 clear: clear-build
 	- cd ./android && ./gradlew clean
 
+clean: clear
+
 emu:
 	cd C:/Users/phidn/AppData/Local/Android/Sdk/emulator && ./emulator.exe -avd Pixel_7_API_35 -no-snapshot-save
 
@@ -98,22 +100,17 @@ adb-rv: adb-reverse
 
 #### Release ####
 
-# "scripts": {
-#   "export-android": "mkdir -p android/output && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && find output -type f | zip index.android.bundle.zip -@ && cd .. && rm -rf android/output",
-#   "export-ios": "mkdir -p ios/output && react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/output/main.jsbundle --assets-dest ios/output && cd ios && find output -type f | zip main.jsbundle.zip -@ && cd .. && rm -rf ios/output"
-# }
-
 android-export:
 	@echo "Exporting android..."
 	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && yarn bestzip index.android.bundle.zip ./output/* && rm -rf ./output
 	@echo "Android exported."
 
 release:
-	yarn clean && yarn bundle && yarn release-build && yarn release-install
+	make clean && make bundle && make release-build && make release-install
 release-build:
-	cd android && gradlew assembleRelease
+	cd android && ./gradlew assembleProdRelease
 release-install:
-	adb install android/app/build/outputs/apk/release/app-release.apk
+	adb install android/app/build/outputs/apk/prod/release/app-prod-release.apk
 
 prod:
 	yarn prod-code && yarn clean && yarn bundle && yarn prod-build && yarn prod-folder
