@@ -8,4 +8,5 @@ declare module '*.svg' {
 declare module '@env' {
   export const API_URL: string
   export const DOMAIN: string
+  export const OTA_UPDATE: string
 }

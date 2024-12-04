@@ -1,4 +1,4 @@
-import { API_URL, DOMAIN } from '@env'
+import { API_URL, DOMAIN, OTA_UPDATE } from '@env'
 
 import { TScreen } from '@/types/navigation'
 
@@ -7,6 +7,7 @@ export const CONFIG = {
   appName: 'The Magic Habit',
   apiURL: API_URL,
   domain: DOMAIN,
+  otaUpdate: OTA_UPDATE,
   TIME: {
     DD_MM_YYYY: 'DD/MM/YYYY',
   },

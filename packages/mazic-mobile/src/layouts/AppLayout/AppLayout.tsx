@@ -4,6 +4,7 @@ import { PaperProvider, Text } from 'react-native-paper'
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
 import { Toaster } from 'sonner-native'
 
+import { useCheckVersion } from '@/hooks/useCheckVersion'
 import useHydration from '@/hooks/useHydration'
 import AppNavigator from '@/navigation/AppNavigator'
 import { useStoreShallow } from '@/store/useStore'
@@ -17,6 +18,7 @@ export const AppLayout = () => {
     state.currentUser,
   ])
   const hydrated = useHydration()
+  useCheckVersion()
 
   const [isDarkMode, themeColor] = useStoreShallow((state) => [state.isDarkMode, state.themeColor])
   const theme = combineTheme(themeColor, isDarkMode)

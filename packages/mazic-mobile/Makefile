@@ -102,7 +102,7 @@ adb-rv: adb-reverse
 
 android-export:
 	@echo "Exporting android..."
-	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android && yarn bestzip index.android.bundle.zip ./output/* && rm -rf ./output
+	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android/output && yarn bestzip index.android.bundle.zip ./*
 	@echo "Android exported."
 
 release:
