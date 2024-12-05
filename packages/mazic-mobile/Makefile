@@ -41,6 +41,7 @@ clear-build: clear-babel
 	- rm -rf ./android/app/.cxx
 	- rm -rf ./android/build
 	- rm -rf ./android/.gradle
+	- rm -rf ./android/output
 
 clear: clear-build
 	- cd ./android && ./gradlew clean
@@ -102,7 +103,12 @@ adb-rv: adb-reverse
 
 android-export:
 	@echo "Exporting android..."
-	mkdir -p android/output && yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output  && cd android/output && yarn bestzip index.android.bundle.zip ./*
+	- mv .local/index.android.bundle.zip .local/index.android.bundle.zip.bak.$$(( $$(ls -1 .local | wc -l) - 2 ))
+	- mkdir -p android/output
+	- yarn react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/output/index.android.bundle --assets-dest android/output
+	- cd android/output && yarn bestzip index.android.bundle.zip ./* && mv index.android.bundle.zip ../../.local/
+	- cd ../../
+	- rm -rf android/output
 	@echo "Android exported."
 
 release:

@@ -73,4 +73,6 @@ yarn-error.log
 !.yarn/sdks
 !.yarn/versions
 
+# bundle file
 android/output
+/**/index.android.bundle

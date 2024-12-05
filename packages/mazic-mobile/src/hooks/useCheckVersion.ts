@@ -23,7 +23,7 @@ export const useCheckVersion = () => {
     })
   }
   const onCheckVersion = () => {
-    fetch(CONFIG.otaUpdate).then(async (data) => {
+    fetch(`${CONFIG.otaUpdate}?t=${Date.now()}`).then(async (data) => {
       const result = await data.json()
       const currentVersion = await hotUpdate.getCurrentVersion()
       console.log('onCheckVersion', { result, currentVersion })
