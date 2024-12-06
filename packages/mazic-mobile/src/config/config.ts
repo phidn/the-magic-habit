@@ -1,4 +1,4 @@
-import { API_URL, DOMAIN, OTA_UPDATE } from '@env'
+import { API_URL, DOMAIN, OTA_UPDATE, OTA_VERSION } from '@env'
 
 import { TScreen } from '@/types/navigation'
 
@@ -8,6 +8,7 @@ export const CONFIG = {
   apiURL: API_URL,
   domain: DOMAIN,
   otaUpdate: OTA_UPDATE,
+  otaVersion: +OTA_VERSION,
   TIME: {
     DD_MM_YYYY: 'DD/MM/YYYY',
   },

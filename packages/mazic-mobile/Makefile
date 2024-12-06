@@ -119,13 +119,13 @@ release-install:
 	adb install android/app/build/outputs/apk/prod/release/app-prod-release.apk
 
 prod:
-	yarn prod-code && yarn clean && yarn bundle && yarn prod-build && yarn prod-folder
+	make prod-code && make clean && make bundle && make prod-build && make prod-folder
 prod-code:
-	react-native-version --never-amend
+	yarn react-native-version --never-amend
 prod-build:
 	cd android && ./gradlew bundleRelease
 prod-folder:
-	cd android\\app\\build\\outputs\\bundle\\release && start .
+	cd android/app/build/outputs/bundle/prodRelease && start .
 bundle:
 	npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle
 

@@ -25,9 +25,10 @@ export const useCheckVersion = () => {
   const onCheckVersion = () => {
     fetch(`${CONFIG.otaUpdate}?t=${Date.now()}`).then(async (data) => {
       const result = await data.json()
+      const updateVersion = +result?.version
       const currentVersion = await hotUpdate.getCurrentVersion()
-      console.log('onCheckVersion', { result, currentVersion })
-      if (result?.version > currentVersion) {
+      console.log('onCheckVersion', { updateVersion, currentVersion, otaVersion: CONFIG.otaVersion })
+      if (updateVersion > currentVersion && updateVersion > CONFIG.otaVersion) {
         const toastId = toast.loading('A new version is available. Downloading...', {
           position: 'top-center',
           duration: Infinity,
