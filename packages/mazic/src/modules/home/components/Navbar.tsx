@@ -17,8 +17,6 @@ import {
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 
-import { ModeToggle } from './mode-toggle'
-
 interface RouteProps {
   href: string
   label: string
@@ -51,8 +49,6 @@ export const Navbar = () => {
 
           {/* mobile */}
           <span className="flex md:hidden">
-            <ModeToggle />
-
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger className="px-2">
                 <Menu className="flex md:hidden h-5 w-5" onClick={() => setIsOpen(true)}>
@@ -116,8 +112,6 @@ export const Navbar = () => {
               <LoginIcon className="mr-2 w-4 h-4" />
               Login
             </ButtonLink>
-
-            <ModeToggle />
           </div>
         </NavigationMenuList>
       </NavigationMenu>
