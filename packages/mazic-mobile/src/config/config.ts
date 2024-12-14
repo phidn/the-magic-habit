@@ -5,6 +5,8 @@ import { TScreen } from '@/types/navigation'
 export const CONFIG = {
   appNameShort: 'Magic Habit',
   appName: 'The Magic Habit',
+  appPackageName: 'com.magichabit.prod',
+  supportEmail: 'hello.themagiclife@gmail.com',
   apiURL: API_URL,
   domain: DOMAIN,
   otaUpdate: OTA_UPDATE,
@@ -23,8 +25,8 @@ export const storageKeys = {
   },
 }
 
-export const privacyPolicyLink = ''
-export const termsAndConditionsLink = ''
+export const privacyPolicyLink = 'https://phidndev.notion.site/Privacy-Policy-15595d03523b8040ac54f3d677872256'
+export const termsAndConditionsLink = 'https://phidndev.notion.site/Terms-Conditions-15595d03523b800e96c3d3a95ab14f97'
 
 export const soundKeys = [
   'Bell_1',

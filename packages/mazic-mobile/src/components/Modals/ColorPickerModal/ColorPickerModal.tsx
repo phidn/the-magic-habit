@@ -25,6 +25,7 @@ const ColorPickerModal = ({ onClose }: IProps) => {
   const changeThemeColor = () => {
     setThemeColor(bg)
     setCustomColor(bg)
+    onClose?.()
   }
 
   return (

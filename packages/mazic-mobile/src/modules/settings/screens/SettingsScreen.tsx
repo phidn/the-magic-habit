@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Linking } from 'react-native'
@@ -11,7 +12,7 @@ import { useNavigation } from '@react-navigation/native'
 import PageContainer from '@/components/Containers/PageContainer'
 import RowContainer from '@/components/Containers/RowContainer'
 import ColorPickerModal from '@/components/Modals/ColorPickerModal/ColorPickerModal'
-import { privacyPolicyLink, screens, termsAndConditionsLink } from '@/config/config'
+import { CONFIG, privacyPolicyLink, screens, termsAndConditionsLink } from '@/config/config'
 import { themeSpacing } from '@/config/theme'
 import { useStore } from '@/store/useStore'
 import { TNavigationRoot } from '@/types/navigation'
@@ -48,14 +49,14 @@ export const SettingsScreen = () => {
     const _break = '%0D%0A'
     const _message = message.replace(/ {6}- /g, '').trim() + _break + _break + _break
 
-    Linking.openURL(`mailto:hello.dangnhatphi@gmail.com?subject=${subject}&body=${_message}`).catch(
+    Linking.openURL(`mailto:${CONFIG.supportEmail}?subject=${subject}&body=${_message}`).catch(
       (err) => console.error('ERROR > cannot open send email', err),
     )
   }
 
   const rateApp = () => {
     const options = {
-      GooglePackageName: 'com.phidang.mindfulcheckin',
+      GooglePackageName: CONFIG.appPackageName,
       preferredAndroidMarket: AndroidMarket.Google,
       preferInApp: false,
       openAppStoreIfInAppFails: true,
@@ -97,13 +98,13 @@ export const SettingsScreen = () => {
         />
         <RowContainer style={{ justifyContent: 'flex-start', marginLeft: 50 }}>
           <ListColor
-            togglePicker={() => setIsShowPicker(true)}
+            showPicker={() => setIsShowPicker(true)}
             gap={85 + PAGE_PADDING_HORIZONTAL * 2}
             range={[0, 9]}
           />
         </RowContainer>
       </Card>
-      <CardTitle title={t(languageKeys['Settings.support'])} />
+      {/* <CardTitle title={t(languageKeys['Settings.support'])} />
       <Card style={{ marginBottom: themeSpacing.md }}>
         <List.Item
           title={t(languageKeys['Settings.moreSetting.feedback'])}
@@ -118,7 +119,7 @@ export const SettingsScreen = () => {
           left={(props) => <MaterialIcons {...props} name="star-outline" size={24} />}
           onPress={rateApp}
         />
-      </Card>
+      </Card> */}
       <CardTitle title={t(languageKeys['Settings.moreSetting'])} />
       <Card style={{ marginBottom: themeSpacing.md }}>
         <List.Item

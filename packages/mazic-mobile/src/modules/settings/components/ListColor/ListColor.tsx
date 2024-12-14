@@ -9,10 +9,10 @@ import { getThemeColors } from '@/utils/theme'
 interface IProps {
   gap: number
   range: number[]
-  togglePicker: () => void
+  showPicker: () => void
 }
 
-export const ListColor = ({ gap, range, togglePicker }: IProps) => {
+export const ListColor = ({ gap, range, showPicker }: IProps) => {
   const { colors } = useTheme()
   const amount = range[1] - range[0]
 
@@ -35,7 +35,7 @@ export const ListColor = ({ gap, range, togglePicker }: IProps) => {
 
   return (
     <>
-      <TouchableOpacity onPress={() => togglePicker()}>
+      <TouchableOpacity onPress={() => showPicker()}>
         <Avatar.Icon
           size={_size}
           style={{ marginHorizontal: 5, backgroundColor: customColor || colors.surface }}
