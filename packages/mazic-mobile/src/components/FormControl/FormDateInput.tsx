@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { TextStyle } from 'react-native'
+import { TextStyle, View } from 'react-native'
 import { StyleProp } from 'react-native'
-import { HelperText, TextInput, TextInputProps } from 'react-native-paper'
+import { HelperText, TextInputProps } from 'react-native-paper'
+import { DatePickerInput } from 'react-native-paper-dates'
 
 interface InputProps extends TextInputProps {
   field: string
   label: string
-  icon?: string
   validation?: any
   style?: StyleProp<TextStyle>
   onIconPress?: () => void
 }
 
-export const FormInput = (props: InputProps) => {
-  const { label, icon, onIconPress, field, validation, style, ...restProps } = props
+export const FormDateInput = (props: InputProps) => {
+  const { label, field, validation, style } = props
 
   const methods = useFormContext()
   const { error } = methods.getFieldState(field, methods.formState)
@@ -23,24 +23,25 @@ export const FormInput = (props: InputProps) => {
     methods.register(field, validation)
   }, [methods, field, validation])
 
-  const onChangeText = (value: string) => {
+  const onChange = (value: Date | undefined) => {
     methods.clearErrors(field)
     methods.setValue(field, value)
   }
 
-  const _value = methods.watch(field) || ''
+  const _value = methods.watch(field) || undefined
 
   return (
     <>
-      <TextInput
-        label={label}
-        value={_value}
-        onChangeText={onChangeText}
-        right={icon && <TextInput.Icon icon={icon} onPress={() => onIconPress?.()} />}
-        style={[{ marginVertical: 4 }, style]}
-        mode="outlined"
-        {...restProps}
-      />
+      <View style={[{ marginBottom: 32 }, style]}>
+        <DatePickerInput
+          locale="vi"
+          label={label}
+          value={_value}
+          onChange={onChange}
+          inputMode="start"
+          mode="outlined"
+        />
+      </View>
       {error && <HelperText type="error">{error.message}</HelperText>}
     </>
   )

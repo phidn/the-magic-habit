@@ -13,7 +13,7 @@ interface InputProps extends TextInputProps {
   onIconPress?: () => void
 }
 
-export const FormInput = (props: InputProps) => {
+export const FormNumber = (props: InputProps) => {
   const { label, icon, onIconPress, field, validation, style, ...restProps } = props
 
   const methods = useFormContext()
@@ -25,7 +25,7 @@ export const FormInput = (props: InputProps) => {
 
   const onChangeText = (value: string) => {
     methods.clearErrors(field)
-    methods.setValue(field, value)
+    methods.setValue(field, +value)
   }
 
   const _value = methods.watch(field) || ''
@@ -39,6 +39,8 @@ export const FormInput = (props: InputProps) => {
         right={icon && <TextInput.Icon icon={icon} onPress={() => onIconPress?.()} />}
         style={[{ marginVertical: 4 }, style]}
         mode="outlined"
+        inputMode="decimal"
+        keyboardType="numeric"
         {...restProps}
       />
       {error && <HelperText type="error">{error.message}</HelperText>}

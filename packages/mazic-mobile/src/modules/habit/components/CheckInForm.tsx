@@ -1,4 +1,3 @@
-import { format } from 'date-fns'
 import capitalize from 'lodash/capitalize'
 
 import { checkInType, THabit } from '@mazic/shared'
@@ -25,15 +24,11 @@ export const CheckInForm = (props: ICheckInFormProps) => {
       onSubmitForm={props.onSubmitForm}
       onDeleteForm={props.onDeleteForm}
       style={{ padding: themeSpacing.md }}
+      isNoDirty={!isNumberCheckIn}
     >
-      <Form.Input disabled label="Date" field="_date" value={format(new Date(), 'PPP')} />
+      <Form.DateInput label="Date" field="date" />
       {isNumberCheckIn && (
-        <Form.Input
-          label={capitalize(habit.metric || '')}
-          field="value"
-          inputMode="numeric"
-          keyboardType="numeric"
-        />
+        <Form.Number label={`Value (${capitalize(habit.metric || '')})`} field="value" />
       )}
       <Form.Input
         multiline

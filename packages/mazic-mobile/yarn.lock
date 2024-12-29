@@ -2174,6 +2174,7 @@ __metadata:
     react-native-ota-hot-update: "npm:^2.0.1"
     react-native-pager-view: "npm:^6.4.1"
     react-native-paper: "npm:^5.12.5"
+    react-native-paper-dates: "npm:^0.22.28"
     react-native-reanimated: "npm:^3.16.1"
     react-native-safe-area-context: "npm:^4.12.0"
     react-native-screens: "npm:^3.34.0"
@@ -10229,6 +10230,20 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/43f5d9814904fcc0f40b5250e6f98c1ae8148e7b7fac4a9b129ec067095ff396c6b120950873c5e5e440b1493143ac2c88e2171a4fb7b472cc7e20084ebcf319
+  languageName: node
+  linkType: hard
+
+"react-native-paper-dates@npm:^0.22.28":
+  version: 0.22.28
+  resolution: "react-native-paper-dates@npm:0.22.28"
+  dependencies:
+    color: "npm:^4.2.3"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-paper: "*"
+    react-native-vector-icons: "*"
+  checksum: 10c0/9d9cf4fe8611d65b32000e2665b86ab2b49e068c8c236c5b1c7d8f17a05a04e775c9823c3070404f6b9e39683c0a257ddfe42540c3a031acca36cd54fcebc838
   languageName: node
   linkType: hard
 

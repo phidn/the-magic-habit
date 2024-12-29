@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
 import { useTheme } from 'react-native-paper'
-import { BottomSheetModal, BottomSheetView, useBottomSheetModal } from '@gorhom/bottom-sheet'
+import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView, useBottomSheetModal } from '@gorhom/bottom-sheet'
 import dayjs from 'dayjs'
 
 import { checkInSchema, checkInType, HeatMapValue, THabit, THabitCheckIn } from '@mazic/shared'
@@ -45,12 +45,13 @@ export const CheckInModal = forwardRef<BottomSheetModal, IProps>((props, ref) =>
       ref={ref}
       index={2}
       snapPoints={['25%', '55%', '70%', '90%']}
+      backdropComponent={BottomSheetBackdrop}
       handleStyle={{ backgroundColor: colors.surface, marginBottom: -12 }}
     >
       <BottomSheetView>
         <CheckInForm
           habit={habit}
-          title={`${habit?.title} Check-in`}
+          title={`Check-in (${habit?.title})`}
           initialValues={{
             id: checkInData?.id,
             habit_id: habit.id as string,

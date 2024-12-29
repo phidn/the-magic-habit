@@ -38,6 +38,7 @@
     "react-native-ota-hot-update": "^2.0.1",
     "react-native-pager-view": "^6.4.1",
     "react-native-paper": "^5.12.5",
+    "react-native-paper-dates": "^0.22.28",
     "react-native-reanimated": "^3.16.1",
     "react-native-safe-area-context": "^4.12.0",
     "react-native-screens": "^3.34.0",

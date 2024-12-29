@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Button, Card, IconButton, Menu } from 'react-native-paper'
+import { Button, Card, IconButton, Menu, useTheme } from 'react-native-paper'
 import { BottomSheetModal } from '@gorhom/bottom-sheet'
 import { useNavigation } from '@react-navigation/native'
 import dayjs from 'dayjs'
@@ -21,6 +21,7 @@ interface IProps {
 export const HabitCard = ({ habit, refetch }: IProps) => {
   const navigation = useNavigation<TNavigationRoot>()
   const bottomSheetRef = useRef<BottomSheetModal>(null)
+  const { dark } = useTheme()
 
   const [menuVisible, setMenuVisible] = useState(false)
 
@@ -93,6 +94,7 @@ export const HabitCard = ({ habit, refetch }: IProps) => {
         </Card.Content>
         <Card.Actions style={{ padding: themeSpacing.md }}>
           <Button
+            key={`button_${dark}`}
             icon={isDone ? 'checkbox-marked-outline' : 'checkbox-blank-outline'}
             mode={isDone ? 'outlined' : 'contained-tonal'}
             onPress={() => bottomSheetRef.current?.present()}
