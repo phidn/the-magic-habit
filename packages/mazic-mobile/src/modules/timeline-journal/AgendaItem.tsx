@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, TouchableOpacity, View } from 'react-native'
-import { Chip, Text } from 'react-native-paper'
+import { Chip, Text, useTheme } from 'react-native-paper'
 import isEmpty from 'lodash/isEmpty'
 
 interface ItemProps {
@@ -9,18 +9,33 @@ interface ItemProps {
 
 const AgendaItem = (props: ItemProps) => {
   const { item } = props
+  const { colors } = useTheme()
 
   if (isEmpty(item)) {
     return (
-      <View style={styles.emptyItem}>
+      <View
+        style={[
+          styles.emptyItem,
+          {
+            backgroundColor: colors.background,
+          },
+        ]}
+      >
         <Text style={styles.emptyItemText}>No journal entry</Text>
       </View>
     )
   }
 
   return (
-    <TouchableOpacity style={styles.item}>
-      <Text style={styles.itemTitleText}>{item.title}</Text>
+    <TouchableOpacity
+      style={[
+        styles.item,
+        {
+          backgroundColor: colors.background,
+        },
+      ]}
+    >
+      <Text style={[styles.itemTitleText, { color: colors.onBackground }]}>{item.title}</Text>
       {item?.habitName && (
         <View style={styles.itemButtonContainer}>
           <Chip>{item?.habitName}</Chip>
@@ -41,17 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
   },
-  itemHourText: {
-    color: 'black',
-  },
-  itemDurationText: {
-    color: 'grey',
-    fontSize: 12,
-    marginTop: 4,
-    marginLeft: 4,
-  },
   itemTitleText: {
-    color: 'black',
     marginLeft: 16,
     fontWeight: 'bold',
     fontSize: 16,

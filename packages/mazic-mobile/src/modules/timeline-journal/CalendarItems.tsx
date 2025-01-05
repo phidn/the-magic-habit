@@ -14,7 +14,8 @@ const nowDate = dayjs().format('YYYY-MM-DD')
 
 const CalendarItems = ({ items }: IProps) => {
   const marked = useRef(getMarkedDates(items))
-  const { colors } = useTheme()
+  const { colors, dark } = useTheme()
+
   const _theme = {
     monthTextColor: colors.primary,
     indicatorColor: colors.primary,
@@ -26,6 +27,7 @@ const CalendarItems = ({ items }: IProps) => {
     selectedDayBackgroundColor: colors.primary,
     arrowColor: colors.primary,
     dayTextColor: colors.onPrimaryContainer,
+    calendarBackground: colors.background,
   }
 
   const renderItem = useCallback(({ item }: any) => {
@@ -33,7 +35,7 @@ const CalendarItems = ({ items }: IProps) => {
   }, [])
 
   return (
-    <CalendarProvider showTodayButton={false} date={nowDate} theme={_theme}>
+    <CalendarProvider showTodayButton={false} date={nowDate} theme={_theme} key={`${dark}`}>
       <ExpandableCalendar theme={_theme} firstDay={1} markedDates={marked.current} />
       <AgendaList
         sections={items}

@@ -48,7 +48,7 @@ export const CheckInModal = forwardRef<BottomSheetModal, IProps>((props, ref) =>
       backdropComponent={BottomSheetBackdrop}
       handleStyle={{ backgroundColor: colors.surface, marginBottom: -12 }}
     >
-      <BottomSheetView>
+      <BottomSheetView style={{ flex: 1, backgroundColor: colors.surface }}>
         <CheckInForm
           habit={habit}
           title={`Check-in (${habit?.title})`}

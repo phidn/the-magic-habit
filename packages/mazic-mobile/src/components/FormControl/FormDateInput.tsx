@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { TextStyle, View } from 'react-native'
 import { StyleProp } from 'react-native'
 import { HelperText, TextInputProps } from 'react-native-paper'
@@ -15,6 +16,7 @@ interface InputProps extends TextInputProps {
 
 export const FormDateInput = (props: InputProps) => {
   const { label, field, validation, style } = props
+  const { i18n } = useTranslation()
 
   const methods = useFormContext()
   const { error } = methods.getFieldState(field, methods.formState)
@@ -34,7 +36,7 @@ export const FormDateInput = (props: InputProps) => {
     <>
       <View style={[{ marginBottom: 32 }, style]}>
         <DatePickerInput
-          locale="vi"
+          locale={i18n.language}
           label={label}
           value={_value}
           onChange={onChange}

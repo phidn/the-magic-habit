@@ -82,7 +82,7 @@ android {
         applicationId "com.magichabit"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 9
+        versionCode 17
         versionName "0.0.1"
     }
     signingConfigs {
