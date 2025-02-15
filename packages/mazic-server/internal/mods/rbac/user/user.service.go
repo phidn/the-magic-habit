@@ -2,9 +2,11 @@ package user
 
 import (
 	"context"
+	"log"
 	"net/url"
 
 	"github.com/golangthang/mazic-habit/pkg/entry"
+	"github.com/golangthang/mazic-habit/pkg/infrastructure"
 	"github.com/golangthang/mazic-habit/pkg/schema"
 
 	"github.com/pocketbase/pocketbase/models"
@@ -22,12 +24,14 @@ type UserService interface {
 }
 
 type userService struct {
-	Entry entry.Entry
+	Entry       entry.Entry
+	CronManager *infrastructure.CronManager
 }
 
-func NewUserService(entry entry.Entry) UserService {
+func NewUserService(entry entry.Entry, app *infrastructure.Pocket) UserService {
 	return &userService{
-		Entry: entry,
+		Entry:       entry,
+		CronManager: app.CronManager,
 	}
 }
 
@@ -121,6 +125,8 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 	if err != nil {
 		return nil, err
 	}
+	oldTelegramTime := recordSetting.GetString("telegram_time")
+
 	recordSetting.Set("user_id", id)
 	recordSetting.Set("habit_cols", user.Setting.HabitCols)
 	recordSetting.Set("habit_orders", user.Setting.HabitOrders)
@@ -129,6 +135,11 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 	recordSetting.Set("telegram_bot_token", user.Setting.TelegramBotToken)
 	if err := service.Entry.Dao().Save(recordSetting); err != nil {
 		return nil, err
+	}
+
+	if user.Setting.TelegramTime != oldTelegramTime {
+		service.CronManager.ScheduleUserTask(id, user.Setting.TelegramTime)
+		log.Printf("Updated cron job for user %s to new time %s", id, user.Setting.TelegramTime)
 	}
 
 	return record, nil
