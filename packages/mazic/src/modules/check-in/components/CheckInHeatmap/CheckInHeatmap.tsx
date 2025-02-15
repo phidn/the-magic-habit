@@ -5,18 +5,28 @@ import dayjs from 'dayjs'
 import advancedFormat from 'dayjs/plugin/advancedFormat'
 
 import {
+  Button,
+  ButtonLoading,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   cn,
   CopyIcon,
+  Dialog,
+  DialogContent,
+  DialogTrigger,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
   EditIcon,
   EllipsisVerticalIcon,
+  Modal,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
   ScrollArea,
   ScrollBar,
   SeedlingIcon,
@@ -104,47 +114,60 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
                   <EllipsisVerticalIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem
-                    className="cursor-pointer"
-                    onClick={() => {
-                      showModal({
-                        open: true,
-                        showConfirm: false,
-                        title: 'Widget link',
-                        description: 'Anyone who has this link will be able to view this.',
-                        body: (
-                          <CopyLinkModal
-                            link={`${CONFIG.domain}${pathRoutes.checkIn.widget.replace(':api_key', habit?.api_key || '')}`}
-                          />
-                        ),
-                      })
-                    }}
-                  >
-                    <CopyIcon className="mr-1" />
-                    Widget Link
-                  </DropdownMenuItem>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        <CopyIcon className="mr-1" />
+                        Widget Link
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <ModalHeader>
+                        <ModalTitle>Widget link</ModalTitle>
+                        <ModalDescription>
+                          Anyone who has this link will be able to view this.
+                        </ModalDescription>
+                      </ModalHeader>
+                      <CopyLinkModal
+                        link={`${CONFIG.domain}${pathRoutes.checkIn.widget.replace(':api_key', habit?.api_key || '')}`}
+                      />
+                    </DialogContent>
+                  </Dialog>
                   <DropdownMenuItem className="cursor-pointer">
                     <Link className="flex items-center w-full" to={`/habit/edit/${habit?.id}`}>
                       <EditIcon className="mr-1" /> Edit
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="cursor-pointer text-red-600"
-                    onClick={() => {
-                      showModalDelete({
-                        onConfirm: () => {
-                          mutationDelete.mutate(habit?.id as string, {
-                            onSuccess: () => {
-                              hideModal()
-                              onDelete?.(habit?.id as string)
-                            },
-                          })
-                        },
-                      })
-                    }}
-                  >
-                    <TrashIcon className="mr-1" /> Delete
-                  </DropdownMenuItem>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                        <TrashIcon className="mr-1" /> Delete
+                      </DropdownMenuItem>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <ModalHeader>
+                        <ModalTitle>Delete habit</ModalTitle>
+                      </ModalHeader>
+                      If you delete this item, it will be gone forever. Are you sure you want to
+                      delete it?
+                      <ModalFooter>
+                        <ButtonLoading
+                          variant="destructive"
+                          onClick={() => {
+                            mutationDelete.mutate(habit?.id as string, {
+                              onSuccess: () => {
+                                hideModal()
+                                onDelete?.(habit?.id as string)
+                              },
+                            })
+                          }}
+                          isLoading={false}
+                        >
+                          Delete
+                        </ButtonLoading>
+                      </ModalFooter>
+                    </DialogContent>
+                  </Dialog>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
