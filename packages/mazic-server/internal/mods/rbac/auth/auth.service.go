@@ -123,7 +123,7 @@ func (service *authService) GetMe(ctx context.Context, userId string) (*user.Use
 	userSetting := &user.UserSetting{}
 
 	err = service.Entry.Dao().DB().
-		Select("id", "habit_cols", "habit_orders").
+		Select("*").
 		From(userSetting.TableName()).
 		AndWhere(dbx.HashExp{"user_id": userId}).
 		Limit(1).

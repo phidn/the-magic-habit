@@ -51,6 +51,9 @@ export const useUpdateProfile = () => {
         setting: {
           habit_cols: user.habit_cols,
           habit_orders: user.habit_orders,
+          telegram_time: user.telegram_time,
+          telegram_bot_token: user.telegram_bot_token,
+          telegram_chat_id: user.telegram_chat_id,
         },
       }
       setCurrentUser(userProfile)

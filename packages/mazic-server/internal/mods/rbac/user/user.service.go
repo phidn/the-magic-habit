@@ -124,6 +124,9 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 	recordSetting.Set("user_id", id)
 	recordSetting.Set("habit_cols", user.Setting.HabitCols)
 	recordSetting.Set("habit_orders", user.Setting.HabitOrders)
+	recordSetting.Set("telegram_time", user.Setting.TelegramTime)
+	recordSetting.Set("telegram_chat_id", user.Setting.TelegramChatId)
+	recordSetting.Set("telegram_bot_token", user.Setting.TelegramBotToken)
 	if err := service.Entry.Dao().Save(recordSetting); err != nil {
 		return nil, err
 	}

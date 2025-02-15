@@ -27,6 +27,9 @@ export type TUserCreate = z.infer<typeof userSchema>
 export type TUserSetting = {
   habit_cols: number
   habit_orders: string
+  telegram_time: string
+  telegram_bot_token: string
+  telegram_chat_id: string
 }
 
 export type TUser = TUserCreate & {
@@ -40,4 +43,7 @@ export type TUserProfile = TUserCreate & {
   permissions: TPermission[]
   habit_cols: number
   habit_orders: string
+  telegram_time: string
+  telegram_bot_token: string
+  telegram_chat_id: string
 }

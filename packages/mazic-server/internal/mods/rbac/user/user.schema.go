@@ -15,8 +15,11 @@ import (
 var _ models.Model = (*User)(nil)
 
 type UserSetting struct {
-	HabitCols   int    `json:"habit_cols"`
-	HabitOrders string `json:"habit_orders"`
+	HabitCols        int    `json:"habit_cols"`
+	HabitOrders      string `json:"habit_orders"`
+	TelegramTime     string `json:"telegram_time"`
+	TelegramChatId   string `json:"telegram_chat_id"`
+	TelegramBotToken string `json:"telegram_bot_token"`
 }
 
 func (m *UserSetting) TableName() string {

@@ -6,6 +6,7 @@ import { dashboardSettingsFields, detailFields } from '../../schemas/profileSche
 
 import { DashboardSettings } from './DashboardSettings'
 import { ProfileDetail } from './ProfileDetail'
+import { TelegramForm } from './TelegramForm'
 
 interface IProps extends IFormProps {
   habitData: THabit[]
@@ -16,6 +17,11 @@ export const ProfileForm = (props: IProps) => {
     {
       title: 'User Details',
       elementRender: () => <ProfileDetail />,
+      fields: detailFields,
+    },
+    {
+      title: 'Telegram Notification',
+      elementRender: () => <TelegramForm />,
       fields: detailFields,
     },
     {
