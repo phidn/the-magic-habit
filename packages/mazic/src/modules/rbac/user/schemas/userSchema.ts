@@ -30,6 +30,7 @@ export type TUserSetting = {
   telegram_time: string
   telegram_bot_token: string
   telegram_chat_id: string
+  timezone: string
 }
 
 export type TUser = TUserCreate & {
@@ -41,9 +42,4 @@ export type TUser = TUserCreate & {
 export type TUserProfile = TUserCreate & {
   id: string
   permissions: TPermission[]
-  habit_cols: number
-  habit_orders: string
-  telegram_time: string
-  telegram_bot_token: string
-  telegram_chat_id: string
-}
+} & TUserSetting

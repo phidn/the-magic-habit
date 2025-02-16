@@ -15,6 +15,7 @@ import (
 var _ models.Model = (*User)(nil)
 
 type UserSetting struct {
+	Timezone         string `json:"timezone"`
 	HabitCols        int    `json:"habit_cols"`
 	HabitOrders      string `json:"habit_orders"`
 	TelegramTime     string `json:"telegram_time"`

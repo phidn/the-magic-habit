@@ -1,3 +1,4 @@
+import { Input } from '@mazic/ui'
 import { FormImage, FormInput, FormItem, FormTextarea } from '@mazic/components/FormControl'
 
 export const ProfileDetail = () => {
@@ -16,6 +17,9 @@ export const ProfileDetail = () => {
           </FormItem>
           <FormItem label="Bio" col={12}>
             <FormTextarea field="bio" placeholder="Tell us a little about yourself..." />
+          </FormItem>
+          <FormItem label="Timezone" col={12}>
+            <Input disabled value={Intl.DateTimeFormat().resolvedOptions().timeZone} />
           </FormItem>
         </div>
       </div>

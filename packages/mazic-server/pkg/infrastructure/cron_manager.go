@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -49,15 +50,16 @@ func (cm *CronManager) LoadUserSchedules() {
 	for _, record := range records {
 		userID := record.GetString("user_id")
 		telegramTime := record.GetString("telegram_time")
+		timezone := record.GetString("timezone")
 
 		if telegramTime != "" {
-			cm.ScheduleUserTask(userID, telegramTime)
+			cm.ScheduleUserTask(userID, telegramTime, timezone)
 		}
 	}
 }
 
 // Schedule a cron job for a user
-func (cm *CronManager) ScheduleUserTask(userID string, timeStr string) {
+func (cm *CronManager) ScheduleUserTask(userID string, timeStr string, timezone string) {
 	cm.mu.Lock()
 	defer cm.mu.Unlock()
 
@@ -67,7 +69,12 @@ func (cm *CronManager) ScheduleUserTask(userID string, timeStr string) {
 	}
 
 	// Convert "HH:MM" format into a cron-compatible format
-	cronSpec := convertTimeToCronFormat(timeStr)
+	// Convert timeStr to correct cron time using timezone
+	cronSpec, err := convertTimeToCronFormat(timeStr, timezone)
+	if err != nil {
+		log.Printf("Error converting time for user %s: %v\n", userID, err)
+		return
+	}
 
 	// Schedule a new job
 	entryID, err := cm.CronScheduler.AddFunc(cronSpec, func() {
@@ -83,13 +90,49 @@ func (cm *CronManager) ScheduleUserTask(userID string, timeStr string) {
 	log.Printf("Scheduled job for user %s at %s\n", userID, timeStr)
 }
 
-// Convert "HH:MM" to cron format
-func convertTimeToCronFormat(timeStr string) string {
+func convertTimeToCronFormat(timeStr string, timezone string) (string, error) {
+	// Split "HH:MM"
 	parts := strings.Split(timeStr, ":")
 	if len(parts) != 2 {
-		return "0 0 * * *" // Default to midnight if invalid
+		return "", fmt.Errorf("invalid time format")
 	}
-	return parts[1] + " " + parts[0] + " * * *"
+
+	hour := parts[0]
+	minute := parts[1]
+
+	hourInt, err := strconv.Atoi(hour)
+	if err != nil {
+		return "", fmt.Errorf("invalid hour format: %s", hour)
+	}
+
+	minuteInt, err := strconv.Atoi(minute)
+	if err != nil {
+		return "", fmt.Errorf("invalid minute format: %s", minute)
+	}
+
+	// Load user's timezone
+	loc, err := time.LoadLocation(timezone)
+	if err != nil {
+		log.Printf("Invalid timezone '%s', using UTC instead", timezone)
+		loc = time.UTC
+	}
+
+	// Get current date in user's timezone
+	now := time.Now().In(loc)
+
+	// Create time in user timezone
+	userTime := time.Date(now.Year(), now.Month(), now.Day(), hourInt, minuteInt, 0, 0, loc)
+
+	// Convert to UTC
+	utcTime := userTime.UTC()
+
+	// Get hours and minutes in UTC
+	utcHour, utcMinute, _ := utcTime.Clock()
+
+	// Return cron spec
+	cronSpec := fmt.Sprintf("%d %d * * *", utcMinute, utcHour)
+	log.Printf("Converted user time %s [%s] -> server cron %s\n", timeStr, timezone, cronSpec)
+	return cronSpec, nil
 }
 
 // SendNotification simulates sending a Telegram message

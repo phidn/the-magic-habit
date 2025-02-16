@@ -54,6 +54,7 @@ export const useUpdateProfile = () => {
           telegram_time: user.telegram_time,
           telegram_bot_token: user.telegram_bot_token,
           telegram_chat_id: user.telegram_chat_id,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         },
       }
       setCurrentUser(userProfile)
