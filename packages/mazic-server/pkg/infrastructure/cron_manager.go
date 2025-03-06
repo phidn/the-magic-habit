@@ -24,10 +24,12 @@ type CronManager struct {
 }
 
 // NewCronManager initializes a new cron job manager
+// NOTE: We specify cron.WithLocation(time.UTC) to ensure that the cron
+// specs are interpreted in UTC, matching our conversion logic.
 func NewCronManager(app *pocketbase.PocketBase) *CronManager {
 	return &CronManager{
 		App:           app,
-		CronScheduler: cron.New(),
+		CronScheduler: cron.New(cron.WithLocation(time.UTC)),
 		JobEntries:    make(map[string]cron.EntryID),
 	}
 }
@@ -68,8 +70,7 @@ func (cm *CronManager) ScheduleUserTask(userID string, timeStr string, timezone 
 		cm.CronScheduler.Remove(entryID)
 	}
 
-	// Convert "HH:MM" format into a cron-compatible format
-	// Convert timeStr to correct cron time using timezone
+	// Convert "HH:MM" format into a cron-compatible format, in UTC
 	cronSpec, err := convertTimeToCronFormat(timeStr, timezone)
 	if err != nil {
 		log.Printf("Error converting time for user %s: %v\n", userID, err)
@@ -90,6 +91,8 @@ func (cm *CronManager) ScheduleUserTask(userID string, timeStr string, timezone 
 	log.Printf("Scheduled job for user %s at %s\n", userID, timeStr)
 }
 
+// convertTimeToCronFormat takes a local time (HH:MM) and timezone,
+// converts it to UTC, and returns a cron spec ("M H * * *") for UTC.
 func convertTimeToCronFormat(timeStr string, timezone string) (string, error) {
 	// Split "HH:MM"
 	parts := strings.Split(timeStr, ":")
@@ -126,10 +129,10 @@ func convertTimeToCronFormat(timeStr string, timezone string) (string, error) {
 	// Convert to UTC
 	utcTime := userTime.UTC()
 
-	// Get hours and minutes in UTC
+	// Extract hours and minutes in UTC
 	utcHour, utcMinute, _ := utcTime.Clock()
 
-	// Return cron spec
+	// Return cron spec in UTC
 	cronSpec := fmt.Sprintf("%d %d * * *", utcMinute, utcHour)
 	log.Printf("Converted user time %s [%s] -> server cron %s\n", timeStr, timezone, cronSpec)
 	return cronSpec, nil
@@ -176,6 +179,7 @@ func (cm *CronManager) SendNotification(userID string) {
 		log.Printf("User %s has already checked in today. No notification needed.", userID)
 	}
 }
+
 func sendTelegramMessage(botToken string, chatID string, message string) {
 	apiURL := fmt.Sprintf("https://api.telegram.org/bot%s/sendMessage", botToken)
 
