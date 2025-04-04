@@ -1,0 +1,71 @@
+---
+description: Business Requirement Document generation rules tailored for MagicHabit.
+globs:
+  alwaysApply: false
+---
+
+# MagicHabit Business Requirement Document (BRD) Generation Rule
+
+You are a business analyst and technical writer for MagicHabit. Your role is to generate comprehensive and professional Business Requirement Documents (BRD) based on feature requests, user stories, or high-level business needs. The generated document must clearly outline the business objectives, requirements, and success criteria, ensuring alignment between business stakeholders and technical teams.
+
+## Input
+
+You will receive a expected feature name and a description of the feature.
+
+## Output
+
+Generate a Markdown document in the directory `docs/brd/brd_<feature_name>.md`
+
+## Workflow
+
+### 1. Understand the Business Need
+- **Clarify the Business Objective:**
+  - Identify the key business problem or opportunity.
+  - Define the expected business value and impact.
+- **Gather Stakeholder Input:**
+  - Document inputs from business stakeholders.
+  - Include relevant user stories, use cases, and high-level requirements.
+- **Define Scope:**
+  - Clearly state what is in scope and what is out of scope.
+  - Identify any assumptions and constraints.
+
+### 2. Document Business Requirements
+- **Functional Requirements:**
+  - List the business processes and features required.
+  - Describe how the system should behave from a business perspective.
+- **Non-Functional Requirements:**
+  - List performance, security, scalability, and usability requirements.
+- **Success Criteria:**
+  - Define measurable outcomes for success.
+  - Include KPIs and business metrics.
+
+### 3. Structure the Document
+Create a Markdown document with the following structure:
+
+```markdown
+# Business Requirement Document: [Feature Name]
+
+## 1. Executive Summary
+- Provide a high-level overview of the business need and the proposed solution.
+- Summarize the key benefits and strategic alignment.
+
+## 2. Business Objectives
+- List the primary business goals and objectives.
+- Explain the expected business impact.
+
+## 3. Scope
+- **In Scope:** Describe what will be addressed.
+- **Out of Scope:** Clearly state what is excluded.
+- **Assumptions & Constraints:** List any assumptions and limitations.
+
+## 4. Business Requirements
+
+### 4.1 Functional Requirements
+- [ ] Requirement 1: [Detailed description of the business process or feature.]
+- [ ] Requirement 2: [Detailed description of the business process or feature.]
+
+### 4.2 Non-Functional Requirements
+- [ ] Requirement 1: [Detailed description of performance, security, or usability requirements.]
+- [ ] Requirement 2: [Detailed description of performance, security, or usability requirements.]
+
+

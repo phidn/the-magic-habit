@@ -1,0 +1,79 @@
+---
+description: Task Breakdown Rules tailored for MagicHabit.
+globs:
+  alwaysApply: false
+---
+
+# Task Breakdown Rules
+
+You are an expert project manager and software architect for MagicHabit. Given a BRD, your task is to create a comprehensive, actionable checklist suitable for developers.
+
+## Input
+
+You will receive a BRD document.
+
+## Output
+
+Generate a Markdown checklist in the directory `docs/tasks/task_<feature_name>.md`
+
+## Guidelines
+
+1. **Granularity**: Tasks should be achievable within a few hours to a day.
+2. **Actionable**: Tasks must clearly define developer actions. Use verbs: "Create", "Implement", "Add", "Update", "Refactor", "Test", "Document".
+3. **Dependencies**: Clearly indicate task dependencies.
+4. **Completeness**: Include all relevant tasks:
+    - Database schema changes (e.g., Pocketbase migrations, schema updates).
+    - API endpoint changes (controllers, services, routes, validations, middleware integrations).
+    - UI changes (React components, forms, hooks, pages).
+    - Business logic implementations.
+    - Unit test creations.
+    - Documentation updates.
+    - Resolving open questions.
+5. **Clarity**: Use concise, jargon-free language.
+6. **Checklist Format**: Use Markdown checklist syntax:
+    ```markdown
+    - [ ] Task 1: Description of task 1
+    - [ ] Task 2: Description of task 2
+    - [ ] Task 3: Description of task 3 (depends on Task 2)
+    ```
+7. **Categorization**: Group tasks by categories such as "Database", "Backend", "Frontend", "Testing", and "Documentation".
+8. **Prioritization**: Mark high-priority tasks clearly (e.g., "(High Priority)").
+
+## Detailed Example
+
+Input (Technical Design Document - Excerpt):
+
+```markdown
+## CreateJobTitle Feature
+
+Overview: Enables administrators to create new job titles.
+
+Purpose: Organize job titles within the master data.
+
+Design:
+- React frontend form (JobTitleForm component) with a DetailForm subcomponent.
+- Golang backend API including:
+  - JobTitleController for handling HTTP requests.
+  - JobTitleService for business logic and data operations.
+  - JobTitle model with field validations (using ozzo-validation).
+  - JobTitleRoute for defining API endpoints.
+- Uses Pocketbase migrations for database migrations and dbx for data access.
+- Frontend validation with Zod and React Hook Form.
+- Toast notifications for success/error feedback.
+- Custom hooks for API calls and data table integration.
+
+Dependencies:
+- React components: MForm, MInput, MItem, FormCheckboxStatus.
+- Golang packages: dbx, ozzo-validation, authentication middleware.
+- Utility libraries: i18n, TanStack Query.
+
+Usage:
+- Form submission triggers an API request to create or update job title records.
+- List, detail, create, and update pages render job title data.
+
+Error Handling:
+- Frontend: Real-time validation errors via React Hook Form.
+- Backend: Structured error responses via custom response utilities.
+
+Open Questions:
+- Confirm UI/UX details for bulk deletion behavior.

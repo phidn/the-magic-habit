@@ -1,0 +1,134 @@
+---
+description: Comprehensive Project Overview for MagicHabit with detailed insights into all modules.
+globs:
+  alwaysApply: true
+---
+
+# MagicHabit Detailed Project Overview
+
+## Introduction
+MagicHabit is a robust, scalable, and secure enterprise application built with a modular monorepo architecture. Every module in the system adheres to consistent architectural patterns and coding conventions to ensure maintainability, ease of collaboration, and a high degree of reusability. The project is structured to clearly separate frontend, backend, and database concerns, enabling developers to quickly understand and work on any part of the system.
+
+## Project Structure
+The repository is organized into key directories that encapsulate various aspects of the application:
+
+    mazic/
+    ├── packages/
+    │   ├── mazic-server/                - Backend API implemented in Golang
+    │   │   ├── internal/
+    │   │   │   ├── mods/
+    │   │   │   │   └── master_data/
+    │   │   │   │       └── job_title/     - JobTitle module containing:
+    │   │   │   │           ├── job_title.controller.go   - API controller for job titles
+    │   │   │   │           ├── job_title.service.go      - Business logic and data operations
+    │   │   │   │           ├── job_title.schema.go       - Data model and validation rules
+    │   │   │   │           └── job_title.route.go        - API route definitions
+    │   │   │   ├── middlewares/         - Authentication and other middleware
+    │   │   │   └── pkg/                 - Common utilities and response handling
+    │   │   └── [Additional backend components]
+    │   ├── mazic/                       - Frontend application built with ReactJS and Next.js
+    │   │   ├── src/
+    │   │   │   ├── modules/
+    │   │   │   │   └── master_data/
+    │   │   │   │       └── job_title/     - JobTitle module containing:
+    │   │   │   │           ├── components/            - React components (e.g., JobTitleForm, DetailForm)
+    │   │   │   │           ├── hooks/                 - Custom hooks (e.g., useJobTitleApis, useJobTitleColumns)
+    │   │   │   │           ├── pages/                 - Application pages (e.g., JobTitleCreatePage, JobTitleListPage, JobTitleUpdatePage)
+    │   │   │   │           ├── schemas/               - Zod schemas for validation (e.g., jobTitleSchema)
+    │   │   │   │           └── services/              - API service layer for HTTP requests (e.g., jobTitleService)
+    │   │   ├── components/           - Reusable UI components (MForm, MInput, etc.)
+    │   │   ├── hooks/                - Global custom hooks (React Hook Form, TanStack Query integration)
+    │   │   └── utils/                - Utility functions (i18n, HTTP client, etc.)
+    └── [Additional frontend configurations]
+
+## Key Architectural Patterns & Concepts
+
+### 1. Modularity and Separation of Concerns
+- **Frontend:**
+  - **Component-Based Architecture:** Reusable UI elements such as `MForm`, `MInput`, and `MItem` ensure consistency and reduce duplication.
+  - **Feature Isolation:** Each module (e.g., JobTitle) encapsulates its components, hooks, schemas, and services, enabling independent development and testing.
+  - **Hooks & State Management:** Custom hooks (e.g., `useJobTitleApis`) integrate seamlessly with TanStack Query and React Hook Form for efficient state and form management.
+- **Backend:**
+  - **Layered Architecture:** Controllers, services, schemas, and routes are clearly separated, fostering clean code organization and easier maintenance.
+  - **Middleware Usage:** Authentication and other cross-cutting concerns are managed through middleware, ensuring secure and consistent API behavior.
+  - **Database Abstraction:** Use of dbx for database operations and ozzo-validation for input validation standardizes data interactions and integrity checks.
+
+### 2. Validation Strategy
+- **Frontend Validation:**
+  - **Zod Schemas:** Define field requirements, default values, and error messages (e.g., `jobTitleSchema`), which integrate with React Hook Form via `zodResolver` for real-time validation.
+- **Backend Validation:**
+  - **ozzo-validation:** Enforces robust validation rules on data models, ensuring only valid data is processed and stored.
+  - **Centralized Error Handling:** Custom response utilities consistently handle and relay validation errors to API clients.
+
+### 3. API Communication and Data Fetching
+- **RESTful Endpoints:**
+  - **Clear HTTP Verbs:** Endpoints use standard methods (GET, POST, PUT, DELETE) to represent CRUD operations.
+  - **Security:** API routes are protected via authentication middleware, ensuring that only authorized requests are processed.
+- **Data Fetching with TanStack Query:**
+  - **Caching & Refetching:** Custom hooks manage data fetching, caching, and state updates, ensuring the UI remains responsive and up-to-date.
+  - **Optimistic Updates & Error Handling:** Built-in mechanisms provide immediate user feedback and handle errors gracefully.
+
+### 4. State Management and Client-side Interactivity
+- **Global State Integration:**
+  - **TanStack Query:** Handles asynchronous data operations with minimal boilerplate while supporting features like caching, refetching, and pagination.
+  - **Local UI State:** React context and local state are used where appropriate to manage UI-specific behaviors and interactions.
+
+### 5. Error Handling and User Feedback
+- **Backend Error Handling:**
+  - **Centralized Response Utilities:** All API responses are standardized, ensuring consistent error messaging across endpoints.
+- **Frontend Notifications:**
+  - **Toast Notifications:** Immediate feedback via toast messages informs users about the success or failure of their actions.
+  - **Consistent UX Patterns:** Error states and loading indicators are uniformly implemented across modules.
+
+## Detailed Module Flow: JobTitle
+
+### Creating/Updating Job Titles
+1. **User Interaction:**
+   - The user fills out the `JobTitleForm`, which is composed of detailed subcomponents like `DetailForm` and status indicators.
+   - Form inputs are validated in real-time against the `jobTitleSchema` using Zod and React Hook Form.
+2. **API Request:**
+   - Upon submission, the form data is sent via HTTP POST/PUT requests using the API service layer (`jobTitleService`).
+3. **Backend Processing:**
+   - The request is routed to the `JobTitleController`, which orchestrates the request handling.
+   - The `JobTitleService` executes the business logic, interacts with the database using dbx, and performs necessary validations.
+4. **Response & Feedback:**
+   - The backend responds with a standardized success or error message.
+   - The frontend displays toast notifications and updates the UI accordingly, ensuring a smooth user experience.
+
+### Data Fetching Flow
+1. **Fetching Details:**
+   - Custom hooks like `useJobTitleDetail` and `useJobTitleList` make API calls to retrieve job title data.
+   - Data is filtered, paginated, and cached via TanStack Query, ensuring quick and efficient retrieval.
+2. **Rendering Data:**
+   - Retrieved data is displayed in data tables and forms, with interactive components like sorting, filtering, and bulk deletion integrated into the UI.
+   - Feedback mechanisms and error handling ensure that users are informed of the data loading status.
+
+## Getting Started and Best Practices
+
+- **Module Familiarization:**
+  - Begin with the JobTitle module as it exemplifies the CRUD operations and architectural patterns used throughout the project.
+  - Review both frontend and backend implementations to understand the interplay between components, hooks, controllers, and services.
+- **Coding Conventions:**
+  - Follow established naming conventions, folder structures, and coding patterns.
+  - Leverage existing utility functions and middleware to maintain consistency and reduce duplication.
+- **Testing and Documentation:**
+  - Write comprehensive unit and integration tests for both frontend and backend components.
+  - Ensure all new modules are well-documented, following the guidelines provided in this overview.
+- **Continuous Integration:**
+  - Integrate changes frequently and run automated tests to catch issues early.
+  - Follow code review guidelines to maintain code quality and consistency across the project.
+
+## Important Dependencies
+
+- **Frontend:**
+  - **ReactJS & Next.js:** For building dynamic and server-rendered user interfaces.
+  - **TanStack Query:** For efficient data fetching, caching, and state management.
+  - **React Hook Form & Zod:** For streamlined form handling and robust validation.
+- **Backend:**
+  - **Golang:** A high-performance language for building secure and scalable APIs.
+  - **ozzo-validation:** To enforce strict validation rules and maintain data integrity.
+  - **dbx:** Provides a flexible and secure abstraction layer for database operations.
+- **Database:**
+  - Pocketbase and Sqlite for database schema and migrations.
+
+This detailed overview serves as a comprehensive guide to the MagicHabit architecture. Every module follows these patterns to ensure the application is scalable, maintainable, and robust, fostering seamless development and collaboration across teams.
