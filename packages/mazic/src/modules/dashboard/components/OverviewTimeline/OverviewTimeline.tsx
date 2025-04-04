@@ -21,6 +21,7 @@ interface Props {
 }
 
 type TimelineItem = {
+  _date: string
   dateNode: string
   date: string
   title: string
@@ -34,6 +35,7 @@ export const OverviewTimeline = ({ habits, isLoading }: Props) => {
         const formattedDate = dayjs(entry.date).format('MMM DD')
         const existingItem = acc.find((item) => item.date === formattedDate)
         acc.push({
+          _date: entry.date,
           date: formattedDate,
           dateNode: existingItem ? '' : formattedDate,
           title: habit.title,
@@ -43,7 +45,7 @@ export const OverviewTimeline = ({ habits, isLoading }: Props) => {
     }
     return acc
   }, [] as TimelineItem[])
-  const sortedItems = items.sort((a, b) => dayjs(b.date).diff(dayjs(a.date)))
+  const sortedItems = items.sort((a, b) => dayjs(b._date).diff(dayjs(a._date)))
 
   return (
     <ScrollArea className="h-[350px] rounded-md border p-4 bg-card">
