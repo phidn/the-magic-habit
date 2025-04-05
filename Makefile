@@ -37,7 +37,7 @@ kill:
 	- taskkill /f /im watchman.exe
 
 kill-mac:
-	- kill -9 $(lsof -t -i :8090)
+	kill -9 $(lsof -t -i :8090)
 
 cd-server:
 	cd packages/mazic-server && bash -c "exec bash"

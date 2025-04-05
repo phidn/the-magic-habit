@@ -4,6 +4,7 @@ import (
 	"github.com/golangthang/mazic-habit/internal/mods/global"
 	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
 	"github.com/golangthang/mazic-habit/internal/mods/habit/habit"
+	"github.com/golangthang/mazic-habit/internal/mods/leaderboard"
 	"github.com/golangthang/mazic-habit/internal/mods/rbac/action"
 	"github.com/golangthang/mazic-habit/internal/mods/rbac/auth"
 	"github.com/golangthang/mazic-habit/internal/mods/rbac/permission"
@@ -127,6 +128,17 @@ var Modules = fx.Options(
 		),
 		fx.Invoke(func(check_in *check_in.CheckInRoute) error {
 			check_in.SetupRoutes()
+			return nil
+		}),
+	)),
+	fx.Module("leaderboard", fx.Options(
+		fx.Provide(
+			leaderboard.NewLeaderboardService,
+			leaderboard.NewLeaderboardController,
+			leaderboard.NewLeaderboardRoute,
+		),
+		fx.Invoke(func(leaderboard *leaderboard.LeaderboardRoute) error {
+			leaderboard.SetupRoutes()
 			return nil
 		}),
 	)),

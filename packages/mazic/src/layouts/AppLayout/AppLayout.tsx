@@ -44,8 +44,18 @@ export const AppLayout = () => {
     <AppContextProvider>
       <Suspense fallback={<LoadingTop />}>
         <Toaster richColors visibleToasts={1} className="mb-16" />
-        <RouterProvider router={routers} />
-        <BrowserRouter>
+        <RouterProvider
+          router={routers}
+          future={{
+            v7_startTransition: true,
+          }}
+        />
+        <BrowserRouter
+          future={{
+            v7_startTransition: true,
+            v7_relativeSplatPath: true,
+          }}
+        >
           <ModalCommon />
         </BrowserRouter>
       </Suspense>

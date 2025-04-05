@@ -1,17 +1,18 @@
-@import 'var';
+@use "sass:math";
+@use 'var';
 
 .mazic-row {
-  margin-left: -$numberPadding;
-  margin-right: -$numberPadding;
-  @include flex;
+  margin-left: -(var.$numberPadding);
+  margin-right: -(var.$numberPadding);
+  @include var.flex;
 }
 
 @for $col from 1 through 12 {
-  $colWidth: percentage(calc($col/12));
+  $colWidth: math.percentage(calc($col/12));
 
   .mazic-col-#{$col} {
     max-width: $colWidth;
     flex: 0 0 $colWidth;
-    padding: $numberPadding;
+    padding: var.$numberPadding;
   }
 }
