@@ -2,200 +2,13 @@ import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Activity, Timer, Trophy } from 'lucide-react'
 
+import { Avatar, AvatarFallback, AvatarImage } from '@mazic/ui'
+
 import { cn } from '@ui/utils'
 
 import { useGetLeaderboard } from '../../apis'
 
-interface Player {
-  position: number
-  previousPosition: number
-  username: string
-  avatar: string
-  time: string
-  bestLap: string
-  first: number
-  second: number
-  third: number
-  totalRaces: number
-  winRate: number
-  sector1: number
-  sector2: number
-  sector3: number
-  isLive?: boolean
-}
-
-const players: Player[] = [
-  {
-    position: 1,
-    previousPosition: 1,
-    username: 'Username 1',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '0:55.510',
-    bestLap: '0:54.321',
-    first: 1,
-    second: 1,
-    third: 1,
-    totalRaces: 156,
-    winRate: 42,
-    sector1: 100,
-    sector2: 98,
-    sector3: 99,
-    isLive: true,
-  },
-  {
-    position: 2,
-    previousPosition: 2,
-    username: 'Username 2',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:15.430',
-    bestLap: '1:14.321',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 120,
-    winRate: 20,
-    sector1: 95,
-    sector2: 92,
-    sector3: 90,
-    isLive: false,
-  },
-  {
-    position: 3,
-    previousPosition: 3,
-    username: 'Username 3',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:21.430',
-    bestLap: '1:20.123',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 80,
-    winRate: 10,
-    sector1: 90,
-    sector2: 88,
-    sector3: 92,
-    isLive: false,
-  },
-  {
-    position: 4,
-    previousPosition: 4,
-    username: 'Username 4',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:32.213',
-    bestLap: '1:31.001',
-    first: 0,
-    second: 0,
-    third: 1,
-    totalRaces: 50,
-    winRate: 5,
-    sector1: 85,
-    sector2: 80,
-    sector3: 88,
-    isLive: false,
-  },
-  {
-    position: 5,
-    previousPosition: 5,
-    username: 'Username 5',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:44.594',
-    bestLap: '1:43.987',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 30,
-    winRate: 3,
-    sector1: 80,
-    sector2: 78,
-    sector3: 85,
-    isLive: false,
-  },
-  {
-    position: 6,
-    previousPosition: 6,
-    username: 'Username 6',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:45.013',
-    bestLap: '1:44.555',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 20,
-    winRate: 2,
-    sector1: 75,
-    sector2: 70,
-    sector3: 80,
-    isLive: false,
-  },
-  {
-    position: 7,
-    previousPosition: 7,
-    username: 'Username 7',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:48.916',
-    bestLap: '1:47.888',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 10,
-    winRate: 1,
-    sector1: 70,
-    sector2: 68,
-    sector3: 75,
-    isLive: false,
-  },
-  {
-    position: 8,
-    previousPosition: 8,
-    username: 'Username 8',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '1:56.355',
-    bestLap: '1:55.222',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 5,
-    winRate: 0,
-    sector1: 65,
-    sector2: 60,
-    sector3: 70,
-    isLive: false,
-  },
-  {
-    position: 9,
-    previousPosition: 9,
-    username: 'Username 9',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '2:05.515',
-    bestLap: '2:04.111',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 2,
-    winRate: 0,
-    sector1: 60,
-    sector2: 58,
-    sector3: 65,
-    isLive: false,
-  },
-  {
-    position: 10,
-    previousPosition: 10,
-    username: 'Username 10',
-    avatar: '/placeholder.svg?height=32&width=32',
-    time: '2:08.375',
-    bestLap: '2:07.000',
-    first: 0,
-    second: 0,
-    third: 0,
-    totalRaces: 1,
-    winRate: 0,
-    sector1: 55,
-    sector2: 50,
-    sector3: 60,
-    isLive: false,
-  },
-]
+import { Player, transformUserDataToPlayer } from './utils'
 
 function MedalIcon({ position }: { position: number }) {
   if (position > 3) return null
@@ -240,11 +53,24 @@ function StatBadge({ label, value }: { label: string; value: string | number }) 
 }
 
 export default function RaceLeaderboard() {
-  const { data } = useGetLeaderboard()
-  console.log('~ data:', data)
-
+  const { data: leaderboardData } = useGetLeaderboard()
+  const [players, setPlayers] = useState<Player[]>([])
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null)
   const [isLive, setIsLive] = useState(true)
+
+  useEffect(() => {
+    if (leaderboardData && leaderboardData.length > 0) {
+      const sortedData = [...leaderboardData].sort((a, b) => b.score - a.score)
+      const transformedPlayers = sortedData.map((_, index) =>
+        transformUserDataToPlayer(sortedData, index)
+      )
+      setPlayers(transformedPlayers)
+      if (transformedPlayers.length > 0 && !selectedPlayer) {
+        setSelectedPlayer(transformedPlayers[0])
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [leaderboardData])
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -258,7 +84,7 @@ export default function RaceLeaderboard() {
     <div className="container mx-auto mt-8">
       <div className="relative mb-4 flex items-center justify-between">
         <div className="absolute -skew-x-12 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-bold px-6 py-2 -left-2 shadow-lg">
-          RACE RESULTS
+          LEADERBOARD
         </div>
         <div className={cn('flex items-center gap-4 ml-auto opacity-0', isLive && 'opacity-1')}>
           <div className="flex items-center gap-2 bg-red-500/20 text-red-500 px-3 py-1 rounded-full">
@@ -274,8 +100,8 @@ export default function RaceLeaderboard() {
             <tr className="border-b border-white/10">
               <th className="text-gray-700 w-24 p-4 text-left">POS</th>
               <th className="text-gray-700 p-4 text-left">PLAYER</th>
-              <th className="text-gray-700 p-4 text-right">TIME</th>
-              <th className="text-gray-700 p-4 text-center">SECTORS</th>
+              <th className="text-gray-700 p-4 text-right">SCORE</th>
+              <th className="text-gray-700 p-4 text-center">PROGRESS</th>
               <th className="text-gray-700 p-4 text-center w-32">STATS</th>
             </tr>
           </thead>
@@ -307,11 +133,10 @@ export default function RaceLeaderboard() {
                     <div className="flex items-center gap-3">
                       <div className="relative">
                         <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden">
-                          <img
-                            src={player.avatar || '/placeholder.svg'}
-                            alt={player.username}
-                            className="w-full h-full object-cover"
-                          />
+                          <Avatar>
+                            <AvatarImage src={player.avatar} alt={player.username} />
+                            <AvatarFallback>{player.username.slice(0, 2)}</AvatarFallback>
+                          </Avatar>
                         </div>
                         {player.isLive && (
                           <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-black" />
@@ -319,12 +144,12 @@ export default function RaceLeaderboard() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-gray-800 font-medium">{player.username}</span>
-                        <span className="text-gray-500 text-xs">Best: {player.bestLap}</span>
+                        <span className="text-gray-500 text-xs">Habits: {player.habits}</span>
                       </div>
                     </div>
                   </td>
                   <td className="p-4 text-right">
-                    <span className="font-mono text-gray-800 font-bold">{player.time}</span>
+                    <span className="font-mono text-gray-800 font-bold">{player.score} pts</span>
                   </td>
                   <td className="p-4">
                     <div className="flex gap-1 justify-center">
@@ -379,14 +204,14 @@ export default function RaceLeaderboard() {
               </div>
               <div>
                 <h3 className="text-xl font-bold text-gray-800">{selectedPlayer.username}</h3>
-                <p className="text-gray-600">Race Statistics</p>
+                <p className="text-gray-600">Performance Statistics</p>
               </div>
             </div>
             <div className="flex gap-4">
               <StatBadge label="Win Rate" value={`${selectedPlayer.winRate}%`} />
-              <StatBadge label="Total Races" value={selectedPlayer.totalRaces} />
-              <StatBadge label="Best Lap" value={selectedPlayer.bestLap} />
-              <StatBadge label="Current" value={selectedPlayer.time} />
+              <StatBadge label="Total Check-ins" value={selectedPlayer.totalRaces} />
+              <StatBadge label="Habits" value={selectedPlayer.habits} />
+              <StatBadge label="Score" value={`${selectedPlayer.score} pts`} />
             </div>
           </div>
         </motion.div>
