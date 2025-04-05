@@ -30,15 +30,15 @@ func (m *UserSetting) TableName() string {
 type User struct {
 	models.BaseModel
 
-	FirstName        string `db:"first_name" json:"first_name"`
-	LastName         string `db:"last_name" json:"last_name"`
-	Email            string `db:"email" json:"email"`
-	Password         string `db:"-" json:"password"`
-	PasswordHash     string `db:"password_hash" json:"-"`
-	Avatar           string `db:"avatar" json:"avatar"`
-	Bio              string `db:"bio" json:"bio"`
-	Verified         bool   `db:"verified" json:"verified"`
-	VerificationCode string `db:"verification_code" json:"verification_code"`
+	FirstName        string  `db:"first_name" json:"first_name"`
+	LastName         *string `db:"last_name" json:"last_name"`
+	Email            string  `db:"email" json:"email"`
+	Password         string  `db:"-" json:"password"`
+	PasswordHash     string  `db:"password_hash" json:"-"`
+	Avatar           string  `db:"avatar" json:"avatar"`
+	Bio              string  `db:"bio" json:"bio"`
+	Verified         bool    `db:"verified" json:"verified"`
+	VerificationCode string  `db:"verification_code" json:"verification_code"`
 
 	Roles       types.JsonArray[any]    `db:"roles" json:"roles"`
 	Permissions []permission.Permission `db:"-" json:"permissions"`
@@ -88,7 +88,6 @@ func (user *User) ParseRecord(record *models.Record) error {
 func (user *User) Validate() error {
 	return validation.ValidateStruct(user,
 		validation.Field(&user.FirstName, validation.Required),
-		validation.Field(&user.LastName, validation.Required),
 		validation.Field(&user.Email, validation.Required, is.Email),
 		validation.Field(&user.Verified, validation.Required, validation.In(true, false)),
 	)
@@ -97,7 +96,6 @@ func (user *User) Validate() error {
 func (user *User) ValidateProfile() error {
 	return validation.ValidateStruct(user,
 		validation.Field(&user.FirstName, validation.Required),
-		validation.Field(&user.LastName, validation.Required),
 	)
 }
 
