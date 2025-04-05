@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Menu } from 'lucide-react'
+import { Menu, UserIcon } from 'lucide-react'
 
 import {
   ButtonLink,
@@ -16,6 +16,7 @@ import {
 } from '@mazic/ui'
 import Logo from '@mazic/components/Logo/Logo'
 import { pathRoutes } from '@mazic/config/pathRoutes'
+import { useStore } from '@mazic/store/useStore'
 
 interface RouteProps {
   href: string
@@ -23,6 +24,10 @@ interface RouteProps {
 }
 
 const routeList: RouteProps[] = [
+  {
+    href: '#leaderboard',
+    label: 'Leaderboard',
+  },
   {
     href: '#about',
     label: 'About',
@@ -39,6 +44,8 @@ const routeList: RouteProps[] = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const currentUser = useStore((state) => state.currentUser)
+
   return (
     <header className="sticky border-b-[1px] top-0 z-40 w-full bg-white dark:border-b-slate-700 dark:bg-background">
       <NavigationMenu className="mx-auto">
@@ -103,15 +110,28 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
-            <ButtonLink
-              href={pathRoutes.auth.login}
-              className={`w-[110px] border ${buttonVariants({
-                variant: 'secondary',
-              })}`}
-            >
-              <LoginIcon className="mr-2 w-4 h-4" />
-              Login
-            </ButtonLink>
+            {!currentUser?.user?.id && (
+              <ButtonLink
+                href={pathRoutes.auth.login}
+                className={`border ${buttonVariants({
+                  variant: 'secondary',
+                })}`}
+              >
+                <LoginIcon className="mr-2 w-4 h-4" />
+                Login
+              </ButtonLink>
+            )}
+            {currentUser?.user?.id && (
+              <ButtonLink
+                href={pathRoutes.dashboard}
+                className={`border ${buttonVariants({
+                  variant: 'secondary',
+                })}`}
+              >
+                <UserIcon className="mr-2 w-4 h-4" />
+                <span>Dashboard</span>
+              </ButtonLink>
+            )}
           </div>
         </NavigationMenuList>
       </NavigationMenu>

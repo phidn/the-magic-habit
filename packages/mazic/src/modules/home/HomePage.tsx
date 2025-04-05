@@ -1,6 +1,6 @@
 import { About } from './components/About'
 import { Hero } from './components/Hero'
-import RaceLeaderboard from './components/Leaderboard/RaceLeaderboard'
+import Leaderboard from './components/Leaderboard/Leaderboard'
 import { Navbar } from './components/Navbar'
 import { Pricing } from './components/Pricing'
 import { ScrollToTop } from './components/ScrollToTop'
@@ -9,7 +9,7 @@ const HomePage = () => {
   return (
     <div>
       <Navbar />
-      <RaceLeaderboard />
+      <Leaderboard />
       <Hero />
       <About />
       <Pricing />

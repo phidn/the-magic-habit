@@ -1,8 +1,13 @@
+import { MagicWandIcon } from '@radix-ui/react-icons'
+
+import quotes from './quotes.json'
+
 export interface UserData {
   user_id: string
   full_name: string
   email: string
   avatar: string
+  bio: string
   habit_count: number
   checkin_count: number
   rank: number
@@ -14,6 +19,7 @@ export interface Player {
   previousPosition: number
   username: string
   avatar: string
+  bio: React.ReactNode
   score: number
   habits: number
   first: number
@@ -37,17 +43,23 @@ export const transformUserDataToPlayer = (userData: UserData[], index: number): 
     position: index + 1,
     previousPosition: index + 1,
     username: user.full_name,
-    avatar: user.avatar || '/placeholder.svg?height=32&width=32',
+    avatar: user.avatar,
+    bio: user.bio || (
+      <span className="flex items-center gap-2">
+        <MagicWandIcon className="w-4 h-4" />
+        {quotes[Math.floor(Math.random() * quotes.length)].quote}
+      </span>
+    ),
     score: user.score,
     habits: user.habit_count,
-    first: index === 0 ? 1 : 0,
+    first: user.habit_count || 0,
     second: index === 1 ? 1 : 0,
     third: index === 2 ? 1 : 0,
     totalRaces: user.checkin_count,
     winRate: user.habit_count > 0 ? Math.round((user.checkin_count / user.habit_count) * 100) : 0,
-    sector1: sectorBase + (Math.min(totalScore, 30) / 30) * 25, // Sectors are visualizations of progress
+    sector1: sectorBase + (Math.min(totalScore, 30) / 30) * 25,
     sector2: sectorBase + (Math.min(user.habit_count * 10, 40) / 40) * 25,
     sector3: sectorBase + (Math.min(user.checkin_count, 50) / 50) * 25,
-    isLive: index === 0, // Just mark top player as live
+    isLive: index === 0,
   }
 }

@@ -81,7 +81,7 @@ export default function RaceLeaderboard() {
   }, [])
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto pt-4" id="leaderboard">
       <div className="relative mb-4 flex items-center justify-between">
         <div className="absolute -skew-x-12 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white font-bold px-6 py-2 -left-2 shadow-lg">
           LEADERBOARD
@@ -144,12 +144,14 @@ export default function RaceLeaderboard() {
                       </div>
                       <div className="flex flex-col">
                         <span className="text-gray-800 font-medium">{player.username}</span>
-                        <span className="text-gray-500 text-xs">Habits: {player.habits}</span>
+                        <span className="text-gray-500 text-xs">{player.bio}</span>
                       </div>
                     </div>
                   </td>
                   <td className="p-4 text-right">
-                    <span className="font-mono text-gray-800 font-bold">{player.score} pts</span>
+                    <span className="font-mono text-gray-800 font-bold whitespace-nowrap">
+                      {player.score} pts
+                    </span>
                   </td>
                   <td className="p-4">
                     <div className="flex gap-1 justify-center">
@@ -195,13 +197,10 @@ export default function RaceLeaderboard() {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 rounded-full bg-gray-200 overflow-hidden">
-                <img
-                  src={selectedPlayer.avatar || '/placeholder.svg'}
-                  alt={selectedPlayer.username}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <Avatar>
+                <AvatarImage src={selectedPlayer.avatar} alt={selectedPlayer.username} />
+                <AvatarFallback>{selectedPlayer.username.slice(0, 2)}</AvatarFallback>
+              </Avatar>
               <div>
                 <h3 className="text-xl font-bold text-gray-800">{selectedPlayer.username}</h3>
                 <p className="text-gray-600">Performance Statistics</p>

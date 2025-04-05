@@ -29,12 +29,13 @@ func (s *leaderboardService) GetLeaderboard(ctx context.Context) ([]LeaderboardI
 				u.email AS email,
 				u.avatar AS avatar,
 				u.first_name || ' ' || u.last_name AS full_name,
+				u.bio AS bio,
 				COUNT(DISTINCT h.id) AS habit_count,
 				COUNT(c.id) AS checkin_count
 		FROM mz_habits AS h
 		LEFT JOIN mz_check_in AS c ON c.habit_id = h.id
 		LEFT JOIN sys_user AS u ON u.id = h.user_id
-		GROUP BY h.user_id, u.first_name, u.last_name, u.email, u.avatar
+		GROUP BY h.user_id, u.first_name, u.last_name, u.email, u.avatar, u.bio
 		ORDER BY checkin_count DESC
 	`
 	err := s.Entry.Dao().DB().NewQuery(query).All(&leaderboard)

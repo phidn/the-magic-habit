@@ -7,6 +7,7 @@ type LeaderboardItem struct {
 	FullName     string  `db:"full_name" json:"full_name"`
 	Email        string  `db:"email" json:"email"`
 	Avatar       string  `db:"avatar" json:"avatar"`
+	Bio          string  `db:"bio" json:"bio"`
 	HabitCount   int     `db:"habit_count" json:"habit_count"`
 	CheckInCount int     `db:"checkin_count" json:"checkin_count"`
 	Rank         int     `json:"rank"`
