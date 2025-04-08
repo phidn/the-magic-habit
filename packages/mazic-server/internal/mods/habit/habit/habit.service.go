@@ -47,6 +47,11 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 		listExpression = append(listExpression, dbx.NewExp("metric = {:metric}", dbx.Params{"metric": metric}))
 	}
 
+	habit_id := queryParams.Get("habit_id")
+	if habit_id != "" {
+		listExpression = append(listExpression, dbx.NewExp("id = {:habit_id}", dbx.Params{"habit_id": habit_id}))
+	}
+
 	search := queryParams.Get("search")
 	if search != "" {
 		listExpression = append(listExpression, dbx.Or(

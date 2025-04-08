@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { cn } from '@mazic/ui'
 import { THabit } from '@mazic/shared'
@@ -13,13 +13,19 @@ import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
 const DashboardPage = () => {
+  const { id: habitId } = useParams()
+
   const navigate = useNavigate()
   const { hooks } = useAppContext()
 
   const user = useStore((state) => state.currentUser.user)
   const [listHabits, setListHabits] = useState<THabit[]>([])
 
-  const { data, isPending, refetch } = hooks.useListHabit({ pageSize: -1, entry_expand: true })
+  const { data, isPending, refetch } = hooks.useListHabit({
+    pageSize: -1,
+    entry_expand: true,
+    habit_id: habitId,
+  })
 
   const [deleted, setDeleted] = useState<string[]>([])
   const onDelete = (id: string) => setDeleted([...deleted, id])
@@ -67,12 +73,14 @@ const DashboardPage = () => {
           settingCols === 1 && 'grid-cols-1',
           settingCols === 2 && 'grid-cols-2',
           settingCols === 3 && 'grid-cols-3',
-          settingCols === 4 && 'grid-cols-4'
+          settingCols === 4 && 'grid-cols-4',
+          habitId && 'grid-cols-1'
         )}
       >
         {listHabits.map((habit, idx) => {
           return (
             <CheckInHeatmap
+              isDetail={!!habitId}
               key={habit?.id || idx}
               habit={habit}
               className="my-2"

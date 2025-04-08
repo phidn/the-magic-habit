@@ -35,6 +35,7 @@ import {
 import { checkInType, THabit } from '@mazic/shared'
 import { colors } from '@mazic/shared'
 import { CopyLinkModal } from '@mazic/components'
+import { MLink } from '@mazic/components/Commons/MLink'
 import HeatMap from '@mazic/components/HeatMap'
 import { CONFIG } from '@mazic/config/config'
 import { pathRoutes } from '@mazic/config/pathRoutes'
@@ -51,11 +52,19 @@ interface Props {
   habit: THabit
   isLoading?: boolean
   className?: string
+  isDetail?: boolean
   onDelete?: (id: string) => void
   refetch: () => void
 }
 
-export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete }: Props) => {
+export const CheckInHeatmap = ({
+  habit,
+  isLoading,
+  className,
+  isDetail,
+  refetch,
+  onDelete,
+}: Props) => {
   const { hooks } = useAppContext()
   const mutationDelete = hooks.useDeleteHabit()
   const [hideModal] = useStoreShallow((state) => [
@@ -106,7 +115,17 @@ export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete 
           isLoading={isLoading}
           className="flex justify-between py-4 flex-row items-center space-y-0"
         >
-          <CardTitle>{title}</CardTitle>
+          <CardTitle>
+            {!isDetail && (
+              <MLink
+                to={pathRoutes.habit.detail.replace(':id', habit?.id || '')}
+                className="text-unset"
+              >
+                {title}
+              </MLink>
+            )}
+            {isDetail && title}
+          </CardTitle>
           {!isWidget && (
             <div className="ml-auto flex space-x-2 justify-end">
               <DropdownMenu modal={false}>

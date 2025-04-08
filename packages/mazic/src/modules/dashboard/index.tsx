@@ -10,4 +10,9 @@ export const dashboardRoute: TRoutes = [
     permission: PERMISSIONS.dashboard.view,
     Component: lazy(() => import('./DashboardPage')),
   },
+  {
+    path: pathRoutes.habit.detail,
+    permission: PERMISSIONS.habit.view,
+    Component: lazy(() => import('./HabitDetailPage')),
+  },
 ]

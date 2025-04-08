@@ -15,6 +15,7 @@ export const pathRoutes = {
   habit: {
     list: '/habit',
     view: '/habit/view/:id',
+    detail: '/habit/:id',
     edit: '/habit/edit/:id',
     create: '/habit/create',
   },
