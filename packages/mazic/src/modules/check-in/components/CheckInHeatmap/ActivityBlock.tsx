@@ -52,13 +52,19 @@ export const ActivityBlock = (props: Props) => {
   }, [isToday, scrollToToday])
 
   const handleCheckIn = async () => {
+    const initJournal = data?.id
+      ? data.journal
+      : (habit?.template || '')?.length > 0
+        ? habit?.template || ''
+        : ''
+
     if (isMarkDone) {
       const isDone = !isActivityDone
       const { data: _data } = await checkIn.mutateAsync({
         id: activityData.id,
         habit_id: habit.id as string,
         date: activityDate.toDate(),
-        journal: '',
+        journal: initJournal,
         value: undefined,
         is_done: isDone,
       })
@@ -80,7 +86,7 @@ export const ActivityBlock = (props: Props) => {
               id: data.id,
               habit_id: habit.id as string,
               date: activityDate.toDate(),
-              journal: data.journal,
+              journal: initJournal,
               value: isNumberCheckIn ? data.count : undefined,
               is_done: isNumberCheckIn ? undefined : true,
             }}

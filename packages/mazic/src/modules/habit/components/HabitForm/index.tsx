@@ -3,6 +3,7 @@ import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 
 import { DetailForm } from './DetailForm'
+import { JournalForm } from './JournalForm'
 
 export const HabitForm = (props: IFormProps) => {
   const validateHabitDetails = (values: THabit) => {
@@ -20,12 +21,16 @@ export const HabitForm = (props: IFormProps) => {
 
   const formSections = [
     {
-      title: 'Habit Details',
+      title: 'Details',
       elementRender: () => <DetailForm />,
       validFunc: validateHabitDetails,
     },
     {
-      title: 'Habit Privacy',
+      title: 'Journal Template',
+      elementRender: () => <JournalForm />,
+    },
+    {
+      title: 'Privacy',
       elementRender: () => <FormCheckbox field="is_private" title="Private" />,
     },
   ]

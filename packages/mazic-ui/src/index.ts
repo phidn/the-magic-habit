@@ -5,3 +5,4 @@ export * from './ui'
 export * from './illustrations'
 
 export { cn } from './utils/cn'
+export { MinimalTiptapEditor } from './minimal-tiptap'

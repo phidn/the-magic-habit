@@ -12,6 +12,7 @@
     "paths": {
       "@mazic/ui": ["packages/mazic-ui/src/index.ts"],
       "@ui/utils": ["packages/mazic-ui/src/utils"],
+      "@ui/*": ["packages/mazic-ui/src/ui/*"],
     }
   },
   "files": [],

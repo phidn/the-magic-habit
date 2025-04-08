@@ -16,7 +16,7 @@ export const ModalCommon = () => {
 
   return modal.open ? (
     <Modal modal={false} open={modal.open} onOpenChange={() => hideModal()}>
-      <ModalContent onOpenAutoFocus={(e) => e.preventDefault()}>
+      <ModalContent onOpenAutoFocus={(e) => e.preventDefault()} className="min-w-[650px]">
         <ModalHeader>
           <ModalTitle>{modal.title}</ModalTitle>
           <ModalDescription>{modal.description}</ModalDescription>

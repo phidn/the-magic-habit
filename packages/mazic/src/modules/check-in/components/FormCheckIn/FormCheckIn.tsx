@@ -5,7 +5,7 @@ import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent, cn } from '@mazic/ui'
 import { checkInSchema, checkInType, THabit, THabitCheckIn } from '@mazic/shared'
-import { FormDatePicker, FormInput, FormItem, FormTextarea } from '@mazic/components'
+import { FormDatePicker, FormEditor, FormInput, FormItem, FormTextarea } from '@mazic/components'
 
 interface Props {
   habit: THabit
@@ -25,6 +25,7 @@ export const FormCheckIn = (props: Props) => {
   const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
   const isNewEntry = !checkInEntry.id
+  const isTemplateExists = !!habit.template && habit.template.length > 0
 
   return (
     <FormProvider {...methods}>
@@ -45,12 +46,16 @@ export const FormCheckIn = (props: Props) => {
                   <FormInput type="number" field="value" placeholder="Enter value.." />
                 </FormItem>
                 <FormItem label="Journal" col={12}>
-                  <FormTextarea
-                    field="journal"
-                    rows={2}
-                    style={{ minHeight: 'unset' }}
-                    placeholder="Enter journal..."
-                  />
+                  {isTemplateExists ? (
+                    <FormEditor field="journal" />
+                  ) : (
+                    <FormTextarea
+                      field="journal"
+                      rows={2}
+                      style={{ minHeight: 'unset' }}
+                      placeholder="Enter journal..."
+                    />
+                  )}
                 </FormItem>
               </CardContent>
             </Card>

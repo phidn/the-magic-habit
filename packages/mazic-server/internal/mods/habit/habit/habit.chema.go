@@ -25,6 +25,7 @@ type Habit struct {
 	Color       string `db:"color" json:"color"`
 	Order       int64  `db:"order" json:"order"`
 	CheckInType string `db:"check_in_type" json:"check_in_type"`
+	Template    string `db:"template" json:"template"`
 	UserId      string `db:"user_id" json:"user_id"`
 	IsDeleted   bool   `db:"is_deleted" json:"is_deleted"`
 	IsPrivate   bool   `db:"is_private" json:"is_private"`
@@ -46,6 +47,7 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 	record.Set("color", habit.Color)
 	record.Set("order", habit.Order)
 	record.Set("check_in_type", habit.CheckInType)
+	record.Set("template", habit.Template)
 	record.Set("user_id", habit.UserId)
 	record.Set("is_deleted", habit.IsDeleted)
 	record.Set("is_private", habit.IsPrivate)
