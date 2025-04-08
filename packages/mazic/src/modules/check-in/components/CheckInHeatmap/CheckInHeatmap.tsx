@@ -58,7 +58,7 @@ interface Props {
 export const CheckInHeatmap = ({ habit, isLoading, className, refetch, onDelete }: Props) => {
   const { hooks } = useAppContext()
   const mutationDelete = hooks.useDeleteHabit()
-  const [hideModal, showModalDelete, showModal] = useStoreShallow((state) => [
+  const [hideModal] = useStoreShallow((state) => [
     state.hideModal,
     state.showModalDelete,
     state.showModal,
