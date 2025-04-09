@@ -227,7 +227,7 @@ export const CheckInHeatmap = ({
                 <div className="flex items-center gap-2">
                   <SeedlingIcon className="h-4 w-4" color={activeModeColor} />{' '}
                   <p className="text-sm text-secondary-foreground font-bold">
-                    Daily average:{' '}
+                    Avg:{' '}
                     <span className="font-semibold" style={{ color: activeModeColor }}>
                       {(habit?.meta?.avg || 0).toFixed(2)}{' '}
                       {pluralize(habit.metric, habit?.meta?.avg)}
