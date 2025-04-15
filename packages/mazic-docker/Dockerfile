@@ -39,6 +39,7 @@ RUN go build -o server .
 FROM alpine:latest
 WORKDIR /app
 COPY --from=builder /app/packages/mazic-server/server ./packages/mazic-server/
+COPY --from=builder /app/packages/mazic-server/internal/mods/rbac/auth/*.html ./packages/mazic-server/internal/mods/rbac/auth/
 
 RUN --mount=type=secret,id=APP_ENV \
       APP_ENV="$(cat /run/secrets/APP_ENV)" && \
