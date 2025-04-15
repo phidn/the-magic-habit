@@ -83,6 +83,7 @@
 - ⚠️ Inconsistent error handling in API responses
 - ⚠️ Mobile app crashes on specific Android versions
 - ⚠️ Widget embedding has security vulnerabilities
+- ✅ ~Email templates not properly included in Docker container~ Fixed by adding COPY command for HTML templates
 
 ### Medium Priority
 - ⚠️ UI inconsistencies between platforms

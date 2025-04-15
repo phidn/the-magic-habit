@@ -79,6 +79,12 @@ module/
 - Context providers for theme, authentication, and global state
 - Reduces prop drilling and centralizes state management
 
+### 6. Docker Build Pattern
+- Multi-stage build process for optimized container images
+- Builder stage compiles Go application and prepares web assets
+- Final stage includes only necessary runtime files
+- Critical files like email templates are explicitly copied from builder to final stage
+
 ## Data Flow
 
 ### 1. API Request Flow

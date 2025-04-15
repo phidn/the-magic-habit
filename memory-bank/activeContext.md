@@ -25,6 +25,7 @@ The current development focus is on completing and refining the core habit track
 - Enhanced habit tracking API with improved streak calculation
 - Added widget endpoints for external habit tracking
 - Optimized database queries for habit listing and reporting
+- Fixed Docker configuration to properly include email templates in the build
 
 ### Frontend Web
 - Redesigned habit dashboard with improved layout and responsiveness

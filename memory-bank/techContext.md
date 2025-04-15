@@ -29,6 +29,7 @@
 - **Validation**: ozzo-validation
 - **Database**: SQLite (via Pocketbase)
 - **Query Builder**: dbx (Pocketbase's query builder)
+- **Email System**: HTML templates for authentication emails (verify_email.html, forgot_password.html)
 
 ### Infrastructure
 - **Repository**: Monorepo managed with Nx
