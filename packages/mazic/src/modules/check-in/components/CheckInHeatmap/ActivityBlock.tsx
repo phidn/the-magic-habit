@@ -115,13 +115,26 @@ export const ActivityBlock = (props: Props) => {
   const _count = data.count || 0
 
   const renderTooltip = () => {
+    let activityInfo = ''
+
     if (habit?.check_in_type === checkInType.INPUT_NUMBER) {
       const _label = !_count ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
-      return `${_label} on ${dateFormat}.`
+      activityInfo = `${_label} on ${dateFormat}`
     } else {
       const _label = !_count ? 'No activity' : 'Completed successfully'
-      return `${_label} on ${dateFormat}.`
+      activityInfo = `${_label} on ${dateFormat}`
     }
+
+    let tooltipContent = `<div style="font-weight: bold; margin-bottom: 4px;">${activityInfo}</div>`
+
+    if (data?.journal) {
+      tooltipContent += `<div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 4px; margin-top: 4px; font-style: italic;">
+        <span style="color: #aaa; font-size: 0.9em;">Journal:</span><br/>
+        ${data.journal}
+      </div>`
+    }
+
+    return tooltipContent
   }
 
   return (
@@ -141,7 +154,7 @@ export const ActivityBlock = (props: Props) => {
       }}
       onClick={handleCheckIn}
       data-tooltip-id={`my-tooltip-${habit?.id}`}
-      data-tooltip-content={renderTooltip()}
+      data-tooltip-html={renderTooltip()}
     />
   )
 }
