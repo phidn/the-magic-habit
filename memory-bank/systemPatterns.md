@@ -123,3 +123,68 @@ module/
 2. **Integration Tests**: For API endpoints
 3. **E2E Tests**: For critical user journeys
 4. **Component Tests**: For UI components 
+
+## UI Components
+
+### Tooltips
+- HTML-based tooltips for rich content display
+- Structure:
+  ```tsx
+  <rect
+    data-tooltip-id={`my-tooltip-${id}`}
+    data-tooltip-html={tooltipContent}
+  />
+  ```
+- Styling patterns:
+  - Activity status: Bold text
+  - Separators: Border with rgba(255,255,255,0.2)
+  - Journal entries: Italic text with label
+  - Consistent padding and margins
+
+### Component Patterns
+- Reusable components follow consistent patterns
+- State management through hooks
+- Prop interfaces defined with TypeScript
+- Consistent styling with CSS modules
+
+## Data Flow
+- Unidirectional data flow
+- Props down, events up
+- State management with context where needed
+- Consistent error handling
+
+## Code Organization
+- Feature-based directory structure
+- Shared components in common directories
+- Consistent file naming conventions
+- Type definitions in separate files
+
+## Testing Strategy
+- Unit tests for core functionality
+- Integration tests for key features
+- E2E tests for critical paths
+- Consistent test naming patterns
+
+## Error Handling
+- Consistent error boundary usage
+- Standardized error messages
+- Error logging and tracking
+- User-friendly error displays
+
+## Performance Patterns
+- Lazy loading where appropriate
+- Memoization for expensive calculations
+- Efficient re-rendering strategies
+- Bundle size optimization
+
+## Security Patterns
+- Input sanitization
+- XSS prevention
+- CSRF protection
+- Secure data handling
+
+## Accessibility Patterns
+- ARIA labels where needed
+- Keyboard navigation support
+- Screen reader compatibility
+- Color contrast compliance

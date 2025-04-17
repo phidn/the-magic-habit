@@ -39,6 +39,15 @@ The current development focus is on completing and refining the core habit track
 - Optimized UI for touch interactions
 - Added offline mode for check-ins without connectivity
 
+### Tooltip UI Enhancement in Check-in Heatmap
+- Enhanced tooltip display in `ActivityBlock` component to show both activity status and journal entries
+- Implemented HTML-based tooltip formatting with improved visual hierarchy:
+  - Activity status shown in bold
+  - Journal entries separated by a subtle border
+  - Journal content displayed in italic with a "Journal:" label
+- Changed from `data-tooltip-content` to `data-tooltip-html` to support HTML formatting
+- Tooltip now provides better visual separation between different types of information
+
 ## Active Decisions
 
 1. **API Structure**
@@ -96,4 +105,9 @@ The current development focus is on completing and refining the core habit track
 3. **Technical Debt**
    - Backend validation logic duplication
    - Inconsistent error handling patterns
-   - Test coverage gaps in critical components 
+   - Test coverage gaps in critical components
+
+## Technical Considerations
+- HTML tooltips require proper sanitization for security
+- Need to ensure tooltip styling remains consistent across different themes
+- Consider accessibility implications of the new tooltip format

@@ -120,4 +120,36 @@
 - ⏳ AI recommendations
 - ⏳ Community features
 - ⏳ Enterprise features
-- ⏳ Marketplace integration 
+- ⏳ Marketplace integration
+
+# Progress Tracking
+
+## Recently Completed
+- Enhanced tooltip UI in Check-in Heatmap
+  - Improved visual hierarchy with HTML formatting
+  - Added better journal entry display
+  - Implemented visual separation between activity status and journal content
+  - Updated tooltip rendering to support HTML content
+
+## What Works
+- Core habit tracking functionality
+- Check-in system with journal support
+- Heatmap visualization with enhanced tooltips
+- Activity status tracking
+- Journal entry integration
+
+## What's Left to Build
+- Advanced analytics dashboard
+- Social features and sharing
+- Integration with external services
+- Mobile app feature parity
+
+## Known Issues
+- Need to verify tooltip accessibility
+- Consider performance optimization for large datasets
+- Review tooltip behavior on different screen sizes
+
+## Current Status
+- Main features are operational
+- UI improvements ongoing
+- Focus on user experience enhancements 
