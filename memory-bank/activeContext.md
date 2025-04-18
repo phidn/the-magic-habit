@@ -1,113 +1,151 @@
-# MagicHabit Active Context
+# Active Context: MagicHabit Project
 
-## Current Focus
-The current development focus is on completing and refining the core habit tracking functionality, with an emphasis on:
+## Current Focus Areas
 
-1. **User Experience Improvements**
-   - Streamlining the habit check-in process
-   - Enhancing data visualization for progress tracking
-   - Optimizing mobile experiences
+1. **Skill Tracking (Completed)**
+   - Multi-criteria tracking implementation completed
+   - Validation for criteria requirements added
+   - Criteria weighting system implemented
+   - Prevention of duplicate criterion names added
+   - Mobile-optimized criteria management interface
 
-2. **Feature Completion**
-   - Finalizing widget implementation for external embedding
-   - Implementing Telegram notification integration
-   - Enhancing habit analytics and insights
+2. **Telegram Integration (In Progress)**
+   - Notification system for daily reminders
+   - Check-in through messaging interface
+   - Progress summaries via Telegram
+   - Currently 80% complete
 
-3. **Platform Stability**
-   - Addressing known bugs and performance issues
-   - Improving offline capabilities
-   - Enhancing error handling and user feedback
+3. **Advanced Analytics (In Planning)**
+   - Radar/spider charts for multi-criteria visualization
+   - Trend analysis across different criteria
+   - Performance benchmarking
+   - Historical performance comparison
+
+4. **Mobile Experience Enhancement (Upcoming)**
+   - Improved offline capabilities
+   - Optimized touch interactions
+   - Native-like performance improvements
+   - More intuitive criteria editing on small screens
 
 ## Recent Changes
 
-### Backend
-- Implemented role-based permission system for user access control
-- Enhanced habit tracking API with improved streak calculation
-- Added widget endpoints for external habit tracking
-- Optimized database queries for habit listing and reporting
-- Fixed Docker configuration to properly include email templates in the build
+### Skill Tracking Implementation (Completed)
+- Added `MULTI_CRITERIA` check-in type for skill tracking
+- Implemented custom criteria definition with:
+  - Individual rating scales per criterion
+  - Weight assignment for importance
+  - Description field for clarity
+- Added validation to ensure:
+  - At least one criterion is defined
+  - No duplicate criterion names exist
+  - Required fields are populated
+  - Weights are appropriately distributed
+- Enhanced the habit form with conditional fields for criteria
+- Optimized UX for mobile users managing criteria
+- Improved accessibility of all form controls
+- Added clear error messaging for validation failures
 
-### Frontend Web
-- Redesigned habit dashboard with improved layout and responsiveness
-- Added habit statistics visualization components
-- Implemented drag-and-drop ordering for habits
-- Enhanced form validation and error feedback
+### Habit Form Enhancements
+- Improved form validation with clearer error messages
+- Added tooltips for criteria weighting explanation
+- Enhanced mobile experience for criteria management
+- Implemented smoother transitions between form sections
+- Added prevention of redundant form submissions
+- Optimized form performance for faster response times
 
-### Mobile
-- Initial mobile application implementation
-- Synchronized core features with web application
-- Optimized UI for touch interactions
-- Added offline mode for check-ins without connectivity
-
-### Tooltip UI Enhancement in Check-in Heatmap
-- Enhanced tooltip display in `ActivityBlock` component to show both activity status and journal entries
-- Implemented HTML-based tooltip formatting with improved visual hierarchy:
-  - Activity status shown in bold
-  - Journal entries separated by a subtle border
-  - Journal content displayed in italic with a "Journal:" label
-- Changed from `data-tooltip-content` to `data-tooltip-html` to support HTML formatting
-- Tooltip now provides better visual separation between different types of information
+### Validation Improvements
+- Added comprehensive validation for the criteria section
+- Implemented front-end validation to prevent user errors
+- Added back-end validation to ensure data integrity
+- Enhanced error reporting for validation failures
+- Created helper text for form fields to guide users
 
 ## Active Decisions
 
-1. **API Structure**
-   - Decision to maintain consistent RESTful endpoint patterns
-   - Standardizing error responses across all endpoints
-   - Implementing consistent validation strategies
+### Current Decisions
+1. **Visualization approach for multi-criteria progress**
+   - Radar/spider charts selected as primary visualization
+   - Implementation planning in progress
+   - Considering library options for optimal performance
 
-2. **State Management**
-   - Using TanStack Query for server state and caching
-   - Zustand for global application state
-   - Local component state for UI-specific behaviors
+2. **Criteria templates implementation**
+   - Working on predefined templates for common skills
+   - Determining the right balance of flexibility vs. guidance
+   - Considering community-contributed templates
 
-3. **Authentication Strategy**
-   - JWT-based authentication with refresh tokens
-   - Role-based permissions for fine-grained access control
-   - User settings storage and management
+3. **Weighted averaging algorithm**
+   - Finalizing approach for overall skill progress calculation
+   - Ensuring mathematical correctness and intuitive results
+   - Addressing edge cases in weight distribution
 
-4. **UI Component Strategy**
-   - Leveraging shadcn/ui for web components
-   - React Native Paper for mobile
-   - Maintaining consistent design language across platforms
+### Recent Decisions
+1. **Criteria UI approach**
+   - Selected drag-and-drop interface for reordering
+   - Implemented inline editing for better UX
+   - Chose slider component for weight assignment
+
+2. **Validation strategy**
+   - Implemented real-time validation for immediate feedback
+   - Created clear error messaging system
+   - Added prevention of duplicate criterion names
+
+3. **Mobile optimization**
+   - Redesigned criteria management for touch interfaces
+   - Implemented collapsible sections for better space utilization
+   - Enhanced touch targets for better mobile accessibility
 
 ## Next Steps
 
-### Short-term Priorities
-1. Complete Telegram notification integration
-2. Enhance widget customization options
-3. Implement enhanced analytics for habit progress
-4. Address outstanding UX issues from user feedback
+### Immediate Actions
+1. Complete the visualization component for multi-criteria skills using radar/spider charts
+2. Implement predefined criteria templates for common skill types
+3. Finalize the weighted progress calculation algorithm
+4. Complete Telegram integration for notifications and check-ins
 
-### Medium-term Goals
-1. Develop social features for habit sharing and accountability
-2. Implement advanced habit scheduling options
-3. Add export/import functionality for user data
-4. Create template library for common habits
-
-### Long-term Vision
-1. Expand platform with AI-driven habit recommendations
-2. Develop public API for third-party integrations
-3. Implement advanced visualization and reporting
-4. Create ecosystem for habit-based communities
+### Upcoming Tasks
+1. Enhance mobile experience for criteria management
+2. Improve performance for users with many habits and criteria
+3. Add export functionality for skill tracking data
+4. Implement community sharing features for skill templates
 
 ## Known Issues
 
-1. **Performance**
-   - Slow initial load time for dashboard with many habits
-   - Occasional UI lag during habit reordering
-   - Mobile performance issues on older devices
+### Technical Issues
+1. Occasional race condition in multi-criteria updates
+2. Performance concerns with large datasets
+3. Memory leaks in complex components
+4. Browser compatibility issues with some rating controls
 
-2. **UX Friction Points**
-   - Multi-step process for habit creation could be simplified
-   - Limited customization for habit visualization
-   - Inconsistent loading states across the application
-
-3. **Technical Debt**
-   - Backend validation logic duplication
-   - Inconsistent error handling patterns
-   - Test coverage gaps in critical components
+### UX Concerns
+1. Complexity of criteria setup for new users
+2. Need for better guidance on weight assignment
+3. Mobile interface constraints for criteria management
+4. Potential information overload in progress visualization
 
 ## Technical Considerations
-- HTML tooltips require proper sanitization for security
-- Need to ensure tooltip styling remains consistent across different themes
-- Consider accessibility implications of the new tooltip format
+
+### Performance Optimizations
+- Implementing virtualized lists for large criteria sets
+- Optimizing state management for complex form interactions
+- Adding caching for frequently accessed habit data
+- Improving rendering efficiency for visualization components
+
+### Architecture Improvements
+- Refactoring criteria management into standalone component
+- Creating reusable form validation utilities
+- Enhancing error boundary implementation
+- Improving test coverage for criteria-related functionality
+
+## User Experience Notes
+
+### Feedback Incorporation
+- Users requested clearer guidance on criteria weighting
+- Simplified the criteria creation process based on feedback
+- Added more intuitive progress visualization
+- Improved error messages for validation failures
+
+### Onboarding Improvements
+- Creating guided setup for first-time skill tracking
+- Adding example templates for common skills
+- Enhancing documentation for multi-criteria tracking
+- Providing tooltips for complex concepts

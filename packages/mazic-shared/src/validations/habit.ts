@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { checkInType } from '../config'
+
 import { criteriaListSchema } from './criterion'
 
 export const habitSchema = z
@@ -22,6 +23,17 @@ export const habitSchema = z
         code: z.ZodIssueCode.custom,
         message: 'Metric is required for number check-in',
         path: ['metric'],
+      })
+    }
+
+    if (
+      data.check_in_type === checkInType.MULTI_CRITERIA &&
+      (!data.criteria || data.criteria.length === 0)
+    ) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'At least one criterion is required for multi-criteria skill tracking',
+        path: ['criteria'],
       })
     }
   })
