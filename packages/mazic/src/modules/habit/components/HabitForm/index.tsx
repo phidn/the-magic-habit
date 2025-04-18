@@ -2,6 +2,7 @@ import { checkInType, THabit } from '@mazic/shared'
 import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
 import { IFormProps } from '@mazic/types'
 
+import { CriteriaForm } from './CriteriaForm'
 import { DetailForm } from './DetailForm'
 import { JournalForm } from './JournalForm'
 
@@ -19,11 +20,24 @@ export const HabitForm = (props: IFormProps) => {
     return true
   }
 
+  const validateCriteria = (values: THabit) => {
+    if (!values.criteria || values.criteria.length === 0) {
+      return true
+    }
+    return values.criteria.every((criterion) => !!criterion.name)
+  }
+
   const formSections = [
     {
       title: 'Details',
       elementRender: () => <DetailForm />,
       validFunc: validateHabitDetails,
+    },
+    {
+      title: 'Skill Criteria',
+      hideTitle: true,
+      elementRender: () => <CriteriaForm />,
+      validFunc: validateCriteria,
     },
     {
       title: 'Journal Template',

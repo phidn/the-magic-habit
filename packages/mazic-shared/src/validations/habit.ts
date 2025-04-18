@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 import { checkInType } from '../config'
+import { criteriaListSchema } from './criterion'
 
 export const habitSchema = z
   .object({
@@ -13,6 +14,7 @@ export const habitSchema = z
     order: z.number().optional().default(0),
     template: z.string().optional().nullable(),
     is_private: z.boolean().optional().default(true),
+    criteria: criteriaListSchema.optional(),
   })
   .superRefine((data, ctx) => {
     if (data.check_in_type === checkInType.INPUT_NUMBER && !data.metric) {

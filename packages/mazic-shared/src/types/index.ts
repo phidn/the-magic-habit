@@ -30,3 +30,4 @@ export interface ErrorResponse {
 export * from './habit'
 export * from './role'
 export * from './checkIn'
+export * from './criterion'
