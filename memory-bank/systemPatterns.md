@@ -12,7 +12,6 @@ mazic-habit/
 │   ├── mazic-mobile/            - Mobile application (React Native)
 │   ├── mazic-ui/                - Shared UI components
 │   ├── mazic-shared/            - Shared utilities
-│   ├── mazic-prisma/            - Database schema definitions
 │   └── mazic-docker/            - Docker configurations
 ```
 
