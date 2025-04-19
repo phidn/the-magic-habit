@@ -2,7 +2,17 @@ import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import snakeCase from 'lodash/snakeCase'
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts'
+import {
+  Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from 'recharts'
 
 import {
   Card,
@@ -72,7 +82,7 @@ export function Overview({ habits, range, isLoading }: Props) {
           item[`actual_${_title}`] = entry.value
         }
       }
-      item[_title] = item[_title].toFixed(2)
+      item[_title] = parseFloat(item[_title].toFixed(2))
       item[`actual_${_title}`] = (+item[`actual_${_title}`] || 0).toFixed(2)
     }
     return item
@@ -100,6 +110,7 @@ export function Overview({ habits, range, isLoading }: Props) {
               axisLine={false}
               tickFormatter={(value) => dayjs(value).format('MMM DD')}
             />
+            <YAxis axisLine={false} tickLine={false} width={30} />
             {Object.keys(chartConfig).map((key) => {
               return (
                 <Line
@@ -164,6 +175,7 @@ export function Overview({ habits, range, isLoading }: Props) {
               axisLine={false}
               tickFormatter={(value) => dayjs(value).format('MMM DD')}
             />
+            <YAxis axisLine={false} tickLine={false} width={30} />
             {Object.keys(chartConfig).map((key) => {
               return (
                 <Area
@@ -228,6 +240,7 @@ export function Overview({ habits, range, isLoading }: Props) {
               axisLine={false}
               tickFormatter={(value) => dayjs(value).format('MMM DD')}
             />
+            <YAxis axisLine={false} tickLine={false} width={30} />
             {Object.keys(chartConfig).map((key) => {
               return (
                 <Bar
