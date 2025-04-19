@@ -120,3 +120,4 @@ yarn-error.log
 /coverage
 
 packages/mazic-server/__debug_bin*
+**/*.tsbuildinfo
