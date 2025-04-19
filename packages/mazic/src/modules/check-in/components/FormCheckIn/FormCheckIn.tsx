@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import capitalize from 'lodash/capitalize'
 import isEqual from 'lodash/isEqual'
 
-import { Button, Card, CardContent, cn } from '@mazic/ui'
+import { Button, Card, CardContent, CircleProgress, cn } from '@mazic/ui'
 import { checkInSchema, checkInType, TCriterion, THabit, THabitCheckIn } from '@mazic/shared'
 import { FormDatePicker, FormEditor, FormInput, FormItem, FormTextarea } from '@mazic/components'
 
@@ -45,20 +45,32 @@ export const FormCheckIn = (props: Props) => {
                   </FormItem>
                 )}
                 {isMultiCriteriaCheckIn && (
-                  <>
-                    <h3 className="text-lg font-semibold mb-4">Criteria</h3>
-                    {(habit.criterions || []).map((criterion: TCriterion) => (
-                      <FormItem key={criterion.id} label={criterion.name} required col={12}>
-                        <FormInput
-                          type="number"
-                          field={`criterion_values.${criterion.id}`}
-                          placeholder={`Enter value (goal: ${criterion.goal_number})...`}
-                          min={0}
-                          max={criterion.goal_number}
-                        />
-                      </FormItem>
-                    ))}
-                  </>
+                  <Card className="p-2 my-2">
+                    {(habit.criterions || []).map((criterion: TCriterion, idx: number) => {
+                      const value = Number(
+                        methods.watch(`criterion_values.${idx}.value` as keyof THabitCheckIn) || 0
+                      )
+                      return (
+                        <FormItem key={criterion.id} label={criterion.name} required col={12}>
+                          <div className="flex items-center gap-2">
+                            <FormInput
+                              type="number"
+                              field={`criterion_values.${idx}.value`}
+                              placeholder={`Enter value (goal: ${criterion.goal_number})...`}
+                              min={0}
+                              max={criterion.goal_number}
+                            />
+                            <CircleProgress
+                              value={value > criterion.goal_number ? criterion.goal_number : value}
+                              maxValue={criterion.goal_number || 0}
+                              size={40}
+                              animationDuration={500}
+                            />
+                          </div>
+                        </FormItem>
+                      )
+                    })}
+                  </Card>
                 )}
                 <FormItem label="Journal" col={12}>
                   {isTemplateExists ? (

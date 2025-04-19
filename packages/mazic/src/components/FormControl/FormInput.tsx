@@ -31,7 +31,14 @@ const FormInput = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     methods.clearErrors(field)
-    const _value = type === 'number' ? Number(e.target.value) : e.target.value
+    let _value: any = e.target.value
+    if (type === 'number') {
+      if (e.target.value === '' || e.target.value === null || e.target.value === undefined) {
+        _value = null
+      } else {
+        _value = Number(e.target.value)
+      }
+    }
     methods.setValue(field, _value)
     if (typeof afterChange === 'function') {
       afterChange?.(_value)

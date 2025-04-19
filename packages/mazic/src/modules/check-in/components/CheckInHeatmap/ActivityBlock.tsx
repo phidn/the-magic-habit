@@ -77,6 +77,22 @@ export const ActivityBlock = (props: Props) => {
     }
 
     if (!isMarkDone) {
+      const checkInEntry: THabitCheckIn = {
+        id: data.id,
+        habit_id: habit?.id as string,
+        date: activityDate.toDate(),
+        journal: initJournal,
+        value: isNumberCheckIn ? data.count : undefined,
+        is_done: isNumberCheckIn ? undefined : true,
+      }
+
+      if (!checkInEntry?.id && habit?.check_in_type === checkInType.MULTI_CRITERIA) {
+        checkInEntry.criterion_values = (habit.criterions || []).map((criterion) => ({
+          id: criterion.id as string,
+          value: 0,
+        }))
+      }
+
       showModal({
         open: true,
         showFooter: false,
@@ -84,14 +100,7 @@ export const ActivityBlock = (props: Props) => {
         body: habit && (
           <FormCheckIn
             habit={habit}
-            checkInEntry={{
-              id: data.id,
-              habit_id: habit.id as string,
-              date: activityDate.toDate(),
-              journal: initJournal,
-              value: isNumberCheckIn ? data.count : undefined,
-              is_done: isNumberCheckIn ? undefined : true,
-            }}
+            checkInEntry={checkInEntry}
             onSubmitForm={async (data: THabitCheckIn) => {
               await checkIn.mutateAsync(data, {
                 onSuccess: () => {

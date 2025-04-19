@@ -213,8 +213,12 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 		}
 
 		if habit.CheckInType == MULTI_CRITERIA {
-			// Delete existing criteria
-			_, err := txDao.DB().Delete(new(HabitCriterion).TableName(), dbx.HashExp{"habit_id": id}).Execute()
+			habitCriterionIds := utils.ExtractFieldToSlice(habit.Criterions, "Id")
+			_, err := txDao.DB().Delete(
+				new(HabitCriterion).TableName(),
+				dbx.HashExp{"habit_id": id, "id": dbx.In("id", habitCriterionIds...)},
+			).Execute()
+
 			if err != nil {
 				return err
 			}
@@ -226,6 +230,10 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 			}
 
 			for idx, criterion := range habit.Criterions {
+				if criterion.Id != "" {
+					continue
+				}
+
 				criterionItem := models.NewRecord(criterionCollection)
 				criterionItem.Set("habit_id", record.Id)
 				criterionItem.Set("name", criterion.Name)
