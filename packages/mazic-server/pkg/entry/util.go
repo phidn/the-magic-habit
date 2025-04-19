@@ -29,3 +29,13 @@ func (entry *entry) getModelFromSlice(slices any) (models.Model, error) {
 
 	return nil, errors.New("unable to infer model from slice")
 }
+
+func Filter[T any](slice []T, predicate func(T) bool) []T {
+	var result []T
+	for _, e := range slice {
+		if predicate(e) {
+			result = append(result, e)
+		}
+	}
+	return result
+}

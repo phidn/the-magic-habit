@@ -33,6 +33,7 @@ type Habit struct {
 
 	CheckInItems []*check_in.CheckIn `json:"check_in_items"`
 	Meta         HabitMeta           `json:"meta"`
+	Criterions   []*HabitCriterion   `db:"-" json:"criterions"`
 }
 
 func (habit *Habit) TableName() string {
@@ -59,18 +60,30 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 }
 
 const (
-	INPUT_NUMBER = "INPUT_NUMBER"
-	DONE_NOTE    = "DONE_NOTE"
-	DONE         = "DONE"
+	INPUT_NUMBER   = "INPUT_NUMBER"
+	DONE_NOTE      = "DONE_NOTE"
+	DONE           = "DONE"
+	MULTI_CRITERIA = "MULTI_CRITERIA"
 )
 
 func (habit *Habit) Validate() error {
 	return validation.ValidateStruct(habit,
 		validation.Field(&habit.Title, validation.Required),
-		validation.Field(&habit.Metric, validation.When(habit.CheckInType == INPUT_NUMBER, validation.Required).Else(validation.Empty)),
 		validation.Field(&habit.WeekStart, validation.In("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")),
 		validation.Field(&habit.Color, validation.Required),
-		validation.Field(&habit.CheckInType, validation.In(INPUT_NUMBER, DONE_NOTE, DONE)),
+		validation.Field(&habit.CheckInType, validation.In(INPUT_NUMBER, DONE_NOTE, DONE, MULTI_CRITERIA)),
 		validation.Field(&habit.UserId, validation.Required),
 	)
+}
+
+type HabitCriterion struct {
+	models.BaseModel
+
+	HabitId    string `json:"habit_id"`
+	Name       string `json:"name"`
+	GoalNumber int    `json:"goal_number"`
+}
+
+func (habitCriterion *HabitCriterion) TableName() string {
+	return "mz_criterion"
 }

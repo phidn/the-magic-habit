@@ -10,7 +10,7 @@ import { DetailForm } from './DetailForm'
 import { JournalForm } from './JournalForm'
 
 export const HabitForm = (props: IFormProps) => {
-  const [type, setType] = useState<string>(props.initialValues.check_in_type)
+  const [type, setType] = useState<string>(props?.initialValues?.check_in_type)
 
   const validateHabitDetails = (values: THabit) => {
     if (values.check_in_type === checkInType.INPUT_NUMBER) {
@@ -29,10 +29,10 @@ export const HabitForm = (props: IFormProps) => {
   }
 
   const validateCriteria = (values: THabit) => {
-    if (!values.criteria || values.criteria.length === 0) {
+    if (!values.criterions || values.criterions.length === 0) {
       return values.check_in_type !== checkInType.MULTI_CRITERIA
     }
-    return values.criteria.every((criterion) => !!criterion.name)
+    return values.criterions.every((criterion) => !!criterion.name)
   }
 
   const getFormSections = (): IFormSection[] => {

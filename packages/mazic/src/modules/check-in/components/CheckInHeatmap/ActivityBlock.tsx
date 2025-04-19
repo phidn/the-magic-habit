@@ -73,7 +73,9 @@ export const ActivityBlock = (props: Props) => {
         setIsActivityDone(isDone)
         setActivityData((prev) => ({ ...prev, id: _id }))
       }
+      return
     }
+
     if (!isMarkDone) {
       showModal({
         open: true,
@@ -109,6 +111,7 @@ export const ActivityBlock = (props: Props) => {
           />
         ),
       })
+      return
     }
   }
 

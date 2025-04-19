@@ -8,7 +8,7 @@ export const CriteriaForm = () => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: 'criteria',
+    name: 'criterions',
   })
 
   const handleAddCriterion = () => {
@@ -62,11 +62,11 @@ export const CriteriaForm = () => {
           <CardContent>
             <div className="mazic-row">
               <FormItem label="Name" required col={6}>
-                <FormInput field={`criteria.${index}.name`} placeholder="e.g., Pronunciation" />
+                <FormInput field={`criterions.${index}.name`} placeholder="e.g., Pronunciation" />
               </FormItem>
               <FormItem label="Goal number" required col={6}>
                 <FormInput
-                  field={`criteria.${index}.goal_number`}
+                  field={`criterions.${index}.goal_number`}
                   placeholder="e.g., 10"
                   type="number"
                   min={1}

@@ -15,7 +15,7 @@ export const habitSchema = z
     order: z.number().optional().default(0),
     template: z.string().optional().nullable(),
     is_private: z.boolean().optional().default(true),
-    criteria: criteriaListSchema.optional(),
+    criterions: criteriaListSchema.optional(),
   })
   .superRefine((data, ctx) => {
     if (data.check_in_type === checkInType.INPUT_NUMBER && !data.metric) {
@@ -28,12 +28,12 @@ export const habitSchema = z
 
     if (
       data.check_in_type === checkInType.MULTI_CRITERIA &&
-      (!data.criteria || data.criteria.length === 0)
+      (!data.criterions || data.criterions.length === 0)
     ) {
       return ctx.addIssue({
         code: z.ZodIssueCode.custom,
         message: 'At least one criterion is required for multi-criteria skill tracking',
-        path: ['criteria'],
+        path: ['criterions'],
       })
     }
   })

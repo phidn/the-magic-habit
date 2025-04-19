@@ -119,3 +119,4 @@ yarn-error.log
 # testing
 /coverage
 
+__debug_bin

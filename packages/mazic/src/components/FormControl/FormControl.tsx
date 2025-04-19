@@ -51,6 +51,8 @@ export const FormControl = (props: FormControlProps) => {
     values: initialValues,
   })
 
+  console.log('>>> FormControl errors:', methods.formState.errors)
+
   const _formSections = formSections.map((section, idx) => {
     const validFunc = section.validFunc || isValidSection
     return {

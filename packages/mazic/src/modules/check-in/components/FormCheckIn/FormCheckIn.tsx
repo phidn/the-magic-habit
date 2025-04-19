@@ -4,7 +4,7 @@ import capitalize from 'lodash/capitalize'
 import isEqual from 'lodash/isEqual'
 
 import { Button, Card, CardContent, cn } from '@mazic/ui'
-import { checkInSchema, checkInType, THabit, THabitCheckIn } from '@mazic/shared'
+import { checkInSchema, checkInType, TCriterion, THabit, THabitCheckIn } from '@mazic/shared'
 import { FormDatePicker, FormEditor, FormInput, FormItem, FormTextarea } from '@mazic/components'
 
 interface Props {
@@ -16,12 +16,14 @@ interface Props {
 
 export const FormCheckIn = (props: Props) => {
   const { habit, checkInEntry, onSubmitForm, onDeleteForm } = props
+
   const methods = useForm<THabitCheckIn>({
     resolver: zodResolver(checkInSchema),
     values: checkInEntry,
   })
 
   const isNumberCheckIn = habit.check_in_type === checkInType.INPUT_NUMBER
+  const isMultiCriteriaCheckIn = habit.check_in_type === checkInType.MULTI_CRITERIA
   const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
   const isNewEntry = !checkInEntry.id
@@ -37,14 +39,27 @@ export const FormCheckIn = (props: Props) => {
                 <FormItem label="Date" required col={12}>
                   <FormDatePicker field="date" disabled />
                 </FormItem>
-                <FormItem
-                  label={capitalize(habit.metric || '')}
-                  required
-                  col={12}
-                  hidden={!isNumberCheckIn}
-                >
-                  <FormInput type="number" field="value" placeholder="Enter value.." />
-                </FormItem>
+                {isNumberCheckIn && (
+                  <FormItem label={capitalize(habit.metric || '')} required col={12}>
+                    <FormInput type="number" field="value" placeholder="Enter value.." />
+                  </FormItem>
+                )}
+                {isMultiCriteriaCheckIn && (
+                  <>
+                    <h3 className="text-lg font-semibold mb-4">Criteria</h3>
+                    {(habit.criterions || []).map((criterion: TCriterion) => (
+                      <FormItem key={criterion.id} label={criterion.name} required col={12}>
+                        <FormInput
+                          type="number"
+                          field={`criterion_values.${criterion.id}`}
+                          placeholder={`Enter value (goal: ${criterion.goal_number})...`}
+                          min={0}
+                          max={criterion.goal_number}
+                        />
+                      </FormItem>
+                    ))}
+                  </>
+                )}
                 <FormItem label="Journal" col={12}>
                   {isTemplateExists ? (
                     <FormEditor field="journal" />
