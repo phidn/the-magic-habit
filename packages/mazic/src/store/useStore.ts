@@ -35,6 +35,7 @@ export const useStore = create<Store>()(
             isOpen: state.sidebar.isOpen,
           },
           chartType: state.chartType,
+          chartRange: state.chartRange,
         }
       },
     }

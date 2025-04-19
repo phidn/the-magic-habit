@@ -22,7 +22,7 @@ export const getWeekDates = () => {
   return dates
 }
 
-export const getRangeDates = (type: TChartRange) => {
+export const getRangeDates = (type: string) => {
   switch (type) {
     case 'WEEK':
       return getWeekDates()

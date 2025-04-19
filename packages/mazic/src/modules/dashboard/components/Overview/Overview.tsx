@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
@@ -16,6 +17,7 @@ import {
 } from 'recharts'
 
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
@@ -45,7 +47,6 @@ dayjs.extend(isoWeek)
 
 interface Props {
   habits: THabit[]
-  range: TChartRange
   isLoading?: boolean
 }
 
@@ -54,13 +55,15 @@ interface ChartItem {
   [key: string]: number | string
 }
 
-export function Overview({ habits, range, isLoading }: Props) {
+export function Overview({ habits, isLoading }: Props) {
   const { pathname } = useLocation()
 
-  const [mode, _chartType, setChartType] = useStoreShallow((state) => [
+  const [mode, _chartType, setChartType, chartRange, setChartRange] = useStoreShallow((state) => [
     state.theme.mode,
     state.chartType,
     state.setChartType,
+    state.chartRange,
+    state.setChartRange,
   ])
 
   // Check if we have exactly one habit with MULTI_CRITERIA type
@@ -87,7 +90,7 @@ export function Overview({ habits, range, isLoading }: Props) {
       ? singleHabit.criterions.reduce((acc, criterion, index) => {
           acc[snakeCase(criterion.name)] = {
             label: criterion.name,
-            color: adjustColor(index * 30),
+            color: adjustColor(((singleHabit.criterions?.length || 0) - index) * 10),
           }
           return acc
         }, {} as ChartConfig)
@@ -95,7 +98,7 @@ export function Overview({ habits, range, isLoading }: Props) {
 
   const habitMap = new Map(habits.map((habit) => [snakeCase(habit.title), habit]))
 
-  const chartData = getRangeDates(range).map((date) => {
+  const chartData = getRangeDates(chartRange).map((date) => {
     const item: ChartItem = { date }
     for (const habit of habits) {
       const _title = snakeCase(habit.title)
@@ -389,6 +392,12 @@ export function Overview({ habits, range, isLoading }: Props) {
     }
   }
 
+  const handleRangeChange = (newRange: TChartRange) => {
+    if (setChartRange) {
+      setChartRange(newRange)
+    }
+  }
+
   return (
     <Card className="h-[350px]">
       <CardHeader isLoading={isLoading} className="flex flex-row items-center justify-between">
@@ -396,20 +405,40 @@ export function Overview({ habits, range, isLoading }: Props) {
           <CardTitle>You are almost there</CardTitle>
           <CardDescription>{percentage}% goals completed</CardDescription>
         </div>
-        <Select
-          value={chartType}
-          onValueChange={(value) => setChartType(value as ChartType, pathname)}
-        >
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Chart type" />
-          </SelectTrigger>
-          <SelectContent>
-            {isMultiCriteriaView && <SelectItem value="biaxial">Skill Breakdown</SelectItem>}
-            <SelectItem value="bar">Bar Chart</SelectItem>
-            <SelectItem value="line">Line Chart</SelectItem>
-            <SelectItem value="area">Area Chart</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex items-center gap-2">
+          <div className="flex rounded-md border">
+            <Button
+              variant={chartRange === 'WEEK' ? 'default' : 'ghost'}
+              size="sm"
+              className="rounded-r-none"
+              onClick={() => handleRangeChange('WEEK')}
+            >
+              Weekly
+            </Button>
+            <Button
+              variant={chartRange === 'MONTH' ? 'default' : 'ghost'}
+              size="sm"
+              className="rounded-l-none"
+              onClick={() => handleRangeChange('MONTH')}
+            >
+              Monthly
+            </Button>
+          </div>
+          <Select
+            value={chartType}
+            onValueChange={(value) => setChartType(value as ChartType, pathname)}
+          >
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Chart type" />
+            </SelectTrigger>
+            <SelectContent>
+              {isMultiCriteriaView && <SelectItem value="biaxial">Skill Breakdown</SelectItem>}
+              <SelectItem value="bar">Bar Chart</SelectItem>
+              <SelectItem value="line">Line Chart</SelectItem>
+              <SelectItem value="area">Area Chart</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </CardHeader>
       <CardContent isLoading={isLoading}>
         <ChartContainer

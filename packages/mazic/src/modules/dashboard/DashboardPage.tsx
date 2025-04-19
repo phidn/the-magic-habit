@@ -61,7 +61,7 @@ const DashboardPage = () => {
     <div>
       <div className="mazic-row">
         <div className="mazic-col-8">
-          <Overview habits={listHabits} range="MONTH" isLoading={isPending} />
+          <Overview habits={listHabits} isLoading={isPending} />
         </div>
         <div className="mazic-col-4">
           <OverviewTimeline habits={listHabits} isLoading={isPending} />

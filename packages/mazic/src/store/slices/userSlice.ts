@@ -20,6 +20,8 @@ export interface TUserSlice {
     [key: string]: ChartType
   }
   setChartType: (chartType: ChartType, pathname: string) => void
+  chartRange: string
+  setChartRange: (chartRange: string) => void
 }
 
 export const userSlice: ImmerStateCreator<TUserSlice> = (set) => ({
@@ -51,4 +53,6 @@ export const userSlice: ImmerStateCreator<TUserSlice> = (set) => ({
       }
       state.chartType[pathname] = chartType
     }),
+  chartRange: 'WEEK',
+  setChartRange: (chartRange) => set((state) => void (state.chartRange = chartRange)),
 })

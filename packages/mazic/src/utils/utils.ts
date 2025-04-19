@@ -159,21 +159,14 @@ export function hslToHex(hsl: string): string {
 }
 
 export function lightenHexColor(hex: string, percent = 30): string {
-  // Remove # if present
   hex = hex.replace(/^#/, '')
-
-  // Parse r, g, b from hex
   const num = parseInt(hex, 16)
   let r = (num >> 16) & 0xff
   let g = (num >> 8) & 0xff
   let b = num & 0xff
-
-  // Lighten each channel
   r = Math.min(255, Math.floor(r + (255 - r) * (percent / 100)))
   g = Math.min(255, Math.floor(g + (255 - g) * (percent / 100)))
   b = Math.min(255, Math.floor(b + (255 - b) * (percent / 100)))
-
-  // Convert back to hex
   const toHex = (c: number) => c.toString(16).padStart(2, '0')
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`
 }
