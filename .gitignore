@@ -119,4 +119,4 @@ yarn-error.log
 # testing
 /coverage
 
-__debug_bin
+packages/mazic-server/__debug_bin*

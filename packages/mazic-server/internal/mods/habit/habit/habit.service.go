@@ -156,6 +156,17 @@ func (service *habitService) FindOne(ctx context.Context, userId, id string) (*H
 		return nil, err
 	}
 
+	criteriaList := &[]*HabitCriterion{}
+	err = service.Entry.ModelQuery(ctx, new(HabitCriterion)).
+		AndWhere(dbx.HashExp{"habit_id": id}).
+		All(criteriaList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	habit.Criterions = *criteriaList
+
 	return habit, nil
 }
 
@@ -216,7 +227,7 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 			habitCriterionIds := utils.ExtractFieldToSlice(habit.Criterions, "Id")
 			_, err := txDao.DB().Delete(
 				new(HabitCriterion).TableName(),
-				dbx.HashExp{"habit_id": id, "id": dbx.In("id", habitCriterionIds...)},
+				dbx.HashExp{"habit_id": id, "id": dbx.NotIn("id", habitCriterionIds...)},
 			).Execute()
 
 			if err != nil {
@@ -230,17 +241,23 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 			}
 
 			for idx, criterion := range habit.Criterions {
-				if criterion.Id != "" {
-					continue
+				var criterionItem *models.Record
+				if criterion.Id == "" {
+					criterionItem = models.NewRecord(criterionCollection)
+				} else {
+					criterionItem, err = txDao.FindRecordById(criterionCollection.Name, criterion.Id)
+					if err != nil {
+						return err
+					}
 				}
 
-				criterionItem := models.NewRecord(criterionCollection)
 				criterionItem.Set("habit_id", record.Id)
 				criterionItem.Set("name", criterion.Name)
 				criterionItem.Set("goal_number", criterion.GoalNumber)
 				if err := txDao.Save(criterionItem); err != nil {
 					return err
 				}
+
 				habit.Criterions[idx].Id = criterionItem.Id
 				habit.Criterions[idx].HabitId = record.Id
 			}
