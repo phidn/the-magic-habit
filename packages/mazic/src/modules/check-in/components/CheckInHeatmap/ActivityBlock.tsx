@@ -84,13 +84,28 @@ export const ActivityBlock = (props: Props) => {
         journal: initJournal,
         value: isNumberCheckIn ? data.count : undefined,
         is_done: isNumberCheckIn ? undefined : true,
+        criterion_values: data.criterion_values,
       }
 
-      if (!checkInEntry?.id && habit?.check_in_type === checkInType.MULTI_CRITERIA) {
-        checkInEntry.criterion_values = (habit.criterions || []).map((criterion) => ({
-          id: criterion.id as string,
-          value: 0,
-        }))
+      if (habit?.check_in_type === checkInType.MULTI_CRITERIA) {
+        if (!checkInEntry?.id) {
+          checkInEntry.criterion_values = (habit.criterions || []).map((criterion) => ({
+            criterion_id: criterion.id as string,
+            value: 0,
+          }))
+          checkInEntry.value = 0
+        } else {
+          checkInEntry.criterion_values = (habit.criterions || []).map((criterion) => {
+            const criterionValue = (checkInEntry.criterion_values || []).find(
+              (cv) => cv.criterion_id === criterion.id
+            )
+            return {
+              criterion_id: criterion.id as string,
+              value: criterionValue?.value || 0,
+            }
+          })
+          checkInEntry.value = 0
+        }
       }
 
       showModal({
@@ -124,9 +139,8 @@ export const ActivityBlock = (props: Props) => {
     }
   }
 
-  const _count = data.count || 0
-
   const renderTooltip = () => {
+    const _count = data.count || 0
     let activityInfo = ''
 
     if (habit?.check_in_type === checkInType.INPUT_NUMBER) {

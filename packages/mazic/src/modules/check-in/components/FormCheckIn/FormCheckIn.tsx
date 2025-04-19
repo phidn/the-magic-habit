@@ -22,6 +22,9 @@ export const FormCheckIn = (props: Props) => {
     values: checkInEntry,
   })
 
+  // console.log('values', methods.watch())
+  // console.log('errors', methods.formState.errors)
+
   const isNumberCheckIn = habit.check_in_type === checkInType.INPUT_NUMBER
   const isMultiCriteriaCheckIn = habit.check_in_type === checkInType.MULTI_CRITERIA
   const isSave = !isEqual(checkInEntry, methods.watch()) || !isNumberCheckIn
@@ -59,6 +62,13 @@ export const FormCheckIn = (props: Props) => {
                               placeholder={`Enter value (goal: ${criterion.goal_number})...`}
                               min={0}
                               max={criterion.goal_number}
+                              afterChange={() => {
+                                const sum = (methods.getValues('criterion_values') || []).reduce(
+                                  (acc, curr) => acc + curr.value,
+                                  0
+                                )
+                                methods.setValue('value', sum)
+                              }}
                             />
                             <CircleProgress
                               value={value > criterion.goal_number ? criterion.goal_number : value}

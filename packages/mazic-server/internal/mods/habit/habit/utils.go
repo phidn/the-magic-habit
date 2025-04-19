@@ -1,18 +1,18 @@
 package habit
 
 import (
-	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/pkg/schema"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 )
 
-func processCheckInList(habits []*Habit, checkInList []*check_in.CheckIn) error {
+func processCheckInList(habits []*Habit, checkInList []*schema.CheckIn) error {
 	allValues := utils.ExtractFieldToSlice(checkInList, "Value")
 	allAvgValue := utils.Avg(allValues)
 
-	checkInMap := map[string][]*check_in.CheckIn{}
+	checkInMap := map[string][]*schema.CheckIn{}
 	for _, habit := range habits {
 		if _, ok := checkInMap[habit.Id]; !ok {
-			checkInMap[habit.Id] = []*check_in.CheckIn{}
+			checkInMap[habit.Id] = []*schema.CheckIn{}
 		}
 	}
 
@@ -36,7 +36,7 @@ func processCheckInList(habits []*Habit, checkInList []*check_in.CheckIn) error 
 	return nil
 }
 
-func processCheckInItem(checkItems []*check_in.CheckIn, totalAvg, maxValue, avgValue float64) error {
+func processCheckInItem(checkItems []*schema.CheckIn, totalAvg, maxValue, avgValue float64) error {
 	for _, checkIn := range checkItems {
 		if checkIn.Value > 0 {
 			if checkIn.Value > 0 && checkIn.Value < maxValue/4 {

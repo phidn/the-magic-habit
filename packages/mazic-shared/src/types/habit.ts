@@ -14,6 +14,11 @@ export type TCheckIn = {
   count: number
   bar_value: number
   is_done?: boolean
+  criterion_id?: string
+  criterion_values?: {
+    criterion_id: string
+    value: number
+  }[]
 }
 
 export type THabit = z.infer<typeof habitSchema> & {

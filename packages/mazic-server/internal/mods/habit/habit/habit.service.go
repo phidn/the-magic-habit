@@ -4,7 +4,6 @@ import (
 	"context"
 	"net/url"
 
-	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
 	"github.com/golangthang/mazic-habit/pkg/entry"
 	"github.com/golangthang/mazic-habit/pkg/schema"
 	"github.com/golangthang/mazic-habit/pkg/utils"
@@ -77,8 +76,8 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 
 	habitIds := utils.ExtractFieldToSlice(*habits, "Id")
 
-	checkInList := &[]*check_in.CheckIn{}
-	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
+	checkInList := &[]*schema.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(schema.CheckIn)).
 		AndWhere(dbx.In("habit_id", habitIds...)).
 		All(checkInList)
 
@@ -101,10 +100,44 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 	}
 
 	for _, habit := range *habits {
-		habit.Criterions = entry.Filter(*criteriaList, func(criterion *HabitCriterion) bool {
-			return criterion.HabitId == habit.Id
-		})
+		if habit.CheckInType == utils.MULTI_CRITERIA {
+			habit.Criterions = entry.Filter(*criteriaList, func(criterion *HabitCriterion) bool {
+				return criterion.HabitId == habit.Id
+			})
+		}
 	}
+
+	// 	if (isMultiCriteria) {
+	//     const _data = (data || []).filter((x) => x.criterion_id)
+	//     const groupedByDate = (_data || []).reduce(
+	//       (acc, entry) => {
+	//         const date = dayjs(entry.date).format('YYYY/MM/DD')
+	//         if (!acc[date]) {
+	//           acc[date] = {
+	//             id: `${entry.id}-${entry.criterion_id}__${date}`,
+	//             date,
+	//             count: 0,
+	//             level: 0,
+	//             journal: entry.journal,
+	//             is_done: entry.is_done,
+	//             criterion_values: [],
+	//           }
+	//         }
+	//         acc[date].count += entry.count
+	//         acc[date].level = Math.max(acc[date].level, entry.level)
+
+	//         acc[date].criterion_values = acc[date].criterion_values || []
+	//         acc[date].criterion_values.push({
+	//           criterion_id: entry.criterion_id as string,
+	//           value: entry.value,
+	//         })
+
+	//         return acc
+	//       },
+	//       {} as Record<string, HeatMapValue>
+	//     )
+	//     return Object.values(groupedByDate)
+	//   }
 
 	return result, nil
 }
@@ -120,8 +153,8 @@ func (service *habitService) FindWidget(ctx context.Context, apiKey string, quer
 		return nil, err
 	}
 
-	checkInList := &[]*check_in.CheckIn{}
-	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
+	checkInList := &[]*schema.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(schema.CheckIn)).
 		AndWhere(dbx.HashExp{"habit_id": habit.Id}).
 		All(checkInList)
 
@@ -188,7 +221,7 @@ func (service *habitService) Create(ctx context.Context, habit *Habit) (*models.
 			return err
 		}
 
-		if habit.CheckInType == MULTI_CRITERIA {
+		if habit.CheckInType == utils.MULTI_CRITERIA {
 			for idx, criterion := range habit.Criterions {
 				criterionItem := models.NewRecord(criterionCollection)
 				criterionItem.Set("habit_id", record.Id)
@@ -223,7 +256,7 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 			return err
 		}
 
-		if habit.CheckInType == MULTI_CRITERIA {
+		if habit.CheckInType == utils.MULTI_CRITERIA {
 			habitCriterionIds := utils.ExtractFieldToSlice(habit.Criterions, "Id")
 			_, err := txDao.DB().Delete(
 				new(HabitCriterion).TableName(),

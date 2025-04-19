@@ -1,4 +1,4 @@
-package check_in
+package schema
 
 import (
 	"github.com/pocketbase/pocketbase/models"
@@ -21,6 +21,10 @@ type CheckIn struct {
 	Level    int     `db:"level" json:"level"`
 	Count    float64 `json:"count"`
 	BarValue float64 `json:"bar_value"`
+
+	CriterionId string `db:"criterion_id" json:"criterion_id"`
+
+	CriterionValues []*CriterionValue `db:"-" json:"criterion_values"`
 }
 
 func (c *CheckIn) TableName() string {
@@ -30,8 +34,6 @@ func (c *CheckIn) TableName() string {
 func (c *CheckIn) Validate() error {
 	return validation.ValidateStruct(c,
 		validation.Field(&c.Date, validation.Required),
-		validation.Field(&c.Value, validation.When(c.IsDone == nil, validation.Required).Else(validation.Empty)),
-		validation.Field(&c.IsDone, validation.When(c.Value == 0, validation.NotNil)),
 		validation.Field(&c.HabitId, validation.Required),
 	)
 }
@@ -46,4 +48,11 @@ func (c *CheckIn) ParseRecord(record *models.Record) error {
 	record.Set("is_done", c.IsDone)
 
 	return nil
+}
+
+type CriterionValue struct {
+	models.BaseModel
+
+	CriterionId string  `db:"criterion_id" json:"criterion_id"`
+	Value       float64 `db:"value" json:"value"`
 }

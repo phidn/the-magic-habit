@@ -13,7 +13,7 @@ export const checkInSchema = z
     criterion_values: z
       .array(
         z.object({
-          id: z.string(),
+          criterion_id: z.string(),
           value: z.number(),
         })
       )

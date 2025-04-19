@@ -1,7 +1,7 @@
 package habit
 
 import (
-	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
+	"github.com/golangthang/mazic-habit/pkg/schema"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 
 	validation "github.com/go-ozzo/ozzo-validation/v4"
@@ -31,9 +31,9 @@ type Habit struct {
 	IsPrivate   bool   `db:"is_private" json:"is_private"`
 	ApiKey      string `db:"api_key" json:"api_key"`
 
-	CheckInItems []*check_in.CheckIn `json:"check_in_items"`
-	Meta         HabitMeta           `json:"meta"`
-	Criterions   []*HabitCriterion   `db:"-" json:"criterions"`
+	CheckInItems []*schema.CheckIn `json:"check_in_items"`
+	Meta         HabitMeta         `json:"meta"`
+	Criterions   []*HabitCriterion `db:"-" json:"criterions"`
 }
 
 func (habit *Habit) TableName() string {
@@ -59,19 +59,12 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 	return nil
 }
 
-const (
-	INPUT_NUMBER   = "INPUT_NUMBER"
-	DONE_NOTE      = "DONE_NOTE"
-	DONE           = "DONE"
-	MULTI_CRITERIA = "MULTI_CRITERIA"
-)
-
 func (habit *Habit) Validate() error {
 	return validation.ValidateStruct(habit,
 		validation.Field(&habit.Title, validation.Required),
 		validation.Field(&habit.WeekStart, validation.In("MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY")),
 		validation.Field(&habit.Color, validation.Required),
-		validation.Field(&habit.CheckInType, validation.In(INPUT_NUMBER, DONE_NOTE, DONE, MULTI_CRITERIA)),
+		validation.Field(&habit.CheckInType, validation.In(utils.INPUT_NUMBER, utils.DONE_NOTE, utils.DONE, utils.MULTI_CRITERIA)),
 		validation.Field(&habit.UserId, validation.Required),
 	)
 }

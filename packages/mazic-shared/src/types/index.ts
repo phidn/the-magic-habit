@@ -13,6 +13,11 @@ export type HeatMapValue = {
   level: number
   journal: string
   is_done?: boolean
+  criterion_id?: string
+  criterion_values?: {
+    criterion_id: string
+    value: number
+  }[]
 }
 
 export type MutationApiResponse = UseMutationResult<AxiosResponse<any, any>, Error, any, unknown>
