@@ -9,6 +9,7 @@ import { checkInOpts } from '@mazic/modules/check-in'
 export const DetailForm = ({ setType }: { setType: (type: string) => void }) => {
   const methods = useFormContext()
   const metricRequired = methods.watch('check_in_type') === checkInType.INPUT_NUMBER
+  const metricName = methods.watch('metric')
 
   return (
     <div className="mazic-row">
@@ -29,11 +30,23 @@ export const DetailForm = ({ setType }: { setType: (type: string) => void }) => 
       <FormItem label="Color" required col={6}>
         <FormColorPicker field="color" />
       </FormItem>
-      <FormItem label="Title" required col={6}>
+      <FormItem label="Title" required col={12}>
         <FormInput field="title" placeholder="Enter habit title..." />
       </FormItem>
       <FormItem label="Metric (km, hour, minute,...)" required={metricRequired} col={6}>
-        <FormInput field="metric" placeholder="Enter habit metric..." disabled={!metricRequired} />
+        <FormInput
+          field="metric"
+          placeholder="Enter habit metric (point)"
+          disabled={!metricRequired}
+        />
+      </FormItem>
+      <FormItem label="Goal number" required={metricRequired} col={6}>
+        <FormInput
+          type="number"
+          field="goal_number"
+          placeholder={`Enter goal number (10 ${metricName || 'point'})`}
+          disabled={!metricRequired}
+        />
       </FormItem>
     </div>
   )

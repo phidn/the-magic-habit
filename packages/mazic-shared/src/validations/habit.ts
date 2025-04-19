@@ -10,6 +10,7 @@ export const habitSchema = z
     title: z.string().min(1, 'Title is required'),
     check_in_type: z.string().min(1, 'Check-in type is required').default(checkInType.INPUT_NUMBER),
     metric: z.string().optional().nullable(),
+    goal_number: z.number().optional().nullable(),
     week_start: z.string().optional().default('MONDAY'),
     color: z.string().min(1, 'Color is required').default('blue'),
     order: z.number().optional().default(0),

@@ -31,6 +31,8 @@ export const FormCheckIn = (props: Props) => {
   const onSubmit = methods.handleSubmit(async (data) => onSubmitForm(data))
   const isNewEntry = !checkInEntry.id
   const isTemplateExists = !!habit.template && habit.template.length > 0
+  const value = Number(methods.watch('value') || 0)
+  const goalNumber = Number(habit.goal_number || 0)
 
   return (
     <FormProvider {...methods}>
@@ -43,8 +45,22 @@ export const FormCheckIn = (props: Props) => {
                   <FormDatePicker field="date" disabled />
                 </FormItem>
                 {isNumberCheckIn && (
-                  <FormItem label={capitalize(habit.metric || '')} required col={12}>
-                    <FormInput type="number" field="value" placeholder="Enter value.." />
+                  <FormItem
+                    label={`${capitalize(habit.metric || '')} (Your goal: ${goalNumber})`}
+                    required
+                    col={12}
+                  >
+                    <div className="flex items-center gap-2">
+                      <FormInput type="number" field="value" placeholder="Enter value.." />
+                      {goalNumber && (
+                        <CircleProgress
+                          value={value > goalNumber ? goalNumber : value}
+                          maxValue={goalNumber}
+                          size={40}
+                          animationDuration={500}
+                        />
+                      )}
+                    </div>
                   </FormItem>
                 )}
                 {isMultiCriteriaCheckIn && (
@@ -54,7 +70,12 @@ export const FormCheckIn = (props: Props) => {
                         methods.watch(`criterion_values.${idx}.value` as keyof THabitCheckIn) || 0
                       )
                       return (
-                        <FormItem key={criterion.id} label={criterion.name} required col={12}>
+                        <FormItem
+                          key={criterion.id}
+                          label={`${criterion.name} (${criterion.goal_number} point)`}
+                          required
+                          col={12}
+                        >
                           <div className="flex items-center gap-2">
                             <FormInput
                               type="number"

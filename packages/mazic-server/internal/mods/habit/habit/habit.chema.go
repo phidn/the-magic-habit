@@ -21,6 +21,7 @@ type Habit struct {
 
 	Title       string `db:"title" json:"title"`
 	Metric      string `db:"metric" json:"metric"`
+	GoalNumber  *int   `db:"goal_number" json:"goal_number"`
 	WeekStart   string `db:"week_start" json:"week_start"`
 	Color       string `db:"color" json:"color"`
 	Order       int64  `db:"order" json:"order"`
@@ -44,6 +45,7 @@ func (habit *Habit) ParseRecord(record *models.Record) error {
 
 	record.Set("title", habit.Title)
 	record.Set("metric", habit.Metric)
+	record.Set("goal_number", habit.GoalNumber)
 	record.Set("week_start", habit.WeekStart)
 	record.Set("color", habit.Color)
 	record.Set("order", habit.Order)
