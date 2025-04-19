@@ -8,6 +8,7 @@
    - Criteria weighting system implemented
    - Prevention of duplicate criterion names added
    - Mobile-optimized criteria management interface
+   - Fixed multi-criteria heatmap visualization
 
 2. **Telegram Integration (In Progress)**
    - Notification system for daily reminders
@@ -28,6 +29,15 @@
    - More intuitive criteria editing on small screens
 
 ## Recent Changes
+
+### Multi-Criteria Heatmap Visualization Fix (Completed)
+- Fixed backend issue with multi-criteria check-ins not displaying correctly in the heatmap
+- Implemented `groupCheckInsByDate` function to properly aggregate multi-criteria check-ins by date
+- Updated the `processCheckInList` function to correctly handle MULTI_CRITERIA habit types 
+- Ensured level values are properly calculated based on the maximum level of all criteria
+- Fixed `is_done` null pointer issue in the backend code
+- Maintained criterion value details for detailed views while showing aggregated data in the heatmap
+- Ensured backwards compatibility with existing check-in types
 
 ### Skill Tracking Implementation (Completed)
 - Added `MULTI_CRITERIA` check-in type for skill tracking
@@ -79,17 +89,22 @@
    - Addressing edge cases in weight distribution
 
 ### Recent Decisions
-1. **Criteria UI approach**
+1. **Multi-Criteria Data Processing Approach**
+   - Implemented a date-based grouping strategy in the backend for multi-criteria check-ins
+   - Chose to keep criterion-specific values while providing aggregated views
+   - Selected maximum level approach for visual representation in heatmap
+
+2. **Criteria UI approach**
    - Selected drag-and-drop interface for reordering
    - Implemented inline editing for better UX
    - Chose slider component for weight assignment
 
-2. **Validation strategy**
+3. **Validation strategy**
    - Implemented real-time validation for immediate feedback
    - Created clear error messaging system
    - Added prevention of duplicate criterion names
 
-3. **Mobile optimization**
+4. **Mobile optimization**
    - Redesigned criteria management for touch interfaces
    - Implemented collapsible sections for better space utilization
    - Enhanced touch targets for better mobile accessibility
@@ -111,8 +126,8 @@
 ## Known Issues
 
 ### Technical Issues
-1. Occasional race condition in multi-criteria updates
-2. Performance concerns with large datasets
+1. Future-dated multi-criteria entries may require additional handling
+2. Performance concerns with large datasets of criteria
 3. Memory leaks in complex components
 4. Browser compatibility issues with some rating controls
 
@@ -129,12 +144,14 @@
 - Optimizing state management for complex form interactions
 - Adding caching for frequently accessed habit data
 - Improving rendering efficiency for visualization components
+- Efficient grouping algorithm for multi-criteria data aggregation
 
 ### Architecture Improvements
 - Refactoring criteria management into standalone component
 - Creating reusable form validation utilities
 - Enhancing error boundary implementation
 - Improving test coverage for criteria-related functionality
+- Standardized approach for data aggregation in the backend
 
 ## User Experience Notes
 
@@ -143,6 +160,7 @@
 - Simplified the criteria creation process based on feedback
 - Added more intuitive progress visualization
 - Improved error messages for validation failures
+- Addressed feedback about multi-criteria entries not appearing in the heatmap
 
 ### Onboarding Improvements
 - Creating guided setup for first-time skill tracking

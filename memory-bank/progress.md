@@ -25,6 +25,7 @@
   - ✅ Rating scale customization
   - ✅ Validation for criteria requirements
   - ✅ Prevention of duplicate criterion names
+  - ✅ Correct heatmap visualization for multi-criteria check-ins
 
 ### User Interface
 - ✅ Responsive dashboard
@@ -47,6 +48,7 @@
 - ✅ CI/CD pipeline setup
 - ✅ API documentation
 - ✅ Schema validation for criteria data
+- ✅ Multi-criteria data aggregation system
 
 ## In-Progress Features
 
@@ -117,6 +119,8 @@
 ## Recent Achievements
 
 ### New Features
+- ✅ **Multi-criteria heatmap visualization fix**: Implemented proper date-based grouping of check-in data for multi-criteria skills in backend
+- ✅ **Data aggregation for multi-criteria skills**: Created robust algorithm to combine multiple criteria values for the same date
 - ✅ **Multi-criteria skill tracking system**: Completely implemented the feature allowing users to track complex skills with multiple dimensions
 - ✅ **Criteria weighting system**: Added ability to assign different importance weights to each criterion
 - ✅ **Validation for criteria requirements**: Implemented comprehensive validation ensuring at least one criterion is defined and all required fields are filled
@@ -125,6 +129,8 @@
 - ✅ **Mobile-optimized criteria management**: Redesigned the criteria management interface for better usability on mobile devices
 
 ### Performance Improvements
+- ✅ Optimized multi-criteria data processing in backend for improved heatmap performance
+- ✅ Fixed null pointer issues and improved error handling in backend
 - ✅ Optimized state management for complex form interactions
 - ✅ Improved rendering efficiency for criteria components
 - ✅ Enhanced form validation performance
@@ -132,6 +138,8 @@
 - ✅ Implemented virtualized lists for large criteria sets
 
 ### Bug Fixes
+- ✅ Fixed multi-criteria check-ins not showing correctly in the heatmap
+- ✅ Resolved null pointer issues with is_done checks
 - ✅ Fixed validation issues in criteria form
 - ✅ Resolved race conditions in criteria updates
 - ✅ Fixed memory leaks in complex form components
@@ -141,7 +149,7 @@
 ## Known Issues
 
 ### Active Bugs
-1. Occasional race condition in multi-criteria updates
+1. Future-dated multi-criteria entries may not display correctly
 2. Some browser compatibility issues with rating input sliders
 3. Form validation error messages could be more specific
 4. Performance degradation with very large criteria sets
@@ -165,5 +173,6 @@
 ### Manual Testing
 - Multi-criteria creation: Fully tested
 - Criteria validation: Fully tested
+- Multi-criteria heatmap visualization: Fully tested
 - Mobile usability: Partially tested (needs more edge cases)
 - Cross-browser compatibility: Partially tested (Firefox, Chrome, Safari)
