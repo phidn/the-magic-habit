@@ -80,6 +80,11 @@ The repository is organized into key directories that encapsulate various aspect
   - **Toast Notifications:** Immediate feedback via toast messages informs users about the success or failure of their actions.
   - **Consistent UX Patterns:** Error states and loading indicators are uniformly implemented across modules.
 
+### 6. Formatting, Linting, and Fixing Code
+Code consistency is maintained using ESLint with Prettier integrations. If you encounter import sorting or style issues, you can auto-fix them using:
+```
+npx eslint [file-name] --fix
+
 ## Detailed Module Flow: JobTitle
 
 ### Creating/Updating Job Titles

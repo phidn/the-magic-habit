@@ -4,11 +4,11 @@ import (
 	"context"
 	"net/url"
 
-	"github.com/golangthang/mazic-habit/internal/mods/habit/check_in"
 	"github.com/golangthang/mazic-habit/pkg/entry"
 	"github.com/golangthang/mazic-habit/pkg/schema"
 	"github.com/golangthang/mazic-habit/pkg/utils"
 
+	"github.com/pocketbase/pocketbase/daos"
 	"github.com/pocketbase/pocketbase/models"
 
 	"github.com/pocketbase/dbx"
@@ -76,8 +76,8 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 
 	habitIds := utils.ExtractFieldToSlice(*habits, "Id")
 
-	checkInList := &[]*check_in.CheckIn{}
-	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
+	checkInList := &[]*schema.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(schema.CheckIn)).
 		AndWhere(dbx.In("habit_id", habitIds...)).
 		All(checkInList)
 
@@ -89,6 +89,55 @@ func (service *habitService) Find(ctx context.Context, userId string, queryParam
 	if err != nil {
 		return nil, err
 	}
+
+	criteriaList := &[]*HabitCriterion{}
+	err = service.Entry.ModelQuery(ctx, new(HabitCriterion)).
+		AndWhere(dbx.In("habit_id", habitIds...)).
+		All(criteriaList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, habit := range *habits {
+		if habit.CheckInType == utils.MULTI_CRITERIA {
+			habit.Criterions = entry.Filter(*criteriaList, func(criterion *HabitCriterion) bool {
+				return criterion.HabitId == habit.Id
+			})
+		}
+	}
+
+	// 	if (isMultiCriteria) {
+	//     const _data = (data || []).filter((x) => x.criterion_id)
+	//     const groupedByDate = (_data || []).reduce(
+	//       (acc, entry) => {
+	//         const date = dayjs(entry.date).format('YYYY/MM/DD')
+	//         if (!acc[date]) {
+	//           acc[date] = {
+	//             id: `${entry.id}-${entry.criterion_id}__${date}`,
+	//             date,
+	//             count: 0,
+	//             level: 0,
+	//             journal: entry.journal,
+	//             is_done: entry.is_done,
+	//             criterion_values: [],
+	//           }
+	//         }
+	//         acc[date].count += entry.count
+	//         acc[date].level = Math.max(acc[date].level, entry.level)
+
+	//         acc[date].criterion_values = acc[date].criterion_values || []
+	//         acc[date].criterion_values.push({
+	//           criterion_id: entry.criterion_id as string,
+	//           value: entry.value,
+	//         })
+
+	//         return acc
+	//       },
+	//       {} as Record<string, HeatMapValue>
+	//     )
+	//     return Object.values(groupedByDate)
+	//   }
 
 	return result, nil
 }
@@ -104,8 +153,8 @@ func (service *habitService) FindWidget(ctx context.Context, apiKey string, quer
 		return nil, err
 	}
 
-	checkInList := &[]*check_in.CheckIn{}
-	err = service.Entry.ModelQuery(ctx, new(check_in.CheckIn)).
+	checkInList := &[]*schema.CheckIn{}
+	err = service.Entry.ModelQuery(ctx, new(schema.CheckIn)).
 		AndWhere(dbx.HashExp{"habit_id": habit.Id}).
 		All(checkInList)
 
@@ -140,6 +189,17 @@ func (service *habitService) FindOne(ctx context.Context, userId, id string) (*H
 		return nil, err
 	}
 
+	criteriaList := &[]*HabitCriterion{}
+	err = service.Entry.ModelQuery(ctx, new(HabitCriterion)).
+		AndWhere(dbx.HashExp{"habit_id": id}).
+		All(criteriaList)
+
+	if err != nil {
+		return nil, err
+	}
+
+	habit.Criterions = *criteriaList
+
 	return habit, nil
 }
 
@@ -152,9 +212,34 @@ func (service *habitService) Create(ctx context.Context, habit *Habit) (*models.
 	record := models.NewRecord(collection)
 	habit.ParseRecord(record)
 
-	if err := service.Entry.Dao().Save(record); err != nil {
+	err = service.Entry.Dao().RunInTransaction(func(txDao *daos.Dao) error {
+		if err := txDao.Save(record); err != nil {
+			return err
+		}
+		criterionCollection, err := service.Entry.FindCollectionByName(ctx, new(HabitCriterion).TableName())
+		if err != nil {
+			return err
+		}
+
+		if habit.CheckInType == utils.MULTI_CRITERIA {
+			for idx, criterion := range habit.Criterions {
+				criterionItem := models.NewRecord(criterionCollection)
+				criterionItem.Set("habit_id", record.Id)
+				criterionItem.Set("name", criterion.Name)
+				criterionItem.Set("goal_number", criterion.GoalNumber)
+				if err := txDao.Save(criterionItem); err != nil {
+					return err
+				}
+				habit.Criterions[idx].Id = criterionItem.Id
+				habit.Criterions[idx].HabitId = record.Id
+			}
+		}
+		return nil
+	})
+	if err != nil {
 		return nil, err
 	}
+
 	return record, nil
 }
 
@@ -165,9 +250,58 @@ func (service *habitService) Update(ctx context.Context, id string, habit *Habit
 	}
 
 	habit.ParseRecord(record)
-	if err := service.Entry.Dao().Save(record); err != nil {
+
+	err = service.Entry.Dao().RunInTransaction(func(txDao *daos.Dao) error {
+		if err := txDao.Save(record); err != nil {
+			return err
+		}
+
+		if habit.CheckInType == utils.MULTI_CRITERIA {
+			habitCriterionIds := utils.ExtractFieldToSlice(habit.Criterions, "Id")
+			_, err := txDao.DB().Delete(
+				new(HabitCriterion).TableName(),
+				dbx.HashExp{"habit_id": id, "id": dbx.NotIn("id", habitCriterionIds...)},
+			).Execute()
+
+			if err != nil {
+				return err
+			}
+
+			// Create new criteria
+			criterionCollection, err := service.Entry.FindCollectionByName(ctx, new(HabitCriterion).TableName())
+			if err != nil {
+				return err
+			}
+
+			for idx, criterion := range habit.Criterions {
+				var criterionItem *models.Record
+				if criterion.Id == "" {
+					criterionItem = models.NewRecord(criterionCollection)
+				} else {
+					criterionItem, err = txDao.FindRecordById(criterionCollection.Name, criterion.Id)
+					if err != nil {
+						return err
+					}
+				}
+
+				criterionItem.Set("habit_id", record.Id)
+				criterionItem.Set("name", criterion.Name)
+				criterionItem.Set("goal_number", criterion.GoalNumber)
+				if err := txDao.Save(criterionItem); err != nil {
+					return err
+				}
+
+				habit.Criterions[idx].Id = criterionItem.Id
+				habit.Criterions[idx].HabitId = record.Id
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
 		return nil, err
 	}
+
 	return record, nil
 }
 

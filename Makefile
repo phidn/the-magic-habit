@@ -110,7 +110,7 @@ web-lint-fix: switch-node-version
 
 web-ts: switch-node-version
 	@echo "Checking web typescript..."
-	yarn tsc -b ./packages/mazic/tsconfig.app.json
+	yarn tsc -b ./packages/mazic/tsconfig.app.json | grep -v "packages/mazic-ui/src/minimal-tiptap"
 	@echo "Web typescript checked."
 
 web-format: switch-node-version

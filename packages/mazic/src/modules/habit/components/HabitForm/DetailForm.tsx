@@ -6,7 +6,7 @@ import { FormColorPicker } from '@mazic/components/FormControl/FormColorPicker'
 import { FormInput } from '@mazic/components/FormControl/FormInput'
 import { checkInOpts } from '@mazic/modules/check-in'
 
-export const DetailForm = () => {
+export const DetailForm = ({ setType }: { setType: (type: string) => void }) => {
   const methods = useFormContext()
   const metricRequired = methods.watch('check_in_type') === checkInType.INPUT_NUMBER
 
@@ -22,6 +22,7 @@ export const DetailForm = () => {
               methods.clearErrors('metric')
               methods.setValue('metric', null)
             }
+            setType(value)
           }}
         />
       </FormItem>

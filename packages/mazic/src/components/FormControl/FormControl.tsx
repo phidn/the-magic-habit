@@ -21,6 +21,7 @@ export interface FormControlProps {
   initialValues: any
   onSubmitForm: (values: any) => Promise<MutationApiResponse>
   isReset?: boolean
+  navigateTo?: string
 
   isPendingSubmit?: boolean
   refreshData?: () => void
@@ -39,6 +40,7 @@ export const FormControl = (props: FormControlProps) => {
     refreshData,
     isReset,
     isHasFile,
+    navigateTo = '',
   } = props
   const navigate = useNavigate()
   const { pathname } = useLocation()
@@ -49,7 +51,8 @@ export const FormControl = (props: FormControlProps) => {
     values: initialValues,
   })
 
-  console.log('~ values:', methods.watch())
+  // console.log('>>> FormControl errors:', methods.formState.errors)
+  // console.log('>>> FormControl values:', methods.watch())
 
   const _formSections = formSections.map((section, idx) => {
     const validFunc = section.validFunc || isValidSection
@@ -86,6 +89,9 @@ export const FormControl = (props: FormControlProps) => {
         refreshData()
       }
       if (pageDetails.isAddView) {
+        if (navigateTo) {
+          return navigate(navigateTo)
+        }
         if (isReset) {
           return methods.reset(initialValues)
         }

@@ -47,7 +47,7 @@ export const OverviewTimeline = ({ habits, isLoading }: Props) => {
     for (const entry of habit.check_in_items) {
       if (entry.journal) {
         const formattedDate = dayjs(entry.date).format('MMM DD')
-        const existingItem = acc.find((item) => item.date === formattedDate)
+        const existingItem = acc.find((item: any) => item.date === formattedDate)
         acc.push({
           _date: entry.date,
           date: formattedDate,

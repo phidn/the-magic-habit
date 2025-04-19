@@ -2,6 +2,8 @@ import { z } from 'zod'
 
 import { checkInType } from '../config'
 
+import { criteriaListSchema } from './criterion'
+
 export const habitSchema = z
   .object({
     id: z.string().optional(),
@@ -13,6 +15,7 @@ export const habitSchema = z
     order: z.number().optional().default(0),
     template: z.string().optional().nullable(),
     is_private: z.boolean().optional().default(true),
+    criterions: criteriaListSchema.optional(),
   })
   .superRefine((data, ctx) => {
     if (data.check_in_type === checkInType.INPUT_NUMBER && !data.metric) {
@@ -20,6 +23,17 @@ export const habitSchema = z
         code: z.ZodIssueCode.custom,
         message: 'Metric is required for number check-in',
         path: ['metric'],
+      })
+    }
+
+    if (
+      data.check_in_type === checkInType.MULTI_CRITERIA &&
+      (!data.criterions || data.criterions.length === 0)
+    ) {
+      return ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'At least one criterion is required for multi-criteria skill tracking',
+        path: ['criterions'],
       })
     }
   })

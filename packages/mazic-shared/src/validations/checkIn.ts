@@ -10,6 +10,14 @@ export const checkInSchema = z
     value: z.number().optional().nullable(),
     is_done: z.boolean().default(false).optional(),
     journal: z.string().optional().default(''),
+    criterion_values: z
+      .array(
+        z.object({
+          criterion_id: z.string(),
+          value: z.number(),
+        })
+      )
+      .optional(),
   })
   .superRefine((data, ctx) => {
     if (typeof data.is_done !== 'boolean' && !data.value) {

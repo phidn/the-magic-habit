@@ -10,8 +10,8 @@ export const FormSections = ({ sections }: FormSectionsProps) => {
     return section?.enabled ? (
       <Card key={section.id} id={section.id} className={cn('mb-2', !section.title && 'pt-6')}>
         {section.title && (
-          <CardHeader>
-            <CardTitle>{section.title}</CardTitle>
+          <CardHeader className={cn(section.hideTitle && 'p-3')}>
+            <CardTitle>{section.hideTitle ? '' : section.title}</CardTitle>
           </CardHeader>
         )}
         <CardContent>{section.elementRender()}</CardContent>

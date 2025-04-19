@@ -119,3 +119,5 @@ yarn-error.log
 # testing
 /coverage
 
+packages/mazic-server/__debug_bin*
+**/*.tsbuildinfo

@@ -17,7 +17,45 @@ export const getActivities = (data?: TCheckIn[]): HeatMapValue[] => {
     level: entry.level,
     journal: entry.journal,
     is_done: entry.is_done,
+    criterion_id: entry.criterion_id,
+    criterion_values: entry.criterion_values,
   }))
+  // if (!isMultiCriteria) {
+  // }
+
+  // if (isMultiCriteria) {
+  //   const _data = (data || []).filter((x) => x.criterion_id)
+  //   const groupedByDate = (_data || []).reduce(
+  //     (acc, entry) => {
+  //       const date = dayjs(entry.date).format('YYYY/MM/DD')
+  //       if (!acc[date]) {
+  //         acc[date] = {
+  //           id: `${entry.id}-${entry.criterion_id}__${date}`,
+  //           date,
+  //           count: 0,
+  //           level: 0,
+  //           journal: entry.journal,
+  //           is_done: entry.is_done,
+  //           criterion_values: [],
+  //         }
+  //       }
+  //       acc[date].count += entry.count
+  //       acc[date].level = Math.max(acc[date].level, entry.level)
+
+  //       acc[date].criterion_values = acc[date].criterion_values || []
+  //       acc[date].criterion_values.push({
+  //         criterion_id: entry.criterion_id as string,
+  //         value: entry.value,
+  //       })
+
+  //       return acc
+  //     },
+  //     {} as Record<string, HeatMapValue>
+  //   )
+  //   return Object.values(groupedByDate)
+  // }
+
+  // return []
 }
 
 export const EQ_CHECK_IN_TEMPLATE = {

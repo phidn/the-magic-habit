@@ -88,19 +88,21 @@ export const CheckInHeatmap = ({
   const startDate = endDate.subtract(1, 'year')
   const isWidget = !!useMatch(pathRoutes.checkIn.widget)
   const isNumberCheckIn = habit?.check_in_type === checkInType.INPUT_NUMBER
+  const isMultiCriteriaCheckIn = habit?.check_in_type === checkInType.MULTI_CRITERIA
 
-  const panelColors = isNumberCheckIn
-    ? {
-        0: bgColor,
-        1: colors[habit.color][2].hex,
-        2: colors[habit.color][3].hex,
-        3: colors[habit.color][4].hex,
-        4: activeModeColor,
-      }
-    : {
-        0: bgColor,
-        4: colors[habit.color][3].hex,
-      }
+  const panelColors =
+    isNumberCheckIn || isMultiCriteriaCheckIn
+      ? {
+          0: bgColor,
+          1: colors[habit.color][2].hex,
+          2: colors[habit.color][3].hex,
+          3: colors[habit.color][4].hex,
+          4: activeModeColor,
+        }
+      : {
+          0: bgColor,
+          4: colors[habit.color][3].hex,
+        }
 
   if (!habit) {
     return null
