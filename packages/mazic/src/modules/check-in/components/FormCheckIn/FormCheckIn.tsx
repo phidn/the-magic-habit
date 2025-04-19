@@ -46,13 +46,13 @@ export const FormCheckIn = (props: Props) => {
                 </FormItem>
                 {isNumberCheckIn && (
                   <FormItem
-                    label={`${capitalize(habit.metric || '')} (Your goal: ${goalNumber})`}
+                    label={`${capitalize(habit.metric || '')} (Your goal: ${goalNumber ? goalNumber : 'No set'})`}
                     required
                     col={12}
                   >
                     <div className="flex items-center gap-2">
                       <FormInput type="number" field="value" placeholder="Enter value.." />
-                      {goalNumber && (
+                      {!!goalNumber && (
                         <CircleProgress
                           value={value > goalNumber ? goalNumber : value}
                           maxValue={goalNumber}
