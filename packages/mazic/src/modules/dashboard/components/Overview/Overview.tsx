@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom'
 import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
@@ -31,8 +32,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@mazic/ui'
-import { baseColorMap, ColorName } from '@mazic/shared'
-import { checkInType, THabit } from '@mazic/shared'
+import { baseColorMap, checkInType, ColorName, THabit } from '@mazic/shared'
+import { useColorMode } from '@mazic/hooks'
 import { ChartType } from '@mazic/store/slices/userSlice'
 import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
@@ -54,11 +55,22 @@ interface ChartItem {
 }
 
 export function Overview({ habits, range, isLoading }: Props) {
-  const [mode, chartType, setChartType] = useStoreShallow((state) => [
+  const { pathname } = useLocation()
+
+  const [mode, _chartType, setChartType] = useStoreShallow((state) => [
     state.theme.mode,
     state.chartType,
     state.setChartType,
   ])
+
+  // Check if we have exactly one habit with MULTI_CRITERIA type
+  const isMultiCriteriaView =
+    habits.length === 1 && habits[0].check_in_type === checkInType.MULTI_CRITERIA
+  const singleHabit = habits.length === 1 ? habits[0] : null
+
+  const chartType = _chartType?.[pathname] || (isMultiCriteriaView ? 'biaxial' : 'bar')
+
+  const { adjustColor } = useColorMode(singleHabit?.color)
 
   const chartConfig = habits.reduce((acc, habit) => {
     const _color = baseColorMap.get(habit.color as ColorName)
@@ -68,6 +80,19 @@ export function Overview({ habits, range, isLoading }: Props) {
     }
     return acc
   }, {} as ChartConfig)
+
+  // For MULTI_CRITERIA view, create a config for each criterion
+  const criteriaChartConfig =
+    isMultiCriteriaView && singleHabit?.criterions
+      ? singleHabit.criterions.reduce((acc, criterion, index) => {
+          acc[snakeCase(criterion.name)] = {
+            label: criterion.name,
+            color: adjustColor((index + 1) * 30),
+          }
+          return acc
+        }, {} as ChartConfig)
+      : {}
+
   const habitMap = new Map(habits.map((habit) => [snakeCase(habit.title), habit]))
 
   const chartData = getRangeDates(range).map((date) => {
@@ -80,6 +105,17 @@ export function Overview({ habits, range, isLoading }: Props) {
         if (entryDate === date) {
           item[_title] += entry.bar_value
           item[`actual_${_title}`] = entry.value
+
+          // For MULTI_CRITERIA, add each criterion's value
+          if (habit.check_in_type === checkInType.MULTI_CRITERIA && entry.criterion_values) {
+            entry.criterion_values.forEach((cv) => {
+              const criterion = habit.criterions?.find((c) => c.id === cv.criterion_id)
+              if (criterion) {
+                const criterionKey = snakeCase(criterion.name)
+                item[criterionKey] = cv.value
+              }
+            })
+          }
         }
       }
       item[_title] = parseFloat(item[_title].toFixed(2))
@@ -98,6 +134,62 @@ export function Overview({ habits, range, isLoading }: Props) {
   const percentage = Math.round((totalHasValue / chartData.length) * 100)
 
   const renderChart = () => {
+    // Special case for MULTI_CRITERIA with BiaxialBarChart
+    if (isMultiCriteriaView && chartType === 'biaxial' && singleHabit?.criterions) {
+      return (
+        <BarChart accessibilityLayer data={chartData}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => dayjs(value).format('MMM DD')}
+          />
+          <YAxis axisLine={false} tickLine={false} width={30} />
+          {singleHabit.criterions.map((criterion, index) => {
+            const criterionKey = snakeCase(criterion.name)
+            return (
+              <Bar
+                key={criterionKey}
+                dataKey={criterionKey}
+                name={criterion.name}
+                fill={criteriaChartConfig[criterionKey]?.color}
+                radius={0}
+              />
+            )
+          })}
+          <ChartTooltip
+            content={
+              <ChartTooltipContent
+                labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
+                formatter={(value, name) => {
+                  return (
+                    <>
+                      <div
+                        className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                        style={
+                          {
+                            '--color-bg': `var(--color-${name})`,
+                          } as React.CSSProperties
+                        }
+                      />
+                      {criteriaChartConfig[name as keyof typeof criteriaChartConfig]?.label || name}
+                      <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                        {value}
+                      </div>
+                    </>
+                  )
+                }}
+              />
+            }
+            cursor={false}
+            defaultIndex={lastIndex}
+          />
+        </BarChart>
+      )
+    }
+
     switch (chartType) {
       case 'line':
         return (
@@ -304,11 +396,15 @@ export function Overview({ habits, range, isLoading }: Props) {
           <CardTitle>You are almost there</CardTitle>
           <CardDescription>{percentage}% goals completed</CardDescription>
         </div>
-        <Select value={chartType} onValueChange={(value) => setChartType(value as ChartType)}>
-          <SelectTrigger className="w-[130px]">
+        <Select
+          value={chartType}
+          onValueChange={(value) => setChartType(value as ChartType, pathname)}
+        >
+          <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Chart type" />
           </SelectTrigger>
           <SelectContent>
+            {isMultiCriteriaView && <SelectItem value="biaxial">Skill Breakdown</SelectItem>}
             <SelectItem value="bar">Bar Chart</SelectItem>
             <SelectItem value="line">Line Chart</SelectItem>
             <SelectItem value="area">Area Chart</SelectItem>
@@ -316,7 +412,12 @@ export function Overview({ habits, range, isLoading }: Props) {
         </Select>
       </CardHeader>
       <CardContent isLoading={isLoading}>
-        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+        <ChartContainer
+          config={
+            isMultiCriteriaView && chartType === 'biaxial' ? criteriaChartConfig : chartConfig
+          }
+          className="h-[200px] w-full"
+        >
           {renderChart()}
         </ChartContainer>
       </CardContent>

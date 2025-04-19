@@ -122,3 +122,58 @@ export const arrayMove = <T>(array: T[], from: number, to: number): T[] => {
   arrayMoveMutate(array, from, to)
   return array
 }
+
+export function hslToHex(hsl: string): string {
+  // parse “hsl(240,100%,50%)”
+  const [h, sPct, lPct] = hsl.match(/[\d.]+/g)!.map(Number)
+  const hNorm = (h % 360) / 360
+  const s = sPct / 100
+  const l = lPct / 100
+
+  const hue2rgb = (p: number, q: number, t: number) => {
+    if (t < 0) t += 1
+    if (t > 1) t -= 1
+    if (t < 1 / 6) return p + (q - p) * 6 * t
+    if (t < 1 / 2) return q
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6
+    return p
+  }
+
+  let r: number, g: number, b: number
+  if (s === 0) {
+    r = g = b = l // achromatic
+  } else {
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s
+    const p = 2 * l - q
+    r = hue2rgb(p, q, hNorm + 1 / 3)
+    g = hue2rgb(p, q, hNorm)
+    b = hue2rgb(p, q, hNorm - 1 / 3)
+  }
+
+  const toHex = (x: number) =>
+    Math.round(x * 255)
+      .toString(16)
+      .padStart(2, '0')
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
+
+export function lightenHexColor(hex: string, percent = 30): string {
+  // Remove # if present
+  hex = hex.replace(/^#/, '')
+
+  // Parse r, g, b from hex
+  const num = parseInt(hex, 16)
+  let r = (num >> 16) & 0xff
+  let g = (num >> 8) & 0xff
+  let b = num & 0xff
+
+  // Lighten each channel
+  r = Math.min(255, Math.floor(r + (255 - r) * (percent / 100)))
+  g = Math.min(255, Math.floor(g + (255 - g) * (percent / 100)))
+  b = Math.min(255, Math.floor(b + (255 - b) * (percent / 100)))
+
+  // Convert back to hex
+  const toHex = (c: number) => c.toString(16).padStart(2, '0')
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`
+}
