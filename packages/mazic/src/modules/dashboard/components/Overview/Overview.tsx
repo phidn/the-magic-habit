@@ -87,7 +87,7 @@ export function Overview({ habits, range, isLoading }: Props) {
       ? singleHabit.criterions.reduce((acc, criterion, index) => {
           acc[snakeCase(criterion.name)] = {
             label: criterion.name,
-            color: adjustColor((index + 1) * 30),
+            color: adjustColor(index * 30),
           }
           return acc
         }, {} as ChartConfig)

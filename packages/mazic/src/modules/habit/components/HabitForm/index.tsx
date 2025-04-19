@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { checkInType, THabit } from '@mazic/shared'
 import { FormCheckbox, FormControl } from '@mazic/components/FormControl'
+import { usePageDetails } from '@mazic/hooks'
 import { IFormProps } from '@mazic/types'
 import { IFormSection } from '@mazic/types/form'
 
@@ -10,7 +11,12 @@ import { DetailForm } from './DetailForm'
 import { JournalForm } from './JournalForm'
 
 export const HabitForm = (props: IFormProps) => {
-  const [type, setType] = useState<string>(props?.initialValues?.check_in_type)
+  const [type, setType] = useState<string>('')
+  const { isEdit } = usePageDetails()
+
+  useEffect(() => {
+    setType(props?.initialValues?.check_in_type)
+  }, [props?.initialValues?.check_in_type])
 
   const validateHabitDetails = (values: THabit) => {
     if (values.check_in_type === checkInType.INPUT_NUMBER) {
@@ -62,6 +68,10 @@ export const HabitForm = (props: IFormProps) => {
     }
 
     return sections
+  }
+
+  if (isEdit && !type) {
+    return null
   }
 
   return (
