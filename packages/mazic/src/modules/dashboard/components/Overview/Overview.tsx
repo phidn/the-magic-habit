@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import isoWeek from 'dayjs/plugin/isoWeek'
 import weekOfYear from 'dayjs/plugin/weekOfYear'
 import snakeCase from 'lodash/snakeCase'
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Line, LineChart, XAxis } from 'recharts'
 
 import {
   Card,
@@ -15,10 +15,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
   CheckIcon,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@mazic/ui'
-import { checkInType, THabit } from '@mazic/shared'
 import { baseColorMap, ColorName } from '@mazic/shared'
-import { useStore } from '@mazic/store/useStore'
+import { checkInType, THabit } from '@mazic/shared'
+import { ChartType } from '@mazic/store/slices/userSlice'
+import { useStoreShallow } from '@mazic/store/useStore'
 import { pluralize } from '@mazic/utils/pluralize'
 
 import { getRangeDates, TChartRange } from '../../utils'
@@ -38,7 +44,12 @@ interface ChartItem {
 }
 
 export function Overview({ habits, range, isLoading }: Props) {
-  const mode = useStore((state) => state.theme.mode)
+  const [mode, chartType, setChartType] = useStoreShallow((state) => [
+    state.theme.mode,
+    state.chartType,
+    state.setChartType,
+  ])
+
   const chartConfig = habits.reduce((acc, habit) => {
     const _color = baseColorMap.get(habit.color as ColorName)
     acc[snakeCase(habit.title)] = {
@@ -76,14 +87,138 @@ export function Overview({ habits, range, isLoading }: Props) {
   }, 0)
   const percentage = Math.round((totalHasValue / chartData.length) * 100)
 
-  return (
-    <Card className="h-[350px]">
-      <CardHeader isLoading={isLoading}>
-        <CardTitle>You are almost there</CardTitle>
-        <CardDescription>{percentage}% goals completed</CardDescription>
-      </CardHeader>
-      <CardContent isLoading={isLoading}>
-        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+  const renderChart = () => {
+    switch (chartType) {
+      case 'line':
+        return (
+          <LineChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => dayjs(value).format('MMM DD')}
+            />
+            {Object.keys(chartConfig).map((key) => {
+              return (
+                <Line
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  stroke={chartConfig[key as keyof typeof chartConfig]?.color}
+                  activeDot={{ r: 6 }}
+                />
+              )
+            })}
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
+                  formatter={(value, name, item) => {
+                    const _value = item.payload[`actual_${name}`]
+                    return (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                          style={
+                            {
+                              '--color-bg': `var(--color-${name})`,
+                            } as React.CSSProperties
+                          }
+                        />
+                        {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                        {habitMap.get(name as string)?.check_in_type ===
+                          checkInType.INPUT_NUMBER && (
+                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                            {_value}
+                            <span className="ml-1 font-normal text-muted-foreground">
+                              {pluralize(habitMap.get(name as string)?.metric, Number(_value))}
+                            </span>
+                          </div>
+                        )}
+                        {habitMap.get(name as string)?.check_in_type !== checkInType.INPUT_NUMBER &&
+                          Number(value) > 0 && (
+                            <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                              <CheckIcon />
+                            </div>
+                          )}
+                      </>
+                    )
+                  }}
+                />
+              }
+              cursor={false}
+              defaultIndex={lastIndex}
+            />
+          </LineChart>
+        )
+      case 'area':
+        return (
+          <AreaChart accessibilityLayer data={chartData}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => dayjs(value).format('MMM DD')}
+            />
+            {Object.keys(chartConfig).map((key) => {
+              return (
+                <Area
+                  key={key}
+                  type="monotone"
+                  dataKey={key}
+                  fill={chartConfig[key as keyof typeof chartConfig]?.color}
+                  stroke={chartConfig[key as keyof typeof chartConfig]?.color}
+                />
+              )
+            })}
+            <ChartTooltip
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) => dayjs(value).format('MMM D, YYYY')}
+                  formatter={(value, name, item) => {
+                    const _value = item.payload[`actual_${name}`]
+                    return (
+                      <>
+                        <div
+                          className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-[--color-bg]"
+                          style={
+                            {
+                              '--color-bg': `var(--color-${name})`,
+                            } as React.CSSProperties
+                          }
+                        />
+                        {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                        {habitMap.get(name as string)?.check_in_type ===
+                          checkInType.INPUT_NUMBER && (
+                          <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                            {_value}
+                            <span className="ml-1 font-normal text-muted-foreground">
+                              {pluralize(habitMap.get(name as string)?.metric, Number(_value))}
+                            </span>
+                          </div>
+                        )}
+                        {habitMap.get(name as string)?.check_in_type !== checkInType.INPUT_NUMBER &&
+                          Number(value) > 0 && (
+                            <div className="ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums text-foreground">
+                              <CheckIcon />
+                            </div>
+                          )}
+                      </>
+                    )
+                  }}
+                />
+              }
+              cursor={false}
+              defaultIndex={lastIndex}
+            />
+          </AreaChart>
+        )
+      default:
+        return (
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
@@ -145,6 +280,31 @@ export function Overview({ habits, range, isLoading }: Props) {
               defaultIndex={lastIndex}
             />
           </BarChart>
+        )
+    }
+  }
+
+  return (
+    <Card className="h-[350px]">
+      <CardHeader isLoading={isLoading} className="flex flex-row items-center justify-between">
+        <div>
+          <CardTitle>You are almost there</CardTitle>
+          <CardDescription>{percentage}% goals completed</CardDescription>
+        </div>
+        <Select value={chartType} onValueChange={(value) => setChartType(value as ChartType)}>
+          <SelectTrigger className="w-[130px]">
+            <SelectValue placeholder="Chart type" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="bar">Bar Chart</SelectItem>
+            <SelectItem value="line">Line Chart</SelectItem>
+            <SelectItem value="area">Area Chart</SelectItem>
+          </SelectContent>
+        </Select>
+      </CardHeader>
+      <CardContent isLoading={isLoading}>
+        <ChartContainer config={chartConfig} className="h-[200px] w-full">
+          {renderChart()}
         </ChartContainer>
       </CardContent>
     </Card>

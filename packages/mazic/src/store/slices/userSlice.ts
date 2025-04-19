@@ -2,6 +2,8 @@ import { TUser } from '@mazic/modules/rbac/user'
 import { ImmerStateCreator } from '@mazic/types/index'
 import { TMenuItem } from '@mazic/types/menu'
 
+export type ChartType = 'bar' | 'line' | 'area'
+
 export interface TUserSlice {
   sidebar: {
     isOpen: boolean
@@ -14,6 +16,8 @@ export interface TUserSlice {
     loaded: boolean
   }
   setCurrentUser: (user: TUser | undefined) => void
+  chartType: ChartType
+  setChartType: (chartType: ChartType) => void
 }
 
 export const userSlice: ImmerStateCreator<TUserSlice> = (set) => ({
@@ -35,4 +39,6 @@ export const userSlice: ImmerStateCreator<TUserSlice> = (set) => ({
       state.currentUser.user = user
       state.currentUser.loaded = true
     }),
+  chartType: 'bar',
+  setChartType: (chartType) => set((state) => void (state.chartType = chartType)),
 })
