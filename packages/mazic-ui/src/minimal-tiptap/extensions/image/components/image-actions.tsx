@@ -131,7 +131,7 @@ export const ImageActions: React.FC<ImageActionsProps> = React.memo(
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">
               {filteredActions.map(({ key, icon, tooltip }) => (
-                <DropdownMenuItem key={key} onClick={(e) => handleAction(e, actions[key])}>
+                <DropdownMenuItem key={key} onClick={(e: any) => handleAction(e, actions[key])}>
                   <div className="flex flex-row items-center gap-2">
                     {icon}
                     <span>{tooltip}</span>
