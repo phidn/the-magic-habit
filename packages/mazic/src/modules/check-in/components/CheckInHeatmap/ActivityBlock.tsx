@@ -34,7 +34,6 @@ export const ActivityBlock = (props: Props) => {
   const [isActivityDone, setIsActivityDone] = useState<boolean>(!!data.is_done)
 
   const activityDate = dayjs(data.date, 'YYYY/MM/DD')
-  const dateFormat = activityDate.format('MMM Do')
 
   const isToday = activityDate.isSame(dayjs(), 'day')
   const ref = useRef<SVGRectElement>(null)
@@ -142,24 +141,81 @@ export const ActivityBlock = (props: Props) => {
   const renderTooltip = () => {
     const _count = data.count || 0
     let activityInfo = ''
-
-    if (habit?.check_in_type === checkInType.INPUT_NUMBER) {
-      const _label = !_count ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
-      activityInfo = `${_label} on ${dateFormat}`
-    } else {
-      const _label = !_count ? 'No activity' : 'Completed successfully'
-      activityInfo = `${_label} on ${dateFormat}`
+    const tooltipStyles = {
+      container: 'padding: 10px; max-width: 250px;',
+      header: 'font-weight: bold; margin-bottom: 8px; font-size: 1.05em;',
+      progress: 'display: flex; align-items: center; margin: 5px 0; gap: 8px;',
+      progressBar:
+        'height: 6px; border-radius: 3px; background: rgba(255,255,255,0.2); width: 100%;',
+      progressFill: `height: 100%; border-radius: 3px; background: ${color};`,
+      journal: 'border-top: 1px solid rgba(255,255,255,0.2); padding-top: 8px; margin-top: 8px;',
+      journalLabel: 'color: #aaa; font-size: 0.9em; margin-bottom: 4px;',
+      criteria: 'margin-top: 6px; padding-left: 5px; border-left: 2px solid rgba(255,255,255,0.1);',
+      criteriaItem: 'display: flex; justify-content: space-between; margin: 3px 0;',
     }
 
-    let tooltipContent = `<div style="font-weight: bold; margin-bottom: 4px;">${activityInfo}</div>`
+    // Date formatting
+    const tooltipDate = activityDate.format('MMM Do, YYYY')
 
-    if (data?.journal) {
-      tooltipContent += `<div style="border-top: 1px solid rgba(255,255,255,0.2); padding-top: 4px; margin-top: 4px; font-style: italic;">
-        <span style="color: #aaa; font-size: 0.9em;">Journal:</span><br/>
-        ${data.journal}
+    // Build header info
+    if (habit?.check_in_type === checkInType.INPUT_NUMBER) {
+      const _label = !_count ? 'No activity' : `${_count} ${pluralize(habit?.metric, _count)}`
+      activityInfo = `${_label} on ${tooltipDate}`
+    } else if (habit?.check_in_type === checkInType.MULTI_CRITERIA) {
+      activityInfo = !_count
+        ? `No activity on ${tooltipDate}`
+        : `${_count} points on ${tooltipDate}`
+    } else {
+      const _label = !_count ? 'No activity' : 'Completed successfully'
+      activityInfo = `${_label} on ${tooltipDate}`
+    }
+
+    // Start building the tooltip
+    let tooltipContent = `<div style="${tooltipStyles.container}">
+      <div style="${tooltipStyles.header}">${activityInfo}</div>`
+
+    // Add progress visualization for numeric goals
+    if (habit?.check_in_type === checkInType.INPUT_NUMBER && habit?.goal_number && _count > 0) {
+      const goalNumber = Number(habit.goal_number || 0)
+      const percentage = Math.min(100, (_count / goalNumber) * 100)
+
+      tooltipContent += `<div style="${tooltipStyles.progress}">
+        <div style="${tooltipStyles.progressBar}">
+          <div style="${tooltipStyles.progressFill}width: ${percentage}%;"></div>
+        </div>
+        ${percentage.toFixed(0)}%
       </div>`
     }
 
+    // Add multi-criteria details
+    if (habit?.check_in_type === checkInType.MULTI_CRITERIA && data.criterion_values?.length) {
+      tooltipContent += `<div style="${tooltipStyles.criteria}">`
+
+      habit.criterions?.forEach((criterion) => {
+        const criterionValue = data.criterion_values?.find((cv) => cv.criterion_id === criterion.id)
+        const value = criterionValue?.value || 0
+        const percentage = criterion.goal_number
+          ? Math.min(100, (value / criterion.goal_number) * 100)
+          : 0
+
+        tooltipContent += `<div style="${tooltipStyles.criteriaItem}">
+          <span>${criterion.name}: ${value}/${criterion.goal_number}</span>
+          <span>${percentage.toFixed(0)}%</span>
+        </div>`
+      })
+
+      tooltipContent += `</div>`
+    }
+
+    // Add journal content if available
+    if (data?.journal && !habit?.template) {
+      tooltipContent += `<div style="${tooltipStyles.journal}">
+        <div style="${tooltipStyles.journalLabel}">Journal:</div>
+        <div>${data.journal}</div>
+      </div>`
+    }
+
+    tooltipContent += `</div>`
     return tooltipContent
   }
 
