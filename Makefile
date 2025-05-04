@@ -37,7 +37,7 @@ kill:
 	- taskkill /f /im watchman.exe
 
 kill-mac:
-	-lsof -ti :8090 | xargs kill -9 2>/dev/null || true
+	- lsof -ti :8090 | xargs kill -9 2>/dev/null || true
 
 cd-server:
 	cd packages/mazic-server && bash -c "exec bash"

@@ -17,6 +17,7 @@ export const checkInSchema = z
           value: z.number(),
         })
       )
+      .nullable()
       .optional(),
   })
   .superRefine((data, ctx) => {
