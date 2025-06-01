@@ -57,15 +57,6 @@ jobs:
             "S3_REGION=${{ secrets.S3_REGION }}"
             "S3_ENDPOINT=${{ secrets.S3_ENDPOINT }}"
 
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_PRIVATE_KEY }}
-          port: 22
-          script: |
-            cd /home/mazic_habit
-            docker remove -f mazic-server || true
-            docker image rm -f phidndev/dev:mazic_server_v0 || true
-            docker run -d --name mazic-server -v ./mz_data:/app/packages/mazic-server/mz_data -p 8090:8090 -e APP_ENV=production phidndev/dev:mazic_server_v0
+      # - name: Deploy to Coolify
+      #   run: |
+      #     curl --request GET '${{ secrets.COOLIFY_WEBHOOK }}' --header 'Authorization: Bearer ${{ secrets.COOLIFY_TOKEN }}'

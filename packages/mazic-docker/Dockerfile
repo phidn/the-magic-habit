@@ -117,7 +117,7 @@ RUN --mount=type=secret,id=S3_ENDPOINT \
 
 RUN cat /app/packages/mazic-server/.env.production
 
-EXPOSE 8090
+EXPOSE 4000
 
 WORKDIR /app/packages/mazic-server
-CMD ["./server", "serve", "--http=0.0.0.0:8090", "--dir=./mz_data"]
+CMD ["./server", "serve", "--http=0.0.0.0:4000", "--dir=./mz_data"]
