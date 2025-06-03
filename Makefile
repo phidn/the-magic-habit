@@ -128,6 +128,7 @@ swagger:
 
 server:
 	@echo "Starting server..."
+	npx kill-port 8090 && \
 	export APP_ENV=development && \
 	cd packages/mazic-server && \
 	wgo run -xdir pb_data -xdir web -xdir migrations --verbose main.go serve

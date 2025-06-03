@@ -5,8 +5,8 @@ export const CONFIG = {
   isDevelopment: VITE_DEV === 'true',
   appNameShort: 'Magic Habit',
   appName: 'The Magic Habit',
-  apiURL: VITE_API_URL || 'http://localhost:8090',
-  domain: VITE_DOMAIN || 'http://localhost:4200',
+  apiURL: VITE_API_URL,
+  domain: VITE_DOMAIN,
   TIME: {
     DD_MM_YYYY: 'DD/MM/YYYY',
   },
