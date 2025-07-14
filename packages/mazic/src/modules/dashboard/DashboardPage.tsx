@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { cn } from '@mazic/ui'
+import { cn, Tabs, TabsContent, TabsList, TabsTrigger } from '@mazic/ui'
 import { THabit } from '@mazic/shared'
 import { NoData } from '@mazic/components'
 import { pathRoutes } from '@mazic/config/pathRoutes'
 import { useAppContext } from '@mazic/hooks'
 import { CheckInHeatmap } from '@mazic/modules/check-in'
-import { useStore } from '@mazic/store/useStore'
+import { DashboardTab } from '@mazic/store/slices/viewSlice'
+import { useStore, useStoreShallow } from '@mazic/store/useStore'
 
+import { DailyCheckIn } from './components/DailyCheckIn/DailyCheckIn'
 import { Overview } from './components/Overview/Overview'
 import { OverviewTimeline } from './components/OverviewTimeline/OverviewTimeline'
 
@@ -20,6 +22,10 @@ const DashboardPage = () => {
 
   const user = useStore((state) => state.currentUser.user)
   const [listHabits, setListHabits] = useState<THabit[]>([])
+  const [activeTab, setActiveTab] = useStoreShallow((state) => [
+    state.view.dashboardActiveTab,
+    state.setDashboardActiveTab,
+  ])
 
   const { data, isPending, refetch } = hooks.useListHabit({
     pageSize: -1,
@@ -67,30 +73,53 @@ const DashboardPage = () => {
           <OverviewTimeline habits={listHabits} isLoading={isPending} />
         </div>
       </div>
-      <div
-        className={cn(
-          'w-full grid gap-2',
-          settingCols === 1 && 'grid-cols-1',
-          settingCols === 2 && 'grid-cols-2',
-          settingCols === 3 && 'grid-cols-3',
-          settingCols === 4 && 'grid-cols-4',
-          habitId && 'grid-cols-1'
-        )}
+
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => setActiveTab(value as DashboardTab)}
+        className="w-full mt-4"
       >
-        {listHabits.map((habit, idx) => {
-          return (
-            <CheckInHeatmap
-              isDetail={!!habitId}
-              key={habit?.id || idx}
-              habit={habit}
-              className="my-2"
-              isLoading={isPending}
-              refetch={refetch}
-              onDelete={onDelete}
-            />
-          )
-        })}
-      </div>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="heatmap">Heatmap</TabsTrigger>
+          <TabsTrigger value="daily-checkin">Daily Check-in</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="heatmap" className="mt-4">
+          <div
+            className={cn(
+              'w-full grid gap-2',
+              settingCols === 1 && 'grid-cols-1',
+              settingCols === 2 && 'grid-cols-2',
+              settingCols === 3 && 'grid-cols-3',
+              settingCols === 4 && 'grid-cols-4',
+              habitId && 'grid-cols-1'
+            )}
+          >
+            {listHabits.map((habit, idx) => {
+              return (
+                <CheckInHeatmap
+                  isDetail={!!habitId}
+                  key={habit?.id || idx}
+                  habit={habit}
+                  className="my-2"
+                  isLoading={isPending}
+                  refetch={refetch}
+                  onDelete={onDelete}
+                />
+              )
+            })}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="daily-checkin" className="mt-4">
+          <DailyCheckIn
+            habits={listHabits}
+            isLoading={isPending}
+            refetch={refetch}
+            onDelete={onDelete}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

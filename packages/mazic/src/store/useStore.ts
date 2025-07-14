@@ -9,8 +9,9 @@ import { modalSlice, TModalSlice } from './slices/modalSlice'
 import { rehydrateSlice, TRehydrateSlice } from './slices/rehydrateSlice'
 import { IThemeSlice, themeSlice } from './slices/themeSlice'
 import { TUserSlice, userSlice } from './slices/userSlice'
+import { IViewSlice, viewSlice } from './slices/viewSlice'
 
-type Store = TRehydrateSlice & TUserSlice & TLoadingSlice & TModalSlice & IThemeSlice
+type Store = TRehydrateSlice & TUserSlice & TLoadingSlice & TModalSlice & IThemeSlice & IViewSlice
 
 export const useStore = create<Store>()(
   persist(
@@ -20,6 +21,7 @@ export const useStore = create<Store>()(
       ...modalSlice(...arg),
       ...userSlice(...arg),
       ...themeSlice(...arg),
+      ...viewSlice(...arg),
     })),
     {
       version: 1,
@@ -36,6 +38,9 @@ export const useStore = create<Store>()(
           },
           chartType: state.chartType,
           chartRange: state.chartRange,
+          view: {
+            dashboardActiveTab: state.view.dashboardActiveTab,
+          },
         }
       },
     }
