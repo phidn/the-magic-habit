@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"log"
 	"net/url"
 
 	"github.com/golangthang/mazic-habit/pkg/entry"
@@ -24,14 +23,12 @@ type UserService interface {
 }
 
 type userService struct {
-	Entry       entry.Entry
-	CronManager *infrastructure.CronManager
+	Entry entry.Entry
 }
 
 func NewUserService(entry entry.Entry, app *infrastructure.Pocket) UserService {
 	return &userService{
-		Entry:       entry,
-		CronManager: app.CronManager,
+		Entry: entry,
 	}
 }
 
@@ -125,7 +122,6 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 	if err != nil {
 		return nil, err
 	}
-	oldTelegramTime := recordSetting.GetString("telegram_time")
 
 	recordSetting.Set("user_id", id)
 	recordSetting.Set("timezone", user.Setting.Timezone)
@@ -137,11 +133,6 @@ func (service *userService) UpdateProfile(ctx context.Context, id string, user *
 
 	if err := service.Entry.Dao().Save(recordSetting); err != nil {
 		return nil, err
-	}
-
-	if user.Setting.TelegramTime != oldTelegramTime {
-		service.CronManager.ScheduleUserTask(id, user.Setting.TelegramTime, user.Setting.Timezone)
-		log.Printf("Updated cron job for user %s to new time %s", id, user.Setting.TelegramTime)
 	}
 
 	return record, nil

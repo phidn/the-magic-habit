@@ -18,7 +18,6 @@ import (
 
 type Pocket struct {
 	*pocketbase.PocketBase
-	CronManager *CronManager
 }
 
 func NewPocket() *Pocket {
@@ -61,15 +60,12 @@ func NewPocket() *Pocket {
 		"fallback the request to index.html on missing static path (eg. when pretty urls are used with SPA)",
 	)
 
-	cronManager := NewCronManager(app)
 	app.OnBeforeServe().Add(func(e *core.ServeEvent) error {
-		cronManager.Start()
-
 		e.Router.GET("/*", apis.StaticDirectoryHandler(web.DistDirFS, indexFallback))
 		return nil
 	})
 
-	return &Pocket{app, cronManager}
+	return &Pocket{app}
 }
 
 func (p *Pocket) Start() error {
