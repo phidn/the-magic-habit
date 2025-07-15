@@ -1,5 +1,6 @@
 import { About } from './components/About'
 import { Hero } from './components/Hero'
+import { HeroFeatures } from './components/HeroFeatures'
 import Leaderboard from './components/Leaderboard/Leaderboard'
 import { Navbar } from './components/Navbar'
 import { Pricing } from './components/Pricing'
@@ -10,6 +11,7 @@ const HomePage = () => {
     <div>
       <Navbar />
       <Leaderboard />
+      <HeroFeatures />
       <Hero />
       <About />
       <Pricing />
