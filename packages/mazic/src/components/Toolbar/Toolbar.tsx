@@ -67,7 +67,7 @@ export const Toolbar = <TData,>({
       </div>
       {renderActions?.()}
       {enableCreate && (
-        <ButtonLink href={`${pathname}/new`} className="h-8 px-2 lg:px-3 mr-2">
+        <ButtonLink href={`${pathname}/new`} className="h-8 px-2 lg:px-3">
           <PlusIcon className="mr-2 h-4 w-4" />
           Add new
         </ButtonLink>

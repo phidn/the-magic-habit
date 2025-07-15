@@ -10,48 +10,6 @@ import { useGetLeaderboard } from '../../apis'
 
 import { Player, transformUserDataToPlayer } from './utils'
 
-function MedalIcon({ position }: { position: number }) {
-  if (position > 3) return null
-
-  const colors = {
-    1: 'text-yellow-400',
-    2: 'text-slate-400',
-    3: 'text-amber-700',
-  }
-
-  return <Trophy className={`w-4 h-4 ${colors[position as keyof typeof colors]} animate-pulse`} />
-}
-
-function PerformanceIndicator({
-  previousPosition,
-  currentPosition,
-}: {
-  previousPosition: number
-  currentPosition: number
-}) {
-  if (previousPosition === currentPosition) return null
-
-  const isImproved = currentPosition < previousPosition
-
-  return (
-    <div
-      className={`flex items-center gap-1 text-xs ${isImproved ? 'text-green-500' : 'text-red-500'}`}
-    >
-      {isImproved ? '▲' : '▼'}
-      <span>{Math.abs(previousPosition - currentPosition)}</span>
-    </div>
-  )
-}
-
-function StatBadge({ label, value }: { label: string; value: string | number }) {
-  return (
-    <div className="flex flex-col items-center bg-gray-100 px-2 py-1 rounded">
-      <span className="text-xs text-gray-600">{label}</span>
-      <span className="text-sm font-bold text-gray-800">{value}</span>
-    </div>
-  )
-}
-
 export default function RaceLeaderboard() {
   const { data: leaderboardData } = useGetLeaderboard()
   const [players, setPlayers] = useState<Player[]>([])
@@ -64,7 +22,7 @@ export default function RaceLeaderboard() {
       const transformedPlayers = sortedData.map((_, index) =>
         transformUserDataToPlayer(sortedData, index)
       )
-      setPlayers(transformedPlayers)
+      setPlayers(transformedPlayers.slice(0, 10))
       if (transformedPlayers.length > 0 && !selectedPlayer) {
         setSelectedPlayer(transformedPlayers[0])
       }
@@ -215,6 +173,48 @@ export default function RaceLeaderboard() {
           </div>
         </motion.div>
       )}
+    </div>
+  )
+}
+
+function MedalIcon({ position }: { position: number }) {
+  if (position > 3) return null
+
+  const colors = {
+    1: 'text-yellow-400',
+    2: 'text-slate-400',
+    3: 'text-amber-700',
+  }
+
+  return <Trophy className={`w-4 h-4 ${colors[position as keyof typeof colors]} animate-pulse`} />
+}
+
+function PerformanceIndicator({
+  previousPosition,
+  currentPosition,
+}: {
+  previousPosition: number
+  currentPosition: number
+}) {
+  if (previousPosition === currentPosition) return null
+
+  const isImproved = currentPosition < previousPosition
+
+  return (
+    <div
+      className={`flex items-center gap-1 text-xs ${isImproved ? 'text-green-500' : 'text-red-500'}`}
+    >
+      {isImproved ? '▲' : '▼'}
+      <span>{Math.abs(previousPosition - currentPosition)}</span>
+    </div>
+  )
+}
+
+function StatBadge({ label, value }: { label: string; value: string | number }) {
+  return (
+    <div className="flex flex-col items-center bg-gray-100 px-2 py-1 rounded">
+      <span className="text-xs text-gray-600">{label}</span>
+      <span className="text-sm font-bold text-gray-800">{value}</span>
     </div>
   )
 }
