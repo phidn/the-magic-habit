@@ -8,11 +8,12 @@ interface FormEditorProps {
   placeholder?: string
   className?: string
   disabled?: boolean
+  autoFocus?: boolean
   afterChange?: (value: any) => void
   editorKey?: number
 }
 
-const FormEditor = ({ field, afterChange, editorKey }: FormEditorProps) => {
+const FormEditor = ({ field, afterChange, editorKey, autoFocus = false }: FormEditorProps) => {
   const methods = useFormContext()
   const { error } = methods.getFieldState(field, methods.formState)
 
@@ -23,7 +24,7 @@ const FormEditor = ({ field, afterChange, editorKey }: FormEditorProps) => {
       <TooltipProvider>
         <MinimalTiptapEditor
           key={editorKey}
-          autofocus
+          autofocus={autoFocus}
           editable
           throttleDelay={0}
           className={cn('h-full min-h-56 w-full rounded-xl', {
