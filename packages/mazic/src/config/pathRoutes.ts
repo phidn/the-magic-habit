@@ -1,6 +1,7 @@
 export const pathRoutes = {
   home: '/',
   dashboard: '/dashboard',
+  daily: '/daily',
   settingView: '/setting-view',
   user: {
     list: '/user',

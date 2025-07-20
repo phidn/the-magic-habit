@@ -29,7 +29,7 @@ type Submenu = {
 }
 
 interface CollapseMenuButtonProps {
-  icon: LucideIcon
+  renderIcon: () => React.ReactNode
   label: string
   active: boolean
   submenus: Submenu[]
@@ -37,7 +37,7 @@ interface CollapseMenuButtonProps {
 }
 
 export const CollapseMenuButton = ({
-  icon: Icon,
+  renderIcon,
   label,
   active,
   submenus,
@@ -52,9 +52,7 @@ export const CollapseMenuButton = ({
         <Button variant={active ? 'secondary' : 'ghost'} className="w-full justify-start h-10">
           <div className="w-full items-center flex justify-between">
             <div className="flex items-center">
-              <span className="mr-4">
-                <Icon size={18} />
-              </span>
+              <span className="mr-4">{renderIcon()}</span>
               <p
                 className={cn(
                   'max-w-[150px] truncate',
@@ -112,9 +110,7 @@ export const CollapseMenuButton = ({
               >
                 <div className="w-full items-center flex justify-between">
                   <div className="flex items-center">
-                    <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                      <Icon size={18} />
-                    </span>
+                    <span className={cn(isOpen === false ? '' : 'mr-4')}>{renderIcon()}</span>
                     <p
                       className={cn(
                         'max-w-[200px] truncate',

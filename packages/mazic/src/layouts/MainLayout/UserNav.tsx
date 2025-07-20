@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@mazic/ui'
-import { MENUS } from '@mazic/hooks'
+import { menusConfig } from '@mazic/config/menusConfig'
 import { useLogout } from '@mazic/modules/rbac/auth'
 import { useStore } from '@mazic/store/useStore'
 
@@ -58,15 +58,15 @@ export const UserNav = () => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link to={MENUS.DASHBOARD.href} className="flex items-center gap-1">
-              {MENUS.DASHBOARD.icon()}
-              {MENUS.DASHBOARD.label}
+            <Link to={menusConfig.DASHBOARD.href} className="flex items-center gap-1">
+              {menusConfig.DASHBOARD.icon()}
+              {menusConfig.DASHBOARD.label}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link to={MENUS.PROFILE.href} className="flex items-center gap-1">
-              {MENUS.PROFILE.icon()}
-              {MENUS.PROFILE.label}
+            <Link to={menusConfig.PROFILE.href} className="flex items-center gap-1">
+              {menusConfig.PROFILE.icon()}
+              {menusConfig.PROFILE.label}
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

@@ -1,4 +1,4 @@
-import { Ellipsis } from 'lucide-react'
+import { Ellipsis, LucideIcon } from 'lucide-react'
 
 import {
   Button,
@@ -21,6 +21,13 @@ interface MenuProps {
 
 export const Menu = ({ isOpen }: MenuProps) => {
   const { menuList } = useMenuList()
+
+  const renderIcon = (Icon: LucideIcon | React.ReactNode) => {
+    if (typeof Icon === 'function') {
+      return <Icon size={18} />
+    }
+    return Icon
+  }
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
@@ -88,7 +95,7 @@ export const Menu = ({ isOpen }: MenuProps) => {
                     ) : (
                       <div className="w-full" key={index}>
                         <CollapseMenuButton
-                          icon={Icon}
+                          renderIcon={() => renderIcon(Icon)}
                           label={label}
                           active={Boolean(active)}
                           submenus={submenus}
