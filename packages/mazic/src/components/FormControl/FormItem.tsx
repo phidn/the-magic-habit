@@ -1,9 +1,10 @@
-import { cloneElement } from 'react'
+import { InfoIcon } from 'lucide-react'
 
-import { usePageDetails } from '@mazic/hooks/usePageDetails'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@mazic/ui'
 
 interface FormItemProps {
   label: string
+  tooltip?: string
   col?: number
   required?: boolean
   hidden?: boolean
@@ -15,6 +16,7 @@ interface FormItemProps {
 
 export const FormItem = ({
   label,
+  tooltip,
   col = 4,
   required = false,
   hidden = false,
@@ -23,18 +25,24 @@ export const FormItem = ({
   if (hidden) return null
 
   return (
-    <div className={`mazic-col-${col}`}>
-      <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-1">
-        {label}
-        {required && <span className="text-destructive">{' *'}</span>}
+    <TooltipProvider delayDuration={0}>
+      <div className={`mazic-col-${col}`}>
+        <div className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 mb-1">
+          {label}
+          {required && <span className="text-destructive">{' *'}</span>}
+          {tooltip && (
+            <Tooltip>
+              <TooltipTrigger>
+                <InfoIcon className="w-3 h-3 ml-1" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{tooltip}</p>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </TooltipProvider>
   )
-}
-
-export const FormItemEditable = ({ children, ...restProps }: FormItemProps) => {
-  const { isView } = usePageDetails()
-  const childrenEditable = cloneElement(children, { disabled: isView })
-  return <FormItem {...restProps}>{childrenEditable}</FormItem>
 }

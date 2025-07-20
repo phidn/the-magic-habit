@@ -33,7 +33,7 @@ export const DetailForm = ({ setType }: { setType: (type: string) => void }) => 
       <FormItem label="Title" required col={12}>
         <FormInput field="title" placeholder="Enter habit title..." />
       </FormItem>
-      <FormItem label="Metric (km, hour, minute,...)" required={metricRequired} col={6}>
+      <FormItem label="Metric (km, hour, point,...)" required={metricRequired} col={6}>
         <FormInput
           field="metric"
           placeholder="Enter habit metric (point)"

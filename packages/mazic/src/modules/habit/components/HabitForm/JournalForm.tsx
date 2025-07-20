@@ -22,10 +22,14 @@ export const JournalForm = () => {
 
   return (
     <div className="mazic-row">
-      <FormItem label="Template" col={12}>
+      <blockquote className="mb-4 border-l-2 pl-6 italic">
+        This is a journal template that will appear when you check in. You can use it to guide your
+        writing or reflection. If you don’t want to use it, just leave it empty.
+      </blockquote>
+      <FormItem label="Template" col={12} tooltip="Template">
         <FormEditor field="template" editorKey={editorKey} />
       </FormItem>
-      <div className="mazic-col-12 flex justify-end mt-6">
+      <div className="mazic-col-12 flex justify-end mt-6 gap-2">
         <Button
           variant="outline"
           size="sm"
